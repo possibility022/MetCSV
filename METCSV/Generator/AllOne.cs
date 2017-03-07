@@ -16,9 +16,6 @@ namespace METCSV.Generator
         public ProductsReader metReader = new ProductsReader();
         public ProductsReader abReader = new ProductsReader();
 
-        private bool downloadDone_Lama = false;
-        private bool downloadDone_TechData = false;
-
         public List<Product> finalList = new List<Product>();
 
         private System.Windows.Forms.OpenFileDialog openFileDialog_Lama = new System.Windows.Forms.OpenFileDialog();
@@ -52,33 +49,18 @@ namespace METCSV.Generator
         //    return comparer.combineLists();
         //}
 
-        private void onDownloadDone_Lama()
-        {
-            lock(@lock)
-            {
-                downloadDone_Lama = true;
-            }
-        }
-
-        private void onDownloadDone_TechData()
-        {
-            lock (@lock)
-            {
-                downloadDone_TechData = true;
-            }
-        }
-
         public void Load()
         {
+            #region Pobieranie i wczytywanie danych
             const string techdataProfitsFile = "techdataProfits.data";
             const string abProfitsFile = "abProfits.data";
             const string lamaProfitsFile = "lamaProfits.data";
 
             Database.Log.Logging.log_message("Zaczynamy");
-            Network.LamaWebService downloaderLama = new Network.LamaWebService(onDownloadDone_Lama);
-            Network.TechData downloaderTechData = new Network.TechData(onDownloadDone_TechData, ref this.openFileDialog_TechDatta_Materials, ref openFileDialog_TechDatta_Prices);
-            Network.AB downloaderAB = new Network.AB(delegate () { });
-            Network.Met downloaderMET = new Network.Met(delegate () { });
+            Network.LamaWebService downloaderLama = new Network.LamaWebService(delegate () { Database.Log.log("Pobrano Lama"); });
+            Network.TechData downloaderTechData = new Network.TechData(delegate() { Database.Log.log("Pobrano TechData"); }, ref this.openFileDialog_TechDatta_Materials, ref openFileDialog_TechDatta_Prices);
+            Network.AB downloaderAB = new Network.AB(delegate () { Database.Log.log("Pobrano AB"); });
+            Network.Met downloaderMET = new Network.Met(delegate () { Database.Log.log("Pobrano Met"); });
 
             Database.Log.Logging.log_message("Pobieram");
             downloaderLama.downloadFile();
@@ -97,17 +79,9 @@ namespace METCSV.Generator
 
             while (lamaThread.IsAlive || techDataThread.IsAlive || metThread.IsAlive || abThread.IsAlive)
                 Thread.Sleep(1000);
+            #endregion
 
-            //List<ProductGroup> groups = new List<ProductGroup>();
-            //List<Product> sadistic = 
-
-            //Forms.GroupController gc = new Forms.GroupController();
-
-            //gc.LoadGroups(null, lamaReader.lamaFullList.GetRange(0,20));
-
-            //gc.ShowDialog();
-
-            //Exporter.exportGroups("groups", gc.getGroups());
+            #region Wczytywanie kategori i ustawianie marży.
 
             Database.Log.Logging.log_message("Wczytuje kategorie AB");
 
@@ -129,18 +103,18 @@ namespace METCSV.Generator
 
             TestingForm fProfitSet = new TestingForm();
 
-            
-
             fProfitSet.loadCategories(abCalculator.getProfits(), TestingForm.Provider.AB);
             fProfitSet.loadCategories(lamaCalculator.getProfits(), TestingForm.Provider.Lama);
             fProfitSet.loadCategories(tdCalculator.getProfits(), TestingForm.Provider.TechData);
 
+            if (Global.ShowProfitsWindows)
+            {
+                Database.Log.Logging.log_message("Okienko do ręcznej konfiguracji");
+                fProfitSet.ShowDialog();
+                Database.Log.Logging.log_message("Zamknięto okienko.");
+            }
+
             
-            Database.Log.Logging.log_message("Okienko do ręcznej konfiguracji");
-
-            fProfitSet.ShowDialog();
-
-            Database.Log.Logging.log_message("Zamknięto okienko.");
 
             abCalculator.LoadProfitsFrom_ListViewItemCollection
                 (fProfitSet.getList(TestingForm.Provider.AB));
@@ -165,6 +139,8 @@ namespace METCSV.Generator
 
             Database.Log.Logging.log_message("Obliczam ceny dla AB");
             abCalculator.CountPrice(abReader.abFullList);
+
+            #endregion
 
             Database.Log.Logging.log_message("Generuję");
             var comparer = new ProductComparer(this.lamaReader.lamaFullList, this.techDataReader.techdataFullList, this.metReader.metFullList, this.abReader.abFullList);

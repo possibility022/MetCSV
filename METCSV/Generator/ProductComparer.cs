@@ -64,8 +64,8 @@ namespace METCSV.Generator
 
             solveConflicts();
 
-            foreach (int s in partNumbersConfilcts)
-                Database.Log.log("Problem With This PartNumber: " + s.ToString());
+            //foreach (int s in partNumbersConfilcts)
+            //    Database.Log.log("Problem With This PartNumber: " + s.ToString());
         }
 
         public void compareAll()
@@ -123,7 +123,8 @@ namespace METCSV.Generator
             removeEmptyWarehouse(products);
             int cheapest = findCheapestProduct(products);
 
-            products[cheapest].StatusProduktu = true;
+            if (products[cheapest].ID != null) 
+                products[cheapest].StatusProduktu = true;
         }
 
         private void removeHiddenProducts(List<Product> products)

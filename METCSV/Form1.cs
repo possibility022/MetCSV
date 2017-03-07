@@ -51,9 +51,6 @@ namespace METCSV
             Generator.AllOne allOne = new AllOne();
             allOne.Load();
 
-
-
-            
             DateTime endTime = DateTime.Now;
 
             lock (@lock)
@@ -61,6 +58,8 @@ namespace METCSV
                 this.allProducts = allOne.finalList;
                 stoper = endTime.Subtract(startTime);
             }
+
+            Database.Log.log("Koniec: " + stoper.ToString());
 
             FileSystem.Exporter.exportProducts("tmp.csv", this.allProducts);
 
@@ -80,6 +79,11 @@ namespace METCSV
         private void button2_Click(object sender, EventArgs e)
         {
             export();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Global.ShowProfitsWindows = checkBox1.Checked;
         }
     }
 }

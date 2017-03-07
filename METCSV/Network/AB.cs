@@ -56,6 +56,7 @@ namespace METCSV.Network
             DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
             fileName = dir.GetFiles()[0].FullName;
             client.Disconnect();
+            done();
         }
 
         private void deleteOldMessages(Pop3Client client)
