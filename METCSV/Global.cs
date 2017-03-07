@@ -12,6 +12,8 @@ namespace METCSV
     {
         public static bool downloadNow = true;
 
+        public static bool ShowProfitsWindows { get; set; }
+
         public static string Encrypt(string textToDecrypt)
         {
             if (textToDecrypt == null) return "";

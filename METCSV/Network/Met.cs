@@ -27,6 +27,7 @@ namespace METCSV.Network
             {
                 client.DownloadFile("http://met.redcart.pl/export/d9b11de494035a84e68e5faa6063692a.csv", fileName);
             }
+            done();
         }
     }
 }
