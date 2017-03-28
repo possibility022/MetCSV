@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace METCSV.Generator
 {
@@ -68,8 +68,12 @@ namespace METCSV.Generator
             downloaderMET.downloadFile();
             downloaderAB.downloadFile();
 
-            while (downloaderLama.threadAlive() || downloaderTechData.threadAlive() || downloaderAB.threadAlive() || downloaderMET.threadAlive())
-                Thread.Sleep(1000);
+            while (!(downloaderLama.TaskIsCompleted() &&
+                downloaderTechData.TaskIsCompleted() &&
+                downloaderAB.TaskIsCompleted() &&
+                downloaderMET.TaskIsCompleted()
+                ))
+                System.Threading.Thread.Sleep(1000);
 
             Database.Log.Logging.log_message("Wczytuję pliki");
             loadLamaProducts(downloaderLama.getFileName(), "LamaCSV.csv");
@@ -77,8 +81,8 @@ namespace METCSV.Generator
             loadMetProducts(downloaderMET.getFileName());
             loadABProducts(downloaderAB.getFileName());
 
-            while (lamaThread.IsAlive || techDataThread.IsAlive || metThread.IsAlive || abThread.IsAlive)
-                Thread.Sleep(1000);
+            while (!(lamaThread.IsCompleted && techDataThread.IsCompleted && metThread.IsCompleted && abThread.IsCompleted))
+                System.Threading.Thread.Sleep(1000);
             #endregion
 
             #region Wczytywanie kategori i ustawianie marży.
@@ -152,32 +156,32 @@ namespace METCSV.Generator
 
         public void loadLamaProducts(string xmlDatabase_path, string csvProducNameDatabase_path)
         {
-            lamaThread = new Thread(() => lamaReader.GetLamaProducts(xmlDatabase_path, csvProducNameDatabase_path));
+            lamaThread = new Task(() => lamaReader.GetLamaProducts(xmlDatabase_path, csvProducNameDatabase_path));
             lamaThread.Start();
         }
 
         public void loadTechDataProduct(string csvDatabase_path, string csvTDPrices_path)
         {
-            techDataThread = new Thread(() => techDataReader.GetTechDataProducts(csvDatabase_path, csvTDPrices_path));
+            techDataThread = new Task(() => techDataReader.GetTechDataProducts(csvDatabase_path, csvTDPrices_path));
             techDataThread.Start();
         }
 
         public void loadMetProducts(string csv_path)
         {
-            metThread = new Thread(() => metReader.GetMetProducts(csv_path));
+            metThread = new Task(() => metReader.GetMetProducts(csv_path));
             metThread.Start();
         }
 
         public void loadABProducts(string csv_path)
         {
-            abThread = new Thread(() => abReader.GetABProducts(csv_path, Encoding.Default));
+            abThread = new Task(() => abReader.GetABProducts(csv_path, Encoding.Default));
             abThread.Start();
         }
 
-        private Thread lamaThread;
-        private Thread techDataThread;
-        private Thread metThread;
-        private Thread abThread;
+        private Task lamaThread;
+        private Task techDataThread;
+        private Task metThread;
+        private Task abThread;
 
     }
 }

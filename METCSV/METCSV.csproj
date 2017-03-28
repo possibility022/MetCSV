@@ -85,7 +85,7 @@
     <Compile Include="Generator\PriceCalculator.cs" />
     <Compile Include="Generator\ProductComparer.cs" />
     <Compile Include="Generator\ProductGroup.cs" />
-    <Compile Include="Generator\ThreadController.cs" />
+    <Compile Include="Generator\TaskController.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Network\AB.cs" />
     <Compile Include="Network\DownloadingThread.cs" />

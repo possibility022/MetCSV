@@ -129,7 +129,6 @@ namespace METCSV.FileSystem
 
         delegate void OperationType(string[] fields, List<Product> products);
 
-
         public List<Product> GetABProducts(string csvPath, System.Text.Encoding encoding)
         {
             Database.Log.Logging.log_message("Wczytuję produkty z AB");
