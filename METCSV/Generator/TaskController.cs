@@ -31,7 +31,7 @@ namespace METCSV.Generator
         {
             for (int i = 0; i < tasks_inWork.Count; i++)
             {
-                if (tasks_inWork[i].IsCanceled)
+                if (tasks_inWork[i].IsCompleted)
                 {
                     tasks_finished.Add(tasks_inWork[i]);
                     Database.Log.Logging.log_message("Thread Finished: " + tasks_inWork[i].Id);
