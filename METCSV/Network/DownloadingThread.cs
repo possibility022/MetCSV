@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace METCSV.Network
 {
@@ -11,19 +11,19 @@ namespace METCSV.Network
         public delegate void DownloadDone();
         public DownloadDone done;
         protected string fileName;
-        protected Thread thread;
+        protected Task task;
 
         public string getFileName()
         {
             return fileName;
         }
 
-        public bool threadAlive()
+        public bool TaskIsCompleted()
         {
-            if (thread != null)
-                return thread.IsAlive;
+            if (task == null)
+                return true;
             else
-                return false;
+                return task.IsCompleted;
         }
     }
 }

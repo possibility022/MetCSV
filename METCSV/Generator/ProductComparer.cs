@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace METCSV.Generator
 {
@@ -39,21 +39,21 @@ namespace METCSV.Generator
 
             AllPartNumberList allPartNumbers = new AllPartNumberList(lamaProducts, techDataProducts, abProducts);
 
-            System.Threading.Thread generateAllPartsNumber = new System.Threading.Thread(() => allPartNumbers.getPartNumbers());
+            Task generateAllPartsNumber = new Task(() => allPartNumbers.getPartNumbers());
             generateAllPartsNumber.Start();
             //partNumbers = allPartNumbers.getPartNumbers();
 
             //Przepisuje obrazek, id, nazwe produktu z pliku MET.
-            System.Threading.Thread fillLamaList_thread = new System.Threading.Thread(() => fillList(lamaProducts));
+            Task fillLamaList_thread = new Task(() => fillList(lamaProducts));
             fillLamaList_thread.Start();
 
-            System.Threading.Thread fillTechData_thread = new System.Threading.Thread(() => fillList(techDataProducts));
+            Task fillTechData_thread = new Task(() => fillList(techDataProducts));
             fillTechData_thread.Start();
 
-            System.Threading.Thread fillAB_thread = new Thread(() => fillList(abProducts));
+            Task fillAB_thread = new Task(() => fillList(abProducts));
             fillAB_thread.Start();
 
-            while (generateAllPartsNumber.IsAlive || fillTechData_thread.IsAlive || fillLamaList_thread.IsAlive || fillAB_thread.IsAlive)
+            while (!(generateAllPartsNumber.IsCompleted || fillTechData_thread.IsCompleted || fillLamaList_thread.IsCompleted || fillAB_thread.IsCompleted))
                 System.Threading.Thread.Sleep(1000);
 
             partNumbers = allPartNumbers.getPartNumbers();
@@ -72,19 +72,19 @@ namespace METCSV.Generator
         {
             //compareFragment(0, partNumbers.Count);
 
-            Thread threadOne = new Thread(() => compareFragment(0, partNumbers.Count / 4));
+            Task taskOne = new Task(() => compareFragment(0, partNumbers.Count / 4));
 
-            Thread threadTwo = new Thread(() => compareFragment((partNumbers.Count / 4) + 1, (partNumbers.Count / 4) * 2));
+            Task taskTwo = new Task(() => compareFragment((partNumbers.Count / 4) + 1, (partNumbers.Count / 4) * 2));
 
-            Thread threadThree = new Thread(() => compareFragment(((partNumbers.Count / 4) * 2) + 1, (partNumbers.Count / 4) * 3));
+            Task taskThree = new Task(() => compareFragment(((partNumbers.Count / 4) * 2) + 1, (partNumbers.Count / 4) * 3));
 
-            Thread ThreadFour = new Thread(() => compareFragment(((partNumbers.Count / 4) * 3) + 1, partNumbers.Count));
+            Task taskFour = new Task(() => compareFragment(((partNumbers.Count / 4) * 3) + 1, partNumbers.Count));
 
-            ThreadController threadController = new ThreadController();
-            threadController.addThread(threadOne);
-            threadController.addThread(threadTwo);
-            threadController.addThread(threadThree);
-            threadController.addThread(ThreadFour);
+            TaskController threadController = new TaskController();
+            threadController.addThread(taskOne);
+            threadController.addThread(taskTwo);
+            threadController.addThread(taskThree);
+            threadController.addThread(taskFour);
 
             threadController.startControll();
         }
@@ -156,12 +156,12 @@ namespace METCSV.Generator
 
         private void removeHiddenProducts()
         {
-            Thread t1 = new Thread(() => removeHiddenProducts(lamaProducts));
-            Thread t2 = new Thread(() => removeHiddenProducts(techDataProducts));
-            Thread t3 = new Thread(() => removeHiddenProducts(abProducts));
-            Thread t4 = new Thread(() => removeHiddenProducts(METProducts));
+            Task t1 = new Task(() => removeHiddenProducts(lamaProducts));
+            Task t2 = new Task(() => removeHiddenProducts(techDataProducts));
+            Task t3 = new Task(() => removeHiddenProducts(abProducts));
+            Task t4 = new Task(() => removeHiddenProducts(METProducts));
 
-            ThreadController controller = new ThreadController();
+            TaskController controller = new TaskController();
             controller.addThread(t1);
             controller.addThread(t2);
             controller.addThread(t3);
@@ -312,20 +312,20 @@ namespace METCSV.Generator
         {
             notAvailable = new List<Product>();
 
-            Thread threadOne = new Thread(() => setEndOfLife_part(
+            Task threadOne = new Task(() => setEndOfLife_part(
                 0,
                 METProducts.Count / 4));
-            Thread threadTwo = new Thread(() => setEndOfLife_part(
+            Task threadTwo = new Task(() => setEndOfLife_part(
                 (METProducts.Count / 4) + 1,
                 (METProducts.Count / 4) * 2));
-            Thread threadThree = new Thread(() => setEndOfLife_part(
+            Task threadThree = new Task(() => setEndOfLife_part(
                 ((METProducts.Count / 4) * 2) + 1,
                 ((METProducts.Count / 4) * 3)));
-            Thread threadFour = new Thread(() => setEndOfLife_part(
+            Task threadFour = new Task(() => setEndOfLife_part(
                 (METProducts.Count / 4) * 3 + 1,
                 METProducts.Count));
 
-            ThreadController threadController = new ThreadController();
+            TaskController threadController = new TaskController();
             threadController.addThread(threadOne);
             threadController.addThread(threadTwo);
             threadController.addThread(threadThree);

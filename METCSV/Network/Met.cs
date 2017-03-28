@@ -17,8 +17,8 @@ namespace METCSV.Network
 
         public void downloadFile()
         {
-            this.thread = new System.Threading.Thread(startDownloading);
-            this.thread.Start();
+            this.task = new Task(startDownloading);
+            this.task.Start();
         }
 
         private void startDownloading()

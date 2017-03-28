@@ -18,12 +18,12 @@ namespace METCSV.Network
         {
             this.done = downloadDone;
             this.fileName = "LamaXml.xml";
-            thread = new System.Threading.Thread(post);
+            task = new Task(post);
         }
 
         public void downloadFile()
         {
-            thread.Start();
+            task.Start();
         }
 
 
