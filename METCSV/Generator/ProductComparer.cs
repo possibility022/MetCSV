@@ -298,7 +298,8 @@ namespace METCSV.Generator
                 if (products.Count > 0)
                 {
                     if (products[workon].UrlZdjecia.Length > 0)
-                        list[i].UrlZdjecia = products[workon].UrlZdjecia;
+                        //list[i].UrlZdjecia = products[workon].UrlZdjecia;
+                        list[i].UrlZdjecia = ""; // TO JEST Tak że jeśli zdjęcie już jest to ustawiamy puste. Jeśli nie ma to zostawiamy to od dostawcy.
 
                     list[i].ID = products[workon].ID;
 

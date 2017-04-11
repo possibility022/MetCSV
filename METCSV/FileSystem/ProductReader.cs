@@ -431,22 +431,24 @@ namespace METCSV.FileSystem
         /// <param name="products"> Lista do której ma dodać nowy produkt</param>
         private void OperationGetProductsMET(string[] fields, List<Product> products)
         {
-            products.Add(new Product()
-            {
-                ID = Int32.Parse(fields[(int)Met.ID]),
-                SymbolSAP = fields[(int)Met.SymbolSAP],
-                //ModelProduktu = fields[(int)Met.ModelProduktu],
-                OryginalnyKodProducenta = fields[(int)Met.ModelProduktu],
-                NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)Met.NazwaProduktu]),
-                NazwaProducenta = fields[(int)Met.NazwaProducenta],
-                KodDostawcy = fields[(int)Met.KodUDostawcy],
-                StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)Met.StatusProduktu])),
-                UrlZdjecia = fields[(int)Met.AdresURLzdjecia],
-                Hidden = fields[(int)Met.Kategoria].StartsWith("_HIDDEN")
-                    //Wszystkie kategorie które zaczynają się 
-                    //_HIDDEN mają być traktowane jak jedna kategoria.
-                    //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
-            });
+
+            if (fields[(int)Met.SymbolSAP].StartsWith("MET") == false)
+                products.Add(new Product()
+                {
+                    ID = Int32.Parse(fields[(int)Met.ID]),
+                    SymbolSAP = fields[(int)Met.SymbolSAP],
+                    //ModelProduktu = fields[(int)Met.ModelProduktu],
+                    OryginalnyKodProducenta = fields[(int)Met.ModelProduktu],
+                    NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)Met.NazwaProduktu]),
+                    NazwaProducenta = fields[(int)Met.NazwaProducenta],
+                    KodDostawcy = fields[(int)Met.KodUDostawcy],
+                    StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)Met.StatusProduktu])),
+                    UrlZdjecia = fields[(int)Met.AdresURLzdjecia],
+                    Hidden = fields[(int)Met.Kategoria].StartsWith("_HIDDEN")
+                        //Wszystkie kategorie które zaczynają się 
+                        //_HIDDEN mają być traktowane jak jedna kategoria.
+                        //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
+                });
         }
 
         /// <summary>
