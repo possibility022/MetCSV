@@ -66,12 +66,13 @@ namespace METCSV
                 + ((StatusProduktu) ? "1" : "0") + "\";\""
                 + CenaNetto + "\";\""
                 + CenaZakupuNetto + "\";\""
+                + UrlZdjecia + "\";\""
                 + ((Kategoria == "EOL") ? "EOL" : "") + "\"";
         }
 
         public string getHeader()
         {
-            return "\"ID\";\"SymbolSAP\";\"KodProducenta\";\"ModelProduktu\";\"KodDostawcy\";\"NazwaProduktu\";\"NazwaProducenta\";\"NazwaDostawcy\";\"StanMagazynowy\";\"StatusProduktu\";\"CenaNetto\";\"CenaZakupuNetto\";\"Kategoria\"";
+            return "\"ID\";\"SymbolSAP\";\"KodProducenta\";\"ModelProduktu\";\"KodDostawcy\";\"NazwaProduktu\";\"NazwaProducenta\";\"NazwaDostawcy\";\"StanMagazynowy\";\"StatusProduktu\";\"CenaNetto\";\"CenaZakupuNetto\";\"UrlZdjecia\";\"Kategoria\"";
         }
     }
 }
