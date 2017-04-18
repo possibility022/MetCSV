@@ -174,7 +174,7 @@ namespace METCSV.Generator
 
         public void loadABProducts(string csv_path)
         {
-            abThread = new Task(() => abReader.GetABProducts(csv_path, Encoding.Default));
+            abThread = new Task(() => abReader.GetABProducts(csv_path, Encoding.GetEncoding("windows-1250")));
             abThread.Start();
         }
 
