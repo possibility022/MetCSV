@@ -282,6 +282,7 @@ namespace METCSV.Generator
                                     continue;
 
                                 products[setEOL].Kategoria = "EOL";
+                                products[setEOL].UrlZdjecia = "";
                             }
 
                             break;
