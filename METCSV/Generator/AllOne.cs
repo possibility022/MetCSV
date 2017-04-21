@@ -22,6 +22,7 @@ namespace METCSV.Generator
         private System.Windows.Forms.OpenFileDialog openFileDialog_TechDatta_Materials = new System.Windows.Forms.OpenFileDialog();
         private System.Windows.Forms.OpenFileDialog openFileDialog_TechDatta_Prices = new System.Windows.Forms.OpenFileDialog();
 
+
         public AllOne()
         {
 
@@ -75,11 +76,20 @@ namespace METCSV.Generator
                 ))
                 System.Threading.Thread.Sleep(1000);
 
+
+            if (downloaderAB.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
+            if (downloaderTechData.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
+            if (downloaderLama.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
+            if (downloaderMET.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
+
+
             Database.Log.Logging.log_message("Wczytuję pliki");
-            loadLamaProducts(downloaderLama.getFileName(), "LamaCSV.csv");
+            loadLamaProducts(downloaderLama.GetFileName(), "LamaCSV.csv");
             loadTechDataProduct("ExtractedFiles\\TD_material.csv", "ExtractedFiles\\TD_Prices.csv");
-            loadMetProducts(downloaderMET.getFileName());
-            loadABProducts(downloaderAB.getFileName());
+            loadMetProducts(downloaderMET.GetFileName());
+            loadABProducts(downloaderAB.GetFileName());
+
+
 
             while (!(lamaThread.IsCompleted && techDataThread.IsCompleted && metThread.IsCompleted && abThread.IsCompleted))
                 System.Threading.Thread.Sleep(1000);

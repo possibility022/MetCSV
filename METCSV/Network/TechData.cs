@@ -42,20 +42,29 @@ namespace METCSV.Network
 
         private void startDownloading()
         {
-            string folderToExtrac = "ExtractedFiles";
-            string[] files = GetFileList();
-            string file = getTheNewestFile(files);
-            downloadFileByFtp(file);
-            if (Directory.Exists(folderToExtrac))
-                Directory.Delete(folderToExtrac, true);
-            System.IO.Compression.ZipFile.ExtractToDirectory(file, folderToExtrac);
-            DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
+            try
+            {
+                SetDownloadingResult(DownloadingResult.inProgress);
+                string folderToExtrac = "ExtractedFiles";
+                string[] files = GetFileList();
+                string file = getTheNewestFile(files);
+                downloadFileByFtp(file);
+                if (Directory.Exists(folderToExtrac))
+                    Directory.Delete(folderToExtrac, true);
+                System.IO.Compression.ZipFile.ExtractToDirectory(file, folderToExtrac);
+                DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
 
-            string materials = findFile(dir, "TD_Material.csv");
-            string prices = findFile(dir, "TD_Prices.csv");
+                string materials = findFile(dir, "TD_Material.csv");
+                string prices = findFile(dir, "TD_Prices.csv");
 
-            dialogMaterials.FileName = materials;
-            dialogPrices.FileName = prices;
+                dialogMaterials.FileName = materials;
+                dialogPrices.FileName = prices;
+                SetDownloadingResult(DownloadingResult.complete);
+            } catch (Exception ex)
+            {
+                Database.Log.log("Pobieranie techdaty nie powiodło się. " + ex.Message);
+                SetDownloadingResult(DownloadingResult.faild);
+            }
             done();
         }
 

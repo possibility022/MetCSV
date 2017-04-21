@@ -28,34 +28,45 @@ namespace METCSV.Network
 
         private void startDownloading()
         {
-            string zippedFile = "ab.zip";
-            string folderToExtrac = "ExtractedFiles_AB";
-
-            var client = new Pop3Client();
-            client.Connect("mail.met.com.pl", 110, false);
-            client.Authenticate("ab@met.com.pl", "^&$%GFDSW#asf");
-
-            //deleteOldMessages(client);
-
-            Message message = client.GetMessage(getNewestMessage(client));
-
-            List<MessagePart> part = message.FindAllAttachments();
-            MessagePart attachment = part.First();
-
-            using (FileStream stream = new System.IO.FileStream(zippedFile, System.IO.FileMode.Create))
+            try
             {
-                BinaryWriter BinaryStream = new BinaryWriter(stream);
-                BinaryStream.Write(attachment.Body);
-                BinaryStream.Close();
+                SetDownloadingResult(DownloadingResult.inProgress);
+                string zippedFile = "ab.zip";
+                string folderToExtrac = "ExtractedFiles_AB";
+
+                var client = new Pop3Client();
+                client.Connect("mail.met.com.pl", 110, false);
+                client.Authenticate("ab@met.com.pl", "^&$%GFDSW#asf");
+
+                //deleteOldMessages(client);
+
+                Message message = client.GetMessage(getNewestMessage(client));
+
+                List<MessagePart> part = message.FindAllAttachments();
+                MessagePart attachment = part.First();
+
+                using (FileStream stream = new System.IO.FileStream(zippedFile, System.IO.FileMode.Create))
+                {
+                    BinaryWriter BinaryStream = new BinaryWriter(stream);
+                    BinaryStream.Write(attachment.Body);
+                    BinaryStream.Close();
+                }
+
+                if (Directory.Exists(folderToExtrac))
+                    Directory.Delete(folderToExtrac, true);
+
+                System.IO.Compression.ZipFile.ExtractToDirectory(zippedFile, folderToExtrac);
+                DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
+                fileName = dir.GetFiles()[0].FullName;
+                client.Disconnect();
+                SetDownloadingResult(DownloadingResult.complete);
+
+            } catch (Exception ex)
+            {
+                Database.Log.log("Problem z pobieraniem pliku z AB. " + ex.Message);
+                SetDownloadingResult(DownloadingResult.faild);
             }
 
-            if (Directory.Exists(folderToExtrac))
-                Directory.Delete(folderToExtrac, true);
-
-            System.IO.Compression.ZipFile.ExtractToDirectory(zippedFile, folderToExtrac);
-            DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
-            fileName = dir.GetFiles()[0].FullName;
-            client.Disconnect();
             done();
         }
 
