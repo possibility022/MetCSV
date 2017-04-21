@@ -29,54 +29,63 @@ namespace METCSV.Network
 
         private void post()
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://www.lamaplus.com.pl/partner/export.php");
-
-            var postData = "user=" + Global.Decrypt(encryptedLogin);
-            postData += "&pass=629d048afcf8fbc56f594c7f25e243c2";
-            postData += "&request=priceList";
-
-            var data = Encoding.ASCII.GetBytes(postData);
-
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-
-            request.ContentLength = data.Length;
-
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
-            HttpWebResponse response;
-
             try
             {
-                response = (HttpWebResponse)request.GetResponse();
-            }
-            catch (WebException web)
-            {
-                System.Windows.Forms.MessageBox.Show(web.Message + "\nGenerwoanie licznika miedzy 14:00-16:00 jest niedostępne");
-                return;
-            }
+                SetDownloadingResult(DownloadingResult.inProgress);
+                var request = (HttpWebRequest)WebRequest.Create("http://www.lamaplus.com.pl/partner/export.php");
 
+                var postData = "user=" + Global.Decrypt(encryptedLogin);
+                postData += "&pass=629d048afcf8fbc56f594c7f25e243c2";
+                postData += "&request=priceList";
 
-            //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                var data = Encoding.ASCII.GetBytes(postData);
 
-            Stream responseStream = response.GetResponseStream();
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
 
-            using (var streamWriter = new FileStream(fileName, FileMode.Create))
-            {
-                int Length = 2048;
-                Byte[] buffer = new Byte[Length];
-                int bytesRead = responseStream.Read(buffer, 0, Length);
-                while (bytesRead > 0)
+                request.ContentLength = data.Length;
+
+                using (var stream = request.GetRequestStream())
                 {
-                    streamWriter.Write(buffer, 0, bytesRead);
-                    bytesRead = responseStream.Read(buffer, 0, Length);
+                    stream.Write(data, 0, data.Length);
                 }
-            }
 
-            responseStream.Close();
+                HttpWebResponse response;
+
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+                }
+                catch (WebException web)
+                {
+                    SetDownloadingResult(DownloadingResult.faild);
+                    string message = "Lama " + web.Message + "\nGenerwoanie licznika miedzy 14:00-16:00 jest niedostępne";
+                    Database.Log.log(message);
+                    System.Windows.Forms.MessageBox.Show(message);
+                    return;
+                }
+
+                Stream responseStream = response.GetResponseStream();
+
+                using (var streamWriter = new FileStream(fileName, FileMode.Create))
+                {
+                    int Length = 2048;
+                    Byte[] buffer = new Byte[Length];
+                    int bytesRead = responseStream.Read(buffer, 0, Length);
+                    while (bytesRead > 0)
+                    {
+                        streamWriter.Write(buffer, 0, bytesRead);
+                        bytesRead = responseStream.Read(buffer, 0, Length);
+                    }
+                }
+
+                responseStream.Close();
+                SetDownloadingResult(DownloadingResult.complete);
+            } catch (Exception ex)
+            {
+                Database.Log.log("Pobieranie Lamy nie powiodło się. " + ex.Message);
+                SetDownloadingResult(DownloadingResult.faild);
+            }
 
             done();
         }
