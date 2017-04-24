@@ -49,7 +49,7 @@ namespace METCSV
         {
             DateTime startTime = DateTime.Now;
             Generator.AllOne allOne = new AllOne();
-            allOne.Load();
+            Global.Result result = allOne.Load();
 
             DateTime endTime = DateTime.Now;
 
@@ -59,11 +59,18 @@ namespace METCSV
                 stoper = endTime.Subtract(startTime);
             }
 
-            Database.Log.log("Koniec: " + stoper.ToString());
+            if (result == Global.Result.complete)
+            {
+                Database.Log.log("Koniec: " + stoper.ToString());
 
-            FileSystem.Exporter.exportProducts("tmp.csv", this.allProducts);
+                FileSystem.Exporter.exportProducts("tmp.csv", this.allProducts);
 
-            this.button2.Invoke((MethodInvoker)(() => { button2.Enabled = true; }));
+                this.button2.Invoke((MethodInvoker)(() => { button2.Enabled = true; }));
+            }
+            else
+            {
+                Database.Log.log("Nie ukończono generowania - powstiał jakiś problem. " + stoper.ToString());
+            }
         }
 
 

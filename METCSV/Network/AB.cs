@@ -30,7 +30,9 @@ namespace METCSV.Network
         {
             try
             {
-                SetDownloadingResult(DownloadingResult.inProgress);
+                SetDownloadingResult(Global.Result.inProgress);
+                if (File.Exists("OpenPop.dll") == false)
+                    throw new FileNotFoundException("Nie znaleziono pliku OpenPop.dll");
                 string zippedFile = "ab.zip";
                 string folderToExtrac = "ExtractedFiles_AB";
 
@@ -59,12 +61,12 @@ namespace METCSV.Network
                 DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
                 fileName = dir.GetFiles()[0].FullName;
                 client.Disconnect();
-                SetDownloadingResult(DownloadingResult.complete);
+                SetDownloadingResult(Global.Result.complete);
 
             } catch (Exception ex)
             {
                 Database.Log.log("Problem z pobieraniem pliku z AB. " + ex.Message);
-                SetDownloadingResult(DownloadingResult.faild);
+                SetDownloadingResult(Global.Result.faild);
             }
 
             done();

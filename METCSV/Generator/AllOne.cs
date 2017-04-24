@@ -22,35 +22,7 @@ namespace METCSV.Generator
         private System.Windows.Forms.OpenFileDialog openFileDialog_TechDatta_Materials = new System.Windows.Forms.OpenFileDialog();
         private System.Windows.Forms.OpenFileDialog openFileDialog_TechDatta_Prices = new System.Windows.Forms.OpenFileDialog();
 
-
-        public AllOne()
-        {
-
-        }
-
-        /// <summary>
-        /// Wczytuje wszystkie produkty i łączy w jedną listę z najlepszymi cenami, statusem itd...
-        /// </summary>
-        /// <param name="lama"></param>
-        /// <param name="techdata"></param>
-        /// <param name="met"></param>
-        //public List<Product> LoadAllProducts()
-        //{
-        //    var reader = new ProductsReader();
-
-        //    var ab = reader.GetABProducts("300625_cennik_AB.csv", Encoding.Default);
-        //    var lama = reader.GetLamaProducts("LamaXml.xml", "LamaCSV.csv");
-        //    var techData = reader.GetTechDataProducts("TD_material.csv", "TD_Prices.csv");
-        //    var met = reader.GetMetProducts("csvmet.csv");
-
-        //    var comparer = new ProductComparer(lama, techData, met);
-
-        //    // uzupełnienie rekordów o dane z MET
-        //    comparer.Generate();
-        //    return comparer.combineLists();
-        //}
-
-        public void Load()
+        public Global.Result Load()
         {
             #region Pobieranie i wczytywanie danych
             const string techdataProfitsFile = "techdataProfits.data";
@@ -77,10 +49,10 @@ namespace METCSV.Generator
                 System.Threading.Thread.Sleep(1000);
 
 
-            if (downloaderAB.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
-            if (downloaderTechData.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
-            if (downloaderLama.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
-            if (downloaderMET.GetDownloadingResult() == Network.DownloadingThread.DownloadingResult.faild) return;
+            if (downloaderAB.GetDownloadingResult() == Global.Result.faild) return Global.Result.faild;
+            if (downloaderTechData.GetDownloadingResult() == Global.Result.faild) return Global.Result.faild;
+            if (downloaderLama.GetDownloadingResult() == Global.Result.faild) return Global.Result.faild;
+            if (downloaderMET.GetDownloadingResult() == Global.Result.faild) return Global.Result.faild;
 
 
             Database.Log.Logging.log_message("Wczytuję pliki");
@@ -93,6 +65,18 @@ namespace METCSV.Generator
 
             while (!(lamaThread.IsCompleted && techDataThread.IsCompleted && metThread.IsCompleted && abThread.IsCompleted))
                 System.Threading.Thread.Sleep(1000);
+
+            // Tutaj sprawdzam czy wczytywanie się powiodło. Jeśli operacja nie jest skończona to przerywane jest całe generowanie.
+            // Dodatkowo spradzam czy wczytano jakieś produkty. Jeśli ich nie wczytano to znaczy że coś poszło nie tak i generowanie też jest przerywane.
+            if (lamaReader.lamaLoadResult != Global.Result.complete || lamaReader.lamaFullList.Count == 0)
+                return Global.Result.faild;
+            if (metReader.metLoadResult != Global.Result.complete || metReader.metFullList.Count == 0)
+                return Global.Result.faild;
+            if (techDataReader.techDataLoadResult != Global.Result.complete || techDataReader.techdataFullList.Count == 0)
+                return Global.Result.faild;
+            if (abReader.abLoadResult != Global.Result.complete || abReader.abFullList.Count == 0)
+                return Global.Result.faild;
+
             #endregion
 
             #region Wczytywanie kategori i ustawianie marży.
@@ -162,6 +146,7 @@ namespace METCSV.Generator
 
             this.finalList = comparer.combineLists();
             Database.Log.Logging.log_message("Gotowe");
+            return Global.Result.complete;
         }
 
         public void loadLamaProducts(string xmlDatabase_path, string csvProducNameDatabase_path)

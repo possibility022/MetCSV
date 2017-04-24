@@ -44,7 +44,7 @@ namespace METCSV.Network
         {
             try
             {
-                SetDownloadingResult(DownloadingResult.inProgress);
+                SetDownloadingResult(Global.Result.inProgress);
                 string folderToExtrac = "ExtractedFiles";
                 string[] files = GetFileList();
                 string file = getTheNewestFile(files);
@@ -59,11 +59,11 @@ namespace METCSV.Network
 
                 dialogMaterials.FileName = materials;
                 dialogPrices.FileName = prices;
-                SetDownloadingResult(DownloadingResult.complete);
+                SetDownloadingResult(Global.Result.complete);
             } catch (Exception ex)
             {
                 Database.Log.log("Pobieranie techdaty nie powiodło się. " + ex.Message);
-                SetDownloadingResult(DownloadingResult.faild);
+                SetDownloadingResult(Global.Result.faild);
             }
             done();
         }

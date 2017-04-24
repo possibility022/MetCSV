@@ -8,13 +8,6 @@ namespace METCSV.Network
 {
     class DownloadingThread
     {
-        public enum DownloadingResult
-        {
-            readyToStart,
-            complete,
-            inProgress,
-            faild
-        }
 
         public delegate void DownloadDone();
         public DownloadDone done;
@@ -22,9 +15,9 @@ namespace METCSV.Network
         protected Task task;
         private object _lock = new object();
 
-        DownloadingResult downloadingResult = DownloadingResult.readyToStart;
+        Global.Result downloadingResult = Global.Result.readyToStart;
 
-        public DownloadingResult GetDownloadingResult()
+        public Global.Result GetDownloadingResult()
         {
             lock(_lock)
             {
@@ -32,7 +25,7 @@ namespace METCSV.Network
             }
         }
 
-        protected void SetDownloadingResult(DownloadingResult value)
+        protected void SetDownloadingResult(Global.Result value)
         {
             lock(_lock)
             {

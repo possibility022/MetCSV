@@ -14,6 +14,14 @@ namespace METCSV
 
         public static bool ShowProfitsWindows { get; set; }
 
+        public enum Result
+        {
+            readyToStart,
+            complete,
+            inProgress,
+            faild
+        }
+
         public static string Encrypt(string textToDecrypt)
         {
             if (textToDecrypt == null) return "";

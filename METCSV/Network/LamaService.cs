@@ -31,7 +31,7 @@ namespace METCSV.Network
         {
             try
             {
-                SetDownloadingResult(DownloadingResult.inProgress);
+                SetDownloadingResult(Global.Result.inProgress);
                 var request = (HttpWebRequest)WebRequest.Create("http://www.lamaplus.com.pl/partner/export.php");
 
                 var postData = "user=" + Global.Decrypt(encryptedLogin);
@@ -58,7 +58,7 @@ namespace METCSV.Network
                 }
                 catch (WebException web)
                 {
-                    SetDownloadingResult(DownloadingResult.faild);
+                    SetDownloadingResult(Global.Result.faild);
                     string message = "Lama " + web.Message + "\nGenerwoanie licznika miedzy 14:00-16:00 jest niedostępne";
                     Database.Log.log(message);
                     System.Windows.Forms.MessageBox.Show(message);
@@ -80,11 +80,11 @@ namespace METCSV.Network
                 }
 
                 responseStream.Close();
-                SetDownloadingResult(DownloadingResult.complete);
+                SetDownloadingResult(Global.Result.complete);
             } catch (Exception ex)
             {
                 Database.Log.log("Pobieranie Lamy nie powiodło się. " + ex.Message);
-                SetDownloadingResult(DownloadingResult.faild);
+                SetDownloadingResult(Global.Result.faild);
             }
 
             done();
