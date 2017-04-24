@@ -23,7 +23,7 @@ namespace METCSV.Network
 
         private void startDownloading()
         {
-            SetDownloadingResult(DownloadingResult.inProgress);
+            SetDownloadingResult(Global.Result.inProgress);
             using (var client = new WebClient())
             {
                 try
@@ -33,14 +33,14 @@ namespace METCSV.Network
                 } catch (System.Net.WebException ex)
                 {
                     System.Windows.Forms.MessageBox.Show("Problem z plikiem: " + fileName + ". Sprawdz czy nie jest on otwarty w jakims programie");
-                    SetDownloadingResult(DownloadingResult.faild);
+                    SetDownloadingResult(Global.Result.faild);
                     throw ex;
                 }
             }
 
 
             done();
-            SetDownloadingResult(DownloadingResult.complete);
+            SetDownloadingResult(Global.Result.complete);
         }
     }
 }

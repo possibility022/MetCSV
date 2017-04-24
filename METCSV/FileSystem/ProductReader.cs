@@ -17,6 +17,91 @@ namespace METCSV.FileSystem
         public List<Product> metFullList = new List<Product>();
         public List<Product> abFullList = new List<Product>();
 
+        private object _lock = new object();
+
+        private Global.Result _lamaLoadResult = Global.Result.readyToStart;
+        private Global.Result _techDataLoadResult = Global.Result.readyToStart;
+        private Global.Result _metLoadResult = Global.Result.readyToStart;
+        private Global.Result _abLoadResult = Global.Result.readyToStart;
+
+        public Global.Result lamaLoadResult
+        {
+            get
+            {
+                Global.Result value;
+                lock (_lock)
+                {
+                    value = _lamaLoadResult;
+                }
+                return value;
+            }
+            private set
+            {
+                lock (_lock)
+                {
+                    _lamaLoadResult = value;
+                }
+            }
+        }
+        public Global.Result techDataLoadResult
+        {
+            get
+            {
+                Global.Result value;
+                lock (_lock)
+                {
+                    value = _techDataLoadResult;
+                }
+                return value;
+            }
+            private set
+            {
+                lock (_lock)
+                {
+                    _techDataLoadResult = value;
+                }
+            }
+        }
+        public Global.Result metLoadResult
+        {
+            get
+            {
+                Global.Result value;
+                lock (_lock)
+                {
+                    value = _metLoadResult;
+                }
+                return value;
+            }
+            private set
+            {
+                lock (_lock)
+                {
+                    _metLoadResult = value;
+                }
+            }
+        }
+        public Global.Result abLoadResult
+        {
+            get
+            {
+                Global.Result value;
+                lock (_lock)
+                {
+                    value = _abLoadResult;
+                }
+                return value;
+            }
+            private set
+            {
+                lock (_lock)
+                {
+                    _abLoadResult = value;
+                }
+            }
+        }
+
+
         //Mapowanie 
         enum Lama
         {
@@ -156,6 +241,7 @@ namespace METCSV.FileSystem
         /// <returns>  lista produktów z lamy, jeśli podano prawidłową ścieżkę, w przeciwnym razie null</returns>
         public List<Product> GetLamaProducts(string pathXML, string pathCSV)
         {
+            lamaLoadResult = Global.Result.inProgress;
             if (File.Exists(pathXML) && File.Exists(pathCSV))
             {
                 Database.Log.Logging.log_message("Wczytuję produkty z Lamy");
@@ -167,11 +253,15 @@ namespace METCSV.FileSystem
                 this.lamaFullList = merged;
                 Database.Log.Logging.log_message("Produkty z Lamy wczytane");
 
+                lamaLoadResult = Global.Result.complete;
                 return merged;
             }
             else
             {
-                throw new FileNotFoundException("Któryś z podanych plików nie istnieje. Czy nie zapomniałeś o rozszerzeniu pliku w nazwie?");
+                string message = "Problem z wczytywaniem lamy: Któryś z podanych plików nie istnieje. Czy nie zapomniałeś o rozszerzeniu pliku w nazwie?";
+                lamaLoadResult = Global.Result.faild;
+                Database.Log.log(message);
+                throw new FileNotFoundException(message);
             }
         }
 
@@ -183,7 +273,7 @@ namespace METCSV.FileSystem
         /// <returns></returns>
         public List<Product> GetTechDataProducts(string pathProducts, string pathPrices)
         {
-
+            techDataLoadResult = Global.Result.inProgress;
             if (File.Exists(pathProducts) && File.Exists(pathPrices))
             {
                 Database.Log.Logging.log_message("Wczytuję produkty z TechDaty");
@@ -195,28 +285,37 @@ namespace METCSV.FileSystem
                 this.techdataFullList = merged;
                 Database.Log.Logging.log_message("Produkty z techdaty wczytane");
 
+                techDataLoadResult = Global.Result.complete;
                 return merged;
             }
             else
             {
-                throw new FileNotFoundException("Nie znaleziono jednego z plikow. " + pathPrices + " " + pathProducts);
+                string message = "Nie znaleziono jednego z plikow. " + pathPrices + " " + pathProducts;
+                techDataLoadResult = Global.Result.faild;
+                Database.Log.log(message);
+                throw new FileNotFoundException(message);
             }
 
         }
 
         public List<Product> GetMetProducts(string pathProducts)
         {
+            metLoadResult = Global.Result.inProgress;
             if (File.Exists(pathProducts))
             {
                 Database.Log.Logging.log_message("Wczytuję produkty z Metu");
                 var products = ReadCSV(OperationGetProductsMET, pathProducts, System.Text.Encoding.GetEncoding("windows-1250"));
                 this.metFullList = products;
                 Database.Log.Logging.log_message("Produkty z metu wczytane");
+                metLoadResult = Global.Result.complete;
                 return products;
             }
             else
             {
-                throw new FileNotFoundException("Nie znaleziono pliku. " + pathProducts);
+                metLoadResult = Global.Result.faild;
+                string message = "Problem z wczytywaniem pliku MET: Nie znaleziono pliku - " + pathProducts;
+                Database.Log.log(message);
+                throw new FileNotFoundException(message);
             }
         }
 
