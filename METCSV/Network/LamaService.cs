@@ -35,7 +35,8 @@ namespace METCSV.Network
                 var request = (HttpWebRequest)WebRequest.Create("http://www.lamaplus.com.pl/partner/export.php");
 
                 var postData = "user=" + Global.Decrypt(encryptedLogin);
-                postData += "&pass=629d048afcf8fbc56f594c7f25e243c2";
+                //postData += "&pass=629d048afcf8fbc56f594c7f25e243c2"; //old password
+                postData += "&pass=***REMOVED***";
                 postData += "&request=priceList";
 
                 var data = Encoding.ASCII.GetBytes(postData);

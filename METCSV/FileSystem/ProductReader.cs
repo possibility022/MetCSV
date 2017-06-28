@@ -216,18 +216,24 @@ namespace METCSV.FileSystem
 
         public List<Product> GetABProducts(string csvPath, System.Text.Encoding encoding)
         {
-            Database.Log.Logging.log_message("Wczytuję produkty z AB");
+            abLoadResult = Global.Result.inProgress;
             var products = new List<Product>();
-            if (File.Exists(csvPath))
+            try
             {
-                products = ReadCSV(OperationGetProductsAB, csvPath, encoding, 2);
-            }
-            else
-            {
-                throw new FileNotFoundException("Nie znaleziono pliku csv. " + csvPath);
-            }
-            abFullList = products;
-            Database.Log.Logging.log_message("Produkty z AB wczytane");
+                Database.Log.Logging.log_message("Wczytuję produkty z AB");
+                if (File.Exists(csvPath))
+                {
+                    products = ReadCSV(OperationGetProductsAB, csvPath, encoding, 2);
+                }
+                else
+                {
+                    throw new FileNotFoundException("Nie znaleziono pliku csv. " + csvPath);
+                }
+                abFullList = products;
+                Database.Log.Logging.log_message("Produkty z AB wczytane");
+                abLoadResult = Global.Result.complete;
+            }catch (Exception ex)
+            { abLoadResult = Global.Result.faild; }
 
             return products;
         }
