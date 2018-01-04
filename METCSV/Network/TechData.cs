@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
-using System.Web;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -17,7 +12,7 @@ namespace METCSV.Network
         string encryptedUser = "9Vh/Fcrko4IRqanFGHUI3yyR0Zmvicf9TFCBJXC83Ek=";
         string encryptedPassword = "2nLilGIskyemdPFldgRpsEvAeKohBaQwmo0TvV8Naks=";
 
-        string pattern = "(2017)-((0[0-9])|(1[0-2]))-(([0-2][0-9])|(3[0-1]))";
+        string pattern = "(20[1-5][0-9])-((0[0-9])|(1[0-2]))-(([0-2][0-9])|(3[0-1]))";
 
         string ftpAddres = "ftp2.techdata-it-emea.com";
 
