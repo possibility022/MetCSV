@@ -15,17 +15,17 @@ namespace METCSV.Network
         public AB(DownloadDone done)
         {
             this.done = done;
-            this.fileName = "ab.csv";
+            fileName = "ab.csv";
         }
 
         public void downloadFile()
         {
-            //startDownloading();
-            task = new Task(startDownloading);
+            //StartDownloading();
+            task = new Task(StartDownloading);
             task.Start();
         }
 
-        private void startDownloading()
+        private void StartDownloading()
         {
             try
             {
@@ -39,18 +39,18 @@ namespace METCSV.Network
                 client.Connect("mail.met.com.pl", 110, false);
                 client.Authenticate("ab@met.com.pl", "^&$%GFDSW#asf");
 
-                //deleteOldMessages(client);
+                //DeleteOldMessages(client);
 
-                Message message = client.GetMessage(getNewestMessage(client));
+                Message message = client.GetMessage(GetLatestMessage(client));
 
                 List<MessagePart> part = message.FindAllAttachments();
                 MessagePart attachment = part.First();
 
-                using (FileStream stream = new System.IO.FileStream(zippedFile, System.IO.FileMode.Create))
+                using (FileStream stream = new FileStream(zippedFile, FileMode.Create))
                 {
-                    BinaryWriter BinaryStream = new BinaryWriter(stream);
-                    BinaryStream.Write(attachment.Body);
-                    BinaryStream.Close();
+                    BinaryWriter binaryStream = new BinaryWriter(stream);
+                    binaryStream.Write(attachment.Body);
+                    binaryStream.Close();
                 }
 
                 if (Directory.Exists(folderToExtrac))
@@ -71,11 +71,11 @@ namespace METCSV.Network
             done();
         }
 
-        private void deleteOldMessages(Pop3Client client)
+        private void DeleteOldMessages(Pop3Client client)
         {
             int count = client.GetMessageCount();
 
-            int newerMessage = getNewestMessage(client);
+            int newerMessage = GetLatestMessage(client);
 
             for (int i = 1; i <= count; i++)
             {
@@ -83,7 +83,7 @@ namespace METCSV.Network
             }
         }
 
-        private int getNewestMessage(Pop3Client client)
+        private int GetLatestMessage(Pop3Client client)
         {
             int newerMessage = 1;
             int count = client.GetMessageCount();
