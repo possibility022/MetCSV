@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using METCSV_WPF.Enums;
+using METCSV.WPF.Enums;
 
-namespace METCSV_WPF.Interfaces
+namespace METCSV.WPF.Interfaces
 {
     interface IDownloader
     {

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C92C54C1-2171-4613-BE55-06D84A428804}</ProjectGuid>
+    <ProjectGuid>{31A24346-99FB-4871-80BC-7C23F6E9127D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>METCSV_WPF</RootNamespace>
-    <AssemblyName>METCSV_WPF</AssemblyName>
+    <RootNamespace>METCSV.WPF</RootNamespace>
+    <AssemblyName>METCSV.WPF</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -72,6 +72,7 @@
     <Compile Include="Downloaders\AbDownloader.cs" />
     <Compile Include="Downloaders\DownloaderBase.cs" />
     <Compile Include="Downloaders\LamaDownloader.cs" />
+    <Compile Include="Downloaders\MetDownloader.cs" />
     <Compile Include="Enums\DownloadingStatus.cs" />
     <Compile Include="Interfaces\IDownloader.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -107,6 +108,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
+      <Project>{d9a15657-5646-4586-b716-05538e42c238}</Project>
+      <Name>METCSV.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
