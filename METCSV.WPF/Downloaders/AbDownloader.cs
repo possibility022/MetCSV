@@ -6,37 +6,18 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using METCSV_WPF.Enums;
-using METCSV_WPF.Models;
+using METCSV.WPF.Enums;
+using METCSV.WPF.Models;
 using OpenPop.Mime;
 using OpenPop.Pop3;
 
-namespace METCSV_WPF.Downloaders
+namespace METCSV.WPF.Downloaders
 {
     class AbDownloader : DownloaderBase
     {
         public AbDownloader(CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
-        }
-
-        public override void StartDownloading()
-        {
-            try
-            {
-                Download();
-            }
-            catch (Exception ex)
-            {
-                Status = DownloadingStatus.Faild;
-            }
-
-            if (Status != DownloadingStatus.Faild)
-            {
-                Status = DownloadingStatus.Complete;
-            }
-
-            OnDownloadingFinish?.Invoke(this, EventArgs.Empty);
         }
 
         public CancellationToken CancellationToken { get; }
@@ -63,7 +44,7 @@ namespace METCSV_WPF.Downloaders
         private DownloadingStatus _status;
         public IEnumerable<string> DownloadedFiles { get; private set; }
 
-        private void Download()
+        protected override void Download()
         {
                 Status = DownloadingStatus.InProgress;
                 if (File.Exists("OpenPop.dll") == false)
