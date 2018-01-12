@@ -10,7 +10,7 @@ using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ProductReaders
 {
-    class TechDataReader : IProductReader
+    class TechDataProductReader : IProductReader
     {
         #region IProductReader
 
@@ -19,7 +19,7 @@ namespace METCSV.WPF.ProductReaders
 
         public OperationStatus Status { get; private set; }
         public EventHandler OnStatusMessage { get; private set; }
-        public string ProviderName { get; } = "";
+        public string ProviderName { get; } = "TechData";
 
         #endregion
 
@@ -82,14 +82,14 @@ namespace METCSV.WPF.ProductReaders
                 products.Add(new Product()
                 {
                     ID = null,
-                    SymbolSAP = "TechData" + fields[(int)TechDataCsvProductsColumns.SapNo],
+                    SymbolSAP = "TechData" + fields[(int)TechDataCsvProductsColumns.SapNo], //todo we can move prefix to config. We can do this for all IProductReader's
                     //KodProducenta = fields[(int)TechData.PartNo],
                     //ModelProduktu = fields[(int)TechData.PartNo],
                     OryginalnyKodProducenta = fields[(int)TechDataCsvProductsColumns.PartNo],
                     NazwaProduktu = fields[(int)TechDataCsvProductsColumns.Nazwa],
                     NazwaProducenta = fields[(int)TechDataCsvProductsColumns.Vendor],
                     KodDostawcy = fields[(int)TechDataCsvProductsColumns.SapNo],
-                    NazwaDostawcy = "TechData",
+                    NazwaDostawcy = ProviderName,
                     StanMagazynowy = Int32.Parse(fields[(int)TechDataCsvProductsColumns.Magazyn]),
                     StatusProduktu = false,
                     CenaNetto = -1,
