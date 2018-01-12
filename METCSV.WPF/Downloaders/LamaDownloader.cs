@@ -17,7 +17,7 @@ namespace METCSV.WPF.Downloaders
 
         protected override void Download()
         {
-            Status = DownloadingStatus.InProgress;
+            Status = OperationStatus.InProgress;
             var request = (HttpWebRequest)WebRequest.Create(URLConnection);
 
             var postData = "user=" + Encrypting.Decrypt(encryptedLogin);
@@ -45,7 +45,7 @@ namespace METCSV.WPF.Downloaders
             }
             catch (WebException web)
             {
-                Status = DownloadingStatus.Faild;
+                Status = OperationStatus.Faild;
                 //string message = "Lama " + web.Message + "\nGenerwoanie licznika miedzy 14:00-16:00 jest niedostępne"; //todo show this error
                 //Database.Log.log(message);
                 //System.Windows.Forms.MessageBox.Show(message);
@@ -57,7 +57,7 @@ namespace METCSV.WPF.Downloaders
             {
                 if (responseStream == null)
                 {
-                    Status = DownloadingStatus.Faild;
+                    Status = OperationStatus.Faild;
                     return;
                 }
 
@@ -74,7 +74,7 @@ namespace METCSV.WPF.Downloaders
             }
 
 
-            Status = DownloadingStatus.Complete;
+            Status = OperationStatus.Complete;
         }
     }
 }

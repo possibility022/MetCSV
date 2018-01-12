@@ -16,12 +16,12 @@ namespace METCSV.WPF.Downloaders
             }
             catch (Exception ex)
             {
-                Status = DownloadingStatus.Faild;
+                Status = OperationStatus.Faild;
             }
 
-            if (Status != DownloadingStatus.Faild)
+            if (Status != OperationStatus.Faild)
             {
-                Status = DownloadingStatus.Complete;
+                Status = OperationStatus.Complete;
             }
 
             OnDownloadingFinish?.Invoke(this, EventArgs.Empty);
@@ -35,7 +35,7 @@ namespace METCSV.WPF.Downloaders
 
         public EventHandler OnDownloadingStatusChanged { get; protected set; }
 
-        public DownloadingStatus Status
+        public OperationStatus Status
         {
             get => _status;
             protected set
@@ -48,7 +48,7 @@ namespace METCSV.WPF.Downloaders
             }
         }
 
-        private DownloadingStatus _status;
+        private OperationStatus _status;
 
         public IEnumerable<string> DownloadedFiles { get; protected set; }
     }

@@ -28,7 +28,7 @@ namespace METCSV.WPF.Downloaders
 
         public EventHandler OnDownloadingStatusChanged { get; private set; }
 
-        public DownloadingStatus Status
+        public OperationStatus Status
         {
             get => _status;
             private set
@@ -41,12 +41,12 @@ namespace METCSV.WPF.Downloaders
             }
         }
 
-        private DownloadingStatus _status;
+        private OperationStatus _status;
         public IEnumerable<string> DownloadedFiles { get; private set; }
 
         protected override void Download()
         {
-                Status = DownloadingStatus.InProgress;
+                Status = OperationStatus.InProgress;
                 if (File.Exists("OpenPop.dll") == false)
                     throw new FileNotFoundException("Nie znaleziono pliku OpenPop.dll");
                 string zippedFile = "ab.zip";
