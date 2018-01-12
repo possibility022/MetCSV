@@ -76,6 +76,7 @@
     <Compile Include="Downloaders\MetDownloader.cs" />
     <Compile Include="Downloaders\TechDataDownloader.cs" />
     <Compile Include="Enums\AbCsvProductsColumns.cs" />
+    <Compile Include="Enums\MetCsvProductsColums.cs" />
     <Compile Include="Enums\OperationStatus.cs" />
     <Compile Include="Enums\TechDataCsvPricesColumns.cs" />
     <Compile Include="Enums\TechDataCsvProductsColumns.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="ProductReaders\AbProductReader.cs" />
     <Compile Include="ProductReaders\LamaProductReader.cs" />
+    <Compile Include="ProductReaders\MetProductReader.cs" />
     <Compile Include="ProductReaders\TechDataProductReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
