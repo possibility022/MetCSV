@@ -15,7 +15,7 @@ namespace METCSV.WPF.Interfaces
 
         EventHandler OnDownloadingStatusChanged { get; }
 
-        DownloadingStatus Status { get; }
+        OperationStatus Status { get; }
 
         IEnumerable<string> DownloadedFiles { get; }
     }
