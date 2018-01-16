@@ -5,23 +5,20 @@ using System.Linq;
 using System.Text;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ProductReaders
 {
-    class TechDataProductReader : IProductReader
+    class TechDataProductReader : ProductReaderBase
     {
-        #region IProductReader
 
-        public IEnumerable<Product> GetProducts(string pathProducts, string pathPrices) =>
+        public TechDataProductReader()
+        {
+            ProviderName = "TechData";
+        }
+
+        public override IEnumerable<Product> GetProducts(string pathProducts, string pathPrices) =>
             ReadProducts(pathProducts, pathPrices);
-
-        public OperationStatus Status { get; private set; }
-        public EventHandler OnStatusMessage { get; private set; }
-        public string ProviderName { get; } = "TechData";
-
-        #endregion
 
         private IEnumerable<Product> ReadProducts(string pathProducts, string pathPrices)
         {
@@ -61,7 +58,7 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 prices.Add(new Product
                 {
-                    SymbolSAP = "TechData" + fields[(int)TechDataCsvPricesColumns.SapNo],
+                    SymbolSAP = ProviderName + fields[(int)TechDataCsvPricesColumns.SapNo],
                     CenaNetto = -1,
                     CenaZakupuNetto = Double.Parse(fields[(int)TechDataCsvPricesColumns.Cena]),
                 });

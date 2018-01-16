@@ -5,23 +5,19 @@ using System.Text;
 using System.Web;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ProductReaders
 {
-    class MetProductReader : IProductReader
+    class MetProductReader : ProductReaderBase
     {
-        #region IProductReader
 
-        public IEnumerable<Product> GetProducts(string path, string thisPathIsIgnored) => GetMetProducts(path);
+        public MetProductReader()
+        {
+            ProviderName = "MET";
+        }
 
-        public OperationStatus Status { get; private set; }
-        public EventHandler OnStatusMessage { get; }
-        public string ProviderName { get; }
-
-        #endregion
-
+        public override IEnumerable<Product> GetProducts(string path, string thisPathIsIgnored) => GetMetProducts(path);
 
         public List<Product> GetMetProducts(string pathProducts)
         {

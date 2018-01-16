@@ -11,7 +11,7 @@ namespace METCSV.WPF.Interfaces
 
         OperationStatus Status { get; }
 
-        EventHandler OnStatusMessage { get; }
+        EventHandler OnStatusChanged { get; set; }
 
         string ProviderName { get; }
     }
