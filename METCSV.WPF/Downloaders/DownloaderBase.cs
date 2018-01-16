@@ -14,7 +14,7 @@ namespace METCSV.WPF.Downloaders
             {
                 Download();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Status = OperationStatus.Faild;
             }
@@ -33,7 +33,7 @@ namespace METCSV.WPF.Downloaders
 
         public EventHandler OnDownloadingFinish { get; protected set; }
 
-        public EventHandler OnDownloadingStatusChanged { get; protected set; }
+        public EventHandler OnDownloadingStatusChanged { get; set; }
 
         public OperationStatus Status
         {
@@ -51,5 +51,9 @@ namespace METCSV.WPF.Downloaders
         private OperationStatus _status;
 
         public IEnumerable<string> DownloadedFiles { get; protected set; }
+        public void SetCancellationToken(CancellationToken token)
+        {
+            CancellationToken = token;
+        }
     }
 }

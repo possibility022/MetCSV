@@ -5,25 +5,22 @@ using System.Text;
 using System.Web;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ProductReaders
 {
-    class AbProductReader : IProductReader
+    class AbProductReader : ProductReaderBase 
     {
-        #region IProductReader
 
-        public IEnumerable<Product> GetProducts(string filename, string filename2) => GetProducts(filename, (Encoding)null);
+        public AbProductReader()
+        {
+            ProviderName = "AB";
+        }
 
-        public OperationStatus Status { get; private set; }
-        public EventHandler OnStatusMessage { get; private set; }
-        public string ProviderName { get; } = "AB";
+        public override IEnumerable<Product> GetProducts(string filename, string filename2) =>
+            GetProducts(filename, null);
 
-        #endregion
-
-
-        public List<Product> GetProducts(string csvPath, System.Text.Encoding encoding)
+        public List<Product> GetProducts(string csvPath, Encoding encoding)
         {
             Status = OperationStatus.InProgress;
 
@@ -114,5 +111,7 @@ namespace METCSV.WPF.ProductReaders
 
             return 0;
         }
+
+        
     }
 }

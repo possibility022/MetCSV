@@ -8,25 +8,19 @@ using System.Xml;
 using System.Xml.Linq;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ProductReaders
 {
-    class LamaProductReader : IProductReader
+    class LamaProductReader : ProductReaderBase
     {
+        public LamaProductReader()
+        {
+            ProviderName = "Lama";
+        }
 
-        #region IProductReader
+        public override IEnumerable<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);
 
-        public OperationStatus Status { get; private set; }
-
-        public IEnumerable<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);
-
-        public EventHandler OnStatusMessage { get; private set; }
-        public string ProviderName { get; } = "Lama";
-
-        #endregion
-        
         private IEnumerable<Product> LoadProducts(string pathXml, string pathCsv)
         {
             Status = OperationStatus.InProgress;
@@ -107,7 +101,7 @@ namespace METCSV.WPF.ProductReaders
 
         private void Log(string message)
         {
-            OnStatusMessage?.Invoke(this, EventArgs.Empty); //todo change Empty to message
+            OnStatusChanged?.Invoke(this, EventArgs.Empty); //todo change Empty to message
         }
 
 

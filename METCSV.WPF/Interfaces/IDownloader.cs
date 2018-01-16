@@ -9,14 +9,14 @@ namespace METCSV.WPF.Interfaces
     {
         void StartDownloading();
 
-        CancellationToken CancellationToken { get; }
-
         EventHandler OnDownloadingFinish { get; }
 
-        EventHandler OnDownloadingStatusChanged { get; }
+        EventHandler OnDownloadingStatusChanged { get; set; }
 
         OperationStatus Status { get; }
 
         IEnumerable<string> DownloadedFiles { get; }
+
+        void SetCancellationToken(CancellationToken token);
     }
 }
