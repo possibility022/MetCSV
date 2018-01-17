@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Downloaders
@@ -6,6 +7,11 @@ namespace METCSV.WPF.Downloaders
     class MetDownloader : DownloaderBase
     {
         private string _fileName = "met.csv"; //todo move to config
+
+        public MetDownloader(CancellationToken token)
+        {
+            SetCancellationToken(token);
+        }
 
         protected override void Download()
         {

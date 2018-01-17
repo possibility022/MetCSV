@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Models;
 
@@ -11,8 +12,10 @@ namespace METCSV.WPF.Interfaces
 
         OperationStatus Status { get; }
 
-        EventHandler OnStatusChanged { get; set; }
+        EventHandler<OperationStatus> OnStatusChanged { get; set; }
 
         string ProviderName { get; }
+
+        void SetCancellationToken(CancellationToken token);
     }
 }

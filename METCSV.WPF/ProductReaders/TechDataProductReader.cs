@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using METCSV.Common;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Models;
@@ -12,8 +13,9 @@ namespace METCSV.WPF.ProductReaders
     class TechDataProductReader : ProductReaderBase
     {
 
-        public TechDataProductReader()
+        public TechDataProductReader(CancellationToken token)
         {
+            SetCancellationToken(token);
             ProviderName = "TechData";
         }
 

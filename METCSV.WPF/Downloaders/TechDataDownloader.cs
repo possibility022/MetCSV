@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using METCSV.Common;
 using METCSV.WPF.Enums;
 
@@ -18,6 +19,10 @@ namespace METCSV.WPF.Downloaders
 
         const string FtpAddres = "ftp2.techdata-it-emea.com";
 
+        public TechDataDownloader(CancellationToken token)
+        {
+            SetCancellationToken(token);
+        }
 
         protected override void Download()
         {

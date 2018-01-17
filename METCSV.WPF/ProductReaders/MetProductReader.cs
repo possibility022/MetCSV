@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Web;
 using METCSV.Common;
 using METCSV.WPF.Enums;
@@ -12,8 +13,9 @@ namespace METCSV.WPF.ProductReaders
     class MetProductReader : ProductReaderBase
     {
 
-        public MetProductReader()
+        public MetProductReader(CancellationToken token)
         {
+            SetCancellationToken(token);
             ProviderName = "MET";
         }
 
