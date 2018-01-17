@@ -93,7 +93,13 @@
     <Compile Include="Enums\TechDataCsvPricesColumns.cs" />
     <Compile Include="Enums\TechDataCsvProductsColumns.cs" />
     <Compile Include="Interfaces\IDownloader.cs" />
+    <Compile Include="Interfaces\IProductProvider.cs" />
     <Compile Include="Interfaces\IProductReader.cs" />
+    <Compile Include="Models\ProductProvderBase.cs" />
+    <Compile Include="ProductProvider\ABProductProvider.cs" />
+    <Compile Include="ProductProvider\LamaProductProvider.cs" />
+    <Compile Include="ProductProvider\MetProductProvider.cs" />
+    <Compile Include="ProductProvider\TechDataProductProvider.cs" />
     <Compile Include="ProductReaders\ProductReaderBase.cs" />
     <Compile Include="ViewModels\MainWindowViewModels.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -139,5 +145,6 @@
       <Name>METCSV.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

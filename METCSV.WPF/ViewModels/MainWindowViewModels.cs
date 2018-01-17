@@ -38,16 +38,16 @@ namespace METCSV.WPF.ViewModels
             downloadingTask.Start();
 
             var downloadingResult = await downloadingTask;
-            
+
             if (!downloadingResult)
                 return;
 
             CreateReaders();
 
-            var productsMet = await ReadFile(_metProductReader);
-            var productsAb = await ReadFile(_abProductReader);
-            var productsTechData = await ReadFile(_techdataProductReader);
-            var productsLama = await ReadFile(_lamaProductReader);
+            var productsMet = await ReadFile(_metProductReader, _metDownloader);
+            var productsAb = await ReadFile(_abProductReader, _abDownloader);
+            var productsTechData = await ReadFile(_techdataProductReader, _techDataDownloader);
+            var productsLama = await ReadFile(_lamaProductReader, _lamaDownloader);
         }
 
         private bool DownloadAllFiles()
@@ -64,9 +64,9 @@ namespace METCSV.WPF.ViewModels
 
             Task.WaitAll(t1, t2, t3, t4);
 
-            return _metDownloader.Status != OperationStatus.Faild 
-                && _abDownloader.Status != OperationStatus.Faild 
-                && _lamaDownloader.Status != OperationStatus.Faild 
+            return _metDownloader.Status != OperationStatus.Faild
+                && _abDownloader.Status != OperationStatus.Faild
+                && _lamaDownloader.Status != OperationStatus.Faild
                 && _techDataDownloader.Status != OperationStatus.Faild;
         }
 
@@ -87,19 +87,32 @@ namespace METCSV.WPF.ViewModels
             _techdataProductReader = new TechDataProductReader();
         }
 
-        private async Task<IEnumerable<Product>> ReadFile(IProductReader productReader, string filename1, string filename2)
+        private async Task<IEnumerable<Product>> ReadFile(IProductReader productReader, IDownloader downloader)
         {
             productReader.OnStatusChanged += OnStatusChanged;
-            Task<IEnumerable<Product>> task = new Task<IEnumerable<Product>>(() => productReader.GetProducts(filename1, filename2));
+
+            if (downloader.Status != OperationStatus.Complete)
+            {
+                throw new InvalidOperationException("Nie mozna rozpoczac czytania pliku jesli pobieranie nie powiodlo sie.");
+            }
+
+            string filename2 =
+                downloader.DownloadedFiles.Length >= 2 ?
+                downloader.DownloadedFiles[1]
+                : string.Empty;
+
+            Task<IEnumerable<Product>> task =
+                new Task<IEnumerable<Product>>(() => productReader.GetProducts(downloader.DownloadedFiles[0], filename2));
+
             return await task;
         }
 
-        private void OnStatusChanged(object sender, EventArgs eventArgs)
+        private void OnStatusChanged(object sender, OperationStatus eventArgs)
         {
             //todo implement
         }
 
-        private void OnDownloadingStatusChanged(object sender, EventArgs eventArgs)
+        private void OnDownloadingStatusChanged(object sender, OperationStatus eventArgs)
         {
             //todo implement?
         }

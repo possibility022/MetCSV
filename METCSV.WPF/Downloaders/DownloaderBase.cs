@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
@@ -23,17 +22,13 @@ namespace METCSV.WPF.Downloaders
             {
                 Status = OperationStatus.Complete;
             }
-
-            OnDownloadingFinish?.Invoke(this, EventArgs.Empty);
         }
 
         protected abstract void Download();
 
         public CancellationToken CancellationToken { get; protected set; }
-
-        public EventHandler OnDownloadingFinish { get; protected set; }
-
-        public EventHandler OnDownloadingStatusChanged { get; set; }
+        
+        public EventHandler<OperationStatus> OnDownloadingStatusChanged { get; set; }
 
         public OperationStatus Status
         {
@@ -42,15 +37,16 @@ namespace METCSV.WPF.Downloaders
             {
                 if (_status != value)
                 {
-                    OnDownloadingStatusChanged(this, EventArgs.Empty);
                     _status = value;
+                    OnDownloadingStatusChanged(this, _status);
                 }
             }
         }
 
         private OperationStatus _status;
 
-        public IEnumerable<string> DownloadedFiles { get; protected set; }
+        public string[] DownloadedFiles { get; protected set; }
+
         public void SetCancellationToken(CancellationToken token)
         {
             CancellationToken = token;

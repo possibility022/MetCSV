@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
@@ -9,6 +10,8 @@ namespace METCSV.WPF.ProductReaders
     abstract class ProductReaderBase : IProductReader
     {
         private OperationStatus _status;
+
+        private CancellationToken _token;
 
         public abstract IEnumerable<Product> GetProducts(string filename, string filename2);
 
@@ -20,12 +23,18 @@ namespace METCSV.WPF.ProductReaders
                 if (value != _status)
                 {
                     _status = value;
-                    OnStatusChanged?.Invoke(this, EventArgs.Empty);
+                    OnStatusChanged?.Invoke(this, _status);
                 }
             }
         }
 
-        public EventHandler OnStatusChanged { get; set; }
+        public EventHandler<OperationStatus> OnStatusChanged { get; set; }
+
         public string ProviderName { get; protected set; }
+
+        public void SetCancellationToken(CancellationToken token)
+        {
+            _token = token;
+        }
     }
 }
