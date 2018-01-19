@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace METCSV.WPF.Models
 {
-    class ProductProvderBase : BindableBase, IProductProvider
+    class ProductProviderBase : BindableBase, IProductProvider
     {
 
         private IDownloader _downloader;

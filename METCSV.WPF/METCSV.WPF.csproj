@@ -141,10 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
-      <Project>{d9a15657-5646-4586-b716-05538e42c238}</Project>
+      <Project>{40576d61-d49e-4aae-b078-73a6a8a69836}</Project>
       <Name>METCSV.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

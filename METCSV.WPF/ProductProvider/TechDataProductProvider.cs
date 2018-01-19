@@ -5,7 +5,7 @@ using METCSV.WPF.ProductReaders;
 
 namespace METCSV.WPF.ProductProvider
 {
-    class TechDataProductProvider : ProductProvderBase
+    class TechDataProductProvider : ProductProviderBase
     {
         public TechDataProductProvider()
         {
