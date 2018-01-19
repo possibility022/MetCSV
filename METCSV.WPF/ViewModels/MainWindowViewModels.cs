@@ -15,7 +15,7 @@ namespace METCSV.WPF.ViewModels
     class MainWindowViewModels : BindableBase
     {
 
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource _cancellationTokenSource;
 
         IProductProvider _met;
         IProductProvider _lama;
@@ -30,15 +30,18 @@ namespace METCSV.WPF.ViewModels
         private void Initialize()
         {
             _cancellationTokenSource = new CancellationTokenSource();
-            _met = new MetProductProvider();
-            _lama = new LamaProductProvider();
-            _techData = new TechDataProductProvider();
-            _ab = new ABProductProvider();
+            _met = new MetProductProvider(_cancellationTokenSource.Token);
+            _lama = new LamaProductProvider(_cancellationTokenSource.Token);
+            _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
+            _ab = new ABProductProvider(_cancellationTokenSource.Token);
         }
 
         private void Start()
         {
-            
+            var met = _met.GetProducts();
+            var lama = _lama.GetProducts();
+            var techData = _techData.GetProducts();
+            var ab = _ab.GetProducts();
         }
 
         private void OnStatusChanged(object sender, OperationStatus eventArgs)
