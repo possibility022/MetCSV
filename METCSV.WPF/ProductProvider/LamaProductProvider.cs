@@ -2,25 +2,27 @@
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductReaders;
+using System.Threading;
 
 namespace METCSV.WPF.ProductProvider
 {
     class LamaProductProvider : ProductProviderBase
     {
-        public LamaProductProvider()
+        public LamaProductProvider(CancellationToken token)
         {
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
+            _token = token;
         }
 
         private IProductReader GetProductReader()
         {
-            return new LamaProductReader();
+            return new LamaProductReader(_token);
         }
 
         private IDownloader GetDownloader()
         {
-            return new LamaDownloader();
+            return new LamaDownloader(_token);
         }
     }
 }

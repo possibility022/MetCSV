@@ -2,13 +2,15 @@
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductReaders;
+using System.Threading;
 
 namespace METCSV.WPF.ProductProvider
 {
     class MetProductProvider : ProductProviderBase
     {
-        public MetProductProvider()
+        public MetProductProvider(CancellationToken token)
         {
+            _token = token;
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
         }
