@@ -1,13 +1,12 @@
-﻿using OpenPop.Mime;
-using OpenPop.Pop3;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using OpenPop.Mime;
+using OpenPop.Pop3;
 
 namespace METCSV.Network
 {
