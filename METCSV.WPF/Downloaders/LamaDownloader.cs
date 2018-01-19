@@ -4,23 +4,29 @@ using System.Net;
 using System.Text;
 using METCSV.WPF.Enums;
 using METCSV.Common;
+using System.Threading;
 
 namespace METCSV.WPF.Downloaders
 {
     class LamaDownloader : DownloaderBase
     {
-        string encryptedLogin = "cdoZtGtCO/L7S9LQ03rSJg14wdYb9l1k3fX+t75eoyg="; //todo move it to config
+        const string EncryptedLogin = "cdoZtGtCO/L7S9LQ03rSJg14wdYb9l1k3fX+t75eoyg="; //todo move it to config
 
         public string URLConnection { get; } = "http://www.lamaplus.com.pl/partner/export.php";
 
         private string _fileName = "LamaDownloadedFile.xml"; //todo move it to config
+
+        public LamaDownloader(CancellationToken token)
+        {
+            SetCancellationToken(token);
+        }
 
         protected override void Download()
         {
             Status = OperationStatus.InProgress;
             var request = (HttpWebRequest)WebRequest.Create(URLConnection);
 
-            var postData = "user=" + Encrypting.Decrypt(encryptedLogin);
+            var postData = "user=" + Encrypting.Decrypt(EncryptedLogin);
 
             postData += "&pass=***REMOVED***"; //todo move it to config
             postData += "&request=priceList";

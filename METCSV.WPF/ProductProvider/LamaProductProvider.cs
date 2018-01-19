@@ -5,7 +5,7 @@ using METCSV.WPF.ProductReaders;
 
 namespace METCSV.WPF.ProductProvider
 {
-    class LamaProductProvider : ProductProvderBase
+    class LamaProductProvider : ProductProviderBase
     {
         public LamaProductProvider()
         {

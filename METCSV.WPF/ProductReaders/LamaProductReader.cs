@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
@@ -14,8 +15,9 @@ namespace METCSV.WPF.ProductReaders
 {
     class LamaProductReader : ProductReaderBase
     {
-        public LamaProductReader()
+        public LamaProductReader(CancellationToken token)
         {
+            SetCancellationToken(token);
             ProviderName = "Lama";
         }
 
@@ -101,7 +103,7 @@ namespace METCSV.WPF.ProductReaders
 
         private void Log(string message)
         {
-            OnStatusChanged?.Invoke(this, EventArgs.Empty); //todo change Empty to message
+            OnStatusChanged?.Invoke(this, Status);
         }
 
 
