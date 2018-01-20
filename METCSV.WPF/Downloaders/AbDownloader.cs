@@ -35,7 +35,7 @@ namespace METCSV.WPF.Downloaders
             {
                 if (_status != value)
                 {
-                    OnDownloadingStatusChanged(this, EventArgs.Empty);
+                    OnDownloadingStatusChanged?.Invoke(this, EventArgs.Empty);
                     _status = value;
                 }
             }
@@ -45,11 +45,13 @@ namespace METCSV.WPF.Downloaders
 
         protected override void Download()
         {
-                Status = OperationStatus.InProgress;
-                if (File.Exists("OpenPop.dll") == false)
-                    throw new FileNotFoundException("Nie znaleziono pliku OpenPop.dll");
-                string zippedFile = "ab.zip";
-                string folderToExtrac = "ExtractedFiles_AB";
+            Status = OperationStatus.InProgress;
+            if (File.Exists("OpenPop.dll") == false)
+                throw new FileNotFoundException("Nie znaleziono pliku OpenPop.dll");
+            string zippedFile = "ab.zip";
+            string folderToExtrac = "ExtractedFiles_AB";
+
+            DownloadedFiles = new[] { string.Empty };
 
             using (var client = new Pop3Client())
             {
@@ -114,8 +116,8 @@ namespace METCSV.WPF.Downloaders
             {
                 for (int i = 2; i <= count; i++)
                 {
-                    Message m = client.GetMessage(i);
-                    var dt = ParseDate(m.Headers.Date);
+                    var header = client.GetMessageHeaders(i);
+                    var dt = ParseDate(header.Date);
 
                     if (DateTime.Compare(newestDateTime, dt) < 1)
                     {
