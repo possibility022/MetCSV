@@ -39,8 +39,8 @@ namespace METCSV.WPF.ViewModels
         private void DownloadAndLoad()
         {
             //var met = _met.GetProducts();
-            var lama = _lama.GetProducts();
-            var techData = _techData.GetProducts();
+            //var lama = _lama.GetProducts();
+            //var techData = _techData.GetProducts();
             var ab = _ab.GetProducts();
         }
 
