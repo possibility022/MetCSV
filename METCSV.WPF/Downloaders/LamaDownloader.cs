@@ -19,6 +19,7 @@ namespace METCSV.WPF.Downloaders
         public LamaDownloader(CancellationToken token)
         {
             SetCancellationToken(token);
+            DownloadedFiles = new[] { string.Empty };
         }
 
         protected override void Download()
@@ -79,7 +80,7 @@ namespace METCSV.WPF.Downloaders
                 responseStream.Close();
             }
 
-
+            DownloadedFiles[0] = _fileName;
             Status = OperationStatus.Complete;
         }
     }

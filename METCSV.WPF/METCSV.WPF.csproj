@@ -101,7 +101,7 @@
     <Compile Include="ProductProvider\MetProductProvider.cs" />
     <Compile Include="ProductProvider\TechDataProductProvider.cs" />
     <Compile Include="ProductReaders\ProductReaderBase.cs" />
-    <Compile Include="ViewModels\MainWindowViewModels.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -47,17 +47,24 @@ namespace METCSV.WPF.ProductReaders
             }
         }
 
-        private List<Product> ReadPricesFromCsvFile(string filePath, Encoding encoding)
+        private List<Product> ReadPricesFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
         {
             List<Product> prices = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
-
+            
             foreach (var fields in producents)
             {
+                if (linePassCount > 0)
+                {
+                    linePassCount--;
+                    continue;
+                }
+
                 if (fields.Length < 16)
                     continue;
+
                 prices.Add(new Product
                 {
                     SymbolSAP = ProviderName + fields[(int)TechDataCsvPricesColumns.SapNo],
@@ -69,7 +76,7 @@ namespace METCSV.WPF.ProductReaders
             return prices;
         }
 
-        private List<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding)
+        private List<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
@@ -78,6 +85,13 @@ namespace METCSV.WPF.ProductReaders
 
             foreach (string[] fields in producents)
             {
+
+                if (linePassCount > 0)
+                {
+                    linePassCount--;
+                    continue;
+                }
+
                 products.Add(new Product()
                 {
                     ID = null,

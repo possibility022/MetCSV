@@ -49,7 +49,7 @@ namespace METCSV.WPF.ProductReaders
             }
         }
 
-        private List<Product> ReadProducents(string pathCsv, Encoding encoding)
+        private List<Product> ReadProducents(string pathCsv, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() {Delimiter = ";"};
@@ -58,8 +58,15 @@ namespace METCSV.WPF.ProductReaders
 
             foreach (var fields in producents)
             {
+                if (linePassCount > 0)
+                {
+                    linePassCount--;
+                    continue;
+                }
+
                 if (fields.Length < 16)
                     continue;
+
                 products.Add(new Product
                 {
                     SymbolSAP = "LAMA" + fields[4],//nr kat
