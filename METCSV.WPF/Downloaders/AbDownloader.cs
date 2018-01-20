@@ -42,7 +42,6 @@ namespace METCSV.WPF.Downloaders
         }
 
         private OperationStatus _status;
-        public IEnumerable<string> DownloadedFiles { get; private set; }
 
         protected override void Download()
         {
@@ -54,7 +53,7 @@ namespace METCSV.WPF.Downloaders
 
             using (var client = new Pop3Client())
             {
-                client.Connect("mail.met.com.pl", 110, false);
+                client.Connect("mail.met.com.pl", 110, false); //todo encrypt
                 client.Authenticate("ab@met.com.pl", "^&$%GFDSW#asf"); //todo move it to config
 
                 //deleteOldMessages(client);
@@ -76,7 +75,7 @@ namespace METCSV.WPF.Downloaders
                     return;
                 }
 
-                ExportToFile(zippedFile, attachment);
+                ExportAttachmentToFile(zippedFile, attachment);
 
                 if (Directory.Exists(folderToExtrac))
                     Directory.Delete(folderToExtrac, true);
@@ -88,12 +87,12 @@ namespace METCSV.WPF.Downloaders
 
                 ZipFile.ExtractToDirectory(zippedFile, folderToExtrac);
                 DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
-                DownloadedFiles = new[] {dir.GetFiles()[0].FullName};
+                DownloadedFiles[0] = dir.GetFiles()[0].FullName;
                 client.Disconnect();
             }
         }
 
-        private static void ExportToFile(string zippedFile, MessagePart attachment)
+        private static void ExportAttachmentToFile(string zippedFile, MessagePart attachment)
         {
             using (FileStream stream = new FileStream(zippedFile, FileMode.Create))
             {

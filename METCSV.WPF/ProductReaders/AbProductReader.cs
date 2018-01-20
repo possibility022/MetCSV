@@ -60,13 +60,13 @@ namespace METCSV.WPF.ProductReaders
             //todo implement
         }
 
-        private List<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 0)
+        private List<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
-
+            
             foreach (var fields in producents)
             {
                 if (passLinesCount > 0 || fields.Length < 12)

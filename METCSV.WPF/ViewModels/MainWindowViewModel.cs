@@ -12,7 +12,7 @@ using Prism.Mvvm;
 
 namespace METCSV.WPF.ViewModels
 {
-    class MainWindowViewModels : BindableBase
+    class MainWindowViewModel : BindableBase
     {
 
         private CancellationTokenSource _cancellationTokenSource;
@@ -22,7 +22,7 @@ namespace METCSV.WPF.ViewModels
         IProductProvider _techData;
         IProductProvider _ab;
 
-        public MainWindowViewModels()
+        public MainWindowViewModel()
         {
 
         }
@@ -36,12 +36,18 @@ namespace METCSV.WPF.ViewModels
             _ab = new ABProductProvider(_cancellationTokenSource.Token);
         }
 
-        private void Start()
+        private void DownloadAndLoad()
         {
-            var met = _met.GetProducts();
+            //var met = _met.GetProducts();
             var lama = _lama.GetProducts();
             var techData = _techData.GetProducts();
             var ab = _ab.GetProducts();
+        }
+
+        public void StartClick()
+        {
+            Initialize();
+            DownloadAndLoad();
         }
 
         private void OnStatusChanged(object sender, OperationStatus eventArgs)

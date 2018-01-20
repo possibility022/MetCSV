@@ -42,15 +42,21 @@ namespace METCSV.WPF.ProductReaders
             }
         }
 
-        private List<Product> GetMetProducts(string path, Encoding encoding)
+        private List<Product> GetMetProducts(string path, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
 
             IEnumerable<string[]> producents = reader.ReadCsv(path, encoding);
-
+            
             foreach (var fields in producents)
             {
+                if (linePassCount > 0)
+                {
+                    linePassCount--;
+                    continue;
+                }
+
                 if (fields[(int)MetCsvProductsColums.SymbolSAP].StartsWith("MET") == false)
                     products.Add(new Product()
                     {
