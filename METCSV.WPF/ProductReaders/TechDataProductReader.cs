@@ -62,9 +62,6 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 }
 
-                if (fields.Length < 16)
-                    continue;
-
                 prices.Add(new Product
                 {
                     SymbolSAP = ProviderName + fields[(int)TechDataCsvPricesColumns.SapNo],
