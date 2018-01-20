@@ -40,6 +40,9 @@
     <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
     </Reference>
+    <Reference Include="Pop3, Version=2.2.0.0, Culture=neutral, PublicKeyToken=e33d940baacd0f37, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pop3.2.2.0\lib\net40\Pop3.dll</HintPath>
+    </Reference>
     <Reference Include="Prism, Version=7.0.0.362, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.0.0.362\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -95,6 +98,7 @@
     <Compile Include="Interfaces\IDownloader.cs" />
     <Compile Include="Interfaces\IProductProvider.cs" />
     <Compile Include="Interfaces\IProductReader.cs" />
+    <Compile Include="Mergers\ProductMerger.cs" />
     <Compile Include="Models\ProductProvderBase.cs" />
     <Compile Include="ProductProvider\ABProductProvider.cs" />
     <Compile Include="ProductProvider\LamaProductProvider.cs" />
