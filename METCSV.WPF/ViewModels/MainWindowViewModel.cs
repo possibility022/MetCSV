@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using METCSV.WPF.Downloaders;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
-using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ProductReaders;
 using Prism.Mvvm;
@@ -38,9 +38,9 @@ namespace METCSV.WPF.ViewModels
 
         private void DownloadAndLoad()
         {
-            //var met = _met.GetProducts();
-            //var lama = _lama.GetProducts();
-            //var techData = _techData.GetProducts();
+            var met = _met.GetProducts();
+            var lama = _lama.GetProducts();
+            var techData = _techData.GetProducts();
             var ab = _ab.GetProducts();
         }
 

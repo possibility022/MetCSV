@@ -6,7 +6,7 @@ using System.Threading;
 using System.Web;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {

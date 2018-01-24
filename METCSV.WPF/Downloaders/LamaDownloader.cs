@@ -16,10 +16,12 @@ namespace METCSV.WPF.Downloaders
 
         private string _fileName = "LamaDownloadedFile.xml"; //todo move it to config
 
+        private string _csvFileName = "LamaCSV.csv";
+
         public LamaDownloader(CancellationToken token)
         {
             SetCancellationToken(token);
-            DownloadedFiles = new[] { string.Empty };
+            DownloadedFiles = new[] { string.Empty, _csvFileName };
         }
 
         protected override void Download()

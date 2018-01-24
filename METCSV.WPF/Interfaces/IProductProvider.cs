@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.Interfaces
 {

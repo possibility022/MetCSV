@@ -1,6 +1,6 @@
 ﻿using METCSV.WPF.Downloaders;
 using METCSV.WPF.Interfaces;
-using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ProductReaders;
 using System.Threading;
 

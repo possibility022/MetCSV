@@ -1,4 +1,5 @@
 ﻿using METCSV.WPF.ViewModels;
+using METCSV.WPF.Views;
 using System.Windows;
 
 namespace METCSV.WPF
@@ -21,6 +22,12 @@ namespace METCSV.WPF
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             MainWindowViewModel.StartClick();
+        }
+
+        private void ShowProfitsWindow(object sender, RoutedEventArgs e)
+        {
+            ProfitsView view = new ProfitsView();
+            view.Show();
         }
     }
 }

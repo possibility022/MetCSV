@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {
@@ -27,6 +27,8 @@ namespace METCSV.WPF.ProductReaders
         {
             Status = OperationStatus.InProgress;
 
+            // plik csv musi byc dostarczony przez uzytkownika.
+
             if (File.Exists(pathXml) && File.Exists(pathCsv))
             {
                 Log("Wczytuję produkty z Lamy");
@@ -42,7 +44,7 @@ namespace METCSV.WPF.ProductReaders
             }
             else
             {
-                string message = $"Problem z wczytywaniem lamy: Któryś z podanych plików nie istnieje. Czy nie zapomniałeś o rozszerzeniu pliku w nazwie? Szukane pliki 1: {pathXml} 2: {pathCsv}";
+                string message = $"Problem z wczytywaniem lamy: Któryś z podanych plików nie istnieje. Czy nie zapomniałeś o rozszerzeniu pliku w nazwie? Szukane pliki 1: \"{pathXml}\" 2: \"{pathCsv}\". Pamiętaj, że plik CSV musi być dostarczony przez użytkownika.";
                 Status = OperationStatus.Faild;
                 Log(message);
                 throw new FileNotFoundException(message);

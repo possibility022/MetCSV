@@ -1,4 +1,4 @@
-﻿using METCSV.WPF.Models;
+﻿using METCSV.WPF.ProductProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;

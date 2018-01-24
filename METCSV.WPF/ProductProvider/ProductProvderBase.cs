@@ -5,7 +5,7 @@ using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using Prism.Mvvm;
 
-namespace METCSV.WPF.Models
+namespace METCSV.WPF.ProductProvider
 {
     class ProductProviderBase : BindableBase, IProductProvider
     {
