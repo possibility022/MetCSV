@@ -14,6 +14,19 @@
         <ViewModels:MainWindowViewModel />
     </Window.DataContext>
     <Grid>
-        <Button Click="Button_Click" Content="Download" />
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Button
+            Grid.Row="0"
+            Click="Button_Click"
+            Content="Download" />
+        <Button
+            Grid.Row="1"
+            Click="ShowProfitsWindow"
+            Content="Ustaw marże" />
     </Grid>
 </Window>

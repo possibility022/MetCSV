@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 using OpenPop.Mime;
 using OpenPop.Pop3;
 
