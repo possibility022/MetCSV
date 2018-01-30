@@ -17,7 +17,7 @@ namespace METCSV.WPF.Mergers
             _metProducts = products;
         }
 
-        private void removeHiddenProducts(List<Product> products)
+        private void RemoveHiddenProducts(List<Product> products)
         {
             //LOG("Usuwam ukryte produkty"); //todo log this
             int countAtBegining = products.Count;
