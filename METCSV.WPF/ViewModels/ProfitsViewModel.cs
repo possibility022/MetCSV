@@ -1,4 +1,5 @@
-﻿using METCSV.WPF.ProductProvider;
+﻿using METCSV.WPF.Helpers;
+using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -13,18 +14,46 @@ namespace METCSV.WPF.ViewModels
     {
         private ObservableCollection<EditableDictionaryKey<string, double>> _profits;
         private string _infoText = "InfoText";
+        private string _selectedProfits;
+        private string _profitsCollections;
 
-        public ObservableCollection<EditableDictionaryKey<string, double>> Profits { get => _profits; set => SetProperty(ref _profits, value); }
+        public ObservableCollection<EditableDictionaryKey<string, double>> Profits
+        {
+            get => _profits;
+            set => SetProperty(ref _profits, value);
+        }
 
-        public string InfoText { get => _infoText; set => SetProperty(ref _infoText, $"Edytujesz marże dla: {value}."); }
+        Dictionary<string, ObservableCollection<EditableDictionaryKey<string, double>>> _allProfitsCollections;
+
+        public string InfoText
+        {
+            get => $"Edytujesz marże dla: {SelectedProfits}.";
+        }
+
+        public string SelectedProfits
+        {
+            get => _selectedProfits;
+            set
+            {
+                SetProperty(ref _selectedProfits, value);
+                RaisePropertyChanged(nameof(InfoText));
+            }
+        }
+
+        public IEnumerable<string> ProfitsCollections
+        {
+            get => _allProfitsCollections.Keys;
+        }
 
         public ProfitsViewModel()
         {
-            Profits = new ObservableCollection<EditableDictionaryKey<string, double>>
-            {
-                new EditableDictionaryKey<string, double>("Kategoria A", 2.0),
-                new EditableDictionaryKey<string, double>("Kategoria B", 3.0)
-            };
+            _allProfitsCollections = new Dictionary<string, ObservableCollection<EditableDictionaryKey<string, double>>>();
+        }
+
+        public void AddProfitsCollection(string provider, IDictionary<string, double> profits)
+        {
+            _allProfitsCollections.Add(provider, Converters.ToObservableCollection(profits));
+            RaisePropertyChanged(nameof(ProfitsCollections));
         }
 
     }

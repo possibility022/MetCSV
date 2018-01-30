@@ -78,6 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\Converters.cs" />
+    <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="Models\EditableDictionaryKey.cs" />
     <Compile Include="ViewModels\ProfitsViewModel.cs" />
     <Compile Include="Views\ProfitsView.xaml.cs">
@@ -161,6 +162,9 @@
       <Project>{40576d61-d49e-4aae-b078-73a6a8a69836}</Project>
       <Name>METCSV.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtensionMethods\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

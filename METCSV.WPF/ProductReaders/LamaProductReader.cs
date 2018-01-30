@@ -36,7 +36,7 @@ namespace METCSV.WPF.ProductReaders
                 var producents = ReadProducents(pathCsv, Encoding.Default); // wczytanie producentów produktów
 
                 var merged = MergeProductLama(products, producents); // scalenie plików
-                
+
                 Log("Produkty z Lamy wczytane");
 
                 Status = OperationStatus.Complete;
@@ -54,7 +54,7 @@ namespace METCSV.WPF.ProductReaders
         private List<Product> ReadProducents(string pathCsv, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() {Delimiter = ";"};
+            CsvReader reader = new CsvReader() { Delimiter = ";" };
 
             IEnumerable<string[]> producents = reader.ReadCsv(pathCsv, encoding);
 
@@ -92,12 +92,12 @@ namespace METCSV.WPF.ProductReaders
 
             for (int i = 0; i < products.Count; i++)
             {
-                try
+                var query = producents.FirstOrDefault(p => p.SymbolSAP == products[i].SymbolSAP);
+                if (query != null)
                 {
-                    var query = producents.Single(p => p.SymbolSAP == products[i].SymbolSAP);
                     products[i].NazwaProducenta = query.NazwaProducenta;
                 }
-                catch (InvalidOperationException)
+                else
                 {
                     count++;
                     products.RemoveAt(i);
@@ -141,7 +141,7 @@ namespace METCSV.WPF.ProductReaders
                 {
                     continue;
                 }
-                
+
                 products.Add(new Product
                 {
                     ID = null,

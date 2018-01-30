@@ -8,6 +8,7 @@ using METCSV.WPF.Interfaces;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ProductReaders;
+using METCSV.WPF.Helpers;
 using Prism.Mvvm;
 
 namespace METCSV.WPF.ViewModels
@@ -17,10 +18,17 @@ namespace METCSV.WPF.ViewModels
 
         private CancellationTokenSource _cancellationTokenSource;
 
+        private bool _showProfitsWindow = false;
+
         IProductProvider _met;
         IProductProvider _lama;
         IProductProvider _techData;
         IProductProvider _ab;
+
+        Task<IEnumerable<Product>> _metTask;
+        Task<IEnumerable<Product>> _lamaTask;
+        Task<IEnumerable<Product>> _techDataTask;
+        Task<IEnumerable<Product>> _abTask;
 
         public MainWindowViewModel()
         {
@@ -38,10 +46,13 @@ namespace METCSV.WPF.ViewModels
 
         private void DownloadAndLoad()
         {
-            var met = _met.GetProducts();
-            var lama = _lama.GetProducts();
-            var techData = _techData.GetProducts();
-            var ab = _ab.GetProducts();
+            //var met = _met.GetProducts();
+            //var lama = _lama.GetProducts();
+            //var techData = _techData.GetProducts();
+            //var ab = _ab.GetProducts();
+            
+
+            //HelpMe.GetProviders(met);
         }
 
         public void StartClick()
