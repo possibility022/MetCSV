@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace METCSV.WPF.ProductProvider
 {
-    class EditableDictionaryKey<T1, T2> : BindableBase
+    public class EditableDictionaryKey<T1, T2> : BindableBase
     {
         private T1 _key;
         private T2 _value;

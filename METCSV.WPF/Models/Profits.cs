@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace METCSV.WPF.Models
 {
-    class Profits : BindableBase
+    public class Profits : BindableBase
     {
         private double _defaultProfit;
         private HashSet<string> _allProviders;
@@ -37,6 +37,8 @@ namespace METCSV.WPF.Models
             {
                 values.Add(val.Key, val.Value);
             }
+
+            _values = values;
         }
     }
 }
