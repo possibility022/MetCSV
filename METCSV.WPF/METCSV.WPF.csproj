@@ -80,10 +80,12 @@
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="Models\EditableDictionaryKey.cs" />
+    <Compile Include="Models\Profits.cs" />
     <Compile Include="ViewModels\ProfitsViewModel.cs" />
     <Compile Include="Views\ProfitsView.xaml.cs">
       <DependentUpon>ProfitsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Workflows\LoadProfits.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

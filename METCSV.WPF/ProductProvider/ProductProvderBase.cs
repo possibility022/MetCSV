@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using Prism.Mvvm;
 
 namespace METCSV.WPF.ProductProvider
 {
-    class ProductProviderBase : BindableBase, IProductProvider
+    abstract class ProductProviderBase : BindableBase, IProductProvider
     {
 
         private IDownloader _downloader;
@@ -17,10 +18,11 @@ namespace METCSV.WPF.ProductProvider
 
         protected CancellationToken _token;
 
+        IEnumerable<Product> _products = null;
+
         public IEnumerable<Product> GetProducts()
         {
-            DownloadData();
-            return ReadFile(_productReader, _downloader);
+            return _products;
         }
 
         public void SetCancellationToken(CancellationToken token)
@@ -101,6 +103,19 @@ namespace METCSV.WPF.ProductProvider
             DownloaderStatus = e;
         }
 
+        static public async Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
+        {
+            Task<bool> task = new Task<bool>(productProvider.DownloadAndLoad);
+            task.Start();
+            return await task;
+        }
+
+        public bool DownloadAndLoad()
+        {
+            DownloadData();
+            _products = ReadFile(_productReader, _downloader);
+            return _productReader.Status == OperationStatus.Complete && _downloader.Status == OperationStatus.Complete;
+        }
     }
 }
 
