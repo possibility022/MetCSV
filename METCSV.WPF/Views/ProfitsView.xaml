@@ -28,6 +28,7 @@
 
         <ComboBox
             Grid.Row="1"
+            DisplayMemberPath="Provider"
             ItemsSource="{Binding ProfitsCollections}"
             SelectedItem="{Binding SelectedProfits}" />
 
@@ -36,7 +37,7 @@
             Margin="0,20,0,0"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            ItemsSource="{Binding Profits}">
+            ItemsSource="{Binding Values}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn

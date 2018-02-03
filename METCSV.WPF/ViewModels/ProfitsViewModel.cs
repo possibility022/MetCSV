@@ -1,59 +1,66 @@
 ﻿using METCSV.WPF.Helpers;
+using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace METCSV.WPF.ViewModels
 {
     internal class ProfitsViewModel : BindableBase
     {
-        private ObservableCollection<EditableDictionaryKey<string, double>> _profits;
-        private string _infoText = "InfoText";
-        private string _selectedProfits;
-        private string _profitsCollections;
+        private ObservableCollection<Profits> _profitsCollection;
+        private Profits _selectedProfits;
+        private ObservableCollection<EditableDictionaryKey<string, double>> _values;
 
-        public ObservableCollection<EditableDictionaryKey<string, double>> Profits
+        public ObservableCollection<Profits> ProfitsCollections
         {
-            get => _profits;
-            set => SetProperty(ref _profits, value);
+            get => _profitsCollection;
+            set => SetProperty(ref _profitsCollection, value);
         }
-
-        Dictionary<string, ObservableCollection<EditableDictionaryKey<string, double>>> _allProfitsCollections;
 
         public string InfoText
         {
-            get => $"Edytujesz marże dla: {SelectedProfits}.";
+            get => $"Edytujesz marże dla: {SelectedProfits.Provider}.";
         }
 
-        public string SelectedProfits
+        public Profits SelectedProfits
         {
             get => _selectedProfits;
             set
             {
+                SaveCurrentProfits();
                 SetProperty(ref _selectedProfits, value);
+                // Cloning value from <Profits> in to ObservableCollection
+                Values = new ObservableCollection<EditableDictionaryKey<string, double>>(Converters.ToObservableCollection(ProfitsCollections.First(t => t.Equals(value)).Values));
                 RaisePropertyChanged(nameof(InfoText));
             }
         }
 
-        public IEnumerable<string> ProfitsCollections
+        public ObservableCollection<EditableDictionaryKey<string, double>> Values
         {
-            get => _allProfitsCollections.Keys;
+            get => _values;
+            set => SetProperty(ref _values, value);
         }
 
         public ProfitsViewModel()
         {
-            _allProfitsCollections = new Dictionary<string, ObservableCollection<EditableDictionaryKey<string, double>>>();
+            _profitsCollection = new ObservableCollection<Profits>();
         }
 
-        public void AddProfitsCollection(string provider, IDictionary<string, double> profits)
+        public void AddProfitsCollection(Profits profits)
         {
-            _allProfitsCollections.Add(provider, Converters.ToObservableCollection(profits));
+            ProfitsCollections.Add(profits);
             RaisePropertyChanged(nameof(ProfitsCollections));
+        }
+
+        private void SaveCurrentProfits()
+        {
+            if (Values != null && SelectedProfits != null)
+            {
+                SelectedProfits.SetNewProfits(Values);
+            }
         }
 
     }

@@ -21,7 +21,7 @@ namespace METCSV.WPF.Helpers
             return dictionary;
         }
 
-        static public ObservableCollection<EditableDictionaryKey<T1, T2>> ToObservableCollection<T1,T2>(IDictionary<T1,T2> dictionary)
+        static public ObservableCollection<EditableDictionaryKey<T1, T2>> ToObservableCollection<T1,T2>(IReadOnlyDictionary<T1,T2> dictionary)
         {
             ObservableCollection<EditableDictionaryKey<T1, T2>>  collection = new ObservableCollection<EditableDictionaryKey<T1, T2>>();
             foreach(var pair in dictionary)

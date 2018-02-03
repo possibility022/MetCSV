@@ -9,6 +9,8 @@ namespace METCSV.WPF.Interfaces
     {
         IEnumerable<Product> GetProducts();
 
+        bool DownloadAndLoad();
+
         void SetProductDownloader(IDownloader downloader);
 
         void SetProductReader(IProductReader reader);

@@ -1,5 +1,9 @@
-﻿using METCSV.WPF.ViewModels;
+﻿using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
+using METCSV.WPF.ViewModels;
 using METCSV.WPF.Views;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace METCSV.WPF
@@ -21,7 +25,9 @@ namespace METCSV.WPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindowViewModel.StartClick();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            MainWindowViewModel.StartClickAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         private void ShowProfitsWindow(object sender, RoutedEventArgs e)
