@@ -1,8 +1,10 @@
-﻿using METCSV.WPF.Helpers;
+﻿using METCSV.WPF.Enums;
+using METCSV.WPF.Helpers;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Workflows;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -111,13 +113,17 @@ namespace METCSV.WPF.ViewModels
         private bool LoadFromFiles(out string message)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var provider in App.Providers)
+            foreach (Providers provider in Enum.GetValues(typeof(Providers)))
             {
+                if (provider == Providers.none)
+                    continue;
+
+
                 var file = $"{provider}{App.ProfitsFileExtension}";
 
                 if (File.Exists(file))
                 {
-                    ProfitsCollections.Add(ProfitsIO.LoadFromFile(file));
+                    ProfitsCollections.Add(ProfitsIO.LoadFromFile(provider));
                 }
                 else
                 {
