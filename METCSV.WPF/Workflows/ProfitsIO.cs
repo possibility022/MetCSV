@@ -12,7 +12,7 @@ namespace METCSV.WPF.Workflows
         {
             var json = JsonConvert.SerializeObject(profit.Values);
 
-            string file = $"{profit.Provider}.prof";
+            string file = $"{profit.Provider}{App.ProfitsFileExtension}";
 
             File.WriteAllText(file, json);
 
