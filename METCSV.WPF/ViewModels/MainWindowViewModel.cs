@@ -68,8 +68,7 @@ namespace METCSV.WPF.ViewModels
 
             await lamaProviders;
             await techDataProviders;
-            await abProviders;
-            
+            await abProviders;            
         }
 
         public async Task<bool> StartClickAsync()

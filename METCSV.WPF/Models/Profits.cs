@@ -1,4 +1,5 @@
-﻿using METCSV.WPF.ProductProvider;
+﻿using METCSV.WPF.Enums;
+using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,13 @@ namespace METCSV.WPF.Models
         private HashSet<string> _allProviders;
         private Dictionary<string, double> _values;
 
-        public string Provider { get; }
+        public Providers Provider { get; }
 
         public IReadOnlyDictionary<string, double> Values { get => _values; }
 
         public double DefaultProfit { get => _defaultProfit; set => SetProperty(ref _defaultProfit, value); }
 
-        public Profits(string provider)
+        public Profits(Providers provider)
         {
             Provider = provider;
             RaisePropertyChanged(nameof(Provider));
