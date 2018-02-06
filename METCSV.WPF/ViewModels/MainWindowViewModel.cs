@@ -69,7 +69,6 @@ namespace METCSV.WPF.ViewModels
             await lamaProviders;
             await techDataProviders;
             await abProviders;
-
             
         }
 

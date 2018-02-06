@@ -1,4 +1,5 @@
-﻿using System;
+﻿using METCSV.WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,38 @@ namespace METCSV.WPF.Views
     /// </summary>
     public partial class ProfitsView : Window
     {
+
+        ProfitsViewModel _profitsViewModel;
+
+        ProfitsViewModel ProfitsViewModel { get => _profitsViewModel ?? (_profitsViewModel = (ProfitsViewModel)DataContext); }
+
         public ProfitsView()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ProfitsViewModel.OnWindowLoaded();
+        }
+
+        private void ButtonReloadProfits_Click(object sender, RoutedEventArgs e)
+        {
+            ProfitsViewModel.LoadFromFiles();
+        }
+
+        private void ButtonSaveAndClose_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Jesteś pewien?", "Zapis zastąpi obecne pliki lub je utworzy.", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                ProfitsViewModel.SaveAllProfits();
+                Close();
+            }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
