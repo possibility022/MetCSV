@@ -1,5 +1,6 @@
 ﻿using METCSV.WPF.Enums;
 using METCSV.WPF.Helpers;
+using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Workflows;
@@ -10,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace METCSV.WPF.ViewModels
@@ -20,7 +22,7 @@ namespace METCSV.WPF.ViewModels
         private Profits _selectedProfits;
         private ObservableCollection<EditableDictionaryKey<string, double>> _values;
         private string _errorText;
-        private Visibility _errorTextVisibility;
+        private Visibility _errorTextVisibility = Visibility.Hidden;
 
         private Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>> _valuesCache;
 
@@ -71,10 +73,27 @@ namespace METCSV.WPF.ViewModels
             RaisePropertyChanged(nameof(ProfitsCollections));
         }
 
-        public void CacheValues()
+        public void AddManufacturers(ManufacturersCollection manufacturersCollection)
+        {
+            var profits = ProfitsCollections.FirstOrDefault(p => p.Provider == manufacturersCollection.Provider);
+
+            if (profits != null)
+            {
+                profits.AddManufacturers(manufacturersCollection.Manufacturers);
+            }
+            else
+            {
+                var newProfits = new Profits(manufacturersCollection.Provider);
+                newProfits.AddManufacturers(manufacturersCollection.Manufacturers);
+                ProfitsCollections.Add(newProfits);
+                RaisePropertyChanged(nameof(ProfitsCollections));
+            }
+        }
+
+        private void CacheValues()
         {
             if (_valuesCache.ContainsKey(SelectedProfits) == false)
-                _valuesCache.Add(SelectedProfits, Converters.ToObservableCollection(SelectedProfits.Values));
+                _valuesCache.Add(SelectedProfits, CustomConvert.ToObservableCollection(SelectedProfits.Values));
         }
 
         private void SaveCurrentProfits()
@@ -87,10 +106,29 @@ namespace METCSV.WPF.ViewModels
 
         public void SaveAllProfits()
         {
-            foreach(var val in _valuesCache)
+            foreach (var val in _valuesCache)
             {
                 val.Key.SetNewProfits(val.Value);
             }
+
+            SaveAllToFile();
+        }
+
+        public bool SaveAllToFile()
+        {
+            try
+            {
+                foreach (var prof in ProfitsCollections)
+                {
+                    ProfitsIO.SaveToFile(prof);
+                }
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public void OnWindowLoaded()
@@ -107,6 +145,9 @@ namespace METCSV.WPF.ViewModels
             {
                 ErrorText = message;
                 ErrorTextVisibility = Visibility.Visible;
+            }else
+            {
+                ErrorTextVisibility = Visibility.Hidden;
             }
         }
 
@@ -115,7 +156,7 @@ namespace METCSV.WPF.ViewModels
             StringBuilder sb = new StringBuilder();
             foreach (Providers provider in Enum.GetValues(typeof(Providers)))
             {
-                if (provider == Providers.none)
+                if (provider == Providers.None)
                     continue;
 
 

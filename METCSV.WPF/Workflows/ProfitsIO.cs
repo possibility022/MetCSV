@@ -2,6 +2,7 @@
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,20 +27,20 @@ namespace METCSV.WPF.Workflows
 
             Profits profits = new Profits(provider);
 
-            var prof = JsonConvert.DeserializeObject<List<EditableDictionaryKey<string, double>>>(content);
-            profits.SetNewProfits(prof);
-
+            JToken a = JsonConvert.DeserializeObject<JToken>(content); //todo this can be optimized
+            
+            if (a.First != null)
+            {
+                var prof = JsonConvert.DeserializeObject<List<EditableDictionaryKey<string, double>>>(content);
+                profits.SetNewProfits(prof);
+            }
+            
             return profits;
         }
 
         public static Profits LoadFromFile(Providers provider)
         {
-            return LoadFromFile($"{provider}.{App.ProfitsFileExtension}", provider);
-        }
-
-        public static string SaveToFile(Providers provider)
-        {
-            return SaveToFile(provider);
+            return LoadFromFile($"{provider}{App.ProfitsFileExtension}", provider);
         }
     }
 }

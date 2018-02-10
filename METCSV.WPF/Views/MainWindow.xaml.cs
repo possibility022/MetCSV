@@ -32,8 +32,7 @@ namespace METCSV.WPF
 
         private void ShowProfitsWindow(object sender, RoutedEventArgs e)
         {
-            ProfitsView view = new ProfitsView();
-            view.Show();
+
         }
     }
 }

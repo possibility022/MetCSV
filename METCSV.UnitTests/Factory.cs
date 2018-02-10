@@ -1,4 +1,7 @@
-﻿using System;
+﻿using METCSV.WPF.Enums;
+using METCSV.WPF.Models;
+using METCSV.WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +19,7 @@ namespace METCSV.UnitTests
         {
             HashSet<string> sapNumbers = new HashSet<string>();
 
-            while(sapNumbers.Count < count)
+            while (sapNumbers.Count < count)
             {
                 sapNumbers.Add(RandomString(7));
             }
@@ -28,6 +31,23 @@ namespace METCSV.UnitTests
         {
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public static ManufacturersCollection GetManufacturers(Providers providers = Providers.AB)
+        {
+            return new ManufacturersCollection(providers, new HashSet<string>() { "ABC", "CDE" });
+        }
+
+        public static Profits GetProfits(Providers provider = Providers.AB)
+        {
+            return new Profits(provider);
+        }
+
+        public static ProfitsViewModel GetProfitsViewModel()
+        {
+            var model = new ProfitsViewModel();
+            model.AddManufacturers(GetManufacturers());
+            return model;
         }
     }
 }

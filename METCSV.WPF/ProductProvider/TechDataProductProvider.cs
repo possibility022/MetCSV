@@ -13,6 +13,7 @@ namespace METCSV.WPF.ProductProvider
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
             _token = token;
+            Provider = Enums.Providers.TechData;
         }
 
         private IProductReader GetProductReader()

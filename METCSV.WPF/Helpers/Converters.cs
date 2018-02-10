@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace METCSV.WPF.Helpers
 {
-    static class Converters
+    static class CustomConvert
     {
         static public Dictionary<T1, T2> ToDictionary<T1,T2>(IEnumerable<EditableDictionaryKey<T1,T2>> collection)
         {

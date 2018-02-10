@@ -18,5 +18,7 @@ namespace METCSV.WPF.Interfaces
         OperationStatus DownloaderStatus { get; }
 
         OperationStatus ReaderStatus { get; }
+
+        Providers Provider { get; }
     }
 }
