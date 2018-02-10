@@ -11,6 +11,7 @@ using METCSV.WPF.ProductReaders;
 using METCSV.WPF.Helpers;
 using Prism.Mvvm;
 using System.Diagnostics;
+using METCSV.WPF.Views;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -26,18 +27,30 @@ namespace METCSV.WPF.ViewModels
         IProductProvider _techData;
         IProductProvider _ab;
 
+        ProfitsView _profitsView;
+        ProfitsViewModel _profitsViewModel;
+        private bool _setProfits = true;
+
+        public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
+
         public MainWindowViewModel()
         {
 
         }
 
-        private void Initialize()
+        private Task Initialize()
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-            _met = new MetProductProvider(_cancellationTokenSource.Token);
-            _lama = new LamaProductProvider(_cancellationTokenSource.Token);
-            _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
-            _ab = new ABProductProvider(_cancellationTokenSource.Token);
+            Task init = new Task(() =>
+            {
+                _cancellationTokenSource = new CancellationTokenSource();
+                _met = new MetProductProvider(_cancellationTokenSource.Token);
+                _lama = new LamaProductProvider(_cancellationTokenSource.Token);
+                _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
+                _ab = new ABProductProvider(_cancellationTokenSource.Token);
+            });
+
+            init.Start();
+            return init;
         }
 
         private async Task<bool> DownloadAndLoadAsync()
@@ -60,21 +73,47 @@ namespace METCSV.WPF.ViewModels
             return true;
         }
 
-        private async void ShowProfitsWindow()
-        {
-            var lamaProviders = HelpMe.GetProvidersAsync(_lama.GetProducts());
-            var techDataProviders = HelpMe.GetProvidersAsync(_techData.GetProducts());
-            var abProviders = HelpMe.GetProvidersAsync(_ab.GetProducts());
-
-            await lamaProviders;
-            await techDataProviders;
-            await abProviders;            
-        }
-
         public async Task<bool> StartClickAsync()
         {
-            Initialize();
-            return await DownloadAndLoadAsync();
+            await Initialize();
+            await DownloadAndLoadAsync();
+
+            if (SetProfits)
+            {
+                if (_profitsViewModel == null)
+                {
+                    _profitsView = new ProfitsView();
+                    _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
+                    _profitsView.Closed += ProfitsVindowClosed;
+                }
+
+                var lamaProviders = HelpMe.GetProvidersAsync(_lama);
+                var techDataProviders = HelpMe.GetProvidersAsync(_techData);
+                var abProviders = HelpMe.GetProvidersAsync(_ab);
+
+                await lamaProviders;
+                await techDataProviders;
+                await abProviders;
+
+                var dataContext = _profitsViewModel as ProfitsViewModel;
+
+                dataContext.AddManufacturers(lamaProviders.Result);
+                dataContext.AddManufacturers(techDataProviders.Result);
+                dataContext.AddManufacturers(abProviders.Result);
+
+                _profitsView.Show();
+            }
+            else
+            {
+
+            }
+
+            return true;
+        }
+
+        private void ProfitsVindowClosed(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnStatusChanged(object sender, OperationStatus eventArgs)

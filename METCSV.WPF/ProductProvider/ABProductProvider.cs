@@ -14,6 +14,7 @@ namespace METCSV.WPF.ProductProvider
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
             _token = token;
+            Provider = Enums.Providers.AB;
         }
 
         private IProductReader GetProductReader()

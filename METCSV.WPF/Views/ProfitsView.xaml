@@ -2,6 +2,7 @@
     x:Class="METCSV.WPF.Views.ProfitsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:METCSV.WPF.Converters"
     xmlns:ViewModels="clr-namespace:METCSV.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:METCSV.WPF.Views"
@@ -11,6 +12,9 @@
     Height="700.138"
     Loaded="Window_Loaded"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Converters:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+    </Window.Resources>
     <Window.DataContext>
         <ViewModels:ProfitsViewModel />
     </Window.DataContext>
@@ -58,7 +62,7 @@
                 <DataGridTextColumn
                     Width="Auto"
                     MinWidth="100"
-                    Binding="{Binding Path=Value}"
+                    Binding="{Binding Path=Value, Converter={StaticResource DoubleToPercentConverter}}"
                     Header="% Marży"
                     IsReadOnly="False" />
 

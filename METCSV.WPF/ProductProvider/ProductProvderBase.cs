@@ -15,6 +15,7 @@ namespace METCSV.WPF.ProductProvider
         private IProductReader _productReader;
         private OperationStatus _downloaderStatus;
         private OperationStatus _readerStatus;
+        public Providers Provider { get; protected set; }
 
         protected CancellationToken _token;
 

@@ -15,7 +15,7 @@ namespace METCSV.WPF.Models
     {
         private double _defaultProfit = 0.1;
         private HashSet<string> _allProviders;
-        private Dictionary<string, double> _values;
+        private Dictionary<string, double> _values = new Dictionary<string, double>();
 
         public Providers Provider { get; }
 
@@ -35,9 +35,6 @@ namespace METCSV.WPF.Models
         /// <param name="newValues">The new values.</param>
         public void SetNewProfits(IEnumerable<EditableDictionaryKey<string, double>> newValues)
         {
-            if (_values == null)
-                _values = new Dictionary<string, double>();
-
             foreach(var newValue in newValues)
             {
                 if (newValue.Value == _defaultProfit)
