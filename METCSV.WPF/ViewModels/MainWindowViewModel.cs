@@ -12,6 +12,7 @@ using METCSV.WPF.Helpers;
 using Prism.Mvvm;
 using System.Diagnostics;
 using METCSV.WPF.Views;
+using METCSV.WPF.Workflows;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -111,9 +112,26 @@ namespace METCSV.WPF.ViewModels
             return true;
         }
 
+        public async Task<bool> StepTwoAsync()
+        {
+            _profitsViewModel.SaveAllProfits();
+
+            var ab = ProfitsIO.LoadFromFile(Providers.AB);
+            var td = ProfitsIO.LoadFromFile(Providers.TechData);
+            var lama = ProfitsIO.LoadFromFile(Providers.Lama);
+
+            await HelpMe.CalculatePricesInBackground(_ab.GetProducts(), ab);
+            await HelpMe.CalculatePricesInBackground(_lama.GetProducts(), lama);
+            await HelpMe.CalculatePricesInBackground(_techData.GetProducts(), td);
+
+
+
+            return true;
+        }
+
         private void ProfitsVindowClosed(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            StepTwoAsync();
         }
 
         private void OnStatusChanged(object sender, OperationStatus eventArgs)

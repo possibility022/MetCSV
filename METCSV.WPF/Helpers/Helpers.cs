@@ -14,7 +14,7 @@ namespace METCSV.WPF.Helpers
     {
         public static Task<ManufacturersCollection> GetProvidersAsync(IProductProvider productProvider)
         {
-            
+
             Task<ManufacturersCollection> task = new Task<ManufacturersCollection>(() => GetProviders(productProvider));
             task.Start();
             return task;
@@ -32,6 +32,25 @@ namespace METCSV.WPF.Helpers
             ManufacturersCollection all = new ManufacturersCollection(productProvider.Provider, providers);
 
             return all;
+        }
+
+        public static void CalculatePrices(IEnumerable<Product> products, Profits profits)
+        {
+            foreach (var p in products)
+            {
+                double profit = profits.Values.ContainsKey(p.NazwaProducenta) ?
+                    profits.Values[p.NazwaProducenta]
+                    : profits.DefaultProfit;
+
+                p.CenaNetto = p.CenaZakupuNetto + (p.CenaZakupuNetto * profit);
+            }
+        }
+
+        public static Task CalculatePricesInBackground(IEnumerable<Product> products, Profits profits)
+        {
+            Task t = new Task(() => CalculatePrices(products, profits);
+            t.Start();
+            return t;
         }
     }
 }

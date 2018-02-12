@@ -114,7 +114,7 @@ namespace METCSV.WPF.ViewModels
             SaveAllToFile();
         }
 
-        public bool SaveAllToFile()
+        private bool SaveAllToFile()
         {
             try
             {
