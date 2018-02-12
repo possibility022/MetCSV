@@ -81,7 +81,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
+    <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="Enums\Providers.cs" />
+    <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="Models\ManufacturersCollection.cs" />
@@ -171,8 +173,6 @@
       <Name>METCSV.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ExtensionMethods\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
