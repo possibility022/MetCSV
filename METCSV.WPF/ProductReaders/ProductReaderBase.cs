@@ -13,7 +13,7 @@ namespace METCSV.WPF.ProductReaders
 
         private CancellationToken _token;
 
-        public abstract IEnumerable<Product> GetProducts(string filename, string filename2);
+        public abstract IList<Product> GetProducts(string filename, string filename2);
 
         public OperationStatus Status
         {

@@ -21,9 +21,9 @@ namespace METCSV.WPF.ProductReaders
             ProviderName = "Lama";
         }
 
-        public override IEnumerable<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);
+        public override IList<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);
 
-        private IEnumerable<Product> LoadProducts(string pathXml, string pathCsv)
+        private IList<Product> LoadProducts(string pathXml, string pathCsv)
         {
             Status = OperationStatus.InProgress;
 
@@ -86,7 +86,7 @@ namespace METCSV.WPF.ProductReaders
         /// <param name="products">Lista produktów</param>
         /// <param name="producents">Lista producentów</param>
         /// <returns>Zwraca scaloną listę produktów</returns>
-        private IEnumerable<Product> MergeProductLama(List<Product> products, List<Product> producents)
+        private IList<Product> MergeProductLama(List<Product> products, List<Product> producents)
         {
             int count = 0;
 

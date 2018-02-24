@@ -60,7 +60,7 @@ namespace METCSV.UnitTests.ViewModels
             DeleteAllProfits();
 
             // Act
-            profitsViewModel.OnWindowLoaded();
+            profitsViewModel.LoadFromFiles();
 
             // Assert
             Assert.AreEqual(Visibility.Visible, profitsViewModel.ErrorTextVisibility);
@@ -76,7 +76,7 @@ namespace METCSV.UnitTests.ViewModels
             ProfitsIO.SaveToFile(Factory.GetProfits(Providers.TechData));
 
             // Act
-            profitsViewModel.OnWindowLoaded();
+            profitsViewModel.LoadFromFiles();
 
             // Assert
             Assert.AreEqual(Visibility.Hidden, profitsViewModel.ErrorTextVisibility);

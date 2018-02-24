@@ -48,8 +48,11 @@ namespace METCSV.WPF.ViewModels
             {
                 SaveCurrentProfits();
                 SetProperty(ref _selectedProfits, value);
-                CacheValues();
-                Values = _valuesCache[value];
+                if (value != null)
+                {
+                    CacheValues();
+                    Values = _valuesCache[value];
+                }
                 RaisePropertyChanged(nameof(InfoText));
             }
         }
@@ -65,6 +68,7 @@ namespace METCSV.WPF.ViewModels
             _profitsCollection = new ObservableCollection<Profits>();
             _errorTextVisibility = Visibility.Hidden;
             _valuesCache = new Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>>();
+            LoadFromFiles();
         }
 
         public void AddProfitsCollection(Profits profits)
@@ -73,9 +77,14 @@ namespace METCSV.WPF.ViewModels
             RaisePropertyChanged(nameof(ProfitsCollections));
         }
 
+        private Profits GetAllreadyExistingProfits(Providers provider)
+        {
+            return ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
+        }
+
         public void AddManufacturers(ManufacturersCollection manufacturersCollection)
         {
-            var profits = ProfitsCollections.FirstOrDefault(p => p.Provider == manufacturersCollection.Provider);
+            var profits = GetAllreadyExistingProfits(manufacturersCollection.Provider);
 
             if (profits != null)
             {
@@ -92,7 +101,7 @@ namespace METCSV.WPF.ViewModels
 
         private void CacheValues()
         {
-            if (_valuesCache.ContainsKey(SelectedProfits) == false)
+            if (SelectedProfits != null && _valuesCache.ContainsKey(SelectedProfits) == false)
                 _valuesCache.Add(SelectedProfits, CustomConvert.ToObservableCollection(SelectedProfits.Values));
         }
 
@@ -131,13 +140,11 @@ namespace METCSV.WPF.ViewModels
             return true;
         }
 
-        public void OnWindowLoaded()
-        {
-            LoadFromFiles();
-        }
-
         public void LoadFromFiles()
         {
+            ProfitsCollections.Clear();
+            SelectedProfits = null;
+
             string message = string.Empty;
             var loadingDoneWithoutErrors = LoadFromFiles(out message);
 
@@ -145,7 +152,8 @@ namespace METCSV.WPF.ViewModels
             {
                 ErrorText = message;
                 ErrorTextVisibility = Visibility.Visible;
-            }else
+            }
+            else
             {
                 ErrorTextVisibility = Visibility.Hidden;
             }

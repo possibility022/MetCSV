@@ -7,7 +7,7 @@ namespace METCSV.WPF.Interfaces
 {
     interface IProductProvider : INotifyPropertyChanged
     {
-        IEnumerable<Product> GetProducts();
+        IList<Product> GetProducts();
 
         bool DownloadAndLoad();
 

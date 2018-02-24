@@ -17,14 +17,14 @@ namespace METCSV.WPF.Engine
         HashSet<string> _allPartNumbers = new HashSet<string>();
         HashSet<string> _partNumbersConfilcts = new HashSet<string>();
 
-        List<Product> _metProducts;
-        List<Product> _lamaProducts;
-        List<Product> _techDataProducts;
-        List<Product> _abProducts;
+        IList<Product> _metProducts;
+        IList<Product> _lamaProducts;
+        IList<Product> _techDataProducts;
+        IList<Product> _abProducts;
 
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
-        public ProductMerger(List<Product> met, List<Product> lama, List<Product> td, List<Product> ab)
+        public ProductMerger(IList<Product> met, IList<Product> lama, IList<Product> td, IList<Product> ab)
         {
             _metProducts = met;
             _lamaProducts = lama;
@@ -35,6 +35,7 @@ namespace METCSV.WPF.Engine
         public void Generate()
         {
             _finalList = new List<Product>();
+            _hiddenProducts = new List<Product>();
 
             RemoveHiddenProducts();
 
@@ -66,7 +67,7 @@ namespace METCSV.WPF.Engine
             Task.WaitAll(tasks);
         }
 
-        private void RemoveHiddenProducts(List<Product> products)
+        private void RemoveHiddenProducts(IList<Product> products)
         {
             //Database.Log.log("Usuwam ukryte produkty"); ToDo write to log
             int countAtBegining = products.Count;
@@ -119,7 +120,7 @@ namespace METCSV.WPF.Engine
             tasks.StartAll();
         }
 
-        private void FillList(List<Product> list)
+        private void FillList(IList<Product> list)
         {
             for (int i = 0; i < list.Count; i++)
             {

@@ -30,11 +30,6 @@ namespace METCSV.WPF.Views
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ProfitsViewModel.OnWindowLoaded();
-        }
-
         private void ButtonReloadProfits_Click(object sender, RoutedEventArgs e)
         {
             ProfitsViewModel.LoadFromFiles();

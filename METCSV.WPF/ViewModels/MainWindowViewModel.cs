@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using METCSV.WPF.Downloaders;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.ProductProvider;
-using METCSV.WPF.ProductProvider;
-using METCSV.WPF.ProductReaders;
 using METCSV.WPF.Helpers;
 using Prism.Mvvm;
 using System.Diagnostics;
 using METCSV.WPF.Views;
 using METCSV.WPF.Workflows;
+using METCSV.WPF.Engine;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -85,7 +82,7 @@ namespace METCSV.WPF.ViewModels
                 {
                     _profitsView = new ProfitsView();
                     _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
-                    _profitsView.Closed += ProfitsVindowClosed;
+                    _profitsView.Closed += ProfitsWindowClosed;
                 }
 
                 var lamaProviders = HelpMe.GetProvidersAsync(_lama);
@@ -106,7 +103,7 @@ namespace METCSV.WPF.ViewModels
             }
             else
             {
-
+                await StepTwoAsync();
             }
 
             return true;
@@ -114,8 +111,6 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StepTwoAsync()
         {
-            _profitsViewModel.SaveAllProfits();
-
             var ab = ProfitsIO.LoadFromFile(Providers.AB);
             var td = ProfitsIO.LoadFromFile(Providers.TechData);
             var lama = ProfitsIO.LoadFromFile(Providers.Lama);
@@ -124,14 +119,21 @@ namespace METCSV.WPF.ViewModels
             await HelpMe.CalculatePricesInBackground(_lama.GetProducts(), lama);
             await HelpMe.CalculatePricesInBackground(_techData.GetProducts(), td);
 
-
-
+            ProductMerger productMerger = new ProductMerger(
+                _met.GetProducts(),
+                _lama.GetProducts(),
+                _techData.GetProducts(),
+                _ab.GetProducts());
+            
+            await Task.Run(() => productMerger.Generate());
+            
             return true;
         }
 
-        private void ProfitsVindowClosed(object sender, EventArgs e)
+        private void ProfitsWindowClosed(object sender, EventArgs e)
         {
-            StepTwoAsync();
+            _profitsViewModel.SaveAllProfits();
+            var t = Task.Run(() => StepTwoAsync());
         }
 
         private void OnStatusChanged(object sender, OperationStatus eventArgs)

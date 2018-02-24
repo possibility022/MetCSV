@@ -69,6 +69,38 @@ namespace METCSV.UnitTests.Workflows
             Assert.AreEqual(3, profits.Values.Count);
         }
 
+
+        [TestMethod]
+        public void DeserializeDictionary()
+        {
+            //Assert
+            Profits profits = new Profits(Providers.AB);
+
+            Dictionary<string, double> prof = new Dictionary<string, double>()
+            {
+                ["a"] = 0.1,
+                ["b"] = 0.2,
+                ["c"] = 0.3
+            };
+
+            profits.SetNewProfits(prof);
+
+            var file = ProfitsIO.SaveToFile(profits);
+
+            if (File.Exists(file))
+            {
+                var contetn = File.ReadAllText(file);
+                Trace.WriteLine(contetn);
+
+                File.Delete(file);
+                Assert.IsFalse(File.Exists(file));
+            }
+            else
+            {
+                Assert.Fail("File does not exists");
+            }
+        }
+
         [TestMethod]
         public void SerializingEmptyCollectionAndDeserializingEmptyCollection()
         {

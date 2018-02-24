@@ -19,10 +19,10 @@ namespace METCSV.WPF.ProductReaders
             ProviderName = "AB";
         }
 
-        public override IEnumerable<Product> GetProducts(string filename, string filename2) =>
+        public override IList<Product> GetProducts(string filename, string filename2) =>
             GetProducts(filename, null);
 
-        public List<Product> GetProducts(string csvPath, Encoding encoding)
+        public IList<Product> GetProducts(string csvPath, Encoding encoding)
         {
             Status = OperationStatus.InProgress;
 
@@ -31,7 +31,7 @@ namespace METCSV.WPF.ProductReaders
                 encoding = Encoding.GetEncoding("windows-1250"); //todo move it to config somehow
             }
 
-            var products = new List<Product>();
+            IList<Product> products = new List<Product>();
             try
             {
                 Log("Wczytuję produkty z AB");
@@ -60,7 +60,7 @@ namespace METCSV.WPF.ProductReaders
             //todo implement
         }
 
-        private List<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)
+        private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };

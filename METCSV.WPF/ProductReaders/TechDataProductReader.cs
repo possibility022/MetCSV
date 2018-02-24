@@ -19,10 +19,10 @@ namespace METCSV.WPF.ProductReaders
             ProviderName = "TechData";
         }
 
-        public override IEnumerable<Product> GetProducts(string pathProducts, string pathPrices) =>
+        public override IList<Product> GetProducts(string pathProducts, string pathPrices) =>
             ReadProducts(pathProducts, pathPrices);
 
-        private IEnumerable<Product> ReadProducts(string pathProducts, string pathPrices)
+        private IList<Product> ReadProducts(string pathProducts, string pathPrices)
         {
             Status = OperationStatus.InProgress;
             if (File.Exists(pathProducts) && File.Exists(pathPrices))
@@ -47,7 +47,7 @@ namespace METCSV.WPF.ProductReaders
             }
         }
 
-        private List<Product> ReadPricesFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
+        private IList<Product> ReadPricesFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
         {
             List<Product> prices = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
@@ -73,7 +73,7 @@ namespace METCSV.WPF.ProductReaders
             return prices;
         }
 
-        private List<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
+        private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
@@ -118,7 +118,7 @@ namespace METCSV.WPF.ProductReaders
         /// <param name="products">Lista produktów</param>
         /// <param name="prices">Lista cen</param>
         /// <returns>Zwraca scaloną liste produktów</returns>
-        private List<Product> MergePriceTechData(List<Product> products, List<Product> prices)
+        private IList<Product> MergePriceTechData(IList<Product> products, IList<Product> prices)
         {
             foreach (var product in products)
             {

@@ -8,7 +8,7 @@ namespace METCSV.WPF.Interfaces
 {
     interface IProductReader
     {
-        IEnumerable<Product> GetProducts(string filename, string filename2);
+        IList<Product> GetProducts(string filename, string filename2);
 
         OperationStatus Status { get; }
 
