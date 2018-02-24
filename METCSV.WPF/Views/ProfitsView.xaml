@@ -10,7 +10,6 @@
     Title="ProfitsView"
     Width="500.059"
     Height="700.138"
-    Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Window.Resources>
         <Converters:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />

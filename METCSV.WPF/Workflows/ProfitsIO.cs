@@ -31,7 +31,7 @@ namespace METCSV.WPF.Workflows
             
             if (a.First != null)
             {
-                var prof = JsonConvert.DeserializeObject<List<EditableDictionaryKey<string, double>>>(content);
+                var prof = JsonConvert.DeserializeObject<Dictionary<string, double>>(content);
                 profits.SetNewProfits(prof);
             }
             

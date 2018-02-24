@@ -19,9 +19,9 @@ namespace METCSV.WPF.ProductReaders
             ProviderName = "MET";
         }
 
-        public override IEnumerable<Product> GetProducts(string path, string thisPathIsIgnored) => GetMetProducts(path);
+        public override IList<Product> GetProducts(string path, string thisPathIsIgnored) => GetMetProducts(path);
 
-        public List<Product> GetMetProducts(string pathProducts)
+        public IList<Product> GetMetProducts(string pathProducts)
         {
             Status = OperationStatus.InProgress;
 
@@ -42,7 +42,7 @@ namespace METCSV.WPF.ProductReaders
             }
         }
 
-        private List<Product> GetMetProducts(string path, Encoding encoding, int linePassCount = 1)
+        private IList<Product> GetMetProducts(string path, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };

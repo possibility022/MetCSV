@@ -52,6 +52,28 @@ namespace METCSV.WPF.Models
         }
 
         /// <summary>
+        /// Sets the new profits.
+        /// </summary>
+        /// <param name="newValues">The new values.</param>
+        public void SetNewProfits(Dictionary<string, double> newValues)
+        {
+            foreach (var newValue in newValues)
+            {
+                if (newValue.Value == _defaultProfit)
+                    continue;
+
+                if (_values.ContainsKey(newValue.Key) == false)
+                {
+                    _values.Add(newValue.Key, newValue.Value);
+                }
+                else
+                {
+                    _values[newValue.Key] = newValue.Value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds the manufacturer with default values if does not exists in collection.
         /// </summary>
         /// <param name="manufacturers">The manufacturers.</param>

@@ -9,6 +9,7 @@ namespace METCSV.UnitTests
     [TestClass]
     public class PerformanceTests
     {
+        [Ignore]
         [TestMethod]
         public void ListVsHashSets()
         {

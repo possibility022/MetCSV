@@ -19,9 +19,9 @@ namespace METCSV.WPF.ProductProvider
 
         protected CancellationToken _token;
 
-        IEnumerable<Product> _products = null;
+        IList<Product> _products = null;
 
-        public IEnumerable<Product> GetProducts()
+        public IList<Product> GetProducts()
         {
             return _products;
         }
@@ -72,7 +72,7 @@ namespace METCSV.WPF.ProductProvider
             _downloader.OnDownloadingStatusChanged -= OnDownloadingStatusChanged;
         }
         
-        private IEnumerable<Product> ReadFile(IProductReader productReader, IDownloader downloader)
+        private IList<Product> ReadFile(IProductReader productReader, IDownloader downloader)
         {
             productReader.OnStatusChanged += OnProductReaderStatusChanged;
 

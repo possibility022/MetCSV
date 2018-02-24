@@ -48,7 +48,7 @@ namespace METCSV.WPF.Helpers
 
         public static Task CalculatePricesInBackground(IEnumerable<Product> products, Profits profits)
         {
-            Task t = new Task(() => CalculatePrices(products, profits);
+            Task t = new Task(() => CalculatePrices(products, profits));
             t.Start();
             return t;
         }
