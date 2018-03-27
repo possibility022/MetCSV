@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security;
 using System.Xml.Linq;
 using System.Web;
+using METCSV.Database;
 
 namespace METCSV.FileSystem
 {
@@ -232,8 +233,9 @@ namespace METCSV.FileSystem
                 abFullList = products;
                 Database.Log.Logging.log_message("Produkty z AB wczytane");
                 abLoadResult = Global.Result.complete;
-            }catch (Exception ex)
-            { abLoadResult = Global.Result.faild; }
+            }
+            catch (Exception ex)
+            { Log.Logging.LogException(ex); abLoadResult = Global.Result.faild; }
 
             return products;
         }
@@ -488,7 +490,7 @@ namespace METCSV.FileSystem
 
             });
         }
-        
+
         private void OperationGetProductsAB(string[] fields, List<Product> products)
         {
             if (fields.Length < 12)
@@ -507,7 +509,7 @@ namespace METCSV.FileSystem
                 StanMagazynowy = parseABwarehouseStatus(fields[(int)AB.magazyn_ilosc]),
                 StatusProduktu = false,
                 CenaNetto = -1,
-                CenaZakupuNetto = Double.Parse(fields[(int)AB.cena_netto].Replace('.',',')),
+                CenaZakupuNetto = Double.Parse(fields[(int)AB.cena_netto].Replace('.', ',')),
                 UrlZdjecia = null,
                 Kategoria = HttpUtility.HtmlDecode(fields[(int)AB.kategoria])
             });
@@ -550,9 +552,9 @@ namespace METCSV.FileSystem
                     StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)Met.StatusProduktu])),
                     UrlZdjecia = fields[(int)Met.AdresURLzdjecia],
                     Hidden = fields[(int)Met.Kategoria].StartsWith("_HIDDEN")
-                        //Wszystkie kategorie które zaczynają się 
-                        //_HIDDEN mają być traktowane jak jedna kategoria.
-                        //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
+                    //Wszystkie kategorie które zaczynają się 
+                    //_HIDDEN mają być traktowane jak jedna kategoria.
+                    //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
                 });
         }
 
@@ -607,6 +609,7 @@ namespace METCSV.FileSystem
                 catch (Exception e)
                 {
                     Console.WriteLine("No product in prices with provided SapNo: {0}", product.SymbolSAP);
+                    Log.Logging.LogException(e);
                 }
 
             }
@@ -633,7 +636,7 @@ namespace METCSV.FileSystem
                     products[i].NazwaProducenta = query.NazwaProducenta;
                     //product.SymbolSAP += "LAMA";
                 }
-                catch (Exception e)
+                catch
                 {
                     count++;
                     products.RemoveAt(i);

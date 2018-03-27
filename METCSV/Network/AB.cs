@@ -1,4 +1,5 @@
-﻿using OpenPop.Mime;
+﻿using METCSV.Database;
+using OpenPop.Mime;
 using OpenPop.Pop3;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,7 @@ namespace METCSV.Network
             } catch (Exception ex)
             {
                 Database.Log.log("Problem z pobieraniem pliku z AB. " + ex.Message);
+                Log.Logging.LogException(ex);
                 SetDownloadingResult(Global.Result.faild);
             }
 
@@ -136,7 +138,7 @@ namespace METCSV.Network
                 dateTime = DateTime.ParseExact(matches[0].Value, "d MMM yyyy hh:mm", provider);
                 return dateTime;
             } catch (FormatException ex)
-            { }
+            { Log.Logging.LogException(ex); }
 
             return new DateTime();
         }
