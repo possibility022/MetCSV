@@ -1,4 +1,5 @@
-﻿using System;
+﻿using METCSV.Database;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -58,7 +59,7 @@ namespace METCSV.Forms
 
             }catch(Exception ex)
             {
-
+                Log.Logging.LogException(ex);
             }
         }
 
@@ -167,7 +168,7 @@ namespace METCSV.Forms
                     lvProductsToSolve.Items[0].Selected = true;
             }
             catch (Exception ex)
-            { }
+            { Log.Logging.LogException(ex); }
         }
 
         private void removeFromGroup()
@@ -184,7 +185,7 @@ namespace METCSV.Forms
             }
             catch (Exception ex)
             {
-
+                Log.Logging.LogException(ex);
             }
         }
 
@@ -197,6 +198,7 @@ namespace METCSV.Forms
             }
             catch (Exception ex)
             {
+                Log.Logging.LogException(ex);
                 productViewer1.clear();
             }
         }
@@ -210,6 +212,7 @@ namespace METCSV.Forms
             }
             catch(Exception ex)
             {
+                Log.Logging.LogException(ex);
                 productViewer2.clear();
             }
         }
