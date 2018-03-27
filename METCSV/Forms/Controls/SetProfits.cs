@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using METCSV.Database;
 
 namespace METCSV.Forms.Controls
 {
@@ -29,7 +30,7 @@ namespace METCSV.Forms.Controls
                 tbProvident.Text = listView1.SelectedItems[0].SubItems[0].Text;
                 tbProfit.Text = listView1.SelectedItems[0].SubItems[1].Text;
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { Log.Logging.LogException(ex); }
         }
 
         private void btnSaveProfit_Click(object sender, EventArgs e)

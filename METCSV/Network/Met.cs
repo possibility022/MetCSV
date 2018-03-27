@@ -1,4 +1,5 @@
-﻿using System;
+﻿using METCSV.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -32,6 +33,7 @@ namespace METCSV.Network
                     //client.DownloadFile("http://met.redcart.pl/export/9900a7cdd99448e6d1080827e09c73da.csv", fileName); //Nowy link
                 } catch (System.Net.WebException ex)
                 {
+                    Log.Logging.LogException(ex);
                     System.Windows.Forms.MessageBox.Show("Problem z plikiem: " + fileName + ". Sprawdz czy nie jest on otwarty w jakims programie");
                     SetDownloadingResult(Global.Result.faild);
                     throw ex;
