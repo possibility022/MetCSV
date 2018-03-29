@@ -81,6 +81,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
+    <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
+    <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
+    <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
+    <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
     <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="Enums\Providers.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
@@ -89,6 +93,7 @@
     <Compile Include="Models\ManufacturersCollection.cs" />
     <Compile Include="Models\EditableDictionaryKey.cs" />
     <Compile Include="Models\Profits.cs" />
+    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="ViewModels\ProfitsViewModel.cs" />
     <Compile Include="Views\ProfitsView.xaml.cs">
       <DependentUpon>ProfitsView.xaml</DependentUpon>
