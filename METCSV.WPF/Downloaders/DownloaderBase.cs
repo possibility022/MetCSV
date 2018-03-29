@@ -17,10 +17,12 @@ namespace METCSV.WPF.Downloaders
             {
                 Status = OperationStatus.Faild;
             }
-
-            if (Status != OperationStatus.Faild)
+            finally
             {
-                Status = OperationStatus.Complete;
+                if (Status != OperationStatus.Faild)
+                {
+                    Status = OperationStatus.Complete;
+                }
             }
         }
 
