@@ -1,17 +1,13 @@
 ﻿using METCSV.Common;
 using METCSV.WPF.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace METCSV.UnitTests.Comparing
 {
     [TestClass]
-    class ProductMergerTests
+    class HiddenProductsDomainTests
     {
 
         [TestMethod]
