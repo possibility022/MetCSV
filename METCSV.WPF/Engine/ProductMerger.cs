@@ -1,7 +1,9 @@
 ﻿using METCSV.WPF.ExtensionMethods;
-using METCSV.WPF.ProductProvider;
+using METCSV.WPF.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,121 +12,182 @@ namespace METCSV.WPF.Engine
 {
     class ProductMerger
     {
-        private List<Product> _hiddenProducts;
+        private ConcurrentDictionary<string, Product> _hiddenMetProducts;
 
         List<Product> _finalList;
 
-        HashSet<string> _allPartNumbers = new HashSet<string>();
-        HashSet<string> _partNumbersConfilcts = new HashSet<string>();
+        ConcurrentDictionary<string, byte> _allPartNumbers = new ConcurrentDictionary<string, byte>();
+        ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
-        IList<Product> _metProducts;
-        IList<Product> _lamaProducts;
-        IList<Product> _techDataProducts;
-        IList<Product> _abProducts;
+        ConcurrentBag<Product> _metBag;
+
+        ConcurrentBag<Product> _lamaProducts;
+        ConcurrentBag<Product> _techDataProducts;
+        ConcurrentBag<Product> _abProducts;
+
+        ConcurrentDictionary<string, Product> _lamaFilled;
+        ConcurrentDictionary<string, Product> _techDataFilled;
+        ConcurrentDictionary<string, Product> _abFilled;
 
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
-        public ProductMerger(IList<Product> met, IList<Product> lama, IList<Product> td, IList<Product> ab)
+        public ProductMerger(IEnumerable<Product> met, IEnumerable<Product> lama, IEnumerable<Product> td, IEnumerable<Product> ab)
         {
-            _metProducts = met;
-            _lamaProducts = lama;
-            _techDataProducts = td;
-            _abProducts = ab;
+            _metBag = new ConcurrentBag<Product>(met);
+            _lamaProducts = new ConcurrentBag<Product>(lama);
+            _techDataProducts = new ConcurrentBag<Product>(td);
+            _abProducts = new ConcurrentBag<Product>(ab);
         }
 
         public void Generate()
         {
             _finalList = new List<Product>();
-            _hiddenProducts = new List<Product>();
+            _hiddenMetProducts = new ConcurrentDictionary<string, Product>();
 
             RemoveHiddenProducts();
 
-            GetAllPartNumbers(_metProducts);
-            GetAllPartNumbers(_lamaProducts);
-            GetAllPartNumbers(_techDataProducts);
-            GetAllPartNumbers(_abProducts);
-            
+            _allPartNumbers = GetAllPartNumbers( _metBag, _lamaProducts, _techDataProducts, _abProducts );
+
             FillLists();
             SetEndOfLife();
             CompareAll();
-            SolveConflicts();
+            //SolveConflicts();
             _finalList = CombineList();
         }
+
+        #region RemovingHiddenProducts
 
         private void RemoveHiddenProducts()
         {
             CreateListOfHiddenProducts();
 
-            Task[] tasks = new Task[4];
-
-            tasks[0] = new Task(() => RemoveHiddenProducts(_lamaProducts));
-            tasks[1] = new Task(() => RemoveHiddenProducts(_techDataProducts));
-            tasks[2] = new Task(() => RemoveHiddenProducts(_abProducts));
-            tasks[3] = new Task(() => RemoveHiddenProducts(_metProducts));
-
-            tasks.StartAll();
-
-            Task.WaitAll(tasks);
+            _metBag = RemoveHiddenProducts_MetVersion(_metBag);
+            _lamaProducts = RemoveHiddenProducts(_lamaProducts);
+            _techDataProducts = RemoveHiddenProducts(_techDataProducts);
+            _abProducts = RemoveHiddenProducts(_abProducts);
         }
 
-        private void RemoveHiddenProducts(IList<Product> products)
+        private ConcurrentBag<Product> RemoveHiddenProducts(ConcurrentBag<Product> products)
         {
-            //Database.Log.log("Usuwam ukryte produkty"); ToDo write to log
-            int countAtBegining = products.Count;
+            Task[] tasks = new Task[Environment.ProcessorCount];
 
-            if (ReferenceEquals(products, _metProducts))
+            ConcurrentBag<Product> finalList = new ConcurrentBag<Product>();
+
+            for (int i = 0; i < tasks.Length; i++)
             {
-                for (int i = 0; i < _hiddenProducts.Count; i++)
-                    products.Remove(_hiddenProducts[i]);
+                tasks[i] = new Task(() => RemoveHiddenProducts_Logic(products, finalList));
             }
 
-            else
+            tasks.StartAll();
+            tasks.WaitAll();
+            return finalList;
+        }
 
-                for (int i = 0; i < products.Count; i++)
+        private void RemoveHiddenProducts_Logic(ConcurrentBag<Product> products, ConcurrentBag<Product> finalList)
+        {
+            Product outProduct = null;
+
+            while (products.TryTake(out outProduct) || products.Count > 0)
+            {
+                if (_hiddenMetProducts.ContainsKey(outProduct.SymbolSAP) == false)
                 {
-                    if (_hiddenProducts.Any(p => p.SymbolSAP == products[i].SymbolSAP))
-                    {
-                        products.RemoveAt(i);
-                        i--;
-                    }
+                    outProduct.Hidden = true;
+                    finalList.Add(outProduct);
                 }
-            //Database.Log.log("Usunięto " + (countAtBegining - products.Count).ToString()); //todo LOG
+            }
+        }
+
+        private ConcurrentBag<Product> RemoveHiddenProducts_MetVersion(ConcurrentBag<Product> products)
+        {
+            ConcurrentBag<Product> newCollection = new ConcurrentBag<Product>();
+            foreach (var p in products)
+            {
+                if (_hiddenMetProducts.ContainsKey(p.SymbolSAP) == false)
+                {
+                    newCollection.Add(p);
+                }
+            }
+
+            return newCollection;
         }
 
         private void CreateListOfHiddenProducts()
         {
-            foreach (var p in _metProducts)
+            foreach (var p in _metBag)
             {
                 if (p.Hidden)
                 {
-                    _hiddenProducts.Add(p);
+                    _hiddenMetProducts.TryAdd(p.SymbolSAP, p);
                 }
             }
         }
 
-        private void GetAllPartNumbers(IEnumerable<Product> products)
+        #endregion
+
+
+        #region GettingAllPartNumbers
+
+        private ConcurrentDictionary<string, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
         {
+            ConcurrentDictionary<string, byte> allPartNumbers = new ConcurrentDictionary<string, byte>();
+            Task[] tasks = new Task[4];
+
+            
+                tasks[0] = new Task(() => GetAllPartNumbers_Logic(list1, allPartNumbers));
+            tasks[1] = new Task(() => GetAllPartNumbers_Logic(list2, allPartNumbers));
+            tasks[2] = new Task(() => GetAllPartNumbers_Logic(list3, allPartNumbers));
+            tasks[3] = new Task(() => GetAllPartNumbers_Logic(list4, allPartNumbers));
+            
+            tasks.StartAll();
+            tasks.WaitAll();
+
+            return allPartNumbers;
+        }
+
+        private void GetAllPartNumbers_Logic(ConcurrentBag<Product> products, ConcurrentDictionary<string, byte> _allPartNumbers)
+        {
+            byte b = new byte();
+
             foreach (var product in products)
             {
-                _allPartNumbers.Add(product.KodProducenta);
+                _allPartNumbers.TryAdd(product.KodProducenta, b);
             }
         }
 
+        #endregion
+
+        #region FillList
+
         private void FillLists()
         {
-            Task[] tasks = new Task[3];
-
-            tasks[0] = new Task(() => FillList(_lamaProducts));
-            tasks[1] = new Task(() => FillList(_techDataProducts));
-            tasks[2] = new Task(() => FillList(_abProducts));
-            tasks.StartAll();
+            _lamaFilled = FillList(_lamaProducts);
+            _techDataFilled = FillList(_techDataProducts);
+            _abFilled = FillList(_abProducts);
         }
 
-        private void FillList(IList<Product> list)
+        private ConcurrentDictionary<string, Product> FillList(ConcurrentBag<Product> products)
         {
-            for (int i = 0; i < list.Count; i++)
+            ConcurrentDictionary<string, Product> newList = new ConcurrentDictionary<string, Product>();
+            Task[] tasks = new Task[Environment.ProcessorCount];
+
+            for (int i = 0; i < tasks.Length; i++)
             {
-                List<Product> products = _metProducts.Where(p => p.SymbolSAP == list[i].SymbolSAP).ToList(); //todo can be optimized
+                tasks[i] = new Task(() => FillList_Logic(products, newList));
+            }
+
+            tasks.StartAll();
+            tasks.WaitAll();
+
+            return newList;
+        }
+
+        private void FillList_Logic(ConcurrentBag<Product> list, ConcurrentDictionary<string, Product> newList)
+        {
+            Product product = null;
+
+            while (list.TryTake(out product) && list.Count > 0)
+            {
+                List<Product> products = _metBag.Where(m => m.SymbolSAP == product.SymbolSAP).ToList(); //todo can be optimized
 
                 int workon = 0;
                 if (products.Count >= 2)        //To jest tak że produkty w pliku METCSV się powtarzają. I wybierany jest ten gdzie jest URL
@@ -159,96 +222,131 @@ namespace METCSV.WPF.Engine
                 {
                     if (products[workon].UrlZdjecia.Length > 0)
                         //list[i].UrlZdjecia = products[workon].UrlZdjecia;
-                        list[i].UrlZdjecia = ""; // TO JEST Tak że jeśli zdjęcie już jest to ustawiamy puste. Jeśli nie ma to zostawiamy to od dostawcy.
+                        product.UrlZdjecia = ""; // TO JEST Tak że jeśli zdjęcie już jest to ustawiamy puste. Jeśli nie ma to zostawiamy to od dostawcy.
 
-                    list[i].ID = products[workon].ID;
+                    product.ID = products[workon].ID;
 
                     if (products[0].NazwaProduktu != "")
-                        list[i].NazwaProduktu = products[workon].NazwaProduktu;
+                        product.NazwaProduktu = products[workon].NazwaProduktu;
                 }
+
+                var success = newList.TryAdd(product.KodProducenta, product);
+                if (success == false)
+                {
+                    _partNumbersConfilcts.TryAdd(product.SymbolSAP, product);
+                }
+
+                product = null;
             }
         }
+
+        #endregion
+
+        #region EndOfLife
 
         private void SetEndOfLife()
         {
-            Task[] tasks = new Task[4];
 
-            tasks[0] = new Task(() => SetEndOfLife_part(
-                0,
-                _metProducts.Count / 4));
-            tasks[1] = new Task(() => SetEndOfLife_part(
-                (_metProducts.Count / 4) + 1,
-                (_metProducts.Count / 4) * 2));
-            tasks[2] = new Task(() => SetEndOfLife_part(
-                ((_metProducts.Count / 4) * 2) + 1,
-                ((_metProducts.Count / 4) * 3)));
-            tasks[3] = new Task(() => SetEndOfLife_part(
-                (_metProducts.Count / 4) * 3 + 1,
-                _metProducts.Count));
+            Task<Tuple<HashSet<string>, HashSet<string>>>[] tasks = new Task<Tuple<HashSet<string>, HashSet<string>>>[3];
+
+            tasks[0] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_lamaProducts));
+            tasks[1] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_abProducts));
+            tasks[2] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_techDataProducts));
 
             tasks.StartAll();
+            tasks.WaitAll();
 
-            Task.WaitAll(tasks);
-        }
+            Tuple<HashSet<string>, HashSet<string>> lamaPair = tasks[0].Result;
+            Tuple<HashSet<string>, HashSet<string>> abPair = tasks[1].Result;
+            Tuple<HashSet<string>, HashSet<string>> tdPair = tasks[2].Result;
 
-        private void SetEndOfLife_part(int start, int end)
-        {
-            for (int i = start; i < end; i++)
+            HashSet<string> lamaSAP = lamaPair.Item1;
+            HashSet<string> abSAP = abPair.Item1;
+            HashSet<string> tdSAP = tdPair.Item1;
+
+            HashSet<string> lamaKodProducenta = lamaPair.Item2;
+            HashSet<string> abKodProducenta = abPair.Item2;
+            HashSet<string> tdKodProducenta = tdPair.Item2;
+
+            foreach (var prod in _metBag)
             {
-                if ((_lamaProducts.Where(p => p.SymbolSAP == _metProducts[i].SymbolSAP).Count() == 0)
-                    && (_techDataProducts.Where(p => p.SymbolSAP == _metProducts[i].SymbolSAP).Count() == 0)
-                    && (_abProducts.Where(p => p.SymbolSAP == _metProducts[i].SymbolSAP).Count() == 0)
 
-                    &&
-
-                    (_lamaProducts.Where(p => p.KodProducenta == _metProducts[i].KodProducenta).Count() == 0)
-                    && (_techDataProducts.Where(p => p.KodProducenta == _metProducts[i].KodProducenta).Count() == 0)
-                    && (_abProducts.Where(p => p.KodProducenta == _metProducts[i].KodProducenta).Count() == 0)
-                    )
+                if (lamaSAP.Contains(prod.SymbolSAP) == false
+                    && tdSAP.Contains(prod.SymbolSAP) == false
+                    && abSAP.Contains(prod.SymbolSAP) == false
+                    && lamaKodProducenta.Contains(prod.KodProducenta) == false
+                    && tdKodProducenta.Contains(prod.KodProducenta) == false
+                    && abKodProducenta.Contains(prod.KodProducenta) == false)
                 {
-                    _metProducts[i].Kategoria = "EOL";
+                    prod.Kategoria = "EOL"; //todo move to config
                 }
             }
         }
 
-        private void CompareAll()
+        private Tuple<HashSet<string>, HashSet<string>> CreateSapHashset(IEnumerable<Product> products)
         {
-            //compareFragment(0, partNumbers.Count);
-            List<string> allPartNumbers = _allPartNumbers.ToList();
+            var sapNumbers = new HashSet<string>();
+            var kodProducents = new HashSet<string>();
 
-            Task[] tasks = new Task[4];
+            foreach (var p in products)
+            {
+                sapNumbers.Add(p.SymbolSAP);
+                kodProducents.Add(p.KodProducenta);
+            }
 
-            tasks[0] = new Task(() => CompareFragment(0, allPartNumbers.Count / 4, allPartNumbers));
-            tasks[1] = new Task(() => CompareFragment((allPartNumbers.Count / 4) + 1, (allPartNumbers.Count / 4) * 2, allPartNumbers));
-            tasks[2] = new Task(() => CompareFragment(((allPartNumbers.Count / 4) * 2) + 1, (allPartNumbers.Count / 4) * 3, allPartNumbers));
-            tasks[3] = new Task(() => CompareFragment(((allPartNumbers.Count / 4) * 3) + 1, allPartNumbers.Count, allPartNumbers));
-
-            tasks.StartAll();
-
-            Task.WaitAll(tasks);
+            return new Tuple<HashSet<string>, HashSet<string>>(sapNumbers, kodProducents);
         }
 
-        private void CompareFragment(int start, int end, List<string> allPartNumbers)
-        {
-            //Database.Log.Logging.log_message("Porównywanie fragmentu listy: " + start.ToString() + " " + end.ToString()); //TODO log it
-            for (int i = start; i < end; i++)
-            {
-                var productLama = _lamaProducts.Where(p => p.KodProducenta == allPartNumbers[i]);
-                var productTechData = _techDataProducts.Where(p => p.KodProducenta == allPartNumbers[i]);
-                var productAB = _abProducts.Where(p => p.KodProducenta == allPartNumbers[i]);
 
-                if (productTechData.Count() <= 1 && productLama.Count() <= 1 && productAB.Count() <= 1)
+        #endregion
+
+        #region Compare
+
+        private void CompareAll()
+        {
+            Task[] tasks = new Task[Environment.ProcessorCount];
+            ConcurrentBag<string> allPartNumbers = new ConcurrentBag<string>(_allPartNumbers.Keys);
+
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                tasks[i] = new Task(() => Compare(allPartNumbers, _lamaFilled, _techDataFilled, _abFilled));
+            }
+
+            tasks.StartAll();
+            tasks.WaitAll();
+        }
+
+        private void Compare(
+            ConcurrentBag<string> allPartNumbers,
+            ConcurrentDictionary<string, Product> lamaProducts,
+            ConcurrentDictionary<string, Product> tdProducts,
+            ConcurrentDictionary<string, Product> abProducts
+            )
+        {
+            string kodProducenta = null;
+
+            while (allPartNumbers.TryTake(out kodProducenta) || allPartNumbers.Count > 0)
+            {
+                List<Product> products = new List<Product>();
+
+                Product p = null;
+
+                if (lamaProducts.TryGetValue(kodProducenta, out p))
                 {
-                    List<Product> tmpList = new List<Product>();
-                    tmpList.AddRange(productLama);
-                    tmpList.AddRange(productTechData);
-                    tmpList.AddRange(productAB);
-                    SelectOneProduct(tmpList);
+                    products.Add(p);
                 }
-                else
+
+                if (abProducts.TryGetValue(kodProducenta, out p))
                 {
-                    _partNumbersConfilcts.Add(allPartNumbers[i]);
+                    products.Add(p);
                 }
+
+                if (tdProducts.TryGetValue(kodProducenta, out p))
+                {
+                    products.Add(p);
+                }
+
+                SelectOneProduct(products);
             }
         }
 
@@ -266,6 +364,8 @@ namespace METCSV.WPF.Engine
             if (products[cheapest].ID != null)
                 products[cheapest].StatusProduktu = true;
         }
+
+        #endregion
 
         private void RemoveEmptyWarehouse(List<Product> products)
         {
@@ -297,57 +397,57 @@ namespace METCSV.WPF.Engine
             return cheapest;
         }
 
-        private void SolveConflicts()
-        {
-            foreach (string partNumber in _partNumbersConfilcts)
-            {
-                var productLama = _lamaProducts.Where(p => p.KodProducenta == partNumber);
-                var productTechData = _techDataProducts.Where(p => p.KodProducenta == partNumber);
-                var productAB = _abProducts.Where(p => p.KodProducenta == partNumber);
+        //private void SolveConflicts()
+        //{
+        //foreach (string partNumber in _partNumbersConfilcts)
+        //{
+        //    var productLama = _lamaProducts.Where(p => p.KodProducenta == partNumber);
+        //    var productTechData = _techDataProducts.Where(p => p.KodProducenta == partNumber);
+        //    var productAB = _abProducts.Where(p => p.KodProducenta == partNumber);
 
-                List<Product> list = new List<Product>();
-                list.AddRange(productLama.ToList());
-                list.AddRange(productTechData.ToList());
-                list.AddRange(productAB.ToList());
+        //    List<Product> list = new List<Product>();
+        //    list.AddRange(productLama.ToList());
+        //    list.AddRange(productTechData.ToList());
+        //    list.AddRange(productAB.ToList());
 
-                SolveConflictsUsingSapNumber(list);
+        //    SolveConflictsUsingSapNumber(list);
 
-                if (list.Count < 1)
-                    continue;
+        //    if (list.Count < 1)
+        //        continue;
 
-                throw new NotImplementedException();
+        //throw new NotImplementedException();
 
-                //Forms.GroupController gc = new Forms.GroupController();
-                //gc.LoadGroups(FileSystem.Exporter.importGroups(partNumbers[partNumber]), list);
-                //if (gc.allSolved == false)
-                //    gc.ShowDialog();
-                //FileSystem.Exporter.exportGroups(partNumbers[partNumber], gc.getGroups());
+        //Forms.GroupController gc = new Forms.GroupController();
+        //gc.LoadGroups(FileSystem.Exporter.importGroups(partNumbers[partNumber]), list);
+        //if (gc.allSolved == false)
+        //    gc.ShowDialog();
+        //FileSystem.Exporter.exportGroups(partNumbers[partNumber], gc.getGroups());
 
-                //List<ProductGroup> groups = gc.getGroups();
+        //List<ProductGroup> groups = gc.getGroups();
 
-                //for (int a = 0; a < groups.Count; a++)
-                //{
-                //    selectOneProduct(groups[a].getList());
-                //}
-            }
-        }
+        //for (int a = 0; a < groups.Count; a++)
+        //{
+        //    selectOneProduct(groups[a].getList());
+        //}
+        //  }
+        //}
 
-        private void SolveConflictsUsingSapNumber(List<Product> list)
-        {
-            List<string> sapNumbers = new List<string>();
+        //private void SolveConflictsUsingSapNumber(List<Product> list)
+        //{
+        //    List<string> sapNumbers = new List<string>();
 
-            foreach (Product p in list)
-                if (sapNumbers.Contains(p.SymbolSAP) == false)
-                    sapNumbers.Add(p.SymbolSAP);
+        //    foreach (Product p in list)
+        //        if (sapNumbers.Contains(p.SymbolSAP) == false)
+        //            sapNumbers.Add(p.SymbolSAP);
 
-            foreach (string sap in sapNumbers)
-            {
-                List<Product> selected = list.Where(p => p.SymbolSAP == sap).ToList();
-                SelectOneProduct(selected);
-            }
+        //    foreach (string sap in sapNumbers)
+        //    {
+        //        List<Product> selected = list.Where(p => p.SymbolSAP == sap).ToList();
+        //        SelectOneProduct(selected);
+        //    }
 
-            list.Clear(); // TODO debug. Jeśli czyści to forma do pokazywania konfliktów nigdy nie zostanie pokazana.
-        }
+        //    list.Clear(); // TODO debug. Jeśli czyści to forma do pokazywania konfliktów nigdy nie zostanie pokazana.
+        //}
 
         private List<Product> CombineList()
         {
@@ -356,7 +456,7 @@ namespace METCSV.WPF.Engine
             combinedList.AddRange(_techDataProducts);
             combinedList.AddRange(_abProducts);
 
-            var endOfLife = _metProducts.Where(p => p.Kategoria == "EOL");
+            var endOfLife = _metBag.Where(p => p.Kategoria == "EOL");
             combinedList.AddRange(endOfLife);
 
             return combinedList;

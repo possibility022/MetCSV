@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
+using METCSV.WPF.Models;
 using Prism.Mvvm;
 
 namespace METCSV.WPF.ProductProvider

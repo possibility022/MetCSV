@@ -1,9 +1,5 @@
-﻿using METCSV.WPF.ProductProvider;
-using System;
+﻿using METCSV.WPF.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace METCSV.WPF.Mergers
 {
