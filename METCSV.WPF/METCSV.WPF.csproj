@@ -138,7 +138,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Product.cs" />
     <Compile Include="ProductReaders\AbProductReader.cs" />
     <Compile Include="ProductReaders\LamaProductReader.cs" />
     <Compile Include="ProductReaders\MetProductReader.cs" />

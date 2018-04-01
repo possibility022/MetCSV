@@ -1,4 +1,4 @@
-﻿using METCSV.WPF.Models;
+﻿using METCSV.Common;
 using System.Collections.Generic;
 
 namespace METCSV.WPF.Mergers

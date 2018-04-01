@@ -149,7 +149,6 @@ namespace METCSV.WPF.ViewModels
         {
             if (Products != null)
             {
-                Products.Sort();
                 string json = JsonConvert.SerializeObject(Products, Formatting.Indented);
                 File.WriteAllText(path, json);
             }

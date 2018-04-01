@@ -1,4 +1,5 @@
-﻿using METCSV.WPF.Enums;
+﻿using METCSV.Common;
+using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
