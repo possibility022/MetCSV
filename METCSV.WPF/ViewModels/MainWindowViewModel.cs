@@ -13,6 +13,8 @@ using METCSV.WPF.Engine;
 using System.Collections.Generic;
 using METCSV.WPF.Models;
 using METCSV.Common;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -34,7 +36,7 @@ namespace METCSV.WPF.ViewModels
 
         public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
 
-        private IReadOnlyCollection<Product> Products;
+        private List<Product> Products;
 
         public MainWindowViewModel()
         {
@@ -132,7 +134,7 @@ namespace METCSV.WPF.ViewModels
             
             await Task.Run(() => productMerger.Generate());
 
-            Products = productMerger.FinalList;
+            Products = new List<Product>(productMerger.FinalList);
 
             return true;
         }
@@ -147,16 +149,8 @@ namespace METCSV.WPF.ViewModels
         {
             if (Products != null)
             {
-                CsvWriter csvWriter = new CsvWriter();
-
-                var csvLines = new List<string>();
-
-                foreach (var p in Products)
-                {
-                    csvLines.Add(p.GetLine());
-                }
-
-                csvWriter.ExportProducts(path, csvLines, Product.GetHeaders());
+                string json = JsonConvert.SerializeObject(Products, Formatting.Indented);
+                File.WriteAllText(path, json);
             }
         }
 
