@@ -85,6 +85,7 @@
     <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
+    <Compile Include="Engine\HiddenProductsDomain.cs" />
     <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="Enums\Providers.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />

@@ -3,6 +3,7 @@ using METCSV.WPF.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace METCSV.WPF.Engine
 
             RemoveHiddenProducts();
 
-            _allPartNumbers = GetAllPartNumbers( _metBag, _lamaProducts, _techDataProducts, _abProducts );
+            _allPartNumbers = GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
             FillLists();
             SetEndOfLife();
@@ -57,67 +58,14 @@ namespace METCSV.WPF.Engine
 
         private void RemoveHiddenProducts()
         {
-            CreateListOfHiddenProducts();
+            var hiddenEngine = new HiddenProductsDomain();
 
-            _metBag = RemoveHiddenProducts_MetVersion(_metBag);
-            _lamaProducts = RemoveHiddenProducts(_lamaProducts);
-            _techDataProducts = RemoveHiddenProducts(_techDataProducts);
-            _abProducts = RemoveHiddenProducts(_abProducts);
-        }
+            _hiddenMetProducts = hiddenEngine.CreateListOfHiddenProducts(_metBag);
 
-        private ConcurrentBag<Product> RemoveHiddenProducts(ConcurrentBag<Product> products)
-        {
-            Task[] tasks = new Task[Environment.ProcessorCount];
-
-            ConcurrentBag<Product> finalList = new ConcurrentBag<Product>();
-
-            for (int i = 0; i < tasks.Length; i++)
-            {
-                tasks[i] = new Task(() => RemoveHiddenProducts_Logic(products, finalList));
-            }
-
-            tasks.StartAll();
-            tasks.WaitAll();
-            return finalList;
-        }
-
-        private void RemoveHiddenProducts_Logic(ConcurrentBag<Product> products, ConcurrentBag<Product> finalList)
-        {
-            Product outProduct = null;
-
-            while (products.TryTake(out outProduct) || products.Count > 0)
-            {
-                if (_hiddenMetProducts.ContainsKey(outProduct.SymbolSAP) == false)
-                {
-                    outProduct.Hidden = true;
-                    finalList.Add(outProduct);
-                }
-            }
-        }
-
-        private ConcurrentBag<Product> RemoveHiddenProducts_MetVersion(ConcurrentBag<Product> products)
-        {
-            ConcurrentBag<Product> newCollection = new ConcurrentBag<Product>();
-            foreach (var p in products)
-            {
-                if (_hiddenMetProducts.ContainsKey(p.SymbolSAP) == false)
-                {
-                    newCollection.Add(p);
-                }
-            }
-
-            return newCollection;
-        }
-
-        private void CreateListOfHiddenProducts()
-        {
-            foreach (var p in _metBag)
-            {
-                if (p.Hidden)
-                {
-                    _hiddenMetProducts.TryAdd(p.SymbolSAP, p);
-                }
-            }
+            _metBag = hiddenEngine.RemoveHiddenProducts(_metBag);
+            _lamaProducts = hiddenEngine.RemoveHiddenProducts(_lamaProducts);
+            _techDataProducts = hiddenEngine.RemoveHiddenProducts(_techDataProducts);
+            _abProducts = hiddenEngine.RemoveHiddenProducts(_abProducts);
         }
 
         #endregion
@@ -130,12 +78,12 @@ namespace METCSV.WPF.Engine
             ConcurrentDictionary<string, byte> allPartNumbers = new ConcurrentDictionary<string, byte>();
             Task[] tasks = new Task[4];
 
-            
-                tasks[0] = new Task(() => GetAllPartNumbers_Logic(list1, allPartNumbers));
+
+            tasks[0] = new Task(() => GetAllPartNumbers_Logic(list1, allPartNumbers));
             tasks[1] = new Task(() => GetAllPartNumbers_Logic(list2, allPartNumbers));
             tasks[2] = new Task(() => GetAllPartNumbers_Logic(list3, allPartNumbers));
             tasks[3] = new Task(() => GetAllPartNumbers_Logic(list4, allPartNumbers));
-            
+
             tasks.StartAll();
             tasks.WaitAll();
 
@@ -247,9 +195,9 @@ namespace METCSV.WPF.Engine
 
             Task<Tuple<HashSet<string>, HashSet<string>>>[] tasks = new Task<Tuple<HashSet<string>, HashSet<string>>>[3];
 
-            tasks[0] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_lamaProducts));
-            tasks[1] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_abProducts));
-            tasks[2] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_techDataProducts));
+            tasks[0] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_lamaFilled));
+            tasks[1] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_abFilled));
+            tasks[2] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_techDataFilled));
 
             tasks.StartAll();
             tasks.WaitAll();
@@ -266,6 +214,8 @@ namespace METCSV.WPF.Engine
             HashSet<string> abKodProducenta = abPair.Item2;
             HashSet<string> tdKodProducenta = tdPair.Item2;
 
+            int i = 0;
+
             foreach (var prod in _metBag)
             {
 
@@ -277,16 +227,21 @@ namespace METCSV.WPF.Engine
                     && abKodProducenta.Contains(prod.KodProducenta) == false)
                 {
                     prod.Kategoria = "EOL"; //todo move to config
+                    i++;
+                }
+                else
+                {
+                    Debug.WriteLine("Not EOL");
                 }
             }
         }
 
-        private Tuple<HashSet<string>, HashSet<string>> CreateSapHashset(IEnumerable<Product> products)
+        private Tuple<HashSet<string>, HashSet<string>> CreateSapHashset(ConcurrentDictionary<string, Product> products)
         {
             var sapNumbers = new HashSet<string>();
             var kodProducents = new HashSet<string>();
 
-            foreach (var p in products)
+            foreach (var p in products.Values)
             {
                 sapNumbers.Add(p.SymbolSAP);
                 kodProducents.Add(p.KodProducenta);
