@@ -52,7 +52,7 @@ namespace METCSV.WPF.Models
         string _modelProduktu;
         string _oryginalnyKodProducenta;
 
-        public string GetLine()
+        public string GetLine() //todo remove
         {
             return "\"" + ID + "\";\""
                 + SymbolSAP + "\";\""
@@ -70,7 +70,7 @@ namespace METCSV.WPF.Models
                 + ((Kategoria == "EOL") ? "EOL" : "") + "\"";
         }
 
-        public string GetHeader()
+        public static string GetHeaders() //todo remove
         {
             return "\"ID\";\"SymbolSAP\";\"KodProducenta\";\"ModelProduktu\";\"KodDostawcy\";\"NazwaProduktu\";\"NazwaProducenta\";\"NazwaDostawcy\";\"StanMagazynowy\";\"StatusProduktu\";\"CenaNetto\";\"CenaZakupuNetto\";\"UrlZdjecia\";\"Kategoria\"";
         }
