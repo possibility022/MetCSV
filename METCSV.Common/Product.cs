@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace METCSV.WPF.Models
+namespace METCSV.Common
 {
     [Serializable]
     public class Product

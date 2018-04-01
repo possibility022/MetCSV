@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using METCSV.Common;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
-using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {
