@@ -60,28 +60,28 @@ namespace METCSV.UnitTests
 
         public static List<Product> GetLamaProducts()
         {
-            var content = File.ReadAllText(@"\Repository\lamaproducts.json");
+            var content = File.ReadAllText(@"Repository\lamaproducts.json");
             var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
             return deserialized;
         }
 
         public static List<Product> GetABProducts()
         {
-            var content = File.ReadAllText(@"\Repository\abproducts.json");
+            var content = File.ReadAllText(@"Repository\abproducts.json");
             var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
             return deserialized;
         }
 
         public static List<Product> GetTDProducts()
         {
-            var content = File.ReadAllText(@"\Repository\techjDataproducts.json");
+            var content = File.ReadAllText(@"Repository\techjDataproducts.json");
             var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
             return deserialized;
         }
 
         public static List<Product> GetMetProducts()
         {
-            var content = File.ReadAllText(@"\Repository\metproducts.json");
+            var content = File.ReadAllText(@"Repository\metproducts.json");
             var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
             return deserialized;
         }

@@ -58,8 +58,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparing\AllPartNumbersDomainTest.cs" />
     <Compile Include="Comparing\ComparingToOtherList.cs" />
-    <Compile Include="Comparing\ProductMergerTests.cs" />
+    <Compile Include="Comparing\HiddenProductsDomainTests.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ProfitsTests.cs" />
     <Compile Include="PerformanceTests.cs" />
@@ -71,19 +72,19 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Repository\abproducts.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Repository\concurent_v1.1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Repository\lamaproducts.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Repository\metproducts.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Repository\techjDataproducts.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
