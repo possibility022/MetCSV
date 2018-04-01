@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using METCSV.Common;
 using METCSV.WPF.Enums;
+using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
