@@ -2,6 +2,7 @@
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ViewModels;
 using METCSV.WPF.Views;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -33,6 +34,15 @@ namespace METCSV.WPF
         private void ShowProfitsWindow(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Export(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                MainWindowViewModel.Export(dialog.FileName);
+            }
         }
     }
 }
