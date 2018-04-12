@@ -61,6 +61,7 @@
     <Compile Include="Comparing\AllPartNumbersDomainTest.cs" />
     <Compile Include="Comparing\ComparingToOtherList.cs" />
     <Compile Include="Comparing\HiddenProductsDomainTests.cs" />
+    <Compile Include="Comparing\FillListDomain.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ProfitsTests.cs" />
     <Compile Include="PerformanceTests.cs" />

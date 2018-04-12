@@ -86,6 +86,7 @@
     <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
     <Compile Include="Engine\AllPartNumbersDomain.cs" />
+    <Compile Include="Engine\FillListDomain.cs" />
     <Compile Include="Engine\HiddenProductsDomain.cs" />
     <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="Enums\Providers.cs" />

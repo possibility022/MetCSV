@@ -24,10 +24,6 @@ namespace METCSV.WPF.Engine
         ConcurrentBag<Product> _techDataProducts;
         ConcurrentBag<Product> _abProducts;
 
-        ConcurrentDictionary<string, Product> _lamaFilled;
-        ConcurrentDictionary<string, Product> _techDataFilled;
-        ConcurrentDictionary<string, Product> _abFilled;
-
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
         public ProductMerger(IEnumerable<Product> met, IEnumerable<Product> lama, IEnumerable<Product> td, IEnumerable<Product> ab)
@@ -47,14 +43,39 @@ namespace METCSV.WPF.Engine
 
             _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
-            FillLists();
+            // Dictionary <SapNumber , Product>
+            var met_keySap = ConvertToDictionary(_metBag);
+
+            FillListDomain fillList = new FillListDomain(met_keySap);
+            fillList.FillList(_lamaProducts);
+
+
             SetEndOfLife();
             CompareAll();
             //SolveConflicts();
             _finalList = CombineList();
         }
 
-        #region RemovingHiddenProducts
+        private ConcurrentDictionary<string, IList<Product>> ConvertToDictionary(ConcurrentBag<Product> products)
+        {
+            Dictionary<string, IList<Product>> newDictionary = new Dictionary<string, IList<Product>>();
+
+            Product p = null;
+
+            while (products.TryTake(out p) || products.Count > 0)
+            {
+                if (newDictionary.ContainsKey(p.SymbolSAP))
+                {
+                    newDictionary[p.SymbolSAP].Add(p);
+                }
+                else
+                {
+                    newDictionary.Add(p.SymbolSAP, new List<Product> { p });
+                }
+            }
+
+            return new ConcurrentDictionary<string, IList<Product>>(newDictionary);
+        }
 
         private void RemoveHiddenProducts()
         {
@@ -68,141 +89,53 @@ namespace METCSV.WPF.Engine
             _abProducts = hiddenEngine.RemoveHiddenProducts(_abProducts);
         }
 
-        #endregion
-        
-
-        #region FillList
-
-        private void FillLists()
-        {
-            _lamaFilled = FillList(_lamaProducts);
-            _techDataFilled = FillList(_techDataProducts);
-            _abFilled = FillList(_abProducts);
-        }
-
-        private ConcurrentDictionary<string, Product> FillList(ConcurrentBag<Product> products)
-        {
-            ConcurrentDictionary<string, Product> newList = new ConcurrentDictionary<string, Product>();
-            Task[] tasks = new Task[Environment.ProcessorCount];
-
-            for (int i = 0; i < tasks.Length; i++)
-            {
-                tasks[i] = new Task(() => FillList_Logic(products, newList));
-            }
-
-            tasks.StartAll();
-            tasks.WaitAll();
-
-            return newList;
-        }
-
-        private void FillList_Logic(ConcurrentBag<Product> list, ConcurrentDictionary<string, Product> newList)
-        {
-            Product product = null;
-
-            while (list.TryTake(out product) && list.Count > 0)
-            {
-                List<Product> products = _metBag.Where(m => m.SymbolSAP == product.SymbolSAP).ToList(); //todo can be optimized
-
-                int workon = 0;
-                if (products.Count >= 2)        //To jest tak że produkty w pliku METCSV się powtarzają. I wybierany jest ten gdzie jest URL
-                {
-                    for (int metProductIndex = 0; metProductIndex < products.Count; metProductIndex++)
-                    {
-                        if (products[metProductIndex].UrlZdjecia.Length > 0)
-                        {
-                            workon = metProductIndex;
-
-                            for (int setEOL = 0; setEOL < products.Count; setEOL++)
-                            {
-                                if (setEOL == workon)
-                                    continue;
-
-                                products[setEOL].Kategoria = "EOL";
-                                products[setEOL].UrlZdjecia = "";
-                            }
-
-                            break;
-                        }
-                    }
-                    //throw new Exception("Znaleziono dwa takie same produkty w pliku MET od tego samego dostawcy.");
-                }
-
-                if (products.Count == 1)
-                {
-                    workon = 0;
-                }
-
-                if (products.Count > 0)
-                {
-                    if (products[workon].UrlZdjecia.Length > 0)
-                        //list[i].UrlZdjecia = products[workon].UrlZdjecia;
-                        product.UrlZdjecia = ""; // TO JEST Tak że jeśli zdjęcie już jest to ustawiamy puste. Jeśli nie ma to zostawiamy to od dostawcy.
-
-                    product.ID = products[workon].ID;
-
-                    if (products[0].NazwaProduktu != "")
-                        product.NazwaProduktu = products[workon].NazwaProduktu;
-                }
-
-                var success = newList.TryAdd(product.KodProducenta, product);
-                if (success == false)
-                {
-                    _partNumbersConfilcts.TryAdd(product.SymbolSAP, product);
-                }
-
-                product = null;
-            }
-        }
-
-        #endregion
 
         #region EndOfLife
 
         private void SetEndOfLife()
         {
 
-            Task<Tuple<HashSet<string>, HashSet<string>>>[] tasks = new Task<Tuple<HashSet<string>, HashSet<string>>>[3];
+            //Task<Tuple<HashSet<string>, HashSet<string>>>[] tasks = new Task<Tuple<HashSet<string>, HashSet<string>>>[3];
 
-            tasks[0] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_lamaFilled));
-            tasks[1] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_abFilled));
-            tasks[2] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_techDataFilled));
+            //tasks[0] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_lamaFilled));
+            //tasks[1] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_abFilled));
+            //tasks[2] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_techDataFilled));
 
-            tasks.StartAll();
-            tasks.WaitAll();
+            //tasks.StartAll();
+            //tasks.WaitAll();
 
-            Tuple<HashSet<string>, HashSet<string>> lamaPair = tasks[0].Result;
-            Tuple<HashSet<string>, HashSet<string>> abPair = tasks[1].Result;
-            Tuple<HashSet<string>, HashSet<string>> tdPair = tasks[2].Result;
+            //Tuple<HashSet<string>, HashSet<string>> lamaPair = tasks[0].Result;
+            //Tuple<HashSet<string>, HashSet<string>> abPair = tasks[1].Result;
+            //Tuple<HashSet<string>, HashSet<string>> tdPair = tasks[2].Result;
 
-            HashSet<string> lamaSAP = lamaPair.Item1;
-            HashSet<string> abSAP = abPair.Item1;
-            HashSet<string> tdSAP = tdPair.Item1;
+            //HashSet<string> lamaSAP = lamaPair.Item1;
+            //HashSet<string> abSAP = abPair.Item1;
+            //HashSet<string> tdSAP = tdPair.Item1;
 
-            HashSet<string> lamaKodProducenta = lamaPair.Item2;
-            HashSet<string> abKodProducenta = abPair.Item2;
-            HashSet<string> tdKodProducenta = tdPair.Item2;
+            //HashSet<string> lamaKodProducenta = lamaPair.Item2;
+            //HashSet<string> abKodProducenta = abPair.Item2;
+            //HashSet<string> tdKodProducenta = tdPair.Item2;
 
-            int i = 0;
+            //int i = 0;
 
-            foreach (var prod in _metBag)
-            {
+            //foreach (var prod in _metBag)
+            //{
 
-                if (lamaSAP.Contains(prod.SymbolSAP) == false
-                    && tdSAP.Contains(prod.SymbolSAP) == false
-                    && abSAP.Contains(prod.SymbolSAP) == false
-                    && lamaKodProducenta.Contains(prod.KodProducenta) == false
-                    && tdKodProducenta.Contains(prod.KodProducenta) == false
-                    && abKodProducenta.Contains(prod.KodProducenta) == false)
-                {
-                    prod.Kategoria = "EOL"; //todo move to config
-                    i++;
-                }
-                else
-                {
-                    Debug.WriteLine("Not EOL");
-                }
-            }
+            //    if (lamaSAP.Contains(prod.SymbolSAP) == false
+            //        && tdSAP.Contains(prod.SymbolSAP) == false
+            //        && abSAP.Contains(prod.SymbolSAP) == false
+            //        && lamaKodProducenta.Contains(prod.KodProducenta) == false
+            //        && tdKodProducenta.Contains(prod.KodProducenta) == false
+            //        && abKodProducenta.Contains(prod.KodProducenta) == false)
+            //    {
+            //        prod.Kategoria = "EOL"; //todo move to config
+            //        i++;
+            //    }
+            //    else
+            //    {
+            //        Debug.WriteLine("Not EOL");
+            //    }
+            //}
         }
 
         private Tuple<HashSet<string>, HashSet<string>> CreateSapHashset(ConcurrentDictionary<string, Product> products)
@@ -231,7 +164,7 @@ namespace METCSV.WPF.Engine
 
             for (int i = 0; i < tasks.Length; i++)
             {
-                tasks[i] = new Task(() => Compare(allPartNumbers, _lamaFilled, _techDataFilled, _abFilled));
+                //tasks[i] = new Task(() => Compare(allPartNumbers, _lamaFilled, _techDataFilled, _abFilled));
             }
 
             tasks.StartAll();
