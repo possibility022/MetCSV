@@ -2,6 +2,7 @@
 using METCSV.WPF.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace METCSV.UnitTests.Comparing
