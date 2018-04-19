@@ -1,4 +1,5 @@
 ﻿using METCSV.Common;
+using METCSV.WPF.Converters;
 using METCSV.WPF.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
@@ -18,9 +19,9 @@ namespace METCSV.WPF.Engine
         ConcurrentDictionary<string, IList<Product>> _met;
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
-        public FillListDomain(ConcurrentDictionary<string, IList<Product>> metBag)
+        public FillListDomain(ConcurrentBag<Product> metBag)
         {
-            _met = metBag;
+            _met = CustomConverters.ConvertToDictionaryOfLists(metBag);
         }
 
         public ConcurrentDictionary<string, Product> GetPartNumbersConfilcts()
@@ -54,33 +55,37 @@ namespace METCSV.WPF.Engine
         {
             Product product = null;
 
-            while (list.TryTake(out product) && list.Count > 0)
+            while (list.Count > 0)
             {
-                //var products = _met.Where(m => m.Key == product.SymbolSAP).ToList(); //todo can be optimized
+                var productTaken = list.TryTake(out product);
 
-                IList<Product> metOutList = null;
-                var taken = _met.TryGetValue(product.SymbolSAP, out metOutList);
-
-                if (taken)
+                if (productTaken)
                 {
-                    var selected = SelectOneProductAsDataSource(metOutList);
-                    SetEOLToNotUsedProducts(metOutList, selected);
 
-                    if (string.IsNullOrWhiteSpace(selected.UrlZdjecia) == false)
+                    IList<Product> metOutList = null;
+                    var taken = _met.TryGetValue(product.SymbolSAP, out metOutList);
+
+                    if (taken)
                     {
-                        selected.UrlZdjecia = string.Empty;
+                        var selected = SelectOneProductAsDataSource(metOutList);
+                        SetEOLToNotUsedProducts(metOutList, selected);
+
+                        if (string.IsNullOrWhiteSpace(selected.UrlZdjecia) == false)
+                        {
+                            selected.UrlZdjecia = string.Empty;
+                        }
+
+                        product.ID = selected.ID;
+
+                        if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
+                        {
+                            product.NazwaProduktu = selected.NazwaProduktu;
+                        }
                     }
-
-                    product.ID = selected.ID;
-
-                    if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
+                    else
                     {
-                        product.NazwaProduktu = selected.NazwaProduktu;
+                        //log it
                     }
-                }
-                else
-                {
-                    //log it
                 }
             }
         }
