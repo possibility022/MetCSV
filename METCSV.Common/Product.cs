@@ -54,8 +54,8 @@ namespace METCSV.Common
         string _modelProduktu;
         string _oryginalnyKodProducenta;
         private int _sapManuHashSet;
-        private string _symbolSAP;
-        private string _nazwaProducenta;
+        private string _symbolSAP = string.Empty;
+        private string _nazwaProducenta = string.Empty;
 
         private void UpdateSapMenuHashSet()
         {

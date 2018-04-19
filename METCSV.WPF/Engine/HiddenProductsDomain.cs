@@ -33,9 +33,14 @@ namespace METCSV.WPF.Engine
             return finalList;
         }
 
-        public void RemoveHiddenProducts_Logic(ConcurrentBag<Product> products, ConcurrentBag<Product> finalList)
+        private void RemoveHiddenProducts_Logic(ConcurrentBag<Product> products, ConcurrentBag<Product> finalList)
         {
             Product outProduct = null;
+
+            if (_hidden == null)
+            {
+                throw new InvalidOperationException("You should create list of hidden products first.");
+            }
 
             while (products.TryTake(out outProduct) || products.Count > 0)
             {
