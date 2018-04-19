@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace METCSV.WPF.Engine
 {
-    class AllPartNumbersDomain
+    static class AllPartNumbersDomain
     {
         public static ConcurrentDictionary<string, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
         {
