@@ -15,7 +15,7 @@ namespace METCSV.Common
         }
 
         public Nullable<int> ID { get; set; }
-        public string SymbolSAP { get; set; }
+        public string SymbolSAP { get => _symbolSAP; set { _symbolSAP = value; UpdateSapMenuHashSet(); } }
         public string KodProducenta { get { return _kodProducenta; } }
         public string ModelProduktu { get { return _modelProduktu; } }
         public string OryginalnyKodProducenta
@@ -38,7 +38,7 @@ namespace METCSV.Common
         }
         public string NazwaProduktu { get; set; }
         public string KodDostawcy { get; set; }
-        public string NazwaProducenta { get; set; }
+        public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); } }
         public string NazwaDostawcy { get; set; }
         public int StanMagazynowy { get; set; }
         public bool StatusProduktu { get; set; }
@@ -48,9 +48,19 @@ namespace METCSV.Common
         public string Kategoria { get; set; }
         public bool Hidden { get; set; }
 
+        public int SapManuHashSet { get => _sapManuHashSet; private set => _sapManuHashSet = value; }
+
         string _kodProducenta;
         string _modelProduktu;
         string _oryginalnyKodProducenta;
+        private int _sapManuHashSet;
+        private string _symbolSAP;
+        private string _nazwaProducenta;
+
+        private void UpdateSapMenuHashSet()
+        {
+            _sapManuHashSet = SymbolSAP.GetHashCode() ^ NazwaProducenta.GetHashCode();
+        }
 
         public string GetLine() //todo remove
         {

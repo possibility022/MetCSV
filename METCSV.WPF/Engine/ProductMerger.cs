@@ -43,7 +43,7 @@ namespace METCSV.WPF.Engine
 
             _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
-            // Dictionary <SapNumber , Product>
+            // Dictionary <SapNumber , Products>
             var met_keySap = ConvertToDictionary(_metBag);
 
             FillListDomain fillList = new FillListDomain(met_keySap);
