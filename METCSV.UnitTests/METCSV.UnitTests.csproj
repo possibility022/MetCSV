@@ -58,9 +58,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparing\AllPartNumbersDomainTest.cs" />
-    <Compile Include="Comparing\ComparingToOtherList.cs" />
-    <Compile Include="Comparing\HiddenProductsDomainTests.cs" />
     <Compile Include="EngineTest\HiddenProductsDomainTest.cs" />
     <Compile Include="EngineTest\AllPartNumbersDomainTest.cs" />
     <Compile Include="EngineTest\FillListDomainTest.cs" />
