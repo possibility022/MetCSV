@@ -61,7 +61,6 @@ namespace METCSV.WPF.Engine
                         var selected = SelectOneProductAsDataSource(metOutList);
                         SetEOLToNotUsedProducts(metOutList, selected);
 
-                        selected.UrlZdjecia = string.Empty;
                         product.ID = selected.ID;
 
                         if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
@@ -109,12 +108,9 @@ namespace METCSV.WPF.Engine
                 if (object.ReferenceEquals(p, selectedProduct) == false)
                 {
                     p.Kategoria = "EOL";
-                    p.UrlZdjecia = string.Empty;
                 }
-                else
-                {
-                    p.UrlZdjecia = string.Empty;
-                }
+
+                p.UrlZdjecia = string.Empty;
             }
         }
 
