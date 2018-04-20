@@ -38,16 +38,15 @@ namespace METCSV.WPF.Engine
         public void Generate()
         {
             _finalList = new List<Product>();
-            _hiddenMetProducts = new ConcurrentDictionary<string, Product>();
 
+            // STEP 1
             RemoveHiddenProducts();
 
+            // STEP 2
             _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
-            // Dictionary <SapNumber , Products>
-            var met_keySap = CustomConverters.ConvertToDictionaryOfLists(_metBag);
-
-            FillListDomain fillList = new FillListDomain(met_keySap);
+            // STEP 3
+            FillListDomain fillList = new FillListDomain(_metBag);
             fillList.FillList(_lamaProducts);
 
 

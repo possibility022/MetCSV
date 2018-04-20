@@ -48,7 +48,7 @@ namespace METCSV.Common
         public string Kategoria { get; set; }
         public bool Hidden { get; set; }
 
-        public int SapManuHashSet { get => _sapManuHashSet; private set => _sapManuHashSet = value; }
+        public int SapManuHash { get => _sapManuHashSet; private set => _sapManuHashSet = value; }
 
         string _kodProducenta;
         string _modelProduktu;
