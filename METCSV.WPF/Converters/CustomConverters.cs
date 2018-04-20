@@ -1,4 +1,5 @@
 ﻿using METCSV.Common;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -6,25 +7,24 @@ namespace METCSV.WPF.Converters
 {
     public static class CustomConverters
     {
-        public static ConcurrentDictionary<string, IList<Product>> ConvertToDictionaryOfLists(ConcurrentBag<Product> products)
+        public static ConcurrentDictionary<T, IList<Product>> ConvertToDictionaryOfLists<T>(IEnumerable<Product> products, Func<Product, T> key)
         {
-            Dictionary<string, IList<Product>> newDictionary = new Dictionary<string, IList<Product>>();
-
-            Product p = null;
-
-            while (products.TryTake(out p) || products.Count > 0)
+            Dictionary<T, IList<Product>> newDictionary = new Dictionary<T, IList<Product>>();
+            
+            foreach(var p in products)
             {
-                if (newDictionary.ContainsKey(p.SymbolSAP))
+                var keyValue = key.Invoke(p);
+                if (newDictionary.ContainsKey(keyValue))
                 {
-                    newDictionary[p.SymbolSAP].Add(p);
+                    newDictionary[keyValue].Add(p);
                 }
                 else
                 {
-                    newDictionary.Add(p.SymbolSAP, new List<Product> { p });
+                    newDictionary.Add(keyValue, new List<Product> { p });
                 }
             }
 
-            return new ConcurrentDictionary<string, IList<Product>>(newDictionary);
+            return new ConcurrentDictionary<T, IList<Product>>(newDictionary);
         }
     }
 }

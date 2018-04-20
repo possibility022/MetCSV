@@ -5,7 +5,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace METCSV.WPF.Engine
@@ -14,29 +13,24 @@ namespace METCSV.WPF.Engine
     {
 
         /// <summary>
-        /// This dictionary should contains Sap Number as the key and product as the value.
+        /// This dictionary should contains Sap Manu Hash Set as the key and product as the value.
         /// </summary>
-        ConcurrentDictionary<string, IList<Product>> _met;
+        ConcurrentDictionary<int, IList<Product>> _met;
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
-        public FillListDomain(ConcurrentBag<Product> metBag)
+        public FillListDomain(IEnumerable<Product> metBag)
         {
-            _met = CustomConverters.ConvertToDictionaryOfLists(metBag);
+            _met = CustomConverters.ConvertToDictionaryOfLists(metBag, p => p.SapManuHash);
         }
 
-        public ConcurrentDictionary<string, Product> GetPartNumbersConfilcts()
-        {
-            return _partNumbersConfilcts;
-        }
-
-        public ConcurrentDictionary<string, Product> FillList(ConcurrentBag<Product> products, int? maxThreads = null)
+        public ConcurrentBag<Product> FillList(ConcurrentBag<Product> products, int? maxThreads = null)
         {
             if (maxThreads != null && maxThreads < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(maxThreads));
             }
 
-            ConcurrentDictionary<string, Product> newList = new ConcurrentDictionary<string, Product>();
+            ConcurrentBag<Product> newList = new ConcurrentBag<Product>();
             int threads = maxThreads ?? Environment.ProcessorCount;
             Task[] tasks = new Task[threads];
 
@@ -51,30 +45,23 @@ namespace METCSV.WPF.Engine
             return newList;
         }
 
-        private void FillList_Logic(ConcurrentBag<Product> list, ConcurrentDictionary<string, Product> newList)
+        private void FillList_Logic(ConcurrentBag<Product> list, ConcurrentBag<Product> newList)
         {
             Product product = null;
 
-            while (list.Count > 0)
+            while (list.TryTake(out product) || list.Count > 0)
             {
-                var productTaken = list.TryTake(out product);
-
-                if (productTaken)
+                if (product != null)
                 {
-
                     IList<Product> metOutList = null;
-                    var taken = _met.TryGetValue(product.SymbolSAP, out metOutList);
+                    var taken = _met.TryGetValue(product.SapManuHash, out metOutList);
 
                     if (taken)
                     {
                         var selected = SelectOneProductAsDataSource(metOutList);
                         SetEOLToNotUsedProducts(metOutList, selected);
 
-                        if (string.IsNullOrWhiteSpace(selected.UrlZdjecia) == false)
-                        {
-                            selected.UrlZdjecia = string.Empty;
-                        }
-
+                        selected.UrlZdjecia = string.Empty;
                         product.ID = selected.ID;
 
                         if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
@@ -84,8 +71,15 @@ namespace METCSV.WPF.Engine
                     }
                     else
                     {
-                        //log it
+                        // return to list to try again later.
+                        if (_met.ContainsKey(product.SapManuHash))
+                        {
+                            list.Add(product);
+                            continue;
+                        }
                     }
+
+                    newList.Add(product);
                 }
             }
         }
@@ -115,7 +109,11 @@ namespace METCSV.WPF.Engine
                 if (object.ReferenceEquals(p, selectedProduct) == false)
                 {
                     p.Kategoria = "EOL";
-                    p.UrlZdjecia = "";
+                    p.UrlZdjecia = string.Empty;
+                }
+                else
+                {
+                    p.UrlZdjecia = string.Empty;
                 }
             }
         }

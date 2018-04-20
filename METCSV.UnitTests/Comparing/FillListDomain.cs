@@ -49,7 +49,7 @@ namespace METCSV.UnitTests.Comparing
         [TestMethod]
         public void SelectCorrectProductAndSetEOLToOthers()
         {
-            WPF.Engine.FillListDomain domain = new WPF.Engine.FillListDomain(ConvertToDictionary(met));
+            WPF.Engine.FillListDomain domain = new WPF.Engine.FillListDomain(met);
             domain.FillList(lama);
 
             foreach (var p in lama)
