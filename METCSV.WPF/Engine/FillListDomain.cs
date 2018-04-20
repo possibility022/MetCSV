@@ -61,6 +61,12 @@ namespace METCSV.WPF.Engine
                         var selected = SelectOneProductAsDataSource(metOutList);
                         SetEOLToNotUsedProducts(metOutList, selected);
 
+                        if (string.IsNullOrWhiteSpace(selected.UrlZdjecia) == false)
+                        {
+                            // TO JEST Tak że jeśli zdjęcie już jest to ustawiamy puste. Jeśli nie ma to zostawiamy to od dostawcy.
+                            product.UrlZdjecia = string.Empty;
+                        }
+
                         product.ID = selected.ID;
 
                         if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
@@ -109,8 +115,10 @@ namespace METCSV.WPF.Engine
                 {
                     p.Kategoria = "EOL";
                 }
-
-                p.UrlZdjecia = string.Empty;
+                else
+                {
+                    p.UrlZdjecia = string.Empty;
+                }
             }
         }
 

@@ -10,6 +10,7 @@ namespace METCSV.UnitTests.EngineTest
     public class AllPartNumbersDomainTest
     {
         [TestMethod]
+        [Ignore] // this test take up to 4 min
         public void AllPartNumbersOnTheListShouldBeOnAtLeastOneOfTheRestLists()
         {
             var lama = new ConcurrentBag<Product>(Factory.GetLamaProducts());
