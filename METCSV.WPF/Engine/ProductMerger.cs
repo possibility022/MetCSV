@@ -46,11 +46,15 @@ namespace METCSV.WPF.Engine
             _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
             // STEP 3
-            FillListDomain fillList = new FillListDomain(_metBag);
-            fillList.FillList(_lamaProducts);
+            var fillList = new FillListDomain(_metBag);
+            _lamaProducts = fillList.FillList(_lamaProducts);
+            _abProducts = fillList.FillList(_abProducts);
+            _techDataProducts = fillList.FillList(_techDataProducts);
 
+            // STEP4
+            var setEndOfLive = new EndOfLiveDomain(_metBag, _lamaProducts, _abProducts, _techDataProducts);
+            setEndOfLive.SetEndOfLife();
 
-            SetEndOfLife();
             CompareAll();
             //SolveConflicts();
             _finalList = CombineList();
@@ -68,72 +72,7 @@ namespace METCSV.WPF.Engine
             _abProducts = hiddenEngine.RemoveHiddenProducts(_abProducts);
         }
 
-
-        #region EndOfLife
-
-        private void SetEndOfLife()
-        {
-
-            //Task<Tuple<HashSet<string>, HashSet<string>>>[] tasks = new Task<Tuple<HashSet<string>, HashSet<string>>>[3];
-
-            //tasks[0] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_lamaFilled));
-            //tasks[1] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_abFilled));
-            //tasks[2] = new Task<Tuple<HashSet<string>, HashSet<string>>>(() => CreateSapHashset(_techDataFilled));
-
-            //tasks.StartAll();
-            //tasks.WaitAll();
-
-            //Tuple<HashSet<string>, HashSet<string>> lamaPair = tasks[0].Result;
-            //Tuple<HashSet<string>, HashSet<string>> abPair = tasks[1].Result;
-            //Tuple<HashSet<string>, HashSet<string>> tdPair = tasks[2].Result;
-
-            //HashSet<string> lamaSAP = lamaPair.Item1;
-            //HashSet<string> abSAP = abPair.Item1;
-            //HashSet<string> tdSAP = tdPair.Item1;
-
-            //HashSet<string> lamaKodProducenta = lamaPair.Item2;
-            //HashSet<string> abKodProducenta = abPair.Item2;
-            //HashSet<string> tdKodProducenta = tdPair.Item2;
-
-            //int i = 0;
-
-            //foreach (var prod in _metBag)
-            //{
-
-            //    if (lamaSAP.Contains(prod.SymbolSAP) == false
-            //        && tdSAP.Contains(prod.SymbolSAP) == false
-            //        && abSAP.Contains(prod.SymbolSAP) == false
-            //        && lamaKodProducenta.Contains(prod.KodProducenta) == false
-            //        && tdKodProducenta.Contains(prod.KodProducenta) == false
-            //        && abKodProducenta.Contains(prod.KodProducenta) == false)
-            //    {
-            //        prod.Kategoria = "EOL"; //todo move to config
-            //        i++;
-            //    }
-            //    else
-            //    {
-            //        Debug.WriteLine("Not EOL");
-            //    }
-            //}
-        }
-
-        private Tuple<HashSet<string>, HashSet<string>> CreateSapHashset(ConcurrentDictionary<string, Product> products)
-        {
-            var sapNumbers = new HashSet<string>();
-            var kodProducents = new HashSet<string>();
-
-            foreach (var p in products.Values)
-            {
-                sapNumbers.Add(p.SymbolSAP);
-                kodProducents.Add(p.KodProducenta);
-            }
-
-            return new Tuple<HashSet<string>, HashSet<string>>(sapNumbers, kodProducents);
-        }
-
-
-        #endregion
-
+        
         #region Compare
 
         private void CompareAll()
