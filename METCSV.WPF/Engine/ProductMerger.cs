@@ -16,7 +16,7 @@ namespace METCSV.WPF.Engine
 
         List<Product> _finalList;
 
-        ConcurrentDictionary<string, byte> _allPartNumbers = new ConcurrentDictionary<string, byte>();
+        ConcurrentDictionary<int, byte> _allPartNumbers = new ConcurrentDictionary<int, byte>();
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
         ConcurrentBag<Product> _metBag;

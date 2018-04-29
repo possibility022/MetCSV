@@ -34,11 +34,12 @@ namespace METCSV.Common
                 _oryginalnyKodProducenta = value;
                 _modelProduktu = _value;
                 _kodProducenta = _value;
+                UpdateCodeAndManu();
             }
         }
         public string NazwaProduktu { get; set; }
         public string KodDostawcy { get; set; }
-        public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); } }
+        public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateSapMenuHashSet(); } }
         public string NazwaDostawcy { get; set; }
         public int StanMagazynowy { get; set; }
         public bool StatusProduktu { get; set; }
@@ -48,7 +49,20 @@ namespace METCSV.Common
         public string Kategoria { get; set; }
         public bool Hidden { get; set; }
 
+        /// <summary>
+        /// Gets the sapnumber ^ manufacturer hash.
+        /// </summary>
+        /// <value>
+        /// The sap manu hash.
+        /// </value>
         public int SapManuHash { get => _sapManuHashSet; private set => _sapManuHashSet = value; }
+        /// <summary>
+        /// Gets the manufacturer code ^ manufacturer name.
+        /// </summary>
+        /// <value>
+        /// The code and manu.
+        /// </value>
+        public int PartNumber { get => _partNumber; private set => _partNumber = value; }
 
         string _kodProducenta;
         string _modelProduktu;
@@ -56,10 +70,16 @@ namespace METCSV.Common
         private int _sapManuHashSet;
         private string _symbolSAP = string.Empty;
         private string _nazwaProducenta = string.Empty;
+        private int _partNumber;
 
         private void UpdateSapMenuHashSet()
         {
             _sapManuHashSet = SymbolSAP.GetHashCode() ^ NazwaProducenta.GetHashCode();
+        }
+
+        private void UpdateCodeAndManu()
+        {
+            _partNumber = KodProducenta.GetHashCode() ^ NazwaProducenta.GetHashCode();
         }
 
         public string GetLine() //todo remove
