@@ -1,4 +1,5 @@
 ﻿using METCSV.Common;
+using METCSV.Common.Comparers;
 using METCSV.WPF.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
@@ -11,6 +12,8 @@ namespace METCSV.WPF.Engine
     {
         ConcurrentBag<int> _allPartNumbers;
         ConcurrentDictionary<int, IList<Product>> _products;
+
+        ProductByProductNumber _netPriceComparer = new ProductByProductNumber();
 
         public CompareDomain(IDictionary<int, byte> allPartNumbers)
         {
@@ -106,8 +109,12 @@ namespace METCSV.WPF.Engine
             Product cheapest = products[0];
             for (int i = 1; i < products.Count; i++)
             {
-                if (products[i].CenaZakupuNetto < cheapest.CenaZakupuNetto)
+                var result = _netPriceComparer.Compare(products[i], cheapest);
+                
+                if (result == -1)
+                {
                     cheapest = products[i];
+                }
             }
 
             return cheapest;
