@@ -23,10 +23,10 @@ namespace METCSV.UnitTests.EngineTest
             foreach(var v in list)
             {
                 Assert.IsTrue(
-                    met.Any(p => p.KodProducenta == v.Key) 
-                    || ab.Any(p => p.KodProducenta == v.Key) 
-                    || td.Any(p => p.KodProducenta == v.Key) 
-                    || lama.Any(p => p.KodProducenta == v.Key));
+                    met.Any(p => p.PartNumber == v.Key) 
+                    || ab.Any(p => p.PartNumber == v.Key) 
+                    || td.Any(p => p.PartNumber == v.Key) 
+                    || lama.Any(p => p.PartNumber == v.Key));
             }
         }
 
@@ -47,11 +47,11 @@ namespace METCSV.UnitTests.EngineTest
             IsOnTheList(ab, list);
         }
 
-        private static void IsOnTheList(ConcurrentBag<Product> ab, ConcurrentDictionary<string, byte> list)
+        private static void IsOnTheList(ConcurrentBag<Product> ab, ConcurrentDictionary<int, byte> list)
         {
             foreach (var v in ab)
             {
-                Assert.IsTrue(list.ContainsKey(v.KodProducenta));
+                Assert.IsTrue(list.ContainsKey(v.PartNumber));
             }
         }
     }

@@ -42,7 +42,7 @@ namespace METCSV.Common
         public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateSapMenuHashSet(); } }
         public string NazwaDostawcy { get; set; }
         public int StanMagazynowy { get; set; }
-        public bool StatusProduktu { get; set; }
+        public bool StatusProduktu { get; set; } = false;
         public double CenaNetto { get; set; }
         public double CenaZakupuNetto { get; set; }
         public string UrlZdjecia { get; set; }
