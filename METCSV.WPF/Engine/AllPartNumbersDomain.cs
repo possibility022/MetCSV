@@ -7,9 +7,9 @@ namespace METCSV.WPF.Engine
 {
     static class AllPartNumbersDomain
     {
-        public static ConcurrentDictionary<string, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
+        public static ConcurrentDictionary<int, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
         {
-            ConcurrentDictionary<string, byte> allPartNumbers = new ConcurrentDictionary<string, byte>();
+            ConcurrentDictionary<int, byte> allPartNumbers = new ConcurrentDictionary<int, byte>();
             Task[] tasks = new Task[4];
 
 
@@ -24,13 +24,13 @@ namespace METCSV.WPF.Engine
             return allPartNumbers;
         }
 
-        private static void GetAllPartNumbers_Logic(ConcurrentBag<Product> products, ConcurrentDictionary<string, byte> _allPartNumbers)
+        private static void GetAllPartNumbers_Logic(ConcurrentBag<Product> products, ConcurrentDictionary<int, byte> _allPartNumbers)
         {
             byte b = new byte();
 
             foreach (var product in products)
             {
-                _allPartNumbers.TryAdd(product.KodProducenta, b);
+                _allPartNumbers.TryAdd(product.PartNumber, b);
             }
         }
     }

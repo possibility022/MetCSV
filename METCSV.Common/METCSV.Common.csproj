@@ -45,7 +45,6 @@
     <Compile Include="CsvWriter.cs" />
     <Compile Include="Encrypting.cs" />
     <Compile Include="Product.cs" />
-    <Compile Include="ProductComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
