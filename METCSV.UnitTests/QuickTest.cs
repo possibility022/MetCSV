@@ -41,5 +41,16 @@ namespace METCSV.UnitTests
             Assert.IsFalse(taken);
             Assert.IsNull(str);
         }
+
+        [TestMethod]
+        public void TryTakeFromDictionaryWithIntAsKey()
+        {
+            var dict = new ConcurrentDictionary<int, int>();
+
+            int outValue = -12;
+
+            dict.TryGetValue(1, out outValue);
+            Trace.Write(outValue);
+        }
     }
 }
