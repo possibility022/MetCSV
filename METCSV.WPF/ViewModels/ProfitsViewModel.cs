@@ -115,6 +115,7 @@ namespace METCSV.WPF.ViewModels
 
         public void SaveAllProfits()
         {
+            SaveCurrentProfits();
             foreach (var val in _valuesCache)
             {
                 val.Key.SetNewProfits(val.Value);

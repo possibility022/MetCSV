@@ -38,7 +38,12 @@ namespace METCSV.WPF.Models
             foreach(var newValue in newValues)
             {
                 if (newValue.Value == _defaultProfit)
-                    continue;
+                {
+                    if (_values.ContainsKey(newValue.Key))
+                    {
+                        _values.Remove(newValue.Key);
+                    }
+                }
 
                 if (_values.ContainsKey(newValue.Key) == false)
                 {
