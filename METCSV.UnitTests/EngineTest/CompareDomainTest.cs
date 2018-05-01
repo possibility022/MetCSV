@@ -113,5 +113,24 @@ namespace METCSV.UnitTests.EngineTest
             // Assert
             // Ok if no exceptions
         }
+
+        [TestMethod]
+        [Timeout(5 * 1000)]
+        public void DoNotThrowExceptionIfListContainsOnlyEmptyWarehouses()
+        {
+            // Arrange
+            foreach(var p in _shortProviderList)
+            {
+                p.StanMagazynowy = 0;
+            }
+
+            CompareDomain d = new CompareDomain(_allPartNumbers);
+
+            // Act
+            d.Compare(new Product[] { }, new Product[] { }, _shortProviderList);
+
+            // Assert
+            // Ok if no exceptions
+        }
     }
 }

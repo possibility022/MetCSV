@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparers\ProductByProductNumber.cs" />
+    <Compile Include="Comparers\ProductByPartNumber.cs" />
+    <Compile Include="Comparers\ProductByProductPrice.cs" />
+    <Compile Include="Comparers\ProductBySapManuHash.cs" />
+    <Compile Include="Comparers\ProductSorter.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="CsvWriter.cs" />
     <Compile Include="Encrypting.cs" />

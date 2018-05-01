@@ -39,7 +39,7 @@ namespace METCSV.Common
         }
         public string NazwaProduktu { get; set; }
         public string KodDostawcy { get; set; }
-        public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateSapMenuHashSet(); } }
+        public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateCodeAndManu(); } }
         public string NazwaDostawcy { get; set; }
         public int StanMagazynowy { get; set; }
         public bool StatusProduktu { get; set; } = false;
@@ -64,7 +64,7 @@ namespace METCSV.Common
         /// </value>
         public int PartNumber { get => _partNumber; private set => _partNumber = value; }
 
-        string _kodProducenta;
+        string _kodProducenta = string.Empty;
         string _modelProduktu;
         string _oryginalnyKodProducenta;
         private int _sapManuHashSet;
@@ -74,12 +74,18 @@ namespace METCSV.Common
 
         private void UpdateSapMenuHashSet()
         {
-            _sapManuHashSet = SymbolSAP.GetHashCode() ^ NazwaProducenta.GetHashCode();
+            _sapManuHashSet = $"{SymbolSAP}_||_{NazwaProducenta}".GetHashCode();
+            //_sapManuHashSet = SymbolSAP.GetHashCode() ^ NazwaProducenta.GetHashCode();
         }
 
         private void UpdateCodeAndManu()
         {
-            _partNumber = KodProducenta.GetHashCode() ^ NazwaProducenta.GetHashCode();
+            _partNumber = $"{KodProducenta}_||_{NazwaProducenta}".GetHashCode();
+
+            //_partNumber = (KodProducenta + NazwaProducenta).GetHashCode(); // OK, Here we have problem when KodProducetna is ABC and NazwaProducenta is XYZ then
+            // part number will be the same as product where KodProducenta is AB and NazwaProducenta is AXYZ :(
+
+            //_partNumber = KodProducenta.GetHashCode() ^ NazwaProducenta.GetHashCode(); // This soulution is bad
         }
 
         public string GetLine() //todo remove

@@ -2,7 +2,7 @@
 
 namespace METCSV.Common.Comparers
 {
-    public class ProductByProductNumber : IComparer<Product>
+    public class ProductByProductPrice : IComparer<Product>
     {
         public int Compare(Product x, Product y)
         {
@@ -13,5 +13,8 @@ namespace METCSV.Common.Comparers
             else
                 return 0;
         }
+
+        // TODO Jeśli cena jest taka sama to zastosuj priorytety!
+        // TODO zaimplementuj priorytety
     }
 }
