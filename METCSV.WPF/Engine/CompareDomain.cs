@@ -13,7 +13,7 @@ namespace METCSV.WPF.Engine
         ConcurrentBag<int> _allPartNumbers;
         ConcurrentDictionary<int, IList<Product>> _products;
 
-        ProductByProductNumber _netPriceComparer = new ProductByProductNumber();
+        ProductByProductPrice _netPriceComparer = new ProductByProductPrice();
 
         public CompareDomain(IDictionary<int, byte> allPartNumbers)
         {
@@ -85,6 +85,9 @@ namespace METCSV.WPF.Engine
                 return;
 
             RemoveEmptyWarehouse(products);
+
+            if (products.Count == 0)
+                return;
 
             var cheapest = FindCheapestProduct(products);
 

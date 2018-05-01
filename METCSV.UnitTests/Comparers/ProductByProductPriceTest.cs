@@ -1,15 +1,14 @@
-﻿using System;
-using METCSV.Common;
+﻿using METCSV.Common;
 using METCSV.Common.Comparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.Comparers
 {
     [TestClass]
-    public class ProductByProductNumberTest
+    public class ProductByProductPriceTest
     {
 
-        static ProductByProductNumber _comparer;
+        static ProductByProductPrice _comparer;
         static Product _cheap;
         static Product _expensive;
 
@@ -17,7 +16,7 @@ namespace METCSV.UnitTests.Comparers
         [ClassInitialize]
         static public void Initialize(TestContext context)
         {
-            _comparer = new ProductByProductNumber();
+            _comparer = new ProductByProductPrice();
             _cheap = new Product() { CenaZakupuNetto = 100 };
             _expensive = new Product() { CenaZakupuNetto = 999 };
         }

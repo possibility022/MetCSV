@@ -1,4 +1,5 @@
 ﻿using METCSV.Common;
+using METCSV.Common.Comparers;
 using METCSV.WPF.Converters;
 using METCSV.WPF.ExtensionMethods;
 using System;
@@ -57,6 +58,7 @@ namespace METCSV.WPF.Engine
 
             // STEP 5
             var compare = new CompareDomain(_allPartNumbers);
+            compare.Compare(_abProducts, _techDataProducts, _lamaProducts);
             
             //SolveConflicts();
             _finalList = CombineList();
@@ -83,6 +85,8 @@ namespace METCSV.WPF.Engine
 
             var endOfLife = _metBag.Where(p => p.Kategoria == "EOL");
             combinedList.AddRange(endOfLife);
+
+            combinedList.Sort(new ProductSorter());
 
             return combinedList;
         }
