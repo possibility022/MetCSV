@@ -43,7 +43,7 @@ namespace METCSV.WPF.Helpers
                     profits.Values[p.NazwaProducenta]
                     : profits.DefaultProfit;
 
-                p.CenaNetto = p.CenaZakupuNetto + (p.CenaZakupuNetto * profit);
+                p.SetCennaNetto(p.CenaZakupuNetto + (p.CenaZakupuNetto * profit));
             }
         }
 

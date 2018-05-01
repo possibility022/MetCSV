@@ -38,16 +38,33 @@ namespace METCSV.Common
             }
         }
         public string NazwaProduktu { get; set; }
+
         public string KodDostawcy { get; set; }
+
         public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateCodeAndManu(); } }
+
         public string NazwaDostawcy { get; set; }
+
         public int StanMagazynowy { get; set; }
+
         public bool StatusProduktu { get; set; } = false;
-        public double CenaNetto { get; set; }
+
+        public double CenaNetto { get; private set; }
+
+        public void SetCennaNetto(double value)
+        {
+            CenaNetto = value;
+        }
+
         public double CenaZakupuNetto { get; set; }
+
         public string UrlZdjecia { get; set; }
+
         public string Kategoria { get; set; }
+
         public bool Hidden { get; set; }
+
+        
 
         /// <summary>
         /// Gets the sapnumber ^ manufacturer hash.

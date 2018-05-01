@@ -152,7 +152,6 @@ namespace METCSV.WPF.ProductReaders
                     NazwaDostawcy = ProviderName,
                     StanMagazynowy = Int32.Parse(product.Element("SKLAD_NUM").Value),
                     StatusProduktu = false,
-                    CenaNetto = 0,
                     CenaZakupuNetto = Double.Parse(product.Element("CENA").Value),
                     UrlZdjecia = urls.Count > 0 ? urls[0] : null
                 });
