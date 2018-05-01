@@ -54,7 +54,7 @@ namespace METCSV.WPF.ProductReaders
             CsvReader reader = new CsvReader() { Delimiter = ";" };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
-            
+
             foreach (var fields in producents)
             {
                 if (linePassCount > 0)
@@ -66,7 +66,6 @@ namespace METCSV.WPF.ProductReaders
                 prices.Add(new Product
                 {
                     SymbolSAP = ProviderName + fields[(int)TechDataCsvPricesColumns.SapNo],
-                    CenaNetto = -1,
                     CenaZakupuNetto = Double.Parse(fields[(int)TechDataCsvPricesColumns.Cena]),
                 });
             }
@@ -103,7 +102,6 @@ namespace METCSV.WPF.ProductReaders
                     NazwaDostawcy = ProviderName,
                     StanMagazynowy = Int32.Parse(fields[(int)TechDataCsvProductsColumns.Magazyn]),
                     StatusProduktu = false,
-                    CenaNetto = -1,
                     CenaZakupuNetto = -1,
                     UrlZdjecia = null,
                     Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPr_kod]
@@ -126,7 +124,6 @@ namespace METCSV.WPF.ProductReaders
                 try
                 {
                     var query = prices.Single(p => p.SymbolSAP == product.SymbolSAP);
-                    product.CenaNetto = -1;
                     product.CenaZakupuNetto = query.CenaZakupuNetto;
                 }
                 catch
