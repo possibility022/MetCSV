@@ -6,13 +6,12 @@ using System.Threading;
 using System.Web;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {
     class MetProductReader : ProductReaderBase
     {
+        public override Providers Provider => Providers.MET;
 
         public MetProductReader(CancellationToken token)
         {
@@ -59,7 +58,7 @@ namespace METCSV.WPF.ProductReaders
                 }
 
                 if (fields[(int)MetCsvProductsColums.SymbolSAP].StartsWith("MET") == false)
-                    products.Add(new Product()
+                    products.Add(new Product(Provider)
                     {
                         ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
                         SymbolSAP = fields[(int)MetCsvProductsColums.SymbolSAP],

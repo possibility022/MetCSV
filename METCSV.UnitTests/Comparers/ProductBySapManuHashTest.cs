@@ -17,8 +17,8 @@ namespace METCSV.UnitTests.Comparers
         static public void Initialize(TestContext context)
         {
             _comparer = new ProductBySapManuHash();
-            _productABC = new Product() { NazwaProducenta = "ABC" };
-            _productXYZ = new Product() { NazwaProducenta = "XYZ" };
+            _productABC = new Product(Providers.AB) { NazwaProducenta = "ABC" };
+            _productXYZ = new Product(Providers.AB) { NazwaProducenta = "XYZ" };
             Trace.WriteLine(_productABC.SapManuHash);
         }
 

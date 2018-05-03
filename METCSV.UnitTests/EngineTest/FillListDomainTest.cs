@@ -25,13 +25,13 @@ namespace METCSV.UnitTests.EngineTest
 
             //Arrange
             _shortMetList = new[] {
-                new Product { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" },
-                new Product { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2"   },
-                new Product { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3"  }
+                new Product (Providers.AB){ UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" },
+                new Product (Providers.AB){ UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2"   },
+                new Product (Providers.AB){ UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3"  }
             };
 
             _shortListToFill = new ConcurrentBag<Product>();
-            _shortListToFill.Add(new Product() { SymbolSAP = "ABC", NazwaProducenta = "Producent" });
+            _shortListToFill.Add(new Product(Providers.AB) { SymbolSAP = "ABC", NazwaProducenta = "Producent" });
 
 
         }

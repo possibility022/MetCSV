@@ -16,14 +16,14 @@ namespace METCSV.UnitTests.EngineTest
         {
             //Arrange
             _shortMetList = new[] {
-                new Product {SymbolSAP = "ABC1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
-                new Product {SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
-                new Product {SymbolSAP = "ABC3", NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
+                new Product(Providers.AB) {SymbolSAP = "ABC1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
+                new Product(Providers.AB) {SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
+                new Product(Providers.AB) {SymbolSAP = "ABC3", NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
             };
             
             _shortProviderList = new[] {
-                new Product() { SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
-                new Product() { SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
+                new Product(Providers.AB) { SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
+                new Product(Providers.AB) { SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
             };
         }
 
