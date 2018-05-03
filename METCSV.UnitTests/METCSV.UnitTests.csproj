@@ -66,6 +66,7 @@
     <Compile Include="EngineTest\FillListDomainTest.cs" />
     <Compile Include="EngineTest\EndOfLiveDomainTest.cs" />
     <Compile Include="EngineTest\CompareDomainTest.cs" />
+    <Compile Include="EngineTest\ProductMergerTest.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ProfitsTests.cs" />
     <Compile Include="PerformanceTests.cs" />
@@ -79,9 +80,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Repository\abproducts.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Repository\concurent_v1.1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Repository\lamaproducts.json">

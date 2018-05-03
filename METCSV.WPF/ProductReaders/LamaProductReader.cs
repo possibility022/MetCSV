@@ -14,6 +14,8 @@ namespace METCSV.WPF.ProductReaders
 {
     class LamaProductReader : ProductReaderBase
     {
+        public override Providers Provider => Providers.Lama;
+
         public LamaProductReader(CancellationToken token)
         {
             SetCancellationToken(token);
@@ -68,7 +70,7 @@ namespace METCSV.WPF.ProductReaders
                 if (fields.Length < 16)
                     continue;
 
-                products.Add(new Product
+                products.Add(new Product(Provider)
                 {
                     SymbolSAP = "LAMA" + fields[4],//nr kat
                     NazwaProducenta = fields[16]
@@ -141,7 +143,7 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 }
 
-                products.Add(new Product
+                products.Add(new Product(Provider)
                 {
                     ID = null,
                     SymbolSAP = "LAMA" + HttpUtility.HtmlDecode(product.Element("KOD").Value),

@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {
     class TechDataProductReader : ProductReaderBase
     {
+        public override Providers Provider => Providers.TechData;
 
         public TechDataProductReader(CancellationToken token)
         {
@@ -63,7 +62,7 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 }
 
-                prices.Add(new Product
+                prices.Add(new Product(Provider)
                 {
                     SymbolSAP = ProviderName + fields[(int)TechDataCsvPricesColumns.SapNo],
                     CenaZakupuNetto = Double.Parse(fields[(int)TechDataCsvPricesColumns.Cena]),
@@ -89,7 +88,7 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 }
 
-                products.Add(new Product()
+                products.Add(new Product(Provider)
                 {
                     ID = null,
                     SymbolSAP = "TechData" + fields[(int)TechDataCsvProductsColumns.SapNo], //todo we can move prefix to config. We can do this for all IProductReader's

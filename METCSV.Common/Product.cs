@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace METCSV.Common
@@ -6,18 +7,33 @@ namespace METCSV.Common
     [Serializable]
     public class Product
     {
-        public Product()
+        public Product(Providers provider)
         {
             StanMagazynowy = -1;
             CenaNetto = -1;
             CenaZakupuNetto = -1;
             UrlZdjecia = "";
+
+
+            // ToDo w przyszłości powinieneś to odkomentować. Będzie to wymagało napisania własnego convertera JSON.
+            //if (provider == Providers.None)
+            //{
+            //    throw new InvalidDataException("Product must have specified provider.");
+            //}
+
+            Provider = provider;
         }
 
-        public Nullable<int> ID { get; set; }
+        public Providers Provider { get; set; }
+
+        public int? ID { get; set; }
+
         public string SymbolSAP { get => _symbolSAP; set { _symbolSAP = value; UpdateSapMenuHashSet(); } }
+
         public string KodProducenta { get { return _kodProducenta; } }
+
         public string ModelProduktu { get { return _modelProduktu; } }
+
         public string OryginalnyKodProducenta
         {
             get { return _oryginalnyKodProducenta; }

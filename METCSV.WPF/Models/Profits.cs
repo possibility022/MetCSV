@@ -1,13 +1,7 @@
-﻿using METCSV.WPF.Enums;
+﻿using METCSV.Common;
 using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace METCSV.WPF.Models
 {

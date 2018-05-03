@@ -92,7 +92,6 @@
     <Compile Include="Engine\FillListDomain.cs" />
     <Compile Include="Engine\HiddenProductsDomain.cs" />
     <Compile Include="Engine\ProductMerger.cs" />
-    <Compile Include="Enums\Providers.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\Helpers.cs" />

@@ -1,6 +1,5 @@
-﻿using METCSV.WPF.Enums;
+﻿using METCSV.Common;
 using METCSV.WPF.Helpers;
-using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Workflows;
@@ -11,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace METCSV.WPF.ViewModels
@@ -77,14 +75,14 @@ namespace METCSV.WPF.ViewModels
             RaisePropertyChanged(nameof(ProfitsCollections));
         }
 
-        private Profits GetAllreadyExistingProfits(Providers provider)
+        private Profits GetAlreadyExistingProfits(Providers provider)
         {
             return ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
         }
 
         public void AddManufacturers(ManufacturersCollection manufacturersCollection)
         {
-            var profits = GetAllreadyExistingProfits(manufacturersCollection.Provider);
+            var profits = GetAlreadyExistingProfits(manufacturersCollection.Provider);
 
             if (profits != null)
             {
@@ -165,7 +163,7 @@ namespace METCSV.WPF.ViewModels
             StringBuilder sb = new StringBuilder();
             foreach (Providers provider in Enum.GetValues(typeof(Providers)))
             {
-                if (provider == Providers.None)
+                if (provider == Providers.None || provider == Providers.MET)
                     continue;
 
 

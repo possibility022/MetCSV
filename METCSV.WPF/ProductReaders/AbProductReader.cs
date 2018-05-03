@@ -11,6 +11,7 @@ namespace METCSV.WPF.ProductReaders
 {
     class AbProductReader : ProductReaderBase 
     {
+        public override Providers Provider => Providers.AB;
 
         public AbProductReader(CancellationToken token)
         {
@@ -74,7 +75,7 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 }
 
-                products.Add(new Product()
+                products.Add(new Product(Provider)
                 {
                     ID = null,
                     SymbolSAP = "AB" + fields[(int)AbCsvProductsColumns.indeks],

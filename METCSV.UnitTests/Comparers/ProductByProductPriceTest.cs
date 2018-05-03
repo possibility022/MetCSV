@@ -17,8 +17,8 @@ namespace METCSV.UnitTests.Comparers
         static public void Initialize(TestContext context)
         {
             _comparer = new ProductByProductPrice();
-            _cheap = new Product() { CenaZakupuNetto = 100 };
-            _expensive = new Product() { CenaZakupuNetto = 999 };
+            _cheap = new Product(Providers.AB) { CenaZakupuNetto = 100 };
+            _expensive = new Product(Providers.AB) { CenaZakupuNetto = 999 };
         }
 
         [TestMethod]
