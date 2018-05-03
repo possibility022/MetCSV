@@ -47,11 +47,14 @@ namespace METCSV.UnitTests.EngineTest
             IsOnTheList(ab, list);
         }
 
-        private static void IsOnTheList(ConcurrentBag<Product> ab, ConcurrentDictionary<int, byte> list)
+        private static void IsOnTheList(ConcurrentBag<Product> sourceList, ConcurrentDictionary<int, byte> list)
         {
-            foreach (var v in ab)
+            foreach (var v in sourceList)
             {
-                Assert.IsTrue(list.ContainsKey(v.PartNumber));
+                if (!list.ContainsKey(v.PartNumber))
+                {
+                    Assert.Fail();
+                }
             }
         }
     }
