@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using METCSV.Common;
 using METCSV.Common.Comparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
