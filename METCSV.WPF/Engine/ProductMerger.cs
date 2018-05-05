@@ -1,13 +1,9 @@
 ﻿using METCSV.Common;
 using METCSV.Common.Comparers;
-using METCSV.WPF.Converters;
-using METCSV.WPF.ExtensionMethods;
-using System;
+using METCSV.Domain.Logic;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace METCSV.WPF.Engine
 {

@@ -1,14 +1,14 @@
 ﻿using METCSV.Common;
 using METCSV.Common.Comparers;
-using METCSV.WPF.ExtensionMethods;
+using METCSV.Common.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace METCSV.WPF.Engine
+namespace METCSV.Domain.Logic
 {
-    class CompareDomain
+    public class CompareDomain
     {
         ConcurrentBag<int> _allPartNumbers;
         ConcurrentDictionary<int, IList<Product>> _products;

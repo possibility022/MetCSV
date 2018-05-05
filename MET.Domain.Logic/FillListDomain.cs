@@ -1,15 +1,15 @@
 ﻿using METCSV.Common;
-using METCSV.WPF.Converters;
-using METCSV.WPF.ExtensionMethods;
+using METCSV.Common.Converters;
+using METCSV.Common.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace METCSV.WPF.Engine
+namespace METCSV.Domain.Logic
 {
-    class FillListDomain
+    public class FillListDomain
     {
 
         /// <summary>

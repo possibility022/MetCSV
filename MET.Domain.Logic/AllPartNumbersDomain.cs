@@ -1,11 +1,11 @@
 ﻿using METCSV.Common;
-using METCSV.WPF.ExtensionMethods;
+using METCSV.Common.ExtensionMethods;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace METCSV.WPF.Engine
+namespace METCSV.Domain.Logic
 {
-    static class AllPartNumbersDomain
+    public static class AllPartNumbersDomain
     {
         public static ConcurrentDictionary<int, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
         {

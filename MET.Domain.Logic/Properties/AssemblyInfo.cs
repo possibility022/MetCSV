@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("METCSV.Common")]
+[assembly: AssemblyTitle("MET.Domain.Logic")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("METCSV.Common")]
+[assembly: AssemblyProduct("MET.Domain.Logic")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("40576d61-d49e-4aae-b078-73a6a8a69836")]
+[assembly: Guid("991bffdd-be3f-4cb3-9c32-09dfaa2fddfd")]
 
 // Version information for an assembly consists of the following four values:
 //
