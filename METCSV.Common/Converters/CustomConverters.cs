@@ -1,9 +1,8 @@
-﻿using METCSV.Common;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace METCSV.WPF.Converters
+namespace METCSV.Common.Converters
 {
     public static class CustomConverters
     {
