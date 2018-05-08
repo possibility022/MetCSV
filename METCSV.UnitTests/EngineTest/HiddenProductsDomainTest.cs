@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using METCSV.Common;
-using METCSV.WPF.Engine;
+using METCSV.Domain.Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest

@@ -66,6 +66,7 @@
     <Compile Include="EngineTest\FillListDomainTest.cs" />
     <Compile Include="EngineTest\EndOfLiveDomainTest.cs" />
     <Compile Include="EngineTest\CompareDomainTest.cs" />
+    <Compile Include="EngineTest\ProductMergerTest.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ProfitsTests.cs" />
     <Compile Include="PerformanceTests.cs" />
@@ -81,9 +82,6 @@
     <None Include="Repository\abproducts.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Repository\concurent_v1.1.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Repository\lamaproducts.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -95,6 +93,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj">
+      <Project>{991BFFDD-BE3F-4CB3-9C32-09DFAA2FDDFD}</Project>
+      <Name>MET.Domain.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
       <Project>{40576D61-D49E-4AAE-B078-73A6A8A69836}</Project>
       <Name>METCSV.Common</Name>

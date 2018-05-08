@@ -1,6 +1,5 @@
-﻿using METCSV.WPF.Enums;
+﻿using METCSV.Common;
 using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;

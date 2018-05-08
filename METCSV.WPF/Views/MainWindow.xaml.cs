@@ -1,10 +1,5 @@
-﻿using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
-using METCSV.WPF.ViewModels;
-using METCSV.WPF.Views;
+﻿using METCSV.WPF.ViewModels;
 using Microsoft.Win32;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace METCSV.WPF

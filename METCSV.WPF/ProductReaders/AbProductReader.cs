@@ -6,13 +6,12 @@ using System.Threading;
 using System.Web;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {
     class AbProductReader : ProductReaderBase 
     {
+        public override Providers Provider => Providers.AB;
 
         public AbProductReader(CancellationToken token)
         {
@@ -64,7 +63,7 @@ namespace METCSV.WPF.ProductReaders
         private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = ";" };
+            CsvReader reader = new CsvReader() { Delimiter = ";" }; // todo to config
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
             
@@ -76,7 +75,7 @@ namespace METCSV.WPF.ProductReaders
                     continue;
                 }
 
-                products.Add(new Product()
+                products.Add(new Product(Provider)
                 {
                     ID = null,
                     SymbolSAP = "AB" + fields[(int)AbCsvProductsColumns.indeks],
@@ -89,7 +88,6 @@ namespace METCSV.WPF.ProductReaders
                     NazwaDostawcy = ProviderName,
                     StanMagazynowy = ParseABwarehouseStatus(fields[(int)AbCsvProductsColumns.magazyn_ilosc]),
                     StatusProduktu = false,
-                    CenaNetto = -1,
                     CenaZakupuNetto = Double.Parse(fields[(int)AbCsvProductsColumns.cena_netto].Replace('.', ',')),
                     UrlZdjecia = null,
                     Kategoria = HttpUtility.HtmlDecode(fields[(int)AbCsvProductsColumns.kategoria])

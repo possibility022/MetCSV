@@ -80,19 +80,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\CustomConverters.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
     <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
-    <Compile Include="Engine\AllPartNumbersDomain.cs" />
-    <Compile Include="Engine\CompareDomain.cs" />
-    <Compile Include="Engine\EndOfLiveDomain.cs" />
-    <Compile Include="Engine\FillListDomain.cs" />
-    <Compile Include="Engine\HiddenProductsDomain.cs" />
     <Compile Include="Engine\ProductMerger.cs" />
-    <Compile Include="Enums\Providers.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\Helpers.cs" />
@@ -178,6 +171,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj">
+      <Project>{991bffdd-be3f-4cb3-9c32-09dfaa2fddfd}</Project>
+      <Name>MET.Domain.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
       <Project>{40576d61-d49e-4aae-b078-73a6a8a69836}</Project>
       <Name>METCSV.Common</Name>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq;
 using METCSV.Common;
-using METCSV.WPF.Engine;
+using METCSV.Domain.Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -47,11 +47,14 @@ namespace METCSV.UnitTests.EngineTest
             IsOnTheList(ab, list);
         }
 
-        private static void IsOnTheList(ConcurrentBag<Product> ab, ConcurrentDictionary<int, byte> list)
+        private static void IsOnTheList(ConcurrentBag<Product> sourceList, ConcurrentDictionary<int, byte> list)
         {
-            foreach (var v in ab)
+            foreach (var v in sourceList)
             {
-                Assert.IsTrue(list.ContainsKey(v.PartNumber));
+                if (!list.ContainsKey(v.PartNumber))
+                {
+                    Assert.Fail();
+                }
             }
         }
     }

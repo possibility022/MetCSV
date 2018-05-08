@@ -1,12 +1,7 @@
 ﻿using METCSV.Common;
-using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
-using METCSV.WPF.ProductProvider;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace METCSV.WPF.Helpers
@@ -43,7 +38,7 @@ namespace METCSV.WPF.Helpers
                     profits.Values[p.NazwaProducenta]
                     : profits.DefaultProfit;
 
-                p.CenaNetto = p.CenaZakupuNetto + (p.CenaZakupuNetto * profit);
+                p.SetCennaNetto(p.CenaZakupuNetto + (p.CenaZakupuNetto * profit));
             }
         }
 
