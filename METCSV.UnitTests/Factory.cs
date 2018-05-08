@@ -1,10 +1,17 @@
-﻿using METCSV.WPF.Enums;
+﻿using METCSV.Common;
+using METCSV.WPF.Downloaders.Offline;
+using METCSV.WPF.Enums;
+using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
+using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace METCSV.UnitTests
@@ -12,6 +19,7 @@ namespace METCSV.UnitTests
     class Factory
     {
 
+        static CancellationTokenSource token = new CancellationTokenSource();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static Random random = new Random();
 
@@ -48,6 +56,34 @@ namespace METCSV.UnitTests
             var model = new ProfitsViewModel();
             model.AddManufacturers(GetManufacturers());
             return model;
+        }
+
+        public static List<Product> GetLamaProducts()
+        {
+            var content = File.ReadAllText(@"Repository\lamaproducts.json");
+            var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
+            return deserialized;
+        }
+
+        public static List<Product> GetABProducts()
+        {
+            var content = File.ReadAllText(@"Repository\abproducts.json");
+            var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
+            return deserialized;
+        }
+
+        public static List<Product> GetTDProducts()
+        {
+            var content = File.ReadAllText(@"Repository\techjDataproducts.json");
+            var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
+            return deserialized;
+        }
+
+        public static List<Product> GetMetProducts()
+        {
+            var content = File.ReadAllText(@"Repository\metproducts.json");
+            var deserialized = JsonConvert.DeserializeObject<List<Product>>(content);
+            return deserialized;
         }
     }
 }

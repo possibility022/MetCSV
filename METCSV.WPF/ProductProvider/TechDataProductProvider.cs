@@ -1,6 +1,7 @@
-﻿using METCSV.WPF.Downloaders;
+﻿using METCSV.WPF.Configuration;
+using METCSV.WPF.Downloaders;
+using METCSV.WPF.Downloaders.Offline;
 using METCSV.WPF.Interfaces;
-using METCSV.WPF.ProductProvider;
 using METCSV.WPF.ProductReaders;
 using System.Threading;
 
@@ -24,7 +25,14 @@ namespace METCSV.WPF.ProductProvider
 
         private IDownloader GetDownloader()
         {
-            return new TechDataDownloader(_token);
+            if (Settings.OfflineMode)
+            {
+                return new TechDataOfflineDownloader();
+            }
+            else
+            {
+                return new TechDataDownloader(_token);
+            }
         }
     }
 }

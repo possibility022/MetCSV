@@ -10,6 +10,11 @@ using System.Diagnostics;
 using METCSV.WPF.Views;
 using METCSV.WPF.Workflows;
 using METCSV.WPF.Engine;
+using System.Collections.Generic;
+using METCSV.WPF.Models;
+using METCSV.Common;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -30,6 +35,8 @@ namespace METCSV.WPF.ViewModels
         private bool _setProfits = true;
 
         public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
+
+        private List<Product> Products;
 
         public MainWindowViewModel()
         {
@@ -126,7 +133,9 @@ namespace METCSV.WPF.ViewModels
                 _ab.GetProducts());
             
             await Task.Run(() => productMerger.Generate());
-            
+
+            Products = new List<Product>(productMerger.FinalList);
+
             return true;
         }
 
@@ -134,6 +143,15 @@ namespace METCSV.WPF.ViewModels
         {
             _profitsViewModel.SaveAllProfits();
             var t = Task.Run(() => StepTwoAsync());
+        }
+
+        public void Export(string path)
+        {
+            if (Products != null)
+            {
+                string json = JsonConvert.SerializeObject(Products, Formatting.Indented);
+                File.WriteAllText(path, json);
+            }
         }
 
         private void OnStatusChanged(object sender, OperationStatus eventArgs)
