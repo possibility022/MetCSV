@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using METCSV.Common;
 using Newtonsoft.Json;
 using System.IO;
+using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -29,32 +30,45 @@ namespace METCSV.WPF.ViewModels
         IProductProvider _techData;
         IProductProvider _ab;
 
+        private CogsController _metCogsController;
+        private CogsController _lamaCogsController;
+        private CogsController _techDataCogsController;
+        private CogsController _abCogsController;
+
         ProfitsView _profitsView;
         ProfitsViewModel _profitsViewModel;
         private bool _setProfits = true;
 
         public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
 
+
+        public CogsController LamaCogsController { get => _lamaCogsController; set => SetProperty(ref _lamaCogsController, value); }
+        public CogsController MetCogsController { get => _metCogsController; set => SetProperty(ref _metCogsController, value); }
+        public CogsController TechDataCogsController { get => _techDataCogsController; set => SetProperty(ref _techDataCogsController, value); }
+        public CogsController AbCogsController { get => _abCogsController; set => SetProperty(ref _abCogsController, value); }
+
         private List<Product> Products;
 
         public MainWindowViewModel()
         {
-
+            MetCogsController = new CogsController();
+            LamaCogsController = new CogsController();
+            TechDataCogsController = new CogsController();
+            AbCogsController = new CogsController();
         }
 
-        private Task Initialize()
+        private void Initialize()
         {
-            Task init = new Task(() =>
-            {
-                _cancellationTokenSource = new CancellationTokenSource();
-                _met = new MetProductProvider(_cancellationTokenSource.Token);
-                _lama = new LamaProductProvider(_cancellationTokenSource.Token);
-                _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
-                _ab = new ABProductProvider(_cancellationTokenSource.Token);
-            });
+            _cancellationTokenSource = new CancellationTokenSource();
+            _met = new MetProductProvider(_cancellationTokenSource.Token);
+            _lama = new LamaProductProvider(_cancellationTokenSource.Token);
+            _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
+            _ab = new ABProductProvider(_cancellationTokenSource.Token);
 
-            init.Start();
-            return init;
+            _metCogsController.SetProvider(_met);
+            _lamaCogsController.SetProvider(_lama);
+            _techDataCogsController.SetProvider(_techData);
+            _abCogsController.SetProvider(_ab);
         }
 
         private async Task<bool> DownloadAndLoadAsync()
@@ -79,7 +93,7 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
-            await Initialize();
+            Initialize();
             await DownloadAndLoadAsync();
 
             if (SetProfits)
@@ -130,7 +144,7 @@ namespace METCSV.WPF.ViewModels
                 _lama.GetProducts(),
                 _techData.GetProducts(),
                 _ab.GetProducts());
-            
+
             await Task.Run(() => productMerger.Generate());
 
             Products = new List<Product>(productMerger.FinalList);
@@ -151,16 +165,6 @@ namespace METCSV.WPF.ViewModels
                 string json = JsonConvert.SerializeObject(Products, Formatting.Indented);
                 File.WriteAllText(path, json);
             }
-        }
-
-        private void OnStatusChanged(object sender, OperationStatus eventArgs)
-        {
-            //todo implement
-        }
-
-        private void OnDownloadingStatusChanged(object sender, OperationStatus eventArgs)
-        {
-            //todo implement?
         }
     }
 }
