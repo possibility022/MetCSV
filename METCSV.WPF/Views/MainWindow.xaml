@@ -70,14 +70,56 @@
             Grid.Column="1"
             Icon="Cog"
             Spin="True"
-            SpinDuration="10" />
+            SpinDuration="{Binding MetCogsController.DownloadInProgress}" />
 
         <fa:ImageAwesome
             Grid.Row="2"
             Grid.Column="1"
             Icon="Cog"
             Spin="True"
-            SpinDuration="10" />
+            SpinDuration="{Binding MetCogsController.ReadingInProgress}" />
+
+        <fa:ImageAwesome
+            Grid.Row="1"
+            Grid.Column="2"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="{Binding AbCogsController.DownloadInProgress}" />
+
+        <fa:ImageAwesome
+            Grid.Row="2"
+            Grid.Column="2"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="{Binding AbCogsController.ReadingInProgress}" />
+
+        <fa:ImageAwesome
+            Grid.Row="1"
+            Grid.Column="3"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="{Binding TechDataCogsController.DownloadInProgress}" />
+
+        <fa:ImageAwesome
+            Grid.Row="2"
+            Grid.Column="3"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="{Binding TechDataCogsController.ReadingInProgress}" />
+
+        <fa:ImageAwesome
+            Grid.Row="1"
+            Grid.Column="4"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="{Binding LamaCogsController.DownloadInProgress}" />
+
+        <fa:ImageAwesome
+            Grid.Row="2"
+            Grid.Column="4"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="{Binding LamaCogsController.ReadingInProgress}" />
 
         <StackPanel
             Grid.Row="3"
@@ -105,7 +147,7 @@
             Margin="10"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
-            <Button Content="Rozpocznij" />
+            <Button Click="Button_Click" Content="Rozpocznij" />
             <Button Content="Wyjdź" />
         </StackPanel>
 
