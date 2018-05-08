@@ -11,9 +11,11 @@
     Width="442.97"
     Height="493.793"
     mc:Ignorable="d">
+
     <Window.DataContext>
         <ViewModels:MainWindowViewModel />
     </Window.DataContext>
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -26,6 +28,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -89,8 +92,13 @@
 
         </StackPanel>
 
-        <StackPanel
+        <TextBlock
             Grid.Row="4"
+            Grid.ColumnSpan="5"
+            Text="Tu będzie LOG!" />
+
+        <StackPanel
+            Grid.Row="5"
             Grid.ColumnSpan="5"
             Width="Auto"
             Height="Auto"
