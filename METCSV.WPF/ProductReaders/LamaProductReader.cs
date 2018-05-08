@@ -9,7 +9,6 @@ using System.Xml;
 using System.Xml.Linq;
 using METCSV.Common;
 using METCSV.WPF.Enums;
-using METCSV.WPF.ProductProvider;
 
 namespace METCSV.WPF.ProductReaders
 {
@@ -149,7 +148,7 @@ namespace METCSV.WPF.ProductReaders
                     OryginalnyKodProducenta = HttpUtility.HtmlDecode(product.Element("PN").Value),
                     KodDostawcy = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     NazwaProduktu = HttpUtility.HtmlDecode(product.Element("NAZEV").Value),
-                    NazwaProducenta = null,
+                    NazwaProducenta = string.Empty,
                     NazwaDostawcy = ProviderName,
                     StanMagazynowy = Int32.Parse(product.Element("SKLAD_NUM").Value),
                     StatusProduktu = false,

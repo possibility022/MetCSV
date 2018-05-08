@@ -18,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Button
@@ -28,5 +29,9 @@
             Grid.Row="1"
             Click="ShowProfitsWindow"
             Content="Ustaw marże" />
+        <Button
+            Grid.Row="2"
+            Click="Export"
+            Content="Exportuj" />
     </Grid>
 </Window>

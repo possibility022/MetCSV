@@ -34,11 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.3\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
@@ -46,8 +46,8 @@
     <Reference Include="Pop3, Version=2.2.0.0, Culture=neutral, PublicKeyToken=e33d940baacd0f37, processorArchitecture=MSIL">
       <HintPath>..\packages\Pop3.2.2.0\lib\net40\Pop3.dll</HintPath>
     </Reference>
-    <Reference Include="Prism, Version=7.0.0.362, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Core.7.0.0.362\lib\net45\Prism.dll</HintPath>
+    <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
     </Reference>
     <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
@@ -80,7 +80,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\CustomConverters.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
+    <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
+    <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
+    <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
+    <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
+    <Compile Include="Engine\AllPartNumbersDomain.cs" />
+    <Compile Include="Engine\CompareDomain.cs" />
+    <Compile Include="Engine\EndOfLiveDomain.cs" />
+    <Compile Include="Engine\FillListDomain.cs" />
+    <Compile Include="Engine\HiddenProductsDomain.cs" />
     <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="Enums\Providers.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
@@ -89,6 +99,7 @@
     <Compile Include="Models\ManufacturersCollection.cs" />
     <Compile Include="Models\EditableDictionaryKey.cs" />
     <Compile Include="Models\Profits.cs" />
+    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="ViewModels\ProfitsViewModel.cs" />
     <Compile Include="Views\ProfitsView.xaml.cs">
       <DependentUpon>ProfitsView.xaml</DependentUpon>
@@ -133,7 +144,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Product.cs" />
     <Compile Include="ProductReaders\AbProductReader.cs" />
     <Compile Include="ProductReaders\LamaProductReader.cs" />
     <Compile Include="ProductReaders\MetProductReader.cs" />

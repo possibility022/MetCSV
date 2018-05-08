@@ -41,8 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparers\ProductByPartNumber.cs" />
+    <Compile Include="Comparers\ProductByProductPrice.cs" />
+    <Compile Include="Comparers\ProductBySapManuHash.cs" />
+    <Compile Include="Comparers\ProductSorter.cs" />
     <Compile Include="CsvReader.cs" />
+    <Compile Include="CsvWriter.cs" />
     <Compile Include="Encrypting.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
