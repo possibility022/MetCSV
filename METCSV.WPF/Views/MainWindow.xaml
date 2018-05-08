@@ -4,34 +4,102 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ViewModels="clr-namespace:METCSV.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:METCSV.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
-    Width="525"
-    Height="350"
+    Width="442.97"
+    Height="493.793"
     mc:Ignorable="d">
     <Window.DataContext>
         <ViewModels:MainWindowViewModel />
     </Window.DataContext>
     <Grid>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Button
-            Grid.Row="0"
-            Click="Button_Click"
-            Content="Download" />
-        <Button
+        <Label
             Grid.Row="1"
-            Click="ShowProfitsWindow"
-            Content="Ustaw marże" />
-        <Button
+            Grid.Column="0"
+            Content="Downloading status" />
+
+        <Label
             Grid.Row="2"
-            Click="Export"
-            Content="Exportuj" />
+            Grid.Column="0"
+            Content="Loading file" />
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            Content="Met" />
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="2"
+            Content="Ab" />
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="3"
+            Content="Tech Data" />
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="4"
+            Content="Lama" />
+
+        <fa:ImageAwesome
+            Grid.Row="1"
+            Grid.Column="1"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="10" />
+
+        <fa:ImageAwesome
+            Grid.Row="2"
+            Grid.Column="1"
+            Icon="Cog"
+            Spin="True"
+            SpinDuration="10" />
+
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="4">
+
+            <Label Content="Krok 1: Filtruj ukryte produkty" />
+            <Label Content="Krok 2: Utwórz listę wszystkich part numberów" />
+            <Label Content="Krok 3: Uzupełnij dane" />
+            <Label Content="Krok 4: Ustaw kategorię [End of Life]" />
+            <Label Content="Krok 5: Porównaj" />
+
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="4"
+            Grid.ColumnSpan="5"
+            Width="Auto"
+            Height="Auto"
+            Margin="10"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button Content="Rozpocznij" />
+            <Button Content="Wyjdź" />
+        </StackPanel>
+
     </Grid>
 </Window>
