@@ -1,13 +1,7 @@
-﻿using METCSV.WPF.Enums;
+﻿using METCSV.Common;
 using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace METCSV.WPF.Models
 {
@@ -38,7 +32,12 @@ namespace METCSV.WPF.Models
             foreach(var newValue in newValues)
             {
                 if (newValue.Value == _defaultProfit)
-                    continue;
+                {
+                    if (_values.ContainsKey(newValue.Key))
+                    {
+                        _values.Remove(newValue.Key);
+                    }
+                }
 
                 if (_values.ContainsKey(newValue.Key) == false)
                 {

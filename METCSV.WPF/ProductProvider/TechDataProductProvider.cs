@@ -1,4 +1,5 @@
-﻿using METCSV.WPF.Configuration;
+﻿using METCSV.Common;
+using METCSV.WPF.Configuration;
 using METCSV.WPF.Downloaders;
 using METCSV.WPF.Downloaders.Offline;
 using METCSV.WPF.Interfaces;
@@ -14,7 +15,7 @@ namespace METCSV.WPF.ProductProvider
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
             _token = token;
-            Provider = Enums.Providers.TechData;
+            Provider = Providers.TechData;
         }
 
         private IProductReader GetProductReader()

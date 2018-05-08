@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using METCSV.Common;
 using METCSV.WPF;
-using METCSV.WPF.Enums;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Workflows;
@@ -31,7 +30,7 @@ namespace METCSV.UnitTests.Workflows
             profits.SetNewProfits(prof);
 
             var file = ProfitsIO.SaveToFile(profits);
-            
+
             if (File.Exists(file))
             {
                 var contetn = File.ReadAllText(file);
@@ -49,11 +48,11 @@ namespace METCSV.UnitTests.Workflows
         [TestMethod]
         public void Deserialize()
         {
-            List<EditableDictionaryKey<string, double>> prof = new List<EditableDictionaryKey<string, double>>()
+            Dictionary<string, double> prof = new Dictionary<string, double>()
             {
-                new EditableDictionaryKey<string, double>("a", 0.2),
-                new EditableDictionaryKey<string, double>("b", 0.2),
-                new EditableDictionaryKey<string, double>("c", 0.3)
+                {"a", 0.2 },
+                { "b", 0.2 },
+                { "c", 0.3 }
             };
 
             var json = JsonConvert.SerializeObject(prof);
@@ -61,7 +60,7 @@ namespace METCSV.UnitTests.Workflows
 
             var profits = ProfitsIO.LoadFromFile(Providers.AB);
 
-            foreach(var p in profits.Values)
+            foreach (var p in profits.Values)
             {
                 Trace.WriteLine($"{p.Key} : {p.Value}");
             }
