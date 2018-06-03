@@ -30,11 +30,6 @@ namespace METCSV.WPF.ViewModels
         IProductProvider _techData;
         IProductProvider _ab;
 
-        private CogsController _metCogsController;
-        private CogsController _lamaCogsController;
-        private CogsController _techDataCogsController;
-        private CogsController _abCogsController;
-
         ProfitsView _profitsView;
         ProfitsViewModel _profitsViewModel;
         private bool _setProfits = true;
@@ -42,19 +37,24 @@ namespace METCSV.WPF.ViewModels
         public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
 
 
-        public CogsController LamaCogsController { get => _lamaCogsController; set => SetProperty(ref _lamaCogsController, value); }
-        public CogsController MetCogsController { get => _metCogsController; set => SetProperty(ref _metCogsController, value); }
-        public CogsController TechDataCogsController { get => _techDataCogsController; set => SetProperty(ref _techDataCogsController, value); }
-        public CogsController AbCogsController { get => _abCogsController; set => SetProperty(ref _abCogsController, value); }
+        public IconsController LamaController { get => _lamaController; set => SetProperty(ref _lamaController, value); }
+        public IconsController MetController { get => _metController; set => SetProperty(ref _metController, value); }
+        public IconsController TdController { get => _tdController; set => SetProperty(ref _tdController, value); }
+        public IconsController AbController { get => _abController; set => SetProperty(ref _abController, value); }
+
+        IconsController _lamaController;
+        IconsController _metController;
+        IconsController _tdController;
+        IconsController _abController;
 
         private List<Product> Products;
 
         public MainWindowViewModel()
         {
-            MetCogsController = new CogsController();
-            LamaCogsController = new CogsController();
-            TechDataCogsController = new CogsController();
-            AbCogsController = new CogsController();
+            LamaController = new IconsController();
+            MetController = new IconsController();
+            TdController = new IconsController();
+            AbController = new IconsController();
         }
 
         private void Initialize()
@@ -65,10 +65,10 @@ namespace METCSV.WPF.ViewModels
             _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
             _ab = new ABProductProvider(_cancellationTokenSource.Token);
 
-            _metCogsController.SetProvider(_met);
-            _lamaCogsController.SetProvider(_lama);
-            _techDataCogsController.SetProvider(_techData);
-            _abCogsController.SetProvider(_ab);
+            LamaController.SetProvider(_lama);
+            MetController.SetProvider(_met);
+            AbController.SetProvider(_ab);
+            TdController.SetProvider(_techData);
         }
 
         private async Task<bool> DownloadAndLoadAsync()
