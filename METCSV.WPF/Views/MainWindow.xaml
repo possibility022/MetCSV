@@ -69,6 +69,8 @@
             HorizontalAlignment="Center"
             Content="Lama" />
 
+        <!--  Lama Download  -->
+
         <fa:ImageAwesome
             Name="LamaDownloadProgress"
             Grid.Row="1"
@@ -78,6 +80,15 @@
             Icon="Cog"
             Spin="True"
             Visibility="{Binding LamaController.DownloadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="LamaDownloadingFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding LamaController.DownloadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="LamaDownloadWaiting"
@@ -97,6 +108,8 @@
             Icon="Check"
             Visibility="{Binding LamaController.DownloadDoneVisibility}" />
 
+        <!--  Met Download  -->
+
         <fa:ImageAwesome
             Name="MetDownloadProgress"
             Grid.Row="1"
@@ -107,6 +120,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding MetController.DownloadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="MetDownloadingFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding MetController.DownloadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="MetDownloadWaiting"
@@ -126,6 +148,8 @@
             Icon="Check"
             Visibility="{Binding MetController.DownloadDoneVisibility}" />
 
+        <!--  AB Download  -->
+
         <fa:ImageAwesome
             Name="ABDownloadProgress"
             Grid.Row="1"
@@ -136,6 +160,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding AbController.DownloadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="AbDownloadingFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding AbController.DownloadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="ABDownloadWaiting"
@@ -155,6 +188,9 @@
             Icon="Check"
             Visibility="{Binding AbController.DownloadDoneVisibility}" />
 
+
+        <!--  TD Download  -->
+
         <fa:ImageAwesome
             Name="TDDownloadProgress"
             Grid.Row="1"
@@ -165,6 +201,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding TdController.DownloadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="TdDownloadingFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding TdController.DownloadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="TDDownloadWaiting"
@@ -184,6 +229,8 @@
             Icon="Check"
             Visibility="{Binding TdController.DownloadDoneVisibility}" />
 
+        <!--  Lama Read  -->
+
         <fa:ImageAwesome
             Name="LamaFileReadProgress"
             Grid.Row="2"
@@ -194,6 +241,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding LamaController.ReadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="LamaReadFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding LamaController.ReadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="LamaFileReadWaiting"
@@ -213,6 +269,8 @@
             Icon="Check"
             Visibility="{Binding LamaController.ReadDoneVisibility}" />
 
+        <!--  Met Read  -->
+
         <fa:ImageAwesome
             Name="MetFileReadProgress"
             Grid.Row="2"
@@ -223,6 +281,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding MetController.ReadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="MetReadFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding MetController.ReadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="MetFileReadWaiting"
@@ -242,6 +309,8 @@
             Icon="Check"
             Visibility="{Binding MetController.ReadDoneVisibility}" />
 
+        <!--  Ab Read  -->
+
         <fa:ImageAwesome
             Name="ABFileReadProgress"
             Grid.Row="2"
@@ -252,6 +321,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding AbController.ReadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="AbReadFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding AbController.ReadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="ABFileReadWaiting"
@@ -271,6 +349,8 @@
             Icon="Check"
             Visibility="{Binding AbController.ReadDoneVisibility}" />
 
+        <!--  TD Read  -->
+
         <fa:ImageAwesome
             Name="TDFileReadProgress"
             Grid.Row="2"
@@ -281,6 +361,15 @@
             Spin="True"
             SpinDuration="10"
             Visibility="{Binding TdController.ReadInProgressVisibility}" />
+
+        <fa:ImageAwesome
+            Name="TdReadFaild"
+            Grid.Row="1"
+            Grid.Column="4"
+            Width="30"
+            Margin="10"
+            Icon="Close"
+            Visibility="{Binding TdController.ReadFaildVisibility}" />
 
         <fa:ImageAwesome
             Name="TDFileReadWaiting"
@@ -300,18 +389,46 @@
             Icon="Check"
             Visibility="{Binding TdController.ReadDoneVisibility}" />
 
-        <StackPanel
+        <Grid
             Grid.Row="3"
             Grid.Column="1"
             Grid.ColumnSpan="4">
 
-            <Label Content="Krok 1: Filtruj ukryte produkty" />
-            <Label Content="Krok 2: Utwórz listę wszystkich part numberów" />
-            <Label Content="Krok 3: Uzupełnij dane" />
-            <Label Content="Krok 4: Ustaw kategorię [End of Life]" />
-            <Label Content="Krok 5: Porównaj" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                Content="Krok 1: Filtruj ukryte produkty" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                Content="Krok 2: Utwórz listę wszystkich part numberów" />
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Content="Krok 3: Uzupełnij dane" />
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Content="Krok 4: Ustaw kategorię [End of Life]" />
+            <Label
+                Grid.Row="4"
+                Grid.Column="1"
+                Content="Krok 5: Porównaj" />
+
+        </Grid>
 
         <TextBlock
             Grid.Row="4"

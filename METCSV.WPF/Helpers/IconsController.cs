@@ -14,6 +14,13 @@ namespace METCSV.WPF.Helpers
 
         #region download
 
+        private Visibility _downloadFaildVisibility = Visibility.Hidden;
+        public Visibility DownloadFaildVisibility
+        {
+            get { return _downloadFaildVisibility; }
+            set { SetProperty(ref _downloadFaildVisibility, value); }
+        }
+
         private Visibility _downloadInProgressVisibility = Visibility.Hidden;
         public Visibility DownloadInProgressVisibility
         {
@@ -40,6 +47,13 @@ namespace METCSV.WPF.Helpers
         #endregion
 
         #region read
+
+        private Visibility _readFaildVisibility = Visibility.Hidden;
+        public Visibility ReadFaildVisibility
+        {
+            get { return _readFaildVisibility; }
+            set { SetProperty(ref _readFaildVisibility, value); }
+        }
 
         private Visibility _readInProgressVisibility = Visibility.Hidden;
         public Visibility ReadInProgressVisibility
@@ -80,20 +94,22 @@ namespace METCSV.WPF.Helpers
 
         private void Provider_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            GetStatus(_provider.DownloaderStatus, out var waiting, out var progress, out var done);
+            GetStatus(_provider.DownloaderStatus, out var waiting, out var progress, out var done, out var faild);
 
             DownloadInProgressVisibility = progress;
             DownloadWaitingVisibility = waiting;
             DownloadDoneVisibility = done;
+            DownloadFaildVisibility = faild;
 
-            GetStatus(_provider.ReaderStatus, out waiting, out progress, out done);
+            GetStatus(_provider.ReaderStatus, out waiting, out progress, out done, out faild);
 
             ReadInProgressVisibility = progress;
             ReadWaitingVisibility = waiting;
             ReadDoneVisibility = done;
+            ReadFaildVisibility = faild;
         }
 
-        private void GetStatus(OperationStatus status, out Visibility waiting, out Visibility inProgress, out Visibility done)
+        private void GetStatus(OperationStatus status, out Visibility waiting, out Visibility inProgress, out Visibility done, out Visibility faild)
         {
             Debug.WriteLine($"{nameof(IconsController)} : SetStatus to : {status}");
             switch (status)
@@ -102,16 +118,25 @@ namespace METCSV.WPF.Helpers
                     waiting = Visibility.Visible;
                     done = Visibility.Hidden;
                     inProgress = Visibility.Hidden;
+                    faild = Visibility.Hidden;
                     break;
                 case OperationStatus.InProgress:
                     waiting = Visibility.Hidden;
                     done = Visibility.Hidden;
                     inProgress = Visibility.Visible;
+                    faild = Visibility.Hidden;
                     break;
                 case OperationStatus.Complete:
                     waiting = Visibility.Hidden;
                     done = Visibility.Visible;
                     inProgress = Visibility.Hidden;
+                    faild = Visibility.Hidden;
+                    break;
+                case OperationStatus.Faild:
+                    waiting = Visibility.Hidden;
+                    done = Visibility.Hidden;
+                    inProgress = Visibility.Hidden;
+                    faild = Visibility.Visible;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(status.ToString());
