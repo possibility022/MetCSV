@@ -7,6 +7,7 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:METCSV.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:usercontrols="clr-namespace:METCSV.WPF.UserControls"
     Title="MainWindow"
     Width="442.97"
     Height="493.793"
@@ -406,6 +407,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+
+            <usercontrols:StepsControl Status="{Binding StepOneStatus}" />
 
             <Label
                 Grid.Row="0"

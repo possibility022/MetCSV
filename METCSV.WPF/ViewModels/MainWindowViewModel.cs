@@ -24,6 +24,15 @@ namespace METCSV.WPF.ViewModels
         private CancellationTokenSource _cancellationTokenSource;
 
         private bool _showProfitsWindow = false;
+        
+
+        private OperationStatus _stepOneStatus = OperationStatus.ReadyToStart;
+
+        public OperationStatus StepOneStatus
+        {
+            get { return _stepOneStatus; }
+            set { SetProperty(ref _stepOneStatus, value); }
+        }
 
         IProductProvider _met;
         IProductProvider _lama;
@@ -59,6 +68,8 @@ namespace METCSV.WPF.ViewModels
 
         private void Initialize()
         {
+            StepOneStatus = OperationStatus.InProgress;
+
             _cancellationTokenSource = new CancellationTokenSource();
             _met = new MetProductProvider(_cancellationTokenSource.Token);
             _lama = new LamaProductProvider(_cancellationTokenSource.Token);
@@ -93,6 +104,7 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
+            StepOneStatus = OperationStatus.InProgress;
             Initialize();
             await DownloadAndLoadAsync();
 

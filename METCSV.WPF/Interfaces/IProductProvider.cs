@@ -5,7 +5,7 @@ using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Interfaces
 {
-    interface IProductProvider : INotifyPropertyChanged
+    public interface IProductProvider : INotifyPropertyChanged
     {
         IList<Product> GetProducts();
 

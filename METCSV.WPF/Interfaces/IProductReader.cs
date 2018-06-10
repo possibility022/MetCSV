@@ -6,7 +6,7 @@ using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Interfaces
 {
-    interface IProductReader
+    public interface IProductReader
     {
         IList<Product> GetProducts(string filename, string filename2);
 
