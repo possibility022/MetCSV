@@ -4,7 +4,7 @@ using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Interfaces
 {
-    interface IDownloader
+    public interface IDownloader
     {
         void StartDownloading();
 

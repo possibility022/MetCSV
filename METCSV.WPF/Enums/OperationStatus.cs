@@ -1,6 +1,6 @@
 ﻿namespace METCSV.WPF.Enums
 {
-    enum OperationStatus
+    public enum OperationStatus
     {
         ReadyToStart,
         Complete,
