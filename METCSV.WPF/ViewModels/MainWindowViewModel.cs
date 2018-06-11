@@ -112,45 +112,52 @@ namespace METCSV.WPF.ViewModels
             Debug.WriteLine($"TechData Object: {_techData.GetProducts()}; Status: {techData.Result}");
             Debug.WriteLine($"AB Object: {_ab.GetProducts()}; Status: {ab.Result}");
 
-            return true;
+            return met.Result && lama.Result && techData.Result && ab.Result;
         }
 
         public async Task<bool> StartClickAsync()
         {
             Initialize();
-            await DownloadAndLoadAsync();
+            var result = await DownloadAndLoadAsync();
 
-            if (SetProfits)
+            if (result)
             {
-                if (_profitsViewModel == null)
+
+
+                if (SetProfits)
                 {
-                    _profitsView = new ProfitsView();
-                    _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
-                    _profitsView.Closed += ProfitsWindowClosed;
+                    if (_profitsViewModel == null)
+                    {
+                        _profitsView = new ProfitsView();
+                        _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
+                        _profitsView.Closed += ProfitsWindowClosed;
+                    }
+
+                    var lamaProviders = HelpMe.GetProvidersAsync(_lama);
+                    var techDataProviders = HelpMe.GetProvidersAsync(_techData);
+                    var abProviders = HelpMe.GetProvidersAsync(_ab);
+
+                    await lamaProviders;
+                    await techDataProviders;
+                    await abProviders;
+
+                    var dataContext = _profitsViewModel as ProfitsViewModel;
+
+                    dataContext.AddManufacturers(lamaProviders.Result);
+                    dataContext.AddManufacturers(techDataProviders.Result);
+                    dataContext.AddManufacturers(abProviders.Result);
+
+                    _profitsView.Show();
                 }
-
-                var lamaProviders = HelpMe.GetProvidersAsync(_lama);
-                var techDataProviders = HelpMe.GetProvidersAsync(_techData);
-                var abProviders = HelpMe.GetProvidersAsync(_ab);
-
-                await lamaProviders;
-                await techDataProviders;
-                await abProviders;
-
-                var dataContext = _profitsViewModel as ProfitsViewModel;
-
-                dataContext.AddManufacturers(lamaProviders.Result);
-                dataContext.AddManufacturers(techDataProviders.Result);
-                dataContext.AddManufacturers(abProviders.Result);
-
-                _profitsView.Show();
-            }
-            else
-            {
-                await StepTwoAsync();
+                else
+                {
+                    result = await StepTwoAsync();
+                    return result;
+                }
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public async Task<bool> StepTwoAsync()
@@ -210,8 +217,28 @@ namespace METCSV.WPF.ViewModels
                 case 6:
                     StepFiveStatus = OperationStatus.Complete;
                     break;
+                case -1:
+                    SetErrorIconOnWorkingStep(ref _stepOneStatus);
+                    SetErrorIconOnWorkingStep(ref _stepTwoStatus);
+                    SetErrorIconOnWorkingStep(ref _stepThreeStatus);
+                    SetErrorIconOnWorkingStep(ref _stepFourStatus);
+                    SetErrorIconOnWorkingStep(ref _stepFiveStatus);
+                    break;
+            }
+        }
 
+        private void SetErrorIconOnWorkingStep(ref OperationStatus field)
+        {
+            if (field == OperationStatus.InProgress)
+            {
+                field = OperationStatus.Faild;
 
+                //todo can we do something with this? RaisePropertyChangge() wont work.
+                RaisePropertyChanged(nameof(StepOneStatus));
+                RaisePropertyChanged(nameof(StepTwoStatus));
+                RaisePropertyChanged(nameof(StepThreeStatus));
+                RaisePropertyChanged(nameof(StepFourStatus));
+                RaisePropertyChanged(nameof(StepFiveStatus));
             }
         }
 
