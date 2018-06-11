@@ -35,39 +35,52 @@ namespace METCSV.WPF.Engine
             _abProducts = new ConcurrentBag<Product>(ab);
         }
 
-        public void Generate()
+        public bool Generate()
         {
             _finalList = new List<Product>();
 
-            // STEP 1
-            StepChanged?.Invoke(this, 1);
-            RemoveHiddenProducts();
+            try
+            {
+                // STEP 1
+                StepChanged?.Invoke(this, 1);
+                RemoveHiddenProducts();
 
 
-            // STEP 2
-            StepChanged?.Invoke(this, 2);
-            _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
+                // STEP 2
+                StepChanged?.Invoke(this, 2);
+                _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
-            // STEP 3
-            StepChanged?.Invoke(this, 3);
-            var fillList = new FillListDomain(_metBag);
-            _lamaProducts = fillList.FillList(_lamaProducts);
-            _abProducts = fillList.FillList(_abProducts);
-            _techDataProducts = fillList.FillList(_techDataProducts);
+                // STEP 3
+                StepChanged?.Invoke(this, 3);
+                var fillList = new FillListDomain(_metBag);
+                _lamaProducts = fillList.FillList(_lamaProducts);
+                _abProducts = fillList.FillList(_abProducts);
+                _techDataProducts = fillList.FillList(_techDataProducts);
 
-            // STEP 4
-            StepChanged?.Invoke(this, 4);
-            var setEndOfLive = new EndOfLiveDomain(_metBag, _lamaProducts, _abProducts, _techDataProducts);
-            setEndOfLive.SetEndOfLife();
+                throw new Exception();
 
-            // STEP 5
-            StepChanged?.Invoke(this, 5);
-            var compare = new CompareDomain(_allPartNumbers);
-            compare.Compare(_abProducts, _techDataProducts, _lamaProducts);
+                // STEP 4
+                StepChanged?.Invoke(this, 4);
+                var setEndOfLive = new EndOfLiveDomain(_metBag, _lamaProducts, _abProducts, _techDataProducts);
+                setEndOfLive.SetEndOfLife();
 
-            //SolveConflicts();
-            StepChanged?.Invoke(this, 6);
-            _finalList = CombineList();
+                // STEP 5
+                StepChanged?.Invoke(this, 5);
+                var compare = new CompareDomain(_allPartNumbers);
+                compare.Compare(_abProducts, _techDataProducts, _lamaProducts);
+
+                //SolveConflicts();
+                StepChanged?.Invoke(this, 6);
+                _finalList = CombineList();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //todo log
+                StepChanged?.Invoke(this, -1);
+                return false;
+            }
         }
 
         private void RemoveHiddenProducts()
