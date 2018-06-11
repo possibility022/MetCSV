@@ -1,6 +1,7 @@
 ﻿using METCSV.Common;
 using METCSV.Common.Comparers;
 using METCSV.Domain.Logic;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace METCSV.WPF.Engine
         ConcurrentBag<Product> _techDataProducts;
         ConcurrentBag<Product> _abProducts;
 
+        public event EventHandler<int> StepChanged;
+
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
         public ProductMerger(IEnumerable<Product> met, IEnumerable<Product> lama, IEnumerable<Product> td, IEnumerable<Product> ab)
@@ -37,26 +40,33 @@ namespace METCSV.WPF.Engine
             _finalList = new List<Product>();
 
             // STEP 1
+            StepChanged?.Invoke(this, 1);
             RemoveHiddenProducts();
 
+
             // STEP 2
+            StepChanged?.Invoke(this, 2);
             _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
             // STEP 3
+            StepChanged?.Invoke(this, 3);
             var fillList = new FillListDomain(_metBag);
             _lamaProducts = fillList.FillList(_lamaProducts);
             _abProducts = fillList.FillList(_abProducts);
             _techDataProducts = fillList.FillList(_techDataProducts);
 
             // STEP 4
+            StepChanged?.Invoke(this, 4);
             var setEndOfLive = new EndOfLiveDomain(_metBag, _lamaProducts, _abProducts, _techDataProducts);
             setEndOfLive.SetEndOfLife();
 
             // STEP 5
+            StepChanged?.Invoke(this, 5);
             var compare = new CompareDomain(_allPartNumbers);
             compare.Compare(_abProducts, _techDataProducts, _lamaProducts);
-            
+
             //SolveConflicts();
+            StepChanged?.Invoke(this, 6);
             _finalList = CombineList();
         }
 

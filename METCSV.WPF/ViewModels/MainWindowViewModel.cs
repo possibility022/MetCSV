@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using METCSV.Common;
 using Newtonsoft.Json;
 using System.IO;
-using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -24,7 +23,7 @@ namespace METCSV.WPF.ViewModels
         private CancellationTokenSource _cancellationTokenSource;
 
         private bool _showProfitsWindow = false;
-        
+
 
         private OperationStatus _stepOneStatus = OperationStatus.ReadyToStart;
 
@@ -34,10 +33,43 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _stepOneStatus, value); }
         }
 
+        private OperationStatus _stepTwoStatus;
+        public OperationStatus StepTwoStatus
+        {
+            get { return _stepTwoStatus; }
+            set { SetProperty(ref _stepTwoStatus, value); }
+        }
+
+        private OperationStatus _stepThreeStatus;
+        public OperationStatus StepThreeStatus
+        {
+            get { return _stepThreeStatus; }
+            set { SetProperty(ref _stepThreeStatus, value); }
+        }
+
+        private OperationStatus _stepFourStatus;
+        public OperationStatus StepFourStatus
+        {
+            get { return _stepFourStatus; }
+            set { SetProperty(ref _stepFourStatus, value); }
+        }
+
+        private OperationStatus _stepFiveStatus;
+        public OperationStatus StepFiveStatus
+        {
+            get { return _stepFiveStatus; }
+            set { SetProperty(ref _stepFiveStatus, value); }
+        }
+
         IProductProvider _met;
         IProductProvider _lama;
         IProductProvider _techData;
         IProductProvider _ab;
+
+        public IProductProvider Met { get => _met; set => SetProperty(ref _met, value); }
+        public IProductProvider Lama { get => _lama; set => SetProperty(ref _lama, value); }
+        public IProductProvider TechData { get => _techData; set => SetProperty(ref _techData, value); }
+        public IProductProvider AB { get => _ab; set => SetProperty(ref _ab, value); }
 
         ProfitsView _profitsView;
         ProfitsViewModel _profitsViewModel;
@@ -45,41 +77,22 @@ namespace METCSV.WPF.ViewModels
 
         public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
 
-
-        public IconsController LamaController { get => _lamaController; set => SetProperty(ref _lamaController, value); }
-        public IconsController MetController { get => _metController; set => SetProperty(ref _metController, value); }
-        public IconsController TdController { get => _tdController; set => SetProperty(ref _tdController, value); }
-        public IconsController AbController { get => _abController; set => SetProperty(ref _abController, value); }
-
-        IconsController _lamaController;
-        IconsController _metController;
-        IconsController _tdController;
-        IconsController _abController;
+        private ProductMerger _productMerger;
 
         private List<Product> Products;
 
         public MainWindowViewModel()
         {
-            LamaController = new IconsController();
-            MetController = new IconsController();
-            TdController = new IconsController();
-            AbController = new IconsController();
+
         }
 
         private void Initialize()
         {
-            StepOneStatus = OperationStatus.InProgress;
-
             _cancellationTokenSource = new CancellationTokenSource();
-            _met = new MetProductProvider(_cancellationTokenSource.Token);
-            _lama = new LamaProductProvider(_cancellationTokenSource.Token);
-            _techData = new TechDataProductProvider(_cancellationTokenSource.Token);
-            _ab = new ABProductProvider(_cancellationTokenSource.Token);
-
-            LamaController.SetProvider(_lama);
-            MetController.SetProvider(_met);
-            AbController.SetProvider(_ab);
-            TdController.SetProvider(_techData);
+            Met = new MetProductProvider(_cancellationTokenSource.Token);
+            Lama = new LamaProductProvider(_cancellationTokenSource.Token);
+            TechData = new TechDataProductProvider(_cancellationTokenSource.Token);
+            AB = new ABProductProvider(_cancellationTokenSource.Token);
         }
 
         private async Task<bool> DownloadAndLoadAsync()
@@ -104,7 +117,6 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
-            StepOneStatus = OperationStatus.InProgress;
             Initialize();
             await DownloadAndLoadAsync();
 
@@ -151,17 +163,56 @@ namespace METCSV.WPF.ViewModels
             await HelpMe.CalculatePricesInBackground(_lama.GetProducts(), lama);
             await HelpMe.CalculatePricesInBackground(_techData.GetProducts(), td);
 
-            ProductMerger productMerger = new ProductMerger(
+
+            if (_productMerger != null)
+            {
+                _productMerger.StepChanged -= _productMerger_StepChanged; //todo move to final
+            }
+
+            _productMerger = new ProductMerger(
                 _met.GetProducts(),
                 _lama.GetProducts(),
                 _techData.GetProducts(),
                 _ab.GetProducts());
 
-            await Task.Run(() => productMerger.Generate());
+            _productMerger.StepChanged += _productMerger_StepChanged;
 
-            Products = new List<Product>(productMerger.FinalList);
+            await Task.Run(() => _productMerger.Generate());
+
+            Products = new List<Product>(_productMerger.FinalList);
 
             return true;
+        }
+
+        private void _productMerger_StepChanged(object sender, int e)
+        {
+            switch (e)
+            {
+                case 1:
+                    StepOneStatus = OperationStatus.InProgress;
+                    break;
+                case 2:
+                    StepOneStatus = OperationStatus.Complete;
+                    StepTwoStatus = OperationStatus.InProgress;
+                    break;
+                case 3:
+                    StepTwoStatus = OperationStatus.Complete;
+                    StepThreeStatus = OperationStatus.InProgress;
+                    break;
+                case 4:
+                    StepThreeStatus = OperationStatus.Complete;
+                    StepFourStatus = OperationStatus.InProgress;
+                    break;
+                case 5:
+                    StepFourStatus = OperationStatus.Complete;
+                    StepFiveStatus = OperationStatus.InProgress;
+                    break;
+                case 6:
+                    StepFiveStatus = OperationStatus.Complete;
+                    break;
+
+
+            }
         }
 
         private void ProfitsWindowClosed(object sender, EventArgs e)
