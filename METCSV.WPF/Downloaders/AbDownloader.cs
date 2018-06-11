@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using METCSV.Common;
+using METCSV.WPF.Configuration;
 using METCSV.WPF.Enums;
 using OpenPop.Mime;
 using OpenPop.Pop3;
@@ -20,34 +21,17 @@ namespace METCSV.WPF.Downloaders
             CancellationToken = cancellationToken;
         }
 
+        public override Providers Provider => Providers.AB;
+
         public CancellationToken CancellationToken { get; }
 
         public ICollection<Product> GetResults { get; private set; }
 
         public EventHandler OnDownloadingFinish { get; private set; }
 
-        public EventHandler OnDownloadingStatusChanged { get; private set; }
-
-        public OperationStatus Status
-        {
-            get => _status;
-            private set
-            {
-                if (_status != value)
-                {
-                    OnDownloadingStatusChanged?.Invoke(this, EventArgs.Empty);
-                    _status = value;
-                }
-            }
-        }
-
-        private OperationStatus _status;
-
         protected override void Download()
         {
             Status = OperationStatus.InProgress;
-            if (File.Exists("OpenPop.dll") == false)
-                throw new FileNotFoundException("Nie znaleziono pliku OpenPop.dll");
             string zippedFile = "ab.zip";
             string folderToExtrac = "ExtractedFiles_AB";
 
@@ -58,12 +42,13 @@ namespace METCSV.WPF.Downloaders
                 client.Connect("mail.met.com.pl", 110, false); //todo encrypt
                 client.Authenticate("ab@met.com.pl", "^&$%GFDSW#asf"); //todo move it to config
 
-                //deleteOldMessages(client);
+                //deleteOldMessages(client); //todo implement and allow to manage from config.
 
                 int theLatestMessage = GetNewestMessage(client);
 
                 if (CancellationToken.IsCancellationRequested)
                 {
+                    Status = OperationStatus.Faild;
                     return;
                 }
 
@@ -74,6 +59,7 @@ namespace METCSV.WPF.Downloaders
 
                 if (CancellationToken.IsCancellationRequested)
                 {
+                    Status = OperationStatus.Faild;
                     return;
                 }
 
@@ -84,6 +70,7 @@ namespace METCSV.WPF.Downloaders
 
                 if (CancellationToken.IsCancellationRequested)
                 {
+                    Status = OperationStatus.Faild;
                     return;
                 }
 
@@ -157,8 +144,10 @@ namespace METCSV.WPF.Downloaders
                 dateTime = DateTime.ParseExact(matches[0].Value, "d MMM yyyy hh:mm", provider);
                 return dateTime;
             }
-            catch (FormatException)
-            { }
+            catch (FormatException ex)
+            {
+                
+            }
 
             return new DateTime();
         }

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace METCSV.WPF.Workflows
 {
-    public class ProfitsIO
+    public static class ProfitsIO
     {
         public static string SaveToFile(Profits profit)
         {

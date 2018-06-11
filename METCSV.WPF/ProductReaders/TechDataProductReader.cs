@@ -27,13 +27,13 @@ namespace METCSV.WPF.ProductReaders
             Status = OperationStatus.InProgress;
             if (File.Exists(pathProducts) && File.Exists(pathPrices))
             {
-                Log("Wczytuję produkty z TechDaty");
+                LogInfo("Wczytuję produkty z TechDaty");
                 var prices = ReadPricesFromCsvFile(pathPrices, Encoding.Default);
                 var products = ReadProductsFromCsvFile(pathProducts, Encoding.Default);
 
                 var merged = MergePriceTechData(products, prices);
 
-                Log("Produkty z techdaty wczytane");
+                LogInfo("Produkty z techdaty wczytane");
 
                 Status = OperationStatus.Complete;
                 return merged;
@@ -42,7 +42,7 @@ namespace METCSV.WPF.ProductReaders
             {
                 string message = $"Nie znaleziono jednego z plikow. {pathPrices} {pathProducts}";
                 Status = OperationStatus.Faild;
-                Log(message);
+                LogInfo(message);
                 throw new FileNotFoundException(message);
             }
         }
@@ -127,16 +127,11 @@ namespace METCSV.WPF.ProductReaders
                 }
                 catch
                 {
-                    Console.WriteLine(@"No product in prices with provided SapNo: {0}", product.SymbolSAP); //todo move it to looger or debug.log?
+                    LogError.Error($"No product in prices with provided SapNo: {product.SymbolSAP}");
                 }
 
             }
             return products;
-        }
-
-        private void Log(string message)
-        {
-            //todo implement
         }
 
     }

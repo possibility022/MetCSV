@@ -27,17 +27,17 @@ namespace METCSV.WPF.ProductReaders
 
             if (File.Exists(pathProducts))
             {
-                Log("Wczytuję produkty z Metu");
+                LogInfo("Wczytuję produkty z Metu");
                 var products = GetMetProducts(pathProducts, Encoding.GetEncoding("windows-1250"));
-                Log("Produkty z metu wczytane");
+                LogInfo("Produkty z metu wczytane");
                 Status = OperationStatus.Complete;
                 return products;
             }
             else
             {
                 Status = OperationStatus.Faild;
-                string message = "Problem z wczytywaniem pliku MET: Nie znaleziono pliku - " + pathProducts;
-                Log(message);
+                string message = $"Problem z wczytywaniem pliku MET: Nie znaleziono pliku - {pathProducts}";
+                LogInfo(message);
                 throw new FileNotFoundException(message);
             }
         }
@@ -77,11 +77,6 @@ namespace METCSV.WPF.ProductReaders
             }
 
             return products;
-        }
-
-        private void Log(string message)
-        {
-            //todo implement
         }
     }
 }

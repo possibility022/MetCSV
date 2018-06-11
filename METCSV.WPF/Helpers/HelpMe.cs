@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace METCSV.WPF.Helpers
 {
-    sealed class HelpMe
+    static class HelpMe
     {
         public static Task<ManufacturersCollection> GetProvidersAsync(IProductProvider productProvider)
         {
@@ -19,15 +19,12 @@ namespace METCSV.WPF.Helpers
         public static ManufacturersCollection GetProviders(IProductProvider productProvider)
         {
             HashSet<string> providers = new HashSet<string>();
-            var products = productProvider.GetProducts();
-            foreach (var product in products)
+            foreach (var product in productProvider.GetProducts())
             {
                 providers.Add(product.NazwaProducenta);
             }
 
-            ManufacturersCollection all = new ManufacturersCollection(productProvider.Provider, providers);
-
-            return all;
+            return new ManufacturersCollection(productProvider.Provider, providers);
         }
 
         public static void CalculatePrices(IEnumerable<Product> products, Profits profits)

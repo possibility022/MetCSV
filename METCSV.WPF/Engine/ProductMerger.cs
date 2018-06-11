@@ -1,6 +1,7 @@
 ﻿using METCSV.Common;
 using METCSV.Common.Comparers;
 using METCSV.Domain.Logic;
+using METCSV.WPF.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -57,8 +58,6 @@ namespace METCSV.WPF.Engine
                 _abProducts = fillList.FillList(_abProducts);
                 _techDataProducts = fillList.FillList(_techDataProducts);
 
-                throw new Exception();
-
                 // STEP 4
                 StepChanged?.Invoke(this, 4);
                 var setEndOfLive = new EndOfLiveDomain(_metBag, _lamaProducts, _abProducts, _techDataProducts);
@@ -77,7 +76,7 @@ namespace METCSV.WPF.Engine
             }
             catch (Exception ex)
             {
-                //todo log
+                Log.Error(ex, "Generate przerwany.");
                 StepChanged?.Invoke(this, -1);
                 return false;
             }

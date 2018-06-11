@@ -10,6 +10,8 @@ namespace METCSV.WPF.Downloaders
 {
     class LamaDownloader : DownloaderBase
     {
+        public override Providers Provider => Providers.Lama;
+
         const string EncryptedLogin = "cdoZtGtCO/L7S9LQ03rSJg14wdYb9l1k3fX+t75eoyg="; //todo move it to config
 
         public string URLConnection { get; } = "http://www.lamaplus.com.pl/partner/export.php";
@@ -52,12 +54,11 @@ namespace METCSV.WPF.Downloaders
             {
                 response = (HttpWebResponse)request.GetResponse();
             }
-            catch (WebException web)
+            catch (WebException ex)
             {
                 Status = OperationStatus.Faild;
-                //string message = "Lama " + web.Message + "\nGenerwoanie licznika miedzy 14:00-16:00 jest niedostępne"; //todo show this error
-                //Database.Log.log(message);
-                //System.Windows.Forms.MessageBox.Show(message);
+                string message = $"Generwoanie licznika miedzy 14:00-16:00 jest niedostępne";
+                LogError(ex, message);
                 return;
             }
 
