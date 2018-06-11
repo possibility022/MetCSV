@@ -40,7 +40,7 @@ namespace METCSV.WPF.Downloaders
                 if (_status != value)
                 {
                     _status = value;
-                    OnDownloadingStatusChanged(this, _status);
+                    OnDownloadingStatusChanged?.Invoke(this, _status);
                 }
             }
         }

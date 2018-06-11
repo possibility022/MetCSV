@@ -70,325 +70,61 @@
             HorizontalAlignment="Center"
             Content="Lama" />
 
-        <!--  Lama Download  -->
-
-        <fa:ImageAwesome
-            Name="LamaDownloadProgress"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            Visibility="{Binding LamaController.DownloadInProgressVisibility}" />
-
-        <fa:ImageAwesome
-            Name="LamaDownloadingFaild"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding LamaController.DownloadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="LamaDownloadWaiting"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding LamaController.DownloadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="LamaDownloadDone"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding LamaController.DownloadDoneVisibility}" />
-
         <!--  Met Download  -->
 
-        <fa:ImageAwesome
-            Name="MetDownloadProgress"
+        <usercontrols:StepsControl
             Grid.Row="1"
             Grid.Column="1"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding MetController.DownloadInProgressVisibility}" />
-
-        <fa:ImageAwesome
-            Name="MetDownloadingFaild"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding MetController.DownloadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="MetDownloadWaiting"
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding MetController.DownloadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="MetDownloadDone"
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding MetController.DownloadDoneVisibility}" />
+            Status="{Binding Met.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  AB Download  -->
 
-        <fa:ImageAwesome
-            Name="ABDownloadProgress"
+        <usercontrols:StepsControl
             Grid.Row="1"
             Grid.Column="2"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding AbController.DownloadInProgressVisibility}" />
-
-        <fa:ImageAwesome
-            Name="AbDownloadingFaild"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding AbController.DownloadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="ABDownloadWaiting"
-            Grid.Row="1"
-            Grid.Column="2"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding AbController.DownloadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="ABDownloadDone"
-            Grid.Row="1"
-            Grid.Column="2"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding AbController.DownloadDoneVisibility}" />
-
+            Status="{Binding AB.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  TD Download  -->
 
-        <fa:ImageAwesome
-            Name="TDDownloadProgress"
+        <usercontrols:StepsControl
             Grid.Row="1"
             Grid.Column="3"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding TdController.DownloadInProgressVisibility}" />
+            Status="{Binding TechData.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-        <fa:ImageAwesome
-            Name="TdDownloadingFaild"
+        <!--  Lama Download  -->
+
+        <usercontrols:StepsControl
             Grid.Row="1"
             Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding TdController.DownloadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="TDDownloadWaiting"
-            Grid.Row="1"
-            Grid.Column="3"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding TdController.DownloadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="TDDownloadDone"
-            Grid.Row="1"
-            Grid.Column="3"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding TdController.DownloadDoneVisibility}" />
-
-        <!--  Lama Read  -->
-
-        <fa:ImageAwesome
-            Name="LamaFileReadProgress"
-            Grid.Row="2"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding LamaController.ReadInProgressVisibility}" />
-
-        <fa:ImageAwesome
-            Name="LamaReadFaild"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding LamaController.ReadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="LamaFileReadWaiting"
-            Grid.Row="2"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding LamaController.ReadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="LamaFileReadDone"
-            Grid.Row="2"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding LamaController.ReadDoneVisibility}" />
+            Status="{Binding Lama.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  Met Read  -->
 
-        <fa:ImageAwesome
-            Name="MetFileReadProgress"
+        <usercontrols:StepsControl
             Grid.Row="2"
             Grid.Column="1"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding MetController.ReadInProgressVisibility}" />
-
-        <fa:ImageAwesome
-            Name="MetReadFaild"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding MetController.ReadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="MetFileReadWaiting"
-            Grid.Row="2"
-            Grid.Column="1"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding MetController.ReadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="MetFileReadDone"
-            Grid.Row="2"
-            Grid.Column="1"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding MetController.ReadDoneVisibility}" />
+            Status="{Binding Met.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  Ab Read  -->
 
-        <fa:ImageAwesome
-            Name="ABFileReadProgress"
+        <usercontrols:StepsControl
             Grid.Row="2"
             Grid.Column="2"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding AbController.ReadInProgressVisibility}" />
-
-        <fa:ImageAwesome
-            Name="AbReadFaild"
-            Grid.Row="1"
-            Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding AbController.ReadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="ABFileReadWaiting"
-            Grid.Row="2"
-            Grid.Column="2"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding AbController.ReadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="ABFileReadDone"
-            Grid.Row="2"
-            Grid.Column="2"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding AbController.ReadDoneVisibility}" />
+            Status="{Binding AB.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  TD Read  -->
 
-        <fa:ImageAwesome
-            Name="TDFileReadProgress"
+        <usercontrols:StepsControl
             Grid.Row="2"
             Grid.Column="3"
-            Width="30"
-            Margin="10"
-            Icon="Cog"
-            Spin="True"
-            SpinDuration="10"
-            Visibility="{Binding TdController.ReadInProgressVisibility}" />
+            Status="{Binding TechData.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-        <fa:ImageAwesome
-            Name="TdReadFaild"
-            Grid.Row="1"
+        <!--  Lama Read  -->
+
+        <usercontrols:StepsControl
+            Grid.Row="2"
             Grid.Column="4"
-            Width="30"
-            Margin="10"
-            Icon="Close"
-            Visibility="{Binding TdController.ReadFaildVisibility}" />
-
-        <fa:ImageAwesome
-            Name="TDFileReadWaiting"
-            Grid.Row="2"
-            Grid.Column="3"
-            Width="30"
-            Margin="10"
-            Icon="ClockOutline"
-            Visibility="{Binding TdController.ReadWaitingVisibility}" />
-
-        <fa:ImageAwesome
-            Name="TDFileReadDone"
-            Grid.Row="2"
-            Grid.Column="3"
-            Width="30"
-            Margin="10"
-            Icon="Check"
-            Visibility="{Binding TdController.ReadDoneVisibility}" />
+            Status="{Binding Lama.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <Grid
             Grid.Row="3"
@@ -408,7 +144,35 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <usercontrols:StepsControl Status="{Binding StepOneStatus}" />
+            <usercontrols:StepsControl
+                Grid.Row="0"
+                Grid.Column="0"
+                Height="30"
+                Status="{Binding StepOneStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="1"
+                Grid.Column="0"
+                Height="30"
+                Status="{Binding StepTwoStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="2"
+                Grid.Column="0"
+                Height="30"
+                Status="{Binding StepThreeStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="3"
+                Grid.Column="0"
+                Height="30"
+                Status="{Binding StepFourStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="4"
+                Grid.Column="0"
+                Height="30"
+                Status="{Binding StepFiveStatus}" />
 
             <Label
                 Grid.Row="0"
