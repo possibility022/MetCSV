@@ -49,8 +49,8 @@
     <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
     </Reference>
-    <Reference Include="Pop3, Version=2.2.0.0, Culture=neutral, PublicKeyToken=e33d940baacd0f37, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pop3.2.2.0\lib\net40\Pop3.dll</HintPath>
+    <Reference Include="Pop3, Version=2.2.0.1, Culture=neutral, PublicKeyToken=e33d940baacd0f37, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pop3.2.2.0.1\lib\net40\Pop3.dll</HintPath>
     </Reference>
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
@@ -100,7 +100,7 @@
     <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
-    <Compile Include="Helpers\Helpers.cs" />
+    <Compile Include="Helpers\HelpMe.cs" />
     <Compile Include="Models\ManufacturersCollection.cs" />
     <Compile Include="Models\EditableDictionaryKey.cs" />
     <Compile Include="Models\Profits.cs" />

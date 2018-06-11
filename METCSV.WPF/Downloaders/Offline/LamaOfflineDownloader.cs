@@ -1,7 +1,12 @@
-﻿namespace METCSV.WPF.Downloaders.Offline
+﻿using METCSV.Common;
+
+namespace METCSV.WPF.Downloaders.Offline
 {
     class LamaOfflineDownloader : DownloaderBase
     {
+
+        public override Providers Provider => Providers.Lama;
+
         private string _fileName = "LamaDownloadedFile.xml"; //todo move it to config
         private string _csvFileName = "LamaCSV.csv";
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using METCSV.Common;
+using METCSV.WPF.Configuration;
 using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 
@@ -11,10 +13,13 @@ namespace METCSV.WPF.Downloaders
         {
             try
             {
+                LogInfo("Rozpoczynam pobieranie.");
                 Download();
+                LogInfo("Pobieranie ukończone.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogError(ex, "Pobieranie nie powiodło się.");
                 Status = OperationStatus.Faild;
             }
             finally
@@ -25,6 +30,8 @@ namespace METCSV.WPF.Downloaders
                 }
             }
         }
+
+        public abstract Providers Provider { get; }
 
         protected abstract void Download();
 
@@ -52,6 +59,21 @@ namespace METCSV.WPF.Downloaders
         public void SetCancellationToken(CancellationToken token)
         {
             CancellationToken = token;
+        }
+
+        protected void LogError(Exception ex, string message)
+        {
+            Log.Error(ex, FormatMessage(message));
+        }
+
+        protected void LogInfo(string message)
+        {
+            Log.Info(FormatMessage(message));
+        }
+
+        private string FormatMessage(string message)
+        {
+            return $"[{Provider}] - {message}";
         }
     }
 }

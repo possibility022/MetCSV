@@ -26,12 +26,16 @@ namespace METCSV.WPF
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            //todo implement
+            var ex = e.ExceptionObject as Exception;
+            if (ex != null)
+                Log.Error(ex);
+            else
+                Log.Error($"Cannot cast ExceptionObject to Exception ${e.ExceptionObject.GetType()}");
         }
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            //todo implement
+            Log.Error(e.Exception);
         }
     }
 }

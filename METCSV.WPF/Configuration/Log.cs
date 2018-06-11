@@ -59,5 +59,15 @@ namespace METCSV.WPF.Configuration
         {
             Logger.Error(ex, message);
         }
+
+        public static void Error(string message)
+        {
+            Logger.Error(message);
+        }
+
+        public static void Error(Exception ex)
+        {
+            Logger.Error(ex);
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace METCSV.WPF.Downloaders
     class TechDataDownloader : DownloaderBase
     {
 
+        public override Providers Provider => Providers.TechData;
+
         const string EncryptedUser = "9Vh/Fcrko4IRqanFGHUI3yyR0Zmvicf9TFCBJXC83Ek="; //todo move to config
         const string EncryptedPassword = "2nLilGIskyemdPFldgRpsEvAeKohBaQwmo0TvV8Naks=";
 

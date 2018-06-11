@@ -34,7 +34,7 @@ namespace METCSV.WPF.ProductReaders
             IList<Product> products = new List<Product>();
             try
             {
-                Log("Wczytuję produkty z AB");
+                LogInfo("Wczytuję produkty z AB");
 
                 if (!File.Exists(csvPath))
                 {
@@ -43,21 +43,16 @@ namespace METCSV.WPF.ProductReaders
 
                 products = ReadProductsFromCsvFile(csvPath, encoding, 2);
 
-                Log("Produkty z AB wczytane");
+                LogInfo("Produkty z AB wczytane");
                 Status = OperationStatus.Complete;
             }
             catch (Exception ex)
             {
-                Log($"AB exception during collectiong products. {ex.Message}");
+                LogInfo($"AB exception during collectiong products. {ex.Message}");
                 Status = OperationStatus.Faild;
             }
 
             return products;
-        }
-
-        private void Log(string message)
-        {
-            //todo implement
         }
 
         private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)

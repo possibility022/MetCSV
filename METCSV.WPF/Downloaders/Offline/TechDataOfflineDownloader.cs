@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using METCSV.Common;
+using System.IO;
 
 namespace METCSV.WPF.Downloaders.Offline
 {
     class TechDataOfflineDownloader : DownloaderBase
     {
+
+        public override Providers Provider => Providers.TechData;
+
         protected override void Download()
         {
             string folderToExtrac = "ExtractedFiles"; //todo move to config

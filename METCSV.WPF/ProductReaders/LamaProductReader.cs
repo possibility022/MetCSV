@@ -32,13 +32,13 @@ namespace METCSV.WPF.ProductReaders
 
             if (File.Exists(pathXml) && File.Exists(pathCsv))
             {
-                Log("Wczytuję produkty z Lamy");
+                LogInfo("Wczytuję produkty z Lamy");
                 var products = ReadLama(pathXml); // wczytanie produktów z XML
                 var producents = ReadProducents(pathCsv, Encoding.Default); // wczytanie producentów produktów
 
                 var merged = MergeProductLama(products, producents); // scalenie plików
 
-                Log("Produkty z Lamy wczytane");
+                LogInfo("Produkty z Lamy wczytane");
 
                 Status = OperationStatus.Complete;
                 return merged;
@@ -47,7 +47,7 @@ namespace METCSV.WPF.ProductReaders
             {
                 string message = $"Problem z wczytywaniem lamy: Któryś z podanych plików nie istnieje. Czy nie zapomniałeś o rozszerzeniu pliku w nazwie? Szukane pliki 1: \"{pathXml}\" 2: \"{pathCsv}\". Pamiętaj, że plik CSV musi być dostarczony przez użytkownika.";
                 Status = OperationStatus.Faild;
-                Log(message);
+                LogInfo(message);
                 throw new FileNotFoundException(message);
             }
         }
@@ -106,14 +106,9 @@ namespace METCSV.WPF.ProductReaders
                 }
             }
 
-            Log($"Number of not found products: {count}");
+            LogInfo($"Number of not found products: {count}");
 
             return products;
-        }
-
-        private void Log(string message)
-        {
-            OnStatusChanged?.Invoke(this, Status);
         }
 
 
