@@ -1,4 +1,5 @@
-﻿using System;
+﻿using METCSV.WPF.Configuration;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 using WpfBindingErrors;
@@ -20,6 +21,7 @@ namespace METCSV.WPF
             BindingExceptionThrower.Attach();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
+            Log.ConfigureNLog();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
