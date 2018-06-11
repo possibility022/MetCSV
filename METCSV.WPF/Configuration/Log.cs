@@ -11,6 +11,10 @@ namespace METCSV.WPF.Configuration
 
         private const string LAYOUT = "${longdate}|${level:uppercase=true}|Thread: [${threadid}] | Message: \t${message}\t${exception:format=tostring,StackTrace,Data}";
 
+        public delegate void LogMessage(string message);
+
+        public static LogMessage LogConsumersDelegate;
+
         public static Logger Logger { get; private set; }
 
         public static void ConfigureNLog()
@@ -53,21 +57,25 @@ namespace METCSV.WPF.Configuration
         public static void Info(string message)
         {
             Logger.Info(message);
+            LogConsumersDelegate?.Invoke(message);
         }
 
         public static void Error(Exception ex, string message)
         {
             Logger.Error(ex, message);
+            LogConsumersDelegate?.Invoke(message);
         }
 
         public static void Error(string message)
         {
             Logger.Error(message);
+            LogConsumersDelegate?.Invoke(message);
         }
 
         public static void Error(Exception ex)
         {
             Logger.Error(ex);
+            LogConsumersDelegate?.Invoke(ex.Message);
         }
     }
 }
