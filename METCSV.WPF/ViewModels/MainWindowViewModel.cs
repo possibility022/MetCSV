@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using METCSV.Common;
 using Newtonsoft.Json;
 using System.IO;
+using METCSV.WPF.Configuration;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -97,6 +98,8 @@ namespace METCSV.WPF.ViewModels
 
         private async Task<bool> DownloadAndLoadAsync()
         {
+            
+
             var met = ProductProviderBase.DownloadAndLoadAsync(_met);
             var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
             var techData = ProductProviderBase.DownloadAndLoadAsync(_techData);
@@ -118,6 +121,7 @@ namespace METCSV.WPF.ViewModels
         public async Task<bool> StartClickAsync()
         {
             Initialize();
+
             var result = await DownloadAndLoadAsync();
 
             if (result)

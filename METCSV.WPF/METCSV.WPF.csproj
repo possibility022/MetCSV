@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\Log.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
     <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
