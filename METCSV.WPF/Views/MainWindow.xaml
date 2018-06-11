@@ -200,7 +200,12 @@
         <TextBlock
             Grid.Row="4"
             Grid.ColumnSpan="5"
-            Text="Tu będzie LOG!" />
+            Background="LightGray"
+            ScrollViewer.CanContentScroll="True"
+            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+            ScrollViewer.VerticalScrollBarVisibility="Visible"
+            Text="{Binding LogContent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="NoWrap" />
 
         <StackPanel
             Grid.Row="5"
