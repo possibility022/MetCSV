@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using METCSV.Database;
 
 namespace METCSV.Network
 {
@@ -57,6 +58,7 @@ namespace METCSV.Network
                 SetDownloadingResult(Global.Result.complete);
             } catch (Exception ex)
             {
+                Log.Logging.LogException(ex);
                 Database.Log.log("Pobieranie techdaty nie powiodło się. " + ex.Message);
                 SetDownloadingResult(Global.Result.faild);
             }
@@ -139,7 +141,7 @@ namespace METCSV.Network
                 response.Close();
             }
             catch (Exception ex)
-            { }
+            { Log.Logging.LogException(ex); }
         }
 
         private byte[] charTobyte(char[] chars)
@@ -184,6 +186,8 @@ namespace METCSV.Network
             }
             catch (Exception ex)
             {
+                Log.Logging.LogException(ex);
+
                 if (reader != null)
                 {
                     reader.Close();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using METCSV.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -359,7 +360,7 @@ namespace METCSV.Generator
                         notAvailable.Add(METProducts[i]);
                     }
                     catch (Exception ex)
-                    { }
+                    { Log.Logging.LogException(ex); }
                 }
             }
         }

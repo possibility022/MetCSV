@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using METCSV.Database;
 
 namespace METCSV.FileSystem
 {
@@ -50,6 +51,7 @@ namespace METCSV.FileSystem
             }catch (IOException ex)
             {
                 System.Windows.Forms.MessageBox.Show("Błąd przy zapisie: " + ex.Message);
+                Log.Logging.LogException(ex);
             }
         }
 
@@ -66,10 +68,12 @@ namespace METCSV.FileSystem
             catch (IOException ex)
             {
                 System.Windows.Forms.MessageBox.Show("Błąd przy zapisie: " + ex.Message);
+                Log.Logging.LogException(ex);
             }
             catch (ArgumentException ex)
             {
                 System.Windows.Forms.MessageBox.Show("Błąd przy zapisie: " + ex.Message);
+                Log.Logging.LogException(ex);
             }
         }
 
@@ -118,6 +122,7 @@ namespace METCSV.FileSystem
                 {
                     System.Windows.Forms.MessageBox.Show("Problem z odczytaniem pliku.\r\n Path: " + path + "\r\n" + ex.Message);
                 }
+                Log.Logging.LogException(ex);
             }
 
             return new Dictionary<string, double>();
@@ -165,6 +170,7 @@ namespace METCSV.FileSystem
                 {
                     System.Windows.Forms.MessageBox.Show("Problem z odczytaniem pliku.\r\nPath: " + path + "\r\n" + ex.Message);
                 }
+                Log.Logging.LogException(ex);
             }
 
             return null;

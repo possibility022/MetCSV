@@ -15,7 +15,8 @@ namespace METCSV.Database
 
         public static void close()
         {
-            fileStream.Close();
+            fileStream?.Close();
+            fileStream?.Dispose();
         }
 
 
@@ -25,11 +26,29 @@ namespace METCSV.Database
         public Log()
         {
             if (File.Exists("log.log") == false)
-                File.Create("log.log");
+                File.Create("log.log").Close();
 
-            Log.fileStream = new StreamWriter("log.log");
+            fileStream = new StreamWriter("log.log", true);
 
             write = writeToFile;
+        }
+
+        public void LogException(Exception ex)
+        {
+            log_message("WYJATEK! (ERROR!)");
+            log_message("Message:");
+            log_message(ex.Message);
+            log_message("Stack Trace:");
+            log_message(ex.StackTrace);
+
+
+            if (ex.InnerException != null)
+            {
+                log_message("Inner Exception Message:");
+                log_message(ex.InnerException.Message);
+                log_message("Inner Exception Stack Trace:");
+                log_message(ex.InnerException.StackTrace);
+            }
         }
 
         private void empty(string s) { }
