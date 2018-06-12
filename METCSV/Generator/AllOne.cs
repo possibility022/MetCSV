@@ -1,4 +1,5 @@
-﻿using METCSV.FileSystem;
+﻿using METCSV.Database;
+using METCSV.FileSystem;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,13 +68,25 @@ namespace METCSV.Generator
             // Tutaj sprawdzam czy wczytywanie się powiodło. Jeśli operacja nie jest skończona to przerywane jest całe generowanie.
             // Dodatkowo spradzam czy wczytano jakieś produkty. Jeśli ich nie wczytano to znaczy że coś poszło nie tak i generowanie też jest przerywane.
             if (lamaReader.lamaLoadResult != Global.Result.complete || lamaReader.lamaFullList.Count == 0)
+            {
+                Log.log($"lama result: {lamaReader.lamaLoadResult}. Count: {lamaReader.lamaFullList.Count}");
                 return Global.Result.faild;
+            }
             if (metReader.metLoadResult != Global.Result.complete || metReader.metFullList.Count == 0)
+            {
+                Log.log($"met result: {metReader.metLoadResult}. Count: {metReader.metFullList.Count}");
                 return Global.Result.faild;
+            }
             if (techDataReader.techDataLoadResult != Global.Result.complete || techDataReader.techdataFullList.Count == 0)
+            {
+                Log.log($"met result: {techDataReader.techDataLoadResult}. Count: {techDataReader.techdataFullList.Count}");
                 return Global.Result.faild;
+            }
             if (abReader.abLoadResult != Global.Result.complete || abReader.abFullList.Count == 0)
+            {
+                Log.log($"met result: {abReader.abLoadResult}. Count: {abReader.abFullList.Count}");
                 return Global.Result.faild;
+            }
 
             #endregion
 

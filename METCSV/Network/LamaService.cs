@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using System.Net;
 using System.IO;
+using System.Web;
+using METCSV.Database;
 
 namespace METCSV.Network
 {
@@ -56,6 +58,7 @@ namespace METCSV.Network
                 }
                 catch (WebException web)
                 {
+                    Log.Logging.LogException(web);
                     SetDownloadingResult(Global.Result.faild);
                     string message = "Lama " + web.Message + "\nGenerwoanie licznika miedzy 14:00-16:00 jest niedostępne";
                     Database.Log.log(message);
@@ -81,6 +84,7 @@ namespace METCSV.Network
                 SetDownloadingResult(Global.Result.complete);
             } catch (Exception ex)
             {
+                Log.Logging.LogException(ex);
                 Database.Log.log("Pobieranie Lamy nie powiodło się. " + ex.Message);
                 SetDownloadingResult(Global.Result.faild);
             }
