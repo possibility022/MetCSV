@@ -127,7 +127,7 @@ namespace METCSV.WPF.ProductReaders
                 }
                 catch
                 {
-                    LogError.Error($"No product in prices with provided SapNo: {product.SymbolSAP}");
+                    LogError($"No product in prices with provided SapNo: {product.SymbolSAP}");
                 }
 
             }
