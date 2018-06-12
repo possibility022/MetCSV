@@ -9,15 +9,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:usercontrols="clr-namespace:METCSV.WPF.UserControls"
     Title="MainWindow"
-    Width="442.97"
-    Height="493.793"
+    Width="451.237"
+    Height="495.171"
     mc:Ignorable="d">
 
     <Window.DataContext>
         <ViewModels:MainWindowViewModel />
     </Window.DataContext>
 
-    <Grid>
+    <Grid Margin="10">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -32,19 +32,31 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label
+        <StackPanel
             Grid.Row="1"
             Grid.Column="0"
-            Content="Downloading status" />
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <fa:ImageAwesome Height="30" Icon="Download" />
+            <Label Content="Pobieranie" />
+        </StackPanel>
 
-        <Label
-            Grid.Row="2"
+        <StackPanel
+            Grid.Row="3"
             Grid.Column="0"
-            Content="Loading file" />
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <fa:ImageAwesome Height="30" Icon="AlignCenter" />
+            <Label Content="Wczytywanie" />
+        </StackPanel>
 
         <Label
             Grid.Row="0"
@@ -98,38 +110,51 @@
             Grid.Column="4"
             Status="{Binding Lama.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
+        <Separator
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="4" />
+
         <!--  Met Read  -->
 
         <usercontrols:StepsControl
-            Grid.Row="2"
+            Grid.Row="3"
             Grid.Column="1"
             Status="{Binding Met.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  Ab Read  -->
 
         <usercontrols:StepsControl
-            Grid.Row="2"
+            Grid.Row="3"
             Grid.Column="2"
             Status="{Binding AB.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  TD Read  -->
 
         <usercontrols:StepsControl
-            Grid.Row="2"
+            Grid.Row="3"
             Grid.Column="3"
             Status="{Binding TechData.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <!--  Lama Read  -->
 
         <usercontrols:StepsControl
-            Grid.Row="2"
+            Grid.Row="3"
             Grid.Column="4"
             Status="{Binding Lama.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-        <Grid
-            Grid.Row="3"
+
+        <Separator
+            Grid.Row="4"
             Grid.Column="1"
-            Grid.ColumnSpan="4">
+            Grid.ColumnSpan="4"
+            Margin="10" />
+
+        <Grid
+            Grid.Row="5"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="0,0,0,0">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -197,13 +222,8 @@
 
         </Grid>
 
-        <TextBlock
-            Grid.Row="4"
-            Grid.ColumnSpan="5"
-            Text="Tu będzie LOG!" />
-
         <StackPanel
-            Grid.Row="5"
+            Grid.Row="7"
             Grid.ColumnSpan="5"
             Width="Auto"
             Height="Auto"
