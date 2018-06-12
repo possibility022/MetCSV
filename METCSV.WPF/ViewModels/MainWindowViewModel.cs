@@ -15,7 +15,6 @@ using METCSV.Common;
 using Newtonsoft.Json;
 using System.IO;
 using METCSV.WPF.Configuration;
-using System.Text;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -85,27 +84,8 @@ namespace METCSV.WPF.ViewModels
 
         public MainWindowViewModel()
         {
-            Log.LogConsumersDelegate += LogMessage;
+
         }
-
-        #region logger
-
-        StringBuilder logBuilder = new StringBuilder();
-
-        private string _logContent;
-        public string LogContent
-        {
-            get { return _logContent; }
-            set { SetProperty(ref _logContent, value); }
-        }
-
-        void LogMessage(string message)
-        {
-            logBuilder.AppendLine($"{DateTime.Now.ToString("HH:mm")} : {message}");
-            LogContent = logBuilder.ToString(); //todo you have to do something with logger!
-        }
-
-        #endregion
 
         private void Initialize()
         {
@@ -118,7 +98,7 @@ namespace METCSV.WPF.ViewModels
 
         private async Task<bool> DownloadAndLoadAsync()
         {
-
+            
 
             var met = ProductProviderBase.DownloadAndLoadAsync(_met);
             var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
