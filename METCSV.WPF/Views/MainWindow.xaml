@@ -17,6 +17,12 @@
         <ViewModels:MainWindowViewModel />
     </Window.DataContext>
 
+    <Window.Resources>
+        <ResourceDictionary Source="../ResourceDictionary.xaml" />
+    </Window.Resources>
+
+
+
     <Grid Margin="10">
 
         <Grid.ColumnDefinitions>
@@ -45,7 +51,7 @@
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <fa:ImageAwesome Height="30" Icon="Download" />
-            <Label Content="Pobieranie" />
+            <Label Content="Pobieranie" FontFamily="Comic Sans MS" />
         </StackPanel>
 
         <StackPanel
@@ -112,8 +118,8 @@
 
         <Separator
             Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="4" />
+            Grid.Column="0"
+            Grid.ColumnSpan="5" />
 
         <!--  Met Read  -->
 
@@ -148,7 +154,17 @@
             Grid.Row="4"
             Grid.Column="1"
             Grid.ColumnSpan="4"
-            Margin="10" />
+            Margin="0,10,0,10" />
+
+        <StackPanel
+            Grid.Row="5"
+            Grid.Column="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <fa:ImageAwesome Height="40" Icon="Calculator" />
+            <Label Content="Generowanie" />
+        </StackPanel>
 
         <Grid
             Grid.Row="5"
@@ -172,31 +188,31 @@
             <usercontrols:StepsControl
                 Grid.Row="0"
                 Grid.Column="0"
-                Height="30"
+                Height="40"
                 Status="{Binding StepOneStatus}" />
 
             <usercontrols:StepsControl
                 Grid.Row="1"
                 Grid.Column="0"
-                Height="30"
+                Height="40"
                 Status="{Binding StepTwoStatus}" />
 
             <usercontrols:StepsControl
                 Grid.Row="2"
                 Grid.Column="0"
-                Height="30"
+                Height="40"
                 Status="{Binding StepThreeStatus}" />
 
             <usercontrols:StepsControl
                 Grid.Row="3"
                 Grid.Column="0"
-                Height="30"
+                Height="40"
                 Status="{Binding StepFourStatus}" />
 
             <usercontrols:StepsControl
                 Grid.Row="4"
                 Grid.Column="0"
-                Height="30"
+                Height="40"
                 Status="{Binding StepFiveStatus}" />
 
             <Label
@@ -233,7 +249,6 @@
             <Button Click="Button_Click" Content="Rozpocznij" />
             <Button Content="Ustawienia" />
             <Button Content="Exportuj" />
-            <Button Content="Wyjdź" />
         </StackPanel>
 
     </Grid>
