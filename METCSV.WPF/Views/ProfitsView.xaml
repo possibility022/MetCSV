@@ -12,7 +12,7 @@
     Height="700.138"
     mc:Ignorable="d">
     <Window.Resources>
-        <Converters:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+        <ResourceDictionary Source="../ResourceDictionary.xaml" />
     </Window.Resources>
     <Window.DataContext>
         <ViewModels:ProfitsViewModel />
