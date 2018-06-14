@@ -23,8 +23,6 @@ namespace METCSV.WPF.Downloaders
 
         public override Providers Provider => Providers.AB;
 
-        public CancellationToken CancellationToken { get; }
-
         public ICollection<Product> GetResults { get; private set; }
 
         public EventHandler OnDownloadingFinish { get; private set; }
@@ -32,17 +30,24 @@ namespace METCSV.WPF.Downloaders
         protected override void Download()
         {
             Status = OperationStatus.InProgress;
-            string zippedFile = "ab.zip";
-            string folderToExtrac = "ExtractedFiles_AB";
+            string zippedFile = Settings.ABDownloader.ZippedFile;
+            string folderToExtrac = Settings.ABDownloader.FolderToExtract;
 
             DownloadedFiles = new[] { string.Empty };
 
             using (var client = new Pop3Client())
             {
-                client.Connect("mail.met.com.pl", 110, false); //todo encrypt
-                client.Authenticate("ab@met.com.pl", "^&$%GFDSW#asf"); //todo move it to config
+                client.Connect(
+                    Settings.ABDownloader.EmailServerAddress,
+                    Settings.ABDownloader.EmailServerPort,
+                    Settings.ABDownloader.EmailServerUseSSL);
 
-                //deleteOldMessages(client); //todo implement and allow to manage from config.
+                client.Authenticate(Settings.ABDownloader.EmailLogin, Settings.ABDownloader.EmailPassword);
+
+                if (Settings.ABDownloader.DeleteOldValues)
+                {
+                    //deleteOldMessages(client); //todo implement and allow to manage from config.
+                }
 
                 int theLatestMessage = GetNewestMessage(client);
 
