@@ -10,5 +10,7 @@
 
         public static MetDownloaderSettings MetDownlaoder { get; set; }
 
+        public static TechDataDownloaderSettings TDDownloader { get; set; }
+
     }
 }
