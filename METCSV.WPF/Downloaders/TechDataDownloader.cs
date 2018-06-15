@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using METCSV.Common;
+using METCSV.WPF.Configuration;
 using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Downloaders
@@ -14,12 +15,18 @@ namespace METCSV.WPF.Downloaders
 
         public override Providers Provider => Providers.TechData;
 
-        const string EncryptedUser = "9Vh/Fcrko4IRqanFGHUI3yyR0Zmvicf9TFCBJXC83Ek="; //todo move to config
-        const string EncryptedPassword = "2nLilGIskyemdPFldgRpsEvAeKohBaQwmo0TvV8Naks=";
+        readonly string User = Settings.TDDownloader.Login;
+        readonly string Password = Settings.TDDownloader.Password;
 
-        const string Pattern = "(20[1-5][0-9])-((0[0-9])|(1[0-2]))-(([0-2][0-9])|(3[0-1]))";
+        readonly string Pattern = Settings.TDDownloader.Pattern;
 
-        const string FtpAddres = "ftp2.techdata-it-emea.com";
+        readonly string FtpAddres = Settings.TDDownloader.FtpAddress;
+
+        readonly string FolderToExtract = Settings.TDDownloader.FolderToExtract;
+
+        readonly string CsvMaterials = Settings.TDDownloader.CsvMaterials;
+
+        readonly string CsvPrices = Settings.TDDownloader.CsvPrices;
 
         public TechDataDownloader(CancellationToken token)
         {
@@ -29,28 +36,25 @@ namespace METCSV.WPF.Downloaders
         protected override void Download()
         {
             Status = OperationStatus.InProgress;
-            string folderToExtrac = "ExtractedFiles"; //todo move to config
             string[] files = GetFileList();
             string file = GetTheNewestFile(files);
             DownloadFileByFtp(file);
-            if (Directory.Exists(folderToExtrac))
-                Directory.Delete(folderToExtrac, true);
-            System.IO.Compression.ZipFile.ExtractToDirectory(file, folderToExtrac);
-            DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
+            if (Directory.Exists(FolderToExtract))
+                Directory.Delete(FolderToExtract, true);
+            System.IO.Compression.ZipFile.ExtractToDirectory(file, FolderToExtract);
+            DirectoryInfo dir = new DirectoryInfo(FolderToExtract);
 
-            string materials = FindFile(dir, "TD_Material.csv"); //todo move to config
-            string prices = FindFile(dir, "TD_Prices.csv"); //todo move to config
+            string materials = FindFile(dir, CsvMaterials);
+            string prices = FindFile(dir, CsvPrices);
 
-            DownloadedFiles = new[] {materials, prices};
+            DownloadedFiles = new[] { materials, prices };
 
             Status = OperationStatus.Complete;
         }
 
         private string FindFile(DirectoryInfo folder, string file)
         {
-            FileInfo[] files = folder.GetFiles();
-
-            foreach (FileInfo f in files)
+            foreach (FileInfo f in folder.GetFiles())
             {
                 if (f.Name == file)
                     return f.FullName;
@@ -98,8 +102,8 @@ namespace METCSV.WPF.Downloaders
 
         private void DownloadFileByFtp(string file)
         {
-            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/{file}")); //todo to config
-            reqFtp.Credentials = new NetworkCredential(Encrypting.Decrypt(EncryptedUser), Encrypting.Decrypt(EncryptedPassword));
+            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/{file}"));
+            reqFtp.Credentials = new NetworkCredential(Encrypting.Decrypt(User), Encrypting.Decrypt(Password));
             reqFtp.KeepAlive = false;
             reqFtp.Method = WebRequestMethods.Ftp.DownloadFile;
             reqFtp.UseBinary = true;
@@ -129,18 +133,18 @@ namespace METCSV.WPF.Downloaders
         public string[] GetFileList()
         {
             StringBuilder result = new StringBuilder();
-            
-            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/")); //todo to config
+
+            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/"));
 
             reqFtp.UseBinary = true;
-            reqFtp.Credentials = new NetworkCredential(Encrypting.Decrypt(EncryptedUser), Encrypting.Decrypt(EncryptedPassword));
+            reqFtp.Credentials = new NetworkCredential(User, Password);
             reqFtp.Method = WebRequestMethods.Ftp.ListDirectory;
             reqFtp.Proxy = null;
             reqFtp.KeepAlive = false;
             reqFtp.UsePassive = false;
             var response = reqFtp.GetResponse();
 
-            using (StreamReader reader 
+            using (StreamReader reader
                 = new StreamReader(response.GetResponseStream()
                 ?? throw new InvalidOperationException("Nie otrzymano strumienia odpowiedzi. (Probowano pobrac plik (krok 1))")))
             {

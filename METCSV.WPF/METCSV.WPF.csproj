@@ -95,6 +95,7 @@
     <Compile Include="Configuration\LamaDownloaderSettings.cs" />
     <Compile Include="Configuration\Log.cs" />
     <Compile Include="Configuration\MetDownloaderSettings.cs" />
+    <Compile Include="Configuration\TechDataDownloaderSettings.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
     <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
