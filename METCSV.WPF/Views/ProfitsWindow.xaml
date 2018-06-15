@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="METCSV.WPF.Views.ProfitsView"
+    x:Class="METCSV.WPF.Views.ProfitsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converters="clr-namespace:METCSV.WPF.Converters"

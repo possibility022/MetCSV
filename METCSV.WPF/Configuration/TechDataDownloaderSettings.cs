@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace METCSV.WPF.Configuration
+﻿namespace METCSV.WPF.Configuration
 {
-    class TechDataDownloaderSettings
+    public class TechDataDownloaderSettings
     {
         public string Login { get; set; }
 

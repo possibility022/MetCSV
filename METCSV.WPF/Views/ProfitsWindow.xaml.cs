@@ -6,14 +6,14 @@ namespace METCSV.WPF.Views
     /// <summary>
     /// Interaction logic for ProfitsView.xaml
     /// </summary>
-    public partial class ProfitsView : Window
+    public partial class ProfitsWindow : Window
     {
 
         ProfitsViewModel _profitsViewModel;
 
         ProfitsViewModel ProfitsViewModel { get => _profitsViewModel ?? (_profitsViewModel = (ProfitsViewModel)DataContext); }
 
-        public ProfitsView()
+        public ProfitsWindow()
         {
             InitializeComponent();
         }
