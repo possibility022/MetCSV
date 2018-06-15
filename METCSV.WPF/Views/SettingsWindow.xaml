@@ -203,6 +203,77 @@
                 </Border>
             </TabItem>
 
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="AB" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Border
+                    Margin="10"
+                    BorderBrush="Black"
+                    BorderThickness="1">
+                    <Grid Margin="5">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Content="Email Login" />
+                        <TextBox Grid.Row="0" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Email Hasło" />
+                        <TextBox Grid.Row="1" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Email Serwer Adres" />
+                        <TextBox Grid.Row="2" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Email Serwer Port" />
+                        <TextBox Grid.Row="3" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Content="Email Serwer SSL" />
+                        <CheckBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            VerticalAlignment="Center" />
+
+                        <Label
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Content="Usuwaj stare wiadomości" />
+                        <CheckBox Grid.Row="6" Grid.Column="1" />
+
+                    </Grid>
+                </Border>
+            </TabItem>
+
         </TabControl>
 
         <StackPanel
