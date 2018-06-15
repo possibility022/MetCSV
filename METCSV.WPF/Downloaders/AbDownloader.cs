@@ -46,6 +46,7 @@ namespace METCSV.WPF.Downloaders
 
                 if (Settings.ABDownloader.DeleteOldValues)
                 {
+                    LogInfo("This is not implemented yet");
                     //deleteOldMessages(client); //todo implement and allow to manage from config.
                 }
 

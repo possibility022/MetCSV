@@ -92,6 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Configuration\AbDownloaderSettings.cs" />
+    <Compile Include="Configuration\LamaDownloaderSettings.cs" />
     <Compile Include="Configuration\Log.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
     <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using METCSV.WPF.Enums;
 using METCSV.Common;
 using System.Threading;
+using METCSV.WPF.Configuration;
 
 namespace METCSV.WPF.Downloaders
 {
@@ -12,13 +13,11 @@ namespace METCSV.WPF.Downloaders
     {
         public override Providers Provider => Providers.Lama;
 
-        const string EncryptedLogin = "cdoZtGtCO/L7S9LQ03rSJg14wdYb9l1k3fX+t75eoyg="; //todo move it to config
+        public string URLConnection { get; } = Settings.LamaDownloader.Url;
 
-        public string URLConnection { get; } = "http://www.lamaplus.com.pl/partner/export.php";
+        private string _fileName = Settings.LamaDownloader.XmlFile;
 
-        private string _fileName = "LamaDownloadedFile.xml"; //todo move it to config
-
-        private string _csvFileName = "LamaCSV.csv";
+        private string _csvFileName = Settings.LamaDownloader.CsvFile;
 
         public LamaDownloader(CancellationToken token)
         {
@@ -31,10 +30,10 @@ namespace METCSV.WPF.Downloaders
             Status = OperationStatus.InProgress;
             var request = (HttpWebRequest)WebRequest.Create(URLConnection);
 
-            var postData = "user=" + Encrypting.Decrypt(EncryptedLogin);
+            var postData = "user=" + Settings.LamaDownloader.Login;
 
-            postData += "&pass=***REMOVED***"; //todo move it to config
-            postData += "&request=priceList";
+            postData += $"&pass={Settings.LamaDownloader.Password}"; //todo move it to config
+            postData += $"&request={Settings.LamaDownloader.Request}";
 
             var data = Encoding.ASCII.GetBytes(postData);
 
