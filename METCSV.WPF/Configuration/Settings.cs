@@ -8,5 +8,7 @@
 
         public static LamaDownloaderSettings LamaDownloader { get; set; }
 
+        public static MetDownloaderSettings MetDownlaoder { get; set; }
+
     }
 }
