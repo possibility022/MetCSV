@@ -6,5 +6,7 @@
 
         public static AbDownloaderSettings ABDownloader { get; set; }
 
+        public static LamaDownloaderSettings LamaDownloader { get; set; }
+
     }
 }
