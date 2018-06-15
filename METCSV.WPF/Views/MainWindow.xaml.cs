@@ -1,4 +1,5 @@
 ﻿using METCSV.WPF.ViewModels;
+using METCSV.WPF.Views;
 using Microsoft.Win32;
 using System.Windows;
 
@@ -38,6 +39,12 @@ namespace METCSV.WPF
             {
                 MainWindowViewModel.Export(dialog.FileName);
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var w = new SettingsWindow();
+            w.Show();
         }
     }
 }

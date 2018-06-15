@@ -247,7 +247,7 @@
             HorizontalAlignment="Center"
             Orientation="Horizontal">
             <Button Click="Button_Click" Content="Rozpocznij" />
-            <Button Content="Ustawienia" />
+            <Button Click="Button_Click_1" Content="Ustawienia" />
             <Button Content="Exportuj" />
         </StackPanel>
 

@@ -72,7 +72,7 @@ namespace METCSV.WPF.ViewModels
         public IProductProvider TechData { get => _techData; set => SetProperty(ref _techData, value); }
         public IProductProvider AB { get => _ab; set => SetProperty(ref _ab, value); }
 
-        ProfitsView _profitsView;
+        ProfitsWindow _profitsView;
         ProfitsViewModel _profitsViewModel;
         private bool _setProfits = true;
 
@@ -132,7 +132,7 @@ namespace METCSV.WPF.ViewModels
                 {
                     if (_profitsViewModel == null)
                     {
-                        _profitsView = new ProfitsView();
+                        _profitsView = new ProfitsWindow();
                         _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
                         _profitsView.Closed += ProfitsWindowClosed;
                     }
