@@ -11,20 +11,17 @@
     mc:Ignorable="d">
 
     <Window.Resources>
-        <Style TargetType="PasswordBox">
-            <Setter Property="Margin" Value="5" />
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="TextAlignment" Value="Center" />
-        </Style>
-        <Style TargetType="Label">
-            <Setter Property="Margin" Value="5" />
-        </Style>
+        <ResourceDictionary Source="../ResourceDictionary.xaml" />
     </Window.Resources>
 
     <Grid>
-        <TabControl>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -79,7 +76,7 @@
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
@@ -126,11 +123,22 @@
                             Grid.Column="0"
                             Content="HTTP Request" />
                         <TextBox Grid.Row="5" Grid.Column="1" />
-
                     </Grid>
                 </Border>
 
             </TabItem>
         </TabControl>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Width="Auto"
+            Height="Auto"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button Content="Zapisz" />
+            <Button Content="Anuluj" />
+        </StackPanel>
     </Grid>
 </Window>
