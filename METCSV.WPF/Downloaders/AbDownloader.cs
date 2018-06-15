@@ -16,6 +16,19 @@ namespace METCSV.WPF.Downloaders
 {
     class AbDownloader : DownloaderBase
     {
+        readonly string EmailServerAddress = Settings.ABDownloader.EmailServerAddress;
+        readonly int EmailServerPort = Settings.ABDownloader.EmailServerPort;
+        readonly bool UseSSL = Settings.ABDownloader.EmailServerUseSSL;
+
+        readonly string EmailLogin = Settings.ABDownloader.EmailLogin;
+        readonly string EmailPassword = Settings.ABDownloader.EmailPassword;
+
+        readonly string ZippedFile = Settings.ABDownloader.ZippedFile;
+        readonly string FolderToExtract = Settings.ABDownloader.FolderToExtract;
+
+        readonly bool DeleteOld = Settings.ABDownloader.DeleteOldMessages;
+
+        
         public AbDownloader(CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
@@ -30,21 +43,19 @@ namespace METCSV.WPF.Downloaders
         protected override void Download()
         {
             Status = OperationStatus.InProgress;
-            string zippedFile = Settings.ABDownloader.ZippedFile;
-            string folderToExtrac = Settings.ABDownloader.FolderToExtract;
 
             DownloadedFiles = new[] { string.Empty };
 
             using (var client = new Pop3Client())
             {
                 client.Connect(
-                    Settings.ABDownloader.EmailServerAddress,
-                    Settings.ABDownloader.EmailServerPort,
-                    Settings.ABDownloader.EmailServerUseSSL);
+                    EmailServerAddress,
+                    EmailServerPort,
+                    UseSSL);
 
-                client.Authenticate(Settings.ABDownloader.EmailLogin, Settings.ABDownloader.EmailPassword);
+                client.Authenticate(EmailLogin, EmailPassword);
 
-                if (Settings.ABDownloader.DeleteOldValues)
+                if (DeleteOld)
                 {
                     LogInfo("This is not implemented yet");
                     //deleteOldMessages(client); //todo implement and allow to manage from config.
@@ -69,10 +80,10 @@ namespace METCSV.WPF.Downloaders
                     return;
                 }
 
-                ExportAttachmentToFile(zippedFile, attachment);
+                ExportAttachmentToFile(ZippedFile, attachment);
 
-                if (Directory.Exists(folderToExtrac))
-                    Directory.Delete(folderToExtrac, true);
+                if (Directory.Exists(FolderToExtract))
+                    Directory.Delete(FolderToExtract, true);
 
                 if (CancellationToken.IsCancellationRequested)
                 {
@@ -80,8 +91,8 @@ namespace METCSV.WPF.Downloaders
                     return;
                 }
 
-                ZipFile.ExtractToDirectory(zippedFile, folderToExtrac);
-                DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
+                ZipFile.ExtractToDirectory(ZippedFile, FolderToExtract);
+                DirectoryInfo dir = new DirectoryInfo(FolderToExtract);
                 DownloadedFiles[0] = dir.GetFiles()[0].FullName;
                 client.Disconnect();
             }

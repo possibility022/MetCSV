@@ -12,6 +12,8 @@ namespace METCSV.WPF.Downloaders
 
         private string _fileName = Settings.MetDownlaoder.CsvFile;
 
+        readonly string Url = Settings.MetDownlaoder.Url;
+
         public MetDownloader(CancellationToken token)
         {
             SetCancellationToken(token);
@@ -24,7 +26,7 @@ namespace METCSV.WPF.Downloaders
 
             using (var client = new WebClient())
             {
-                client.DownloadFile(Settings.MetDownlaoder.Url, _fileName);
+                client.DownloadFile(Url, _fileName);
 
                 //todo implement cancelation token
                 

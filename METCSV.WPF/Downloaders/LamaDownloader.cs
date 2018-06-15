@@ -13,27 +13,33 @@ namespace METCSV.WPF.Downloaders
     {
         public override Providers Provider => Providers.Lama;
 
-        public string URLConnection { get; } = Settings.LamaDownloader.Url;
+        public string UrlConnection { get; } = Settings.LamaDownloader.Url;
 
-        private string _fileName = Settings.LamaDownloader.XmlFile;
+        readonly string FileName = Settings.LamaDownloader.XmlFile;
 
-        private string _csvFileName = Settings.LamaDownloader.CsvFile;
+        readonly string CsvFileName = Settings.LamaDownloader.CsvFile;
+
+        readonly string Login = Settings.LamaDownloader.Login;
+
+        readonly string Password = Settings.LamaDownloader.Password;
+
+        readonly string Request = Settings.LamaDownloader.Request;
 
         public LamaDownloader(CancellationToken token)
         {
             SetCancellationToken(token);
-            DownloadedFiles = new[] { string.Empty, _csvFileName };
+            DownloadedFiles = new[] { string.Empty, CsvFileName };
         }
 
         protected override void Download()
         {
             Status = OperationStatus.InProgress;
-            var request = (HttpWebRequest)WebRequest.Create(URLConnection);
+            var request = (HttpWebRequest)WebRequest.Create(UrlConnection);
 
-            var postData = "user=" + Settings.LamaDownloader.Login;
+            var postData = "user=" + Login;
 
-            postData += $"&pass={Settings.LamaDownloader.Password}"; //todo move it to config
-            postData += $"&request={Settings.LamaDownloader.Request}";
+            postData += $"&pass={Password}";
+            postData += $"&request={Request}";
 
             var data = Encoding.ASCII.GetBytes(postData);
 
@@ -62,7 +68,7 @@ namespace METCSV.WPF.Downloaders
             }
 
             using (Stream responseStream = response.GetResponseStream())
-            using (var streamWriter = new FileStream(_fileName, FileMode.Create))
+            using (var streamWriter = new FileStream(FileName, FileMode.Create))
             {
                 if (responseStream == null)
                 {
@@ -82,7 +88,7 @@ namespace METCSV.WPF.Downloaders
                 responseStream.Close();
             }
 
-            DownloadedFiles[0] = _fileName;
+            DownloadedFiles[0] = FileName;
             Status = OperationStatus.Complete;
         }
     }

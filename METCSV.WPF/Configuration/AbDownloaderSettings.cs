@@ -17,6 +17,6 @@
 
         public string EmailPassword { get; set; }
 
-        public bool DeleteOldValues { get; set; } = true;
+        public bool DeleteOldMessages { get; set; } = true;
     }
 }
