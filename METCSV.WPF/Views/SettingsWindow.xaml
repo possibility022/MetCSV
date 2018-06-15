@@ -11,6 +11,9 @@
     mc:Ignorable="d">
 
     <Window.Resources>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Margin" Value="5" />
+        </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="5" />
             <Setter Property="TextAlignment" Value="Center" />
@@ -59,6 +62,74 @@
 
                     </Grid>
                 </Border>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Lama" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Border
+                    Margin="10"
+                    BorderBrush="Black"
+                    BorderThickness="1">
+                    <Grid Margin="5">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Content="Login" />
+                        <TextBox Grid.Row="0" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Hasło" />
+                        <PasswordBox Grid.Row="1" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Plik XML" />
+                        <TextBox Grid.Row="2" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Content="Plik CSV" />
+                        <TextBox Grid.Row="3" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Content="URL" />
+                        <TextBox Grid.Row="4" Grid.Column="1" />
+
+                        <Label
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Content="HTTP Request" />
+                        <TextBox Grid.Row="5" Grid.Column="1" />
+
+                    </Grid>
+                </Border>
+
             </TabItem>
         </TabControl>
     </Grid>
