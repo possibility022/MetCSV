@@ -16,11 +16,21 @@ namespace METCSV.UnitTests
     public class PropertyCopyTest
     {
 
-        ObjectToCopy A = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
-        ObjectToCopy B = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
-        ObjectToCopy C = new ObjectToCopy { Str = "321", Boolean = false, Integer = 55 };
-        ObjectToCopy D = new ObjectToCopy { Str = "ABC", Boolean = true, Integer = 55 };
-        ObjectToCopy E = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 10 };
+        ObjectToCopy A;
+        ObjectToCopy B;
+        ObjectToCopy C;
+        ObjectToCopy D;
+        ObjectToCopy E;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            A = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
+            B = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
+            C = new ObjectToCopy { Str = "321", Boolean = false, Integer = 55 };
+            D = new ObjectToCopy { Str = "ABC", Boolean = true, Integer = 55 };
+            E = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 10 };
+        }
 
 
         [TestMethod]
@@ -53,6 +63,30 @@ namespace METCSV.UnitTests
             var result = PropertyCopy.AnyChanges(A, E);
 
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void CopyString()
+        {
+            PropertyCopy.CopyValues(A, C);
+
+            Assert.AreEqual("ABC", C.Str);
+        }
+
+        [TestMethod]
+        public void CopyBoolean()
+        {
+            PropertyCopy.CopyValues(A, D);
+
+            Assert.AreEqual(false, D.Boolean);
+        }
+
+        [TestMethod]
+        public void CopyInt()
+        {
+            PropertyCopy.CopyValues(A, E);
+
+            Assert.AreEqual(55, E.Integer);
         }
     }
 }
