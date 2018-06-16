@@ -1,11 +1,12 @@
-﻿using Prism.Mvvm;
+﻿using METCSV.WPF.Configuration;
+using Prism.Mvvm;
 
 namespace METCSV.WPF.ViewModels
 {
     class SettingsViewModel : BindableBase
     {
 
-        private bool _metTabIsActive;
+        private bool _metTabIsActive = true;
         public bool MetTabIsActive
         {
             get { return _metTabIsActive; }
@@ -32,6 +33,20 @@ namespace METCSV.WPF.ViewModels
             get { return _lamaTabIsActive; }
             set { SetProperty(ref _lamaTabIsActive, value); }
         }
+
+        private MetDownloaderSettings _metSettings;
+        public MetDownloaderSettings MetSettings
+        {
+            get { return _metSettings; }
+            set { SetProperty(ref _metSettings, value); }
+        }
+
+        public SettingsViewModel()
+        {
+            _metSettings = new MetDownloaderSettings();
+        }
+
+
 
     }
 
