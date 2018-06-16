@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace METCSV.Common
+﻿namespace METCSV.Common
 {
     public static class PropertyCopy
     {
@@ -13,10 +7,10 @@ namespace METCSV.Common
         {
             if (source == target)
                 return false;
-            
+
             var properties = source.GetType().GetProperties();
 
-            foreach(var prop in properties)
+            foreach (var prop in properties)
             {
                 var targetVal = prop.GetValue(target);
                 var sourceVal = prop.GetValue(source);
@@ -27,7 +21,18 @@ namespace METCSV.Common
                 }
             }
 
-             return false;
+            return false;
+        }
+
+        public static void CopyValues<T>(T source, T target) where T : class
+        {
+            var properties = source.GetType().GetProperties();
+
+            foreach (var prop in properties)
+            {
+                var sourceVal = prop.GetValue(source);
+                prop.SetValue(target, sourceVal);
+            }
         }
 
     }

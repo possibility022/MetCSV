@@ -1,4 +1,5 @@
-﻿using METCSV.WPF.Configuration;
+﻿using METCSV.Common;
+using METCSV.WPF.Configuration;
 using Prism.Mvvm;
 
 namespace METCSV.WPF.ViewModels
@@ -65,13 +66,69 @@ namespace METCSV.WPF.ViewModels
 
         public SettingsViewModel()
         {
-            MetSettings = new MetDownloaderSettings(); // todo load it from settings.
+            CopyFromSettings();
+        }
+
+        private void CopyFromSettings()
+        {
+            MetSettings = new MetDownloaderSettings();
             LamaSettings = new LamaDownloaderSettings();
             TdSettings = new TechDataDownloaderSettings();
             AbSettings = new AbDownloaderSettings();
+
+            PropertyCopy.CopyValues(Settings.MetDownlaoder, MetSettings);
+            PropertyCopy.CopyValues(Settings.ABDownloader, AbSettings);
+            PropertyCopy.CopyValues(Settings.TDDownloader, TdSettings);
+            PropertyCopy.CopyValues(Settings.LamaDownloader, LamaSettings);
         }
 
+        private void Save()
+        {
+            if (MetTabIsActive)
+                PropertyCopy.CopyValues(MetSettings, Settings.MetDownlaoder);
 
+            else if (AbTabIsActive)
+                PropertyCopy.CopyValues(AbSettings, Settings.ABDownloader);
+
+            else if (TdTabIsActive)
+                PropertyCopy.CopyValues(TdSettings, Settings.TDDownloader);
+
+            else if (LamaTabIsActive)
+                PropertyCopy.CopyValues(LamaSettings, Settings.LamaDownloader);
+        }
+
+        private void RestoreChanges()
+        {
+            if (MetTabIsActive)
+                PropertyCopy.CopyValues(Settings.MetDownlaoder, MetSettings);
+
+            else if (AbTabIsActive)
+                PropertyCopy.CopyValues(Settings.ABDownloader, AbSettings);
+
+            else if (TdTabIsActive)
+                PropertyCopy.CopyValues(Settings.TDDownloader, TdSettings);
+
+            else if (LamaTabIsActive)
+                PropertyCopy.CopyValues(Settings.LamaDownloader, LamaSettings);
+        }
+
+        private bool AllSaved()
+        {
+
+            if (PropertyCopy.AnyChanges(MetSettings, Settings.MetDownlaoder))
+                return false;
+
+            if (PropertyCopy.AnyChanges(AbSettings, Settings.ABDownloader))
+                return false;
+
+            if (PropertyCopy.AnyChanges(TdSettings, Settings.TDDownloader))
+                return false;
+
+            if (PropertyCopy.AnyChanges(LamaSettings, Settings.LamaDownloader))
+                return false;
+
+            return true;
+        }
 
     }
 
