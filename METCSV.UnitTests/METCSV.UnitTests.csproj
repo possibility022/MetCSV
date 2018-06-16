@@ -74,6 +74,7 @@
     <Compile Include="QuickTest.cs" />
     <Compile Include="ProductsTests.cs" />
     <Compile Include="EncryptingTest.cs" />
+    <Compile Include="PropertyCopyTest.cs" />
     <Compile Include="ViewModels\ProfitsViewModelTests.cs" />
     <Compile Include="Workflows\ProfitsIOTests.cs" />
   </ItemGroup>
