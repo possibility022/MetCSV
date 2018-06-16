@@ -41,9 +41,17 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _metSettings, value); }
         }
 
+        private LamaDownloaderSettings _lamaSettings;
+        public LamaDownloaderSettings LamaSettings
+        {
+            get { return _lamaSettings; }
+            set { SetProperty(ref _lamaSettings, value); }
+        }
+
         public SettingsViewModel()
         {
-            _metSettings = new MetDownloaderSettings();
+            MetSettings = new MetDownloaderSettings();
+            LamaSettings = new LamaDownloaderSettings();
         }
 
 

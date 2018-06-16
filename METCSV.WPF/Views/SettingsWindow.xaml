@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ViewModels="clr-namespace:METCSV.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ff="clr-namespace:FunctionalFun.UI"
     xmlns:local="clr-namespace:METCSV.WPF.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Settings"
@@ -103,37 +104,57 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Content="Login" />
-                        <TextBox Grid.Row="0" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding LamaSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             Content="Hasło" />
-                        <PasswordBox Grid.Row="1" Grid.Column="1" />
+                        <PasswordBox
+                            Name="LamaPassword"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            ff:PasswordBoxAssistant.BindPassword="true"
+                            ff:PasswordBoxAssistant.BoundPassword="{Binding LamaSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="2"
                             Grid.Column="0"
                             Content="Plik XML" />
-                        <TextBox Grid.Row="2" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding LamaSettings.XmlFile, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="3"
                             Grid.Column="0"
                             Content="Plik CSV" />
-                        <TextBox Grid.Row="3" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text="{Binding LamaSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="4"
                             Grid.Column="0"
                             Content="URL" />
-                        <TextBox Grid.Row="4" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Text="{Binding LamaSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="5"
                             Grid.Column="0"
                             Content="HTTP Request" />
-                        <TextBox Grid.Row="5" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Text="{Binding LamaSettings.Request, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </Border>
 
