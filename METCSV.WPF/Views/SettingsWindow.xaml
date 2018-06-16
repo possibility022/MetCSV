@@ -289,25 +289,38 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Content="Email Login" />
-                        <TextBox Grid.Row="0" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding AbSettings.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             Content="Email Hasło" />
-                        <TextBox Grid.Row="1" Grid.Column="1" />
+                        <PasswordBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            ff:PasswordBoxAssistant.BindPassword="true"
+                            ff:PasswordBoxAssistant.BoundPassword="{Binding AbSettings.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="2"
                             Grid.Column="0"
                             Content="Email Serwer Adres" />
-                        <TextBox Grid.Row="2" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding AbSettings.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="3"
                             Grid.Column="0"
                             Content="Email Serwer Port" />
-                        <TextBox Grid.Row="3" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text="{Binding AbSettings.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
 
                         <Label
                             Grid.Row="4"
@@ -316,13 +329,17 @@
                         <CheckBox
                             Grid.Row="4"
                             Grid.Column="1"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding AbSettings.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="6"
                             Grid.Column="0"
                             Content="Usuwaj stare wiadomości" />
-                        <CheckBox Grid.Row="6" Grid.Column="1" />
+                        <CheckBox
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </Border>
