@@ -97,6 +97,7 @@
     <Compile Include="Configuration\MetDownloaderSettings.cs" />
     <Compile Include="Configuration\TechDataDownloaderSettings.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
+    <Compile Include="Converters\StringToIntConverter.cs" />
     <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />

@@ -31,5 +31,6 @@
     </Style>
 
     <Converters:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+    <Converters:StringToIntConverter x:Key="StringToIntConverter" />
 
 </ResourceDictionary>

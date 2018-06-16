@@ -55,12 +55,20 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _tdSettings, value); }
         }
 
+        private AbDownloaderSettings _abSettings;
+        public AbDownloaderSettings AbSettings
+        {
+            get { return _abSettings; }
+            set { SetProperty(ref _abSettings, value); }
+        }
+
 
         public SettingsViewModel()
         {
             MetSettings = new MetDownloaderSettings(); // todo load it from settings.
             LamaSettings = new LamaDownloaderSettings();
             TdSettings = new TechDataDownloaderSettings();
+            AbSettings = new AbDownloaderSettings();
         }
 
 
