@@ -105,6 +105,7 @@
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\HelpMe.cs" />
+    <Compile Include="Helpers\PasswordBoxAssistant.cs" />
     <Compile Include="Helpers\PropertyCopy.cs" />
     <Compile Include="Models\ManufacturersCollection.cs" />
     <Compile Include="Models\EditableDictionaryKey.cs" />
