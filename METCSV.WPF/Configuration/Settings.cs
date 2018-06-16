@@ -2,6 +2,15 @@
 {
     public static class Settings
     {
+
+        static Settings()
+        {
+            ABDownloader = new AbDownloaderSettings();
+            LamaDownloader = new LamaDownloaderSettings();
+            MetDownlaoder = new MetDownloaderSettings();
+            TDDownloader = new TechDataDownloaderSettings();
+        }
+
         public static bool OfflineMode { get; set; } = true;
 
         public static AbDownloaderSettings ABDownloader { get; set; }

@@ -10,6 +10,8 @@
     Title="Settings"
     Width="800"
     Height="450"
+    Closing="WindowClosing"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -355,8 +357,8 @@
             Height="Auto"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
-            <Button Content="Zapisz" />
-            <Button Content="Anuluj" />
+            <Button Click="SaveClick" Content="Zapisz" />
+            <Button Click="CancelClick" Content="Cofnij" />
         </StackPanel>
     </Grid>
 </Window>
