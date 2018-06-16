@@ -2,9 +2,9 @@
 {
     public class TechDataDownloaderSettings
     {
-        public string Login { get; set; }
+        public string Login { get; set; } = string.Empty;
 
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         public string FtpAddress { get; set; } = "ftp2.techdata-it-emea.com";
 

@@ -13,9 +13,9 @@
 
         public bool EmailServerUseSSL { get; set; } = false;
 
-        public string EmailLogin { get; set; }
+        public string EmailLogin { get; set; } = string.Empty;
 
-        public string EmailPassword { get; set; }
+        public string EmailPassword { get; set; } = string.Empty;
 
         public bool DeleteOldMessages { get; set; } = true;
     }

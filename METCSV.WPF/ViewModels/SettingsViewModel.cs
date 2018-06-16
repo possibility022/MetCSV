@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace METCSV.WPF.ViewModels
 {
-    class SettingsViewModel : BindableBase
+    public class SettingsViewModel : BindableBase
     {
 
         private bool _metTabIsActive = true;
@@ -82,7 +82,7 @@ namespace METCSV.WPF.ViewModels
             PropertyCopy.CopyValues(Settings.LamaDownloader, LamaSettings);
         }
 
-        private void Save()
+        public void Save()
         {
             if (MetTabIsActive)
                 PropertyCopy.CopyValues(MetSettings, Settings.MetDownlaoder);
@@ -97,7 +97,7 @@ namespace METCSV.WPF.ViewModels
                 PropertyCopy.CopyValues(LamaSettings, Settings.LamaDownloader);
         }
 
-        private void RestoreChanges()
+        public void RestoreChanges()
         {
             if (MetTabIsActive)
                 PropertyCopy.CopyValues(Settings.MetDownlaoder, MetSettings);
@@ -112,7 +112,7 @@ namespace METCSV.WPF.ViewModels
                 PropertyCopy.CopyValues(Settings.LamaDownloader, LamaSettings);
         }
 
-        private bool AllSaved()
+        public bool AllSaved()
         {
 
             if (PropertyCopy.AnyChanges(MetSettings, Settings.MetDownlaoder))
