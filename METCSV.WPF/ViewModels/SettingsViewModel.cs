@@ -48,10 +48,19 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _lamaSettings, value); }
         }
 
+        private TechDataDownloaderSettings _tdSettings;
+        public TechDataDownloaderSettings TdSettings
+        {
+            get { return _tdSettings; }
+            set { SetProperty(ref _tdSettings, value); }
+        }
+
+
         public SettingsViewModel()
         {
-            MetSettings = new MetDownloaderSettings();
+            MetSettings = new MetDownloaderSettings(); // todo load it from settings.
             LamaSettings = new LamaDownloaderSettings();
+            TdSettings = new TechDataDownloaderSettings();
         }
 
 

@@ -193,43 +193,65 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Content="Login" />
-                        <TextBox Grid.Row="0" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding TdSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             Content="Hasło" />
-                        <PasswordBox Grid.Row="1" Grid.Column="1" />
+                        <PasswordBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            ff:PasswordBoxAssistant.BindPassword="true"
+                            ff:PasswordBoxAssistant.BoundPassword="{Binding TdSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="2"
                             Grid.Column="0"
                             Content="FTP Adres" />
-                        <TextBox Grid.Row="2" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding TdSettings.FtpAddress, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="3"
                             Grid.Column="0"
                             Content="Pattern do znalezienia daty" />
-                        <TextBox Grid.Row="3" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text="{Binding TdSettings.Pattern, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="4"
                             Grid.Column="0"
                             Content="Wypadkuj do" />
-                        <TextBox Grid.Row="4" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Text="{Binding TdSettings.FolderToExtract, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="5"
                             Grid.Column="0"
                             Content="Plik CSV Materials" />
-                        <TextBox Grid.Row="5" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Text="{Binding TdSettings.CsvMaterials, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="6"
                             Grid.Column="0"
                             Content="Plik CSV Prices" />
-                        <TextBox Grid.Row="6" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Text="{Binding TdSettings.CsvPrices, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </Border>
