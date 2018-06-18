@@ -1,4 +1,5 @@
 ﻿using METCSV.WPF.Configuration;
+using METCSV.WPF.Workflows;
 using System;
 using System.Windows;
 using System.Windows.Threading;
@@ -24,6 +25,13 @@ namespace METCSV.WPF
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             Log.ConfigureNLog();
+            SettingsIO.LoadSettings();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            SettingsIO.SaveSettings();
+            base.OnExit(e);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

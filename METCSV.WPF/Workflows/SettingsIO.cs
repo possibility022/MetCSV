@@ -34,7 +34,10 @@ namespace METCSV.WPF.Workflows
 
                 App.Settings = JsonConvert.DeserializeObject<Settings>(sb.ToString());
             }
-
+            else
+            {
+                App.Settings = new Settings();
+            }
         }
 
         private static void AddSalt(ref StringBuilder sb)
