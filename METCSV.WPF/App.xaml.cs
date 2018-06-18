@@ -13,7 +13,7 @@ namespace METCSV.WPF
     {
         public static readonly string ProfitsFileExtension = ".prof";
 
-        public static Settings SETTINGS { get; set; }
+        public static Settings Settings { get; set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {

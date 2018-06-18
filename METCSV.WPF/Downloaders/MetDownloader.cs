@@ -10,9 +10,9 @@ namespace METCSV.WPF.Downloaders
     {
         public override Providers Provider => Providers.MET;
 
-        private string _fileName = App.SETTINGS.MetDownlaoder.CsvFile;
+        private string _fileName = App.Settings.MetDownlaoder.CsvFile;
 
-        readonly string Url = App.SETTINGS.MetDownlaoder.Url;
+        readonly string Url = App.Settings.MetDownlaoder.Url;
 
         public MetDownloader(CancellationToken token)
         {

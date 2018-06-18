@@ -15,18 +15,18 @@ namespace METCSV.WPF.Downloaders
 
         public override Providers Provider => Providers.TechData;
 
-        readonly string User = App.SETTINGS.TDDownloader.Login;
-        readonly string Password = App.SETTINGS.TDDownloader.Password;
+        readonly string User = App.Settings.TDDownloader.Login;
+        readonly string Password = App.Settings.TDDownloader.Password;
 
-        readonly string Pattern = App.SETTINGS.TDDownloader.Pattern;
+        readonly string Pattern = App.Settings.TDDownloader.Pattern;
 
-        readonly string FtpAddres = App.SETTINGS.TDDownloader.FtpAddress;
+        readonly string FtpAddres = App.Settings.TDDownloader.FtpAddress;
 
-        readonly string FolderToExtract = App.SETTINGS.TDDownloader.FolderToExtract;
+        readonly string FolderToExtract = App.Settings.TDDownloader.FolderToExtract;
 
-        readonly string CsvMaterials = App.SETTINGS.TDDownloader.CsvMaterials;
+        readonly string CsvMaterials = App.Settings.TDDownloader.CsvMaterials;
 
-        readonly string CsvPrices = App.SETTINGS.TDDownloader.CsvPrices;
+        readonly string CsvPrices = App.Settings.TDDownloader.CsvPrices;
 
         public TechDataDownloader(CancellationToken token)
         {

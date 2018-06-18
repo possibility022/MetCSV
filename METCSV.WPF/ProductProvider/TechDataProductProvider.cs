@@ -26,7 +26,7 @@ namespace METCSV.WPF.ProductProvider
 
         private IDownloader GetDownloader()
         {
-            if (App.SETTINGS.Engine.OfflineMode)
+            if (App.Settings.Engine.OfflineMode)
             {
                 return new TechDataOfflineDownloader();
             }

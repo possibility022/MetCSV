@@ -76,55 +76,55 @@ namespace METCSV.WPF.ViewModels
             TdSettings = new TechDataDownloaderSettings();
             AbSettings = new AbDownloaderSettings();
 
-            PropertyCopy.CopyValues(App.SETTINGS.MetDownlaoder, MetSettings);
-            PropertyCopy.CopyValues(App.SETTINGS.ABDownloader, AbSettings);
-            PropertyCopy.CopyValues(App.SETTINGS.TDDownloader, TdSettings);
-            PropertyCopy.CopyValues(App.SETTINGS.LamaDownloader, LamaSettings);
+            PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
+            PropertyCopy.CopyValues(App.Settings.ABDownloader, AbSettings);
+            PropertyCopy.CopyValues(App.Settings.TDDownloader, TdSettings);
+            PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
         }
 
         public void Save()
         {
             if (MetTabIsActive)
-                PropertyCopy.CopyValues(MetSettings, App.SETTINGS.MetDownlaoder);
+                PropertyCopy.CopyValues(MetSettings, App.Settings.MetDownlaoder);
 
             else if (AbTabIsActive)
-                PropertyCopy.CopyValues(AbSettings, App.SETTINGS.ABDownloader);
+                PropertyCopy.CopyValues(AbSettings, App.Settings.ABDownloader);
 
             else if (TdTabIsActive)
-                PropertyCopy.CopyValues(TdSettings, App.SETTINGS.TDDownloader);
+                PropertyCopy.CopyValues(TdSettings, App.Settings.TDDownloader);
 
             else if (LamaTabIsActive)
-                PropertyCopy.CopyValues(LamaSettings, App.SETTINGS.LamaDownloader);
+                PropertyCopy.CopyValues(LamaSettings, App.Settings.LamaDownloader);
         }
 
         public void RestoreChanges()
         {
             if (MetTabIsActive)
-                PropertyCopy.CopyValues(App.SETTINGS.MetDownlaoder, MetSettings);
+                PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
 
             else if (AbTabIsActive)
-                PropertyCopy.CopyValues(App.SETTINGS.ABDownloader, AbSettings);
+                PropertyCopy.CopyValues(App.Settings.ABDownloader, AbSettings);
 
             else if (TdTabIsActive)
-                PropertyCopy.CopyValues(App.SETTINGS.TDDownloader, TdSettings);
+                PropertyCopy.CopyValues(App.Settings.TDDownloader, TdSettings);
 
             else if (LamaTabIsActive)
-                PropertyCopy.CopyValues(App.SETTINGS.LamaDownloader, LamaSettings);
+                PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
         }
 
         public bool AllSaved()
         {
 
-            if (PropertyCopy.AnyChanges(MetSettings, App.SETTINGS.MetDownlaoder))
+            if (PropertyCopy.AnyChanges(MetSettings, App.Settings.MetDownlaoder))
                 return false;
 
-            if (PropertyCopy.AnyChanges(AbSettings, App.SETTINGS.ABDownloader))
+            if (PropertyCopy.AnyChanges(AbSettings, App.Settings.ABDownloader))
                 return false;
 
-            if (PropertyCopy.AnyChanges(TdSettings, App.SETTINGS.TDDownloader))
+            if (PropertyCopy.AnyChanges(TdSettings, App.Settings.TDDownloader))
                 return false;
 
-            if (PropertyCopy.AnyChanges(LamaSettings, App.SETTINGS.LamaDownloader))
+            if (PropertyCopy.AnyChanges(LamaSettings, App.Settings.LamaDownloader))
                 return false;
 
             return true;
