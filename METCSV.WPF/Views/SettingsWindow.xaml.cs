@@ -1,17 +1,5 @@
 ﻿using METCSV.WPF.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace METCSV.WPF.Views
 {
@@ -48,11 +36,16 @@ namespace METCSV.WPF.Views
         {
             if (!Model.AllSaved())
             {
-                var result = MessageBox.Show("Nie wszystkie zmiany zostały zapisane. Czy kontynułować?", "Uwaga", MessageBoxButton.YesNo);
+                var result = MessageBox.Show("Masz niezapisane zmiany. Czy kontynułować?", "Uwaga", MessageBoxButton.YesNo);
 
                 if (result == MessageBoxResult.No)
                     e.Cancel = true;
             }
+        }
+
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
