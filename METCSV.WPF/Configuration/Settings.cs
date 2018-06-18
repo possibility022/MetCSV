@@ -1,9 +1,8 @@
 ﻿namespace METCSV.WPF.Configuration
 {
-    public static class Settings
+    public class Settings
     {
-
-        static Settings()
+        public Settings()
         {
             ABDownloader = new AbDownloaderSettings();
             LamaDownloader = new LamaDownloaderSettings();
@@ -11,15 +10,19 @@
             TDDownloader = new TechDataDownloaderSettings();
         }
 
-        public static bool OfflineMode { get; set; } = true;
+        public EngineSettings Engine { get; set; }
 
-        public static AbDownloaderSettings ABDownloader { get; set; }
 
-        public static LamaDownloaderSettings LamaDownloader { get; set; }
+        public AbDownloaderSettings ABDownloader { get; set; }
 
-        public static MetDownloaderSettings MetDownlaoder { get; set; }
 
-        public static TechDataDownloaderSettings TDDownloader { get; set; }
+        public LamaDownloaderSettings LamaDownloader { get; set; }
+
+
+        public MetDownloaderSettings MetDownlaoder { get; set; }
+
+
+        public TechDataDownloaderSettings TDDownloader { get; set; }
 
     }
 }

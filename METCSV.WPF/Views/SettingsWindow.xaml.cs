@@ -17,7 +17,7 @@ namespace METCSV.WPF.Views
 {
 
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for App.SETTINGS.xaml
     /// </summary>
     /// 
     public partial class SettingsWindow : Window

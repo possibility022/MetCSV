@@ -13,6 +13,8 @@ namespace METCSV.WPF
     {
         public static readonly string ProfitsFileExtension = ".prof";
 
+        public static Settings SETTINGS { get; set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             // Start listening for WPF binding error.

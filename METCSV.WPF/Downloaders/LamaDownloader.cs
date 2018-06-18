@@ -13,17 +13,17 @@ namespace METCSV.WPF.Downloaders
     {
         public override Providers Provider => Providers.Lama;
 
-        public string UrlConnection { get; } = Settings.LamaDownloader.Url;
+        public string UrlConnection { get; } = App.SETTINGS.LamaDownloader.Url;
 
-        readonly string FileName = Settings.LamaDownloader.XmlFile;
+        readonly string FileName = App.SETTINGS.LamaDownloader.XmlFile;
 
-        readonly string CsvFileName = Settings.LamaDownloader.CsvFile;
+        readonly string CsvFileName = App.SETTINGS.LamaDownloader.CsvFile;
 
-        readonly string Login = Settings.LamaDownloader.Login;
+        readonly string Login = App.SETTINGS.LamaDownloader.Login;
 
-        readonly string Password = Settings.LamaDownloader.Password;
+        readonly string Password = App.SETTINGS.LamaDownloader.Password;
 
-        readonly string Request = Settings.LamaDownloader.Request;
+        readonly string Request = App.SETTINGS.LamaDownloader.Request;
 
         public LamaDownloader(CancellationToken token)
         {

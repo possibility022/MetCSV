@@ -25,7 +25,7 @@ namespace METCSV.WPF.ProductProvider
 
         private IDownloader GetDownloader()
         {
-            if (Settings.OfflineMode)
+            if (App.SETTINGS.Engine.OfflineMode)
             {
                 return new LamaOfflineDownloader();
             }

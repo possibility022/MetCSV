@@ -16,17 +16,17 @@ namespace METCSV.WPF.Downloaders
 {
     class AbDownloader : DownloaderBase
     {
-        readonly string EmailServerAddress = Settings.ABDownloader.EmailServerAddress;
-        readonly int EmailServerPort = Settings.ABDownloader.EmailServerPort;
-        readonly bool UseSSL = Settings.ABDownloader.EmailServerUseSSL;
+        readonly string EmailServerAddress = App.SETTINGS.ABDownloader.EmailServerAddress;
+        readonly int EmailServerPort = App.SETTINGS.ABDownloader.EmailServerPort;
+        readonly bool UseSSL = App.SETTINGS.ABDownloader.EmailServerUseSSL;
 
-        readonly string EmailLogin = Settings.ABDownloader.EmailLogin;
-        readonly string EmailPassword = Settings.ABDownloader.EmailPassword;
+        readonly string EmailLogin = App.SETTINGS.ABDownloader.EmailLogin;
+        readonly string EmailPassword = App.SETTINGS.ABDownloader.EmailPassword;
 
-        readonly string ZippedFile = Settings.ABDownloader.ZippedFile;
-        readonly string FolderToExtract = Settings.ABDownloader.FolderToExtract;
+        readonly string ZippedFile = App.SETTINGS.ABDownloader.ZippedFile;
+        readonly string FolderToExtract = App.SETTINGS.ABDownloader.FolderToExtract;
 
-        readonly bool DeleteOld = Settings.ABDownloader.DeleteOldMessages;
+        readonly bool DeleteOld = App.SETTINGS.ABDownloader.DeleteOldMessages;
 
         
         public AbDownloader(CancellationToken cancellationToken)
