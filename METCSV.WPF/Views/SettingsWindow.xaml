@@ -60,7 +60,7 @@
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="{Binding MetSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding MetApp.SETTINGS.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
@@ -69,7 +69,7 @@
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="1"
-                            Text="{Binding MetSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding MetApp.SETTINGS.Url, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </Border>
@@ -109,7 +109,7 @@
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="{Binding LamaSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding LamaApp.SETTINGS.Login, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
@@ -120,7 +120,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             ff:PasswordBoxAssistant.BindPassword="true"
-                            ff:PasswordBoxAssistant.BoundPassword="{Binding LamaSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            ff:PasswordBoxAssistant.BoundPassword="{Binding LamaApp.SETTINGS.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="2"
@@ -129,7 +129,7 @@
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="1"
-                            Text="{Binding LamaSettings.XmlFile, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding LamaApp.SETTINGS.XmlFile, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="3"
@@ -138,7 +138,7 @@
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="1"
-                            Text="{Binding LamaSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding LamaApp.SETTINGS.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="4"
@@ -147,7 +147,7 @@
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="1"
-                            Text="{Binding LamaSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding LamaApp.SETTINGS.Url, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="5"
@@ -156,7 +156,7 @@
                         <TextBox
                             Grid.Row="5"
                             Grid.Column="1"
-                            Text="{Binding LamaSettings.Request, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding LamaApp.SETTINGS.Request, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </Border>
 
@@ -198,7 +198,7 @@
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="{Binding TdSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TdApp.SETTINGS.Login, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
@@ -208,7 +208,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             ff:PasswordBoxAssistant.BindPassword="true"
-                            ff:PasswordBoxAssistant.BoundPassword="{Binding TdSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            ff:PasswordBoxAssistant.BoundPassword="{Binding TdApp.SETTINGS.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="2"
@@ -217,7 +217,7 @@
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="1"
-                            Text="{Binding TdSettings.FtpAddress, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TdApp.SETTINGS.FtpAddress, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="3"
@@ -226,7 +226,7 @@
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="1"
-                            Text="{Binding TdSettings.Pattern, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TdApp.SETTINGS.Pattern, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="4"
@@ -235,7 +235,7 @@
                         <TextBox
                             Grid.Row="4"
                             Grid.Column="1"
-                            Text="{Binding TdSettings.FolderToExtract, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TdApp.SETTINGS.FolderToExtract, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="5"
@@ -244,7 +244,7 @@
                         <TextBox
                             Grid.Row="5"
                             Grid.Column="1"
-                            Text="{Binding TdSettings.CsvMaterials, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TdApp.SETTINGS.CsvMaterials, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="6"
@@ -253,7 +253,7 @@
                         <TextBox
                             Grid.Row="6"
                             Grid.Column="1"
-                            Text="{Binding TdSettings.CsvPrices, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding TdApp.SETTINGS.CsvPrices, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </Border>
@@ -294,7 +294,7 @@
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="{Binding AbSettings.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding AbApp.SETTINGS.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
@@ -304,7 +304,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             ff:PasswordBoxAssistant.BindPassword="true"
-                            ff:PasswordBoxAssistant.BoundPassword="{Binding AbSettings.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            ff:PasswordBoxAssistant.BoundPassword="{Binding AbApp.SETTINGS.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="2"
@@ -313,7 +313,7 @@
                         <TextBox
                             Grid.Row="2"
                             Grid.Column="1"
-                            Text="{Binding AbSettings.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding AbApp.SETTINGS.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="3"
@@ -322,7 +322,7 @@
                         <TextBox
                             Grid.Row="3"
                             Grid.Column="1"
-                            Text="{Binding AbSettings.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
+                            Text="{Binding AbApp.SETTINGS.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
 
                         <Label
                             Grid.Row="4"
@@ -332,7 +332,7 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            IsChecked="{Binding AbSettings.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
+                            IsChecked="{Binding AbApp.SETTINGS.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="6"
@@ -341,7 +341,7 @@
                         <CheckBox
                             Grid.Row="6"
                             Grid.Column="1"
-                            IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}" />
+                            IsChecked="{Binding AbApp.SETTINGS.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </Border>
