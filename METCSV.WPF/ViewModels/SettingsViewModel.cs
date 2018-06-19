@@ -1,11 +1,22 @@
 ﻿using METCSV.Common;
 using METCSV.WPF.Configuration;
 using Prism.Mvvm;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace METCSV.WPF.ViewModels
 {
     public class SettingsViewModel : BindableBase
     {
+        private Task _hiddingTask;
+
+        private Visibility _savedInfo = Visibility.Hidden;
+        public Visibility SavedInfo
+        {
+            get { return _savedInfo; }
+            set { SetProperty(ref _savedInfo, value); }
+        }
 
         private bool _metTabIsActive = true;
         public bool MetTabIsActive
@@ -67,6 +78,7 @@ namespace METCSV.WPF.ViewModels
         public SettingsViewModel()
         {
             CopyFromSettings();
+            _hiddingTask = new Task(HideInfoAfter);
         }
 
         private void CopyFromSettings()
@@ -82,6 +94,12 @@ namespace METCSV.WPF.ViewModels
             PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
         }
 
+        private void HideInfoAfter()
+        {
+            Thread.Sleep(1000);
+            SavedInfo = Visibility.Hidden;
+        }
+
         public void Save()
         {
             if (MetTabIsActive)
@@ -95,6 +113,12 @@ namespace METCSV.WPF.ViewModels
 
             else if (LamaTabIsActive)
                 PropertyCopy.CopyValues(LamaSettings, App.Settings.LamaDownloader);
+
+            SavedInfo = Visibility.Visible;
+
+            _hiddingTask = new Task(HideInfoAfter);
+            _hiddingTask.Start();
+
         }
 
         public void RestoreChanges()
