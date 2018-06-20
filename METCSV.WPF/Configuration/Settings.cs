@@ -2,44 +2,45 @@
 {
     public class Settings
     {
-        public Settings()
+        private AbDownloaderSettings _aBDownloader;
+        private LamaDownloaderSettings _lamaDownloader;
+        private MetDownloaderSettings _metDownlaoder;
+        private TechDataDownloaderSettings _tDDownloader;
+        private EngineSettings _engine;
+
+        public EngineSettings Engine
         {
-            Initialize();
+            get { return _engine; }
+            set { _engine = value ?? new EngineSettings(); }
         }
 
-        public Settings(bool initialize)
+
+        public AbDownloaderSettings ABDownloader
         {
-            if (initialize)
-            {
-                Initialize();
-            }
+            get { return _aBDownloader; }
+            set { _aBDownloader = value ?? new AbDownloaderSettings(); }
         }
 
-        public void Initialize()
+
+        public LamaDownloaderSettings LamaDownloader
         {
-            if (ABDownloader == null)
-                ABDownloader = new AbDownloaderSettings();
-            if (LamaDownloader == null)
-                LamaDownloader = new LamaDownloaderSettings();
-            if (MetDownlaoder == null)
-                MetDownlaoder = new MetDownloaderSettings();
-            if (TDDownloader == null)
-                TDDownloader = new TechDataDownloaderSettings();
+            get { return _lamaDownloader; }
+            set { _lamaDownloader = value ?? new LamaDownloaderSettings(); }
         }
 
-        public EngineSettings Engine { get; set; }
+
+        public MetDownloaderSettings MetDownlaoder
+        {
+            get { return _metDownlaoder; }
+            set { _metDownlaoder = value ?? new MetDownloaderSettings(); }
+        }
 
 
-        public AbDownloaderSettings ABDownloader { get; set; }
-
-
-        public LamaDownloaderSettings LamaDownloader { get; set; }
-
-
-        public MetDownloaderSettings MetDownlaoder { get; set; }
-
-
-        public TechDataDownloaderSettings TDDownloader { get; set; }
+        public TechDataDownloaderSettings TDDownloader
+        {
+            get { return _tDDownloader; }
+            set { _tDDownloader = value ?? new TechDataDownloaderSettings(); }
+        }
 
     }
 }

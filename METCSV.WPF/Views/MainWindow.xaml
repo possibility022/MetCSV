@@ -9,8 +9,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:usercontrols="clr-namespace:METCSV.WPF.UserControls"
     Title="MainWindow"
-    Width="451.237"
-    Height="495.171"
+    Width="540"
+    Height="495"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Window.DataContext>
@@ -20,8 +22,6 @@
     <Window.Resources>
         <ResourceDictionary Source="../ResourceDictionary.xaml" />
     </Window.Resources>
-
-
 
     <Grid Margin="10">
 
@@ -237,6 +237,13 @@
                 Content="Krok 5: Porównaj" />
 
         </Grid>
+
+        <CheckBox
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Content="Ustaw marże po załadowaniu plików."
+            IsChecked="{Binding SetProfits}" />
 
         <StackPanel
             Grid.Row="7"
