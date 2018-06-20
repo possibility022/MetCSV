@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -91,12 +90,26 @@ namespace METCSV.WPF.ProductReaders
         {
             int count = 0;
 
+            var producentsDict = new Dictionary<string, Product>();
+
+            foreach (var p in producents)
+            {
+                if (producentsDict.ContainsKey(p.SymbolSAP))
+                {
+                    LogError($"Met producents file contains two the same sap numbers. Check that out. SAP : {p.SymbolSAP}");
+                }
+                else
+                {
+                    producentsDict.Add(p.SymbolSAP, p);
+                }
+            }
+
             for (int i = 0; i < products.Count; i++)
             {
-                var query = producents.FirstOrDefault(p => p.SymbolSAP == products[i].SymbolSAP);
-                if (query != null)
+
+                if (producentsDict.ContainsKey(products[i].SymbolSAP))
                 {
-                    products[i].NazwaProducenta = query.NazwaProducenta;
+                    products[i].NazwaProducenta = producentsDict[products[i].SymbolSAP].NazwaProducenta;
                 }
                 else
                 {
@@ -106,7 +119,7 @@ namespace METCSV.WPF.ProductReaders
                 }
             }
 
-            LogInfo($"Number of not found products: {count}");
+            LogInfo($"Number of not found products: {count}. You can download new CSV file to decrease this number.");
 
             return products;
         }
