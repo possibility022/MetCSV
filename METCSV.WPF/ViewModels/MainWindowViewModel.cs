@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using METCSV.Common;
 using Newtonsoft.Json;
 using System.IO;
-using METCSV.WPF.Configuration;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -22,9 +21,6 @@ namespace METCSV.WPF.ViewModels
     {
 
         private CancellationTokenSource _cancellationTokenSource;
-
-        private bool _showProfitsWindow = false;
-
 
         private OperationStatus _stepOneStatus = OperationStatus.ReadyToStart;
 
@@ -74,9 +70,17 @@ namespace METCSV.WPF.ViewModels
 
         ProfitsWindow _profitsView;
         ProfitsViewModel _profitsViewModel;
-        private bool _setProfits = true;
+        private bool _setProfits;
 
-        public bool SetProfits { get => _setProfits; set => SetProperty(ref _setProfits, value); }
+        public bool SetProfits
+        {
+            get => _setProfits;
+            set
+            {
+                SetProperty(ref _setProfits, value);
+                App.Settings.Engine.SetProfits = value;
+            }
+        }
 
         private ProductMerger _productMerger;
 
@@ -84,7 +88,7 @@ namespace METCSV.WPF.ViewModels
 
         public MainWindowViewModel()
         {
-
+            SetProfits = App.Settings?.Engine?.SetProfits ?? true;
         }
 
         private void Initialize()
@@ -98,7 +102,7 @@ namespace METCSV.WPF.ViewModels
 
         private async Task<bool> DownloadAndLoadAsync()
         {
-            
+
 
             var met = ProductProviderBase.DownloadAndLoadAsync(_met);
             var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);

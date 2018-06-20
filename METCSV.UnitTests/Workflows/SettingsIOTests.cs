@@ -120,7 +120,20 @@ namespace METCSV.UnitTests.Workflows
             Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.LamaDownloader, settings.LamaDownloader));
         }
 
+        [TestMethod]
+        public void SetNullStringToEmptyString()
+        {
+            // Arrange
+            App.Settings = new Settings();
+            App.Settings.MetDownlaoder.Url = null;
 
+            SettingsIO.SaveSettings();
 
+            // Act
+            SettingsIO.LoadSettings();
+            
+            // Assert
+            Assert.IsNotNull(App.Settings.MetDownlaoder.Url);
+        }
     }
 }
