@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using METCSV.Common;
 using Newtonsoft.Json;
 using System.IO;
+using System.Windows;
+using METCSV.WPF.Configuration;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -124,45 +126,51 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
-            Initialize();
-
-            var result = await DownloadAndLoadAsync();
-
-            if (result)
+            try
             {
+                Initialize();
 
+                var result = await DownloadAndLoadAsync();
 
-                if (SetProfits)
+                if (result)
                 {
-                    if (_profitsViewModel == null)
+                    if (SetProfits)
                     {
-                        _profitsView = new ProfitsWindow();
-                        _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
-                        _profitsView.Closed += ProfitsWindowClosed;
+                        if (_profitsViewModel == null)
+                        {
+                            _profitsView = new ProfitsWindow();
+                            _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
+                            _profitsView.Closed += ProfitsWindowClosed;
+                        }
+
+                        var lamaProviders = HelpMe.GetProvidersAsync(_lama);
+                        var techDataProviders = HelpMe.GetProvidersAsync(_techData);
+                        var abProviders = HelpMe.GetProvidersAsync(_ab);
+
+                        await lamaProviders;
+                        await techDataProviders;
+                        await abProviders;
+
+                        var dataContext = _profitsViewModel as ProfitsViewModel;
+
+                        dataContext.AddManufacturers(lamaProviders.Result);
+                        dataContext.AddManufacturers(techDataProviders.Result);
+                        dataContext.AddManufacturers(abProviders.Result);
+
+                        _profitsView.Show();
                     }
-
-                    var lamaProviders = HelpMe.GetProvidersAsync(_lama);
-                    var techDataProviders = HelpMe.GetProvidersAsync(_techData);
-                    var abProviders = HelpMe.GetProvidersAsync(_ab);
-
-                    await lamaProviders;
-                    await techDataProviders;
-                    await abProviders;
-
-                    var dataContext = _profitsViewModel as ProfitsViewModel;
-
-                    dataContext.AddManufacturers(lamaProviders.Result);
-                    dataContext.AddManufacturers(techDataProviders.Result);
-                    dataContext.AddManufacturers(abProviders.Result);
-
-                    _profitsView.Show();
+                    else
+                    {
+                        result = await StepTwoAsync();
+                        return result;
+                    }
+                    return true;
                 }
-                else
-                {
-                    result = await StepTwoAsync();
-                    return result;
-                }
-                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Main task exception");
+                MessageBox.Show($"Mamy problem :(. {ex.Message}", "Uwaga!");
             }
 
             return false;
