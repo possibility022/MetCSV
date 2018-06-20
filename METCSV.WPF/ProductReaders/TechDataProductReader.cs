@@ -118,18 +118,28 @@ namespace METCSV.WPF.ProductReaders
         /// <returns>Zwraca scaloną liste produktów</returns>
         private IList<Product> MergePriceTechData(IList<Product> products, IList<Product> prices)
         {
+
+            // we cannot use SapManuHash here
+            var pricesDict = new Dictionary<string, Product>();
+            
+            foreach (var price in prices)
+            {
+                if (!pricesDict.ContainsKey(price.SymbolSAP))
+                    pricesDict.Add(price.SymbolSAP, price);
+                else
+                    LogError($"Two same keys in TechData prices. {price.SymbolSAP}. Open the file and check that value.");
+            }
+
             foreach (var product in products)
             {
-                try
+                if (pricesDict.ContainsKey(product.SymbolSAP))
                 {
-                    var query = prices.Single(p => p.SymbolSAP == product.SymbolSAP);
-                    product.CenaZakupuNetto = query.CenaZakupuNetto;
+                    product.CenaZakupuNetto = pricesDict[product.SymbolSAP].CenaZakupuNetto;
                 }
-                catch
+                else
                 {
                     LogError($"No product in prices with provided SapNo: {product.SymbolSAP}");
                 }
-
             }
             return products;
         }
