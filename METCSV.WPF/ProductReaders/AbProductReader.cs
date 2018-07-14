@@ -13,10 +13,14 @@ namespace METCSV.WPF.ProductReaders
     {
         public override Providers Provider => Providers.AB;
 
+        private readonly string CsvFileEncoding = App.Settings.ABDownloader.CsvFileEncoding;
+        private readonly string CsvDelimiter = App.Settings.ABDownloader.CsvDelimiter;
+
         public AbProductReader(CancellationToken token)
         {
             SetCancellationToken(token);
             ProviderName = "AB";
+            SapPrefix = App.Settings.ABDownloader.SAPPrefix;
         }
 
         public override IList<Product> GetProducts(string filename, string filename2) =>
@@ -28,7 +32,7 @@ namespace METCSV.WPF.ProductReaders
 
             if (encoding == null)
             {
-                encoding = Encoding.GetEncoding("windows-1250"); //todo move it to config somehow
+                encoding = Encoding.GetEncoding(CsvFileEncoding);
             }
 
             IList<Product> products = new List<Product>();
@@ -58,7 +62,7 @@ namespace METCSV.WPF.ProductReaders
         private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = ";" }; // todo to config
+            CsvReader reader = new CsvReader() { Delimiter = CsvDelimiter };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
             
@@ -73,7 +77,7 @@ namespace METCSV.WPF.ProductReaders
                 products.Add(new Product(Provider)
                 {
                     ID = null,
-                    SymbolSAP = "AB" + fields[(int)AbCsvProductsColumns.indeks],
+                    SymbolSAP = SapPrefix + fields[(int)AbCsvProductsColumns.indeks],
                     //KodProducenta = fields[(int)AB.indeks_p],
                     //ModelProduktu = fields[(int)AB.indeks_p],
                     OryginalnyKodProducenta = fields[(int)AbCsvProductsColumns.indeks_p],

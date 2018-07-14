@@ -35,6 +35,8 @@ namespace METCSV.WPF.ProductReaders
 
         public abstract Providers Provider { get; }
 
+        public string SapPrefix { get; protected set; }
+
         public void SetCancellationToken(CancellationToken token)
         {
             _token = token;
