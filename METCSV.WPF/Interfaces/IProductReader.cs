@@ -16,6 +16,8 @@ namespace METCSV.WPF.Interfaces
 
         string ProviderName { get; }
 
+        string SapPrefix { get; }
+
         Providers Provider { get; }
 
         void SetCancellationToken(CancellationToken token);

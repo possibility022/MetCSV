@@ -18,5 +18,14 @@
         public string EmailPassword { get; set; } = string.Empty;
 
         public bool DeleteOldMessages { get; set; } = true;
+
+        public string CsvFileEncoding { get; set; } = "windows-1250";
+
+        public string CsvDelimiter { get; set; } = ";";
+
+        public string SAPPrefix { get; set; } = "AB";
+        public string DateTimeFormat1 { get; set; } = "dd MMM yyyy hh:mm";
+        public string DateTimeFormat2 { get; set; } = "d MMM yyyy hh:mm";
+        public string DateTimeRegexPattern { get; set; } = @"(([0-3][0-9])|([0-9])) [a-zA-Z]{1,4} 20[1-2][0-9] [0-9][0-9]:[0-9][0-9]";
     }
 }

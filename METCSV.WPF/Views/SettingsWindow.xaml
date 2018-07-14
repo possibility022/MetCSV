@@ -190,6 +190,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <Label
@@ -271,80 +272,154 @@
                     Margin="10"
                     BorderBrush="Black"
                     BorderThickness="1">
-                    <Grid Margin="5">
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    <ScrollViewer>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid Margin="5">
 
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Content="Email Login" />
-                        <TextBox
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Text="{Binding AbSettings.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
 
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Content="Email Hasło" />
-                        <PasswordBox
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            ff:PasswordBoxAssistant.BindPassword="true"
-                            ff:PasswordBoxAssistant.BoundPassword="{Binding AbSettings.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Content="Email Serwer Adres" />
-                        <TextBox
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Text="{Binding AbSettings.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Content="Email Login" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Label
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Content="Email Serwer Port" />
-                        <TextBox
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Text="{Binding AbSettings.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Content="Email Hasło" />
+                            <PasswordBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ff:PasswordBoxAssistant.BindPassword="true"
+                                ff:PasswordBoxAssistant.BoundPassword="{Binding AbSettings.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Label
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Content="Email Serwer SSL" />
-                        <CheckBox
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            IsChecked="{Binding AbSettings.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Content="Email Serwer Adres" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Label
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            Content="Usuwaj stare wiadomości" />
-                        <CheckBox
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}" />
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Content="Email Serwer Port" />
+                            <TextBox
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
 
-                    </Grid>
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Content="Email Serwer SSL" />
+                            <CheckBox
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                IsChecked="{Binding AbSettings.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="6"
+                                Grid.Column="0"
+                                Content="Usuwaj stare wiadomości" />
+                            <CheckBox
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Separator Grid.Row="7" Grid.ColumnSpan="2" />
+
+                            <Label
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Content="Kodowanie pliku CSV" />
+
+                            <TextBox
+                                Grid.Row="8"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.CsvFileEncoding, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="9"
+                                Grid.Column="0"
+                                Content="Separator w pliku CSV" />
+
+                            <TextBox
+                                Grid.Row="9"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.CsvDelimiter, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="10"
+                                Grid.Column="0"
+                                Content="Prefix symbolu SAP" />
+
+                            <TextBox
+                                Grid.Row="10"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.SAPPrefix, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="11"
+                                Grid.Column="0"
+                                Content="Header DateTime Regex" />
+
+                            <TextBox
+                                Grid.Row="11"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.DateTimeRegexPattern, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="12"
+                                Grid.Column="0"
+                                Content="Format daty #1" />
+
+                            <TextBox
+                                Grid.Row="12"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.DateTimeFormat1, UpdateSourceTrigger=PropertyChanged}" />
+
+
+                            <Label
+                                Grid.Row="13"
+                                Grid.Column="0"
+                                Content="Format daty #2" />
+
+                            <TextBox
+                                Grid.Row="13"
+                                Grid.Column="1"
+                                Text="{Binding AbSettings.DateTimeFormat2, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </Grid>
+                    </ScrollViewer>
                 </Border>
             </TabItem>
 

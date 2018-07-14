@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using METCSV.Common;
-using METCSV.WPF.Configuration;
 using METCSV.WPF.Enums;
 using OpenPop.Mime;
 using OpenPop.Pop3;
@@ -28,7 +27,13 @@ namespace METCSV.WPF.Downloaders
 
         readonly bool DeleteOld = App.Settings.ABDownloader.DeleteOldMessages;
 
-        
+        readonly string DateTimeRegexPattern = App.Settings.ABDownloader.DateTimeRegexPattern;
+
+        readonly string DateTimeFormat1 = App.Settings.ABDownloader.DateTimeFormat1;
+
+        readonly string DateTimeFormat2 = App.Settings.ABDownloader.DateTimeFormat2;
+
+
         public AbDownloader(CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
@@ -136,9 +141,9 @@ namespace METCSV.WPF.Downloaders
 
         private DateTime ParseDate(string input)
         {
-            string pattern = @"(([0-3][0-9])|([0-9])) [a-zA-Z]{1,4} 20[1-2][0-9] [0-9][0-9]:[0-9][0-9]";
+            
 
-            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            Regex rgx = new Regex(DateTimeRegexPattern, RegexOptions.IgnoreCase);
             MatchCollection matches = rgx.Matches(input);
 
             //20 Feb 2017 08:28
@@ -149,7 +154,7 @@ namespace METCSV.WPF.Downloaders
 
             try
             {
-                dateTime = DateTime.ParseExact(matches[0].Value, "dd MMM yyyy hh:mm", provider);
+                dateTime = DateTime.ParseExact(matches[0].Value, DateTimeFormat1, provider);
                 return dateTime;
             }
             catch (FormatException)
@@ -158,7 +163,7 @@ namespace METCSV.WPF.Downloaders
 
             try
             {
-                dateTime = DateTime.ParseExact(matches[0].Value, "d MMM yyyy hh:mm", provider);
+                dateTime = DateTime.ParseExact(matches[0].Value, DateTimeFormat2, provider);
                 return dateTime;
             }
             catch (FormatException ex)
