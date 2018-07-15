@@ -17,5 +17,7 @@
         public string CsvPrices { get; set; } = "TD_Prices.csv";
 
         public string CsvDelimiter { get; set; } = ";";
+
+        public string SAPPrefix { get; set; } = "TechData";
     }
 }
