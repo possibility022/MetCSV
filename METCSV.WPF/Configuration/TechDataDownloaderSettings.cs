@@ -15,5 +15,7 @@
         public string CsvMaterials { get; set; } = "TD_Material.csv";
 
         public string CsvPrices { get; set; } = "TD_Prices.csv";
+
+        public string CsvDelimiter { get; set; } = ";";
     }
 }

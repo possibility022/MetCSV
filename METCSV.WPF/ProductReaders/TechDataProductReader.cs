@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using METCSV.Common;
@@ -13,10 +12,13 @@ namespace METCSV.WPF.ProductReaders
     {
         public override Providers Provider => Providers.TechData;
 
+        private readonly string CsvDelimiter = App.Settings.TDDownloader.CsvDelimiter;
+
         public TechDataProductReader(CancellationToken token)
         {
             SetCancellationToken(token);
             ProviderName = "TechData";
+            SapPrefix = "TechData";
         }
 
         public override IList<Product> GetProducts(string pathProducts, string pathPrices) =>
@@ -50,7 +52,7 @@ namespace METCSV.WPF.ProductReaders
         private IList<Product> ReadPricesFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
         {
             List<Product> prices = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = ";" };
+            CsvReader reader = new CsvReader() { Delimiter = CsvDelimiter };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
 
@@ -75,7 +77,7 @@ namespace METCSV.WPF.ProductReaders
         private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = ";" };
+            CsvReader reader = new CsvReader() { Delimiter = CsvDelimiter };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
 
@@ -91,7 +93,7 @@ namespace METCSV.WPF.ProductReaders
                 products.Add(new Product(Provider)
                 {
                     ID = null,
-                    SymbolSAP = "TechData" + fields[(int)TechDataCsvProductsColumns.SapNo], //todo we can move prefix to config. We can do this for all IProductReader's
+                    SymbolSAP = SapPrefix + fields[(int)TechDataCsvProductsColumns.SapNo],
                     //KodProducenta = fields[(int)TechData.PartNo],
                     //ModelProduktu = fields[(int)TechData.PartNo],
                     OryginalnyKodProducenta = fields[(int)TechDataCsvProductsColumns.PartNo],
