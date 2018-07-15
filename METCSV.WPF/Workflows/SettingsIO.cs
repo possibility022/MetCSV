@@ -17,8 +17,8 @@ namespace METCSV.WPF.Workflows
             sb.Append(JsonConvert.SerializeObject(App.Settings));
             AddSalt(ref sb);
 
-            Encrypting.Encrypt(sb.ToString());
-            File.WriteAllText(SettingsFile, sb.ToString());
+            var encrypted = Encrypting.Encrypt(sb.ToString());
+            File.WriteAllText(SettingsFile, encrypted);
         }
 
         public static void LoadSettings()
@@ -28,6 +28,8 @@ namespace METCSV.WPF.Workflows
                 StringBuilder sb = new StringBuilder();
 
                 var content = File.ReadAllText(SettingsFile);
+
+                content = Encrypting.Decrypt(content);
 
                 sb.Append(content);
                 sb = sb.Remove(content.Length - SaltLenght, SaltLenght);
