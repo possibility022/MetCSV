@@ -159,7 +159,7 @@ namespace METCSV.WPF.ProductReaders
                 products.Add(new Product(Provider)
                 {
                     ID = null,
-                    SymbolSAP = "LAMA" + HttpUtility.HtmlDecode(product.Element("KOD").Value),
+                    SymbolSAP = SapPrefix + HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     OryginalnyKodProducenta = HttpUtility.HtmlDecode(product.Element("PN").Value),
                     KodDostawcy = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     NazwaProduktu = HttpUtility.HtmlDecode(product.Element("NAZEV").Value),
