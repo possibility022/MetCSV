@@ -13,5 +13,8 @@
         public string Password { get; set; } = string.Empty;
 
         public string Request { get; set; } = "priceList";
+        public string CsvDelimiter { get; set; } = ";";
+        public string SAPPrefix { get; set; } = "Lama";
+        public string CsvFileEncoding { get; set; } = "ISO-8859-2";
     }
 }

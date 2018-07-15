@@ -15,10 +15,15 @@ namespace METCSV.WPF.ProductReaders
     {
         public override Providers Provider => Providers.Lama;
 
+        private readonly string FileEncoding = App.Settings.LamaDownloader.CsvFileEncoding;
+
+        private readonly string CsvDelimiter = App.Settings.LamaDownloader.CsvDelimiter;
+
         public LamaProductReader(CancellationToken token)
         {
             SetCancellationToken(token);
             ProviderName = "Lama";
+            SapPrefix = App.Settings.LamaDownloader.SAPPrefix;
         }
 
         public override IList<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);
@@ -54,7 +59,7 @@ namespace METCSV.WPF.ProductReaders
         private List<Product> ReadProducents(string pathCsv, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = ";" };
+            CsvReader reader = new CsvReader() { Delimiter = CsvDelimiter };
 
             IEnumerable<string[]> producents = reader.ReadCsv(pathCsv, encoding);
 
@@ -71,7 +76,7 @@ namespace METCSV.WPF.ProductReaders
 
                 products.Add(new Product(Provider)
                 {
-                    SymbolSAP = "LAMA" + fields[4],//nr kat
+                    SymbolSAP = SapPrefix + fields[4],//nr kat
                     NazwaProducenta = fields[16]
                 });
             }
@@ -133,7 +138,7 @@ namespace METCSV.WPF.ProductReaders
         /// <returns> Liste produktów</returns>
         private List<Product> ReadLama(string path)
         {
-            StreamReader streamReader = new StreamReader(path, Encoding.GetEncoding("ISO-8859-2"));
+            StreamReader streamReader = new StreamReader(path, Encoding.GetEncoding(FileEncoding));
             var xmlReader = XmlReader.Create(streamReader);
 
             XDocument.Load(xmlReader);
