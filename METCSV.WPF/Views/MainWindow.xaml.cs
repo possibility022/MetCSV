@@ -11,13 +11,14 @@ namespace METCSV.WPF
     public partial class MainWindow : Window
     {
 
-        MainWindowViewModel _mainWindowViewModel;
+        private MainWindowViewModel _mainWindowViewModel;
 
-        MainWindowViewModel MainWindowViewModel { get => _mainWindowViewModel ?? (_mainWindowViewModel = (MainWindowViewModel)DataContext); }
+        MainWindowViewModel MainWindowViewModel { get => _mainWindowViewModel; }
 
         public MainWindow()
         {
             InitializeComponent();
+            _mainWindowViewModel = (MainWindowViewModel)DataContext;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -45,6 +46,11 @@ namespace METCSV.WPF
         {
             var w = new SettingsWindow();
             w.Show();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainWindowViewModel.Closing();
         }
     }
 }

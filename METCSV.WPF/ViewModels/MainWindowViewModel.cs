@@ -60,6 +60,11 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _stepFiveStatus, value); }
         }
 
+        internal void Closing()
+        {
+            App.Settings.Engine.SetProfits = SetProfits;
+        }
+
         IProductProvider _met;
         IProductProvider _lama;
         IProductProvider _techData;
@@ -77,11 +82,7 @@ namespace METCSV.WPF.ViewModels
         public bool SetProfits
         {
             get => _setProfits;
-            set
-            {
-                SetProperty(ref _setProfits, value);
-                App.Settings.Engine.SetProfits = value;
-            }
+            set => SetProperty(ref _setProfits, value);
         }
 
         private ProductMerger _productMerger;

@@ -2,11 +2,11 @@
 {
     public class Settings
     {
-        private AbDownloaderSettings _aBDownloader;
-        private LamaDownloaderSettings _lamaDownloader;
-        private MetDownloaderSettings _metDownlaoder;
-        private TechDataDownloaderSettings _tDDownloader;
-        private EngineSettings _engine;
+        private AbDownloaderSettings _aBDownloader = new AbDownloaderSettings();
+        private LamaDownloaderSettings _lamaDownloader = new LamaDownloaderSettings();
+        private MetDownloaderSettings _metDownlaoder = new MetDownloaderSettings();
+        private TechDataDownloaderSettings _tDDownloader = new TechDataDownloaderSettings();
+        private EngineSettings _engine = new EngineSettings();
 
         public EngineSettings Engine
         {

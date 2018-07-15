@@ -20,6 +20,24 @@ namespace METCSV.UnitTests.Workflows
         }
 
         [TestMethod]
+        public void SettingsCannotBeNull()
+        {
+            // Arrange
+            Settings settings = new Settings();
+
+            var type = settings.GetType();
+            var properties = type.GetProperties();
+
+            // Act
+            foreach(var p in properties)
+            {
+                var value = p.GetValue(settings);
+                if (value == null)
+                    Assert.Fail();
+            }
+        }
+
+        [TestMethod]
         public void TestAB()
         {
             // Arrange
