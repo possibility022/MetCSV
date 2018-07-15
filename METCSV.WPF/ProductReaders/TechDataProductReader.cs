@@ -18,7 +18,7 @@ namespace METCSV.WPF.ProductReaders
         {
             SetCancellationToken(token);
             ProviderName = "TechData";
-            SapPrefix = "TechData";
+            SapPrefix = App.Settings.TDDownloader.SAPPrefix;
         }
 
         public override IList<Product> GetProducts(string pathProducts, string pathPrices) =>
