@@ -87,78 +87,116 @@
                     Margin="10"
                     BorderBrush="Black"
                     BorderThickness="1">
-                    <Grid Margin="5">
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    <ScrollViewer>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid Margin="5">
 
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Content="Login" />
-                        <TextBox
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Text="{Binding LamaSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
 
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Content="Hasło" />
-                        <PasswordBox
-                            Name="LamaPassword"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            ff:PasswordBoxAssistant.BindPassword="true"
-                            ff:PasswordBoxAssistant.BoundPassword="{Binding LamaSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Content="Plik XML" />
-                        <TextBox
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Text="{Binding LamaSettings.XmlFile, UpdateSourceTrigger=PropertyChanged}" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Content="Login" />
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Label
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Content="Plik CSV" />
-                        <TextBox
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Text="{Binding LamaSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Content="Hasło" />
+                            <PasswordBox
+                                Name="LamaPassword"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ff:PasswordBoxAssistant.BindPassword="true"
+                                ff:PasswordBoxAssistant.BoundPassword="{Binding LamaSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Label
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Content="URL" />
-                        <TextBox
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Text="{Binding LamaSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Content="Plik XML" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.XmlFile, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Label
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Content="HTTP Request" />
-                        <TextBox
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Text="{Binding LamaSettings.Request, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Content="Plik CSV" />
+                            <TextBox
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Content="URL" />
+                            <TextBox
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                Content="HTTP Request" />
+                            <TextBox
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.Request, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Separator Grid.Row="6" Grid.ColumnSpan="2" />
+
+                            <Label
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                Content="Prefix symbolu SAP" />
+                            <TextBox
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.SAPPrefix, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Content="Separator CSV" />
+                            <TextBox
+                                Grid.Row="8"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.CsvDelimiter, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label
+                                Grid.Row="9"
+                                Grid.Column="0"
+                                Content="Kodowanie pliku CSV" />
+                            <TextBox
+                                Grid.Row="9"
+                                Grid.Column="1"
+                                Text="{Binding LamaSettings.CsvFileEncoding, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </Grid>
+                    </ScrollViewer>
                 </Border>
 
             </TabItem>
