@@ -103,7 +103,7 @@ namespace METCSV.WPF.Downloaders
         private void DownloadFileByFtp(string file)
         {
             var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/{file}"));
-            reqFtp.Credentials = new NetworkCredential(Encrypting.Decrypt(User), Encrypting.Decrypt(Password));
+            reqFtp.Credentials = new NetworkCredential(User, Password);
             reqFtp.KeepAlive = false;
             reqFtp.Method = WebRequestMethods.Ftp.DownloadFile;
             reqFtp.UseBinary = true;
