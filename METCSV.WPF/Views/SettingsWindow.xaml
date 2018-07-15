@@ -419,7 +419,8 @@
                             <CheckBox
                                 Grid.Row="6"
                                 Grid.Column="1"
-                                IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}" />
+                                IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="False" />
 
                             <Separator Grid.Row="7" Grid.ColumnSpan="2" />
 
