@@ -75,7 +75,7 @@ namespace METCSV.Common
 
         public string UrlZdjecia { get; set; }
 
-        public string Kategoria { get; set; }
+        public string Kategoria { get; set; } = string.Empty;
 
         public bool Hidden { get; set; }
 
@@ -120,27 +120,8 @@ namespace METCSV.Common
             //_partNumber = KodProducenta.GetHashCode() ^ NazwaProducenta.GetHashCode(); // This soulution is bad
         }
 
-        public string GetLine() //todo remove
-        {
-            return "\"" + ID + "\";\""
-                + SymbolSAP + "\";\""
-                + OryginalnyKodProducenta + "\";\""
-                + OryginalnyKodProducenta + "\";\""
-                + KodDostawcy + "\";\""
-                + NazwaProduktu + "\";\""
-                + NazwaProducenta + "\";\""
-                + NazwaDostawcy + "\";\""
-                + StanMagazynowy + "\";\""
-                + ((StatusProduktu) ? "1" : "0") + "\";\""
-                + CenaNetto + "\";\""
-                + CenaZakupuNetto + "\";\""
-                + UrlZdjecia + "\";\""
-                + ((Kategoria == "EOL") ? "EOL" : "") + "\"";
-        }
 
-        public static string GetHeaders() //todo remove
-        {
-            return "\"ID\";\"SymbolSAP\";\"KodProducenta\";\"ModelProduktu\";\"KodDostawcy\";\"NazwaProduktu\";\"NazwaProducenta\";\"NazwaDostawcy\";\"StanMagazynowy\";\"StatusProduktu\";\"CenaNetto\";\"CenaZakupuNetto\";\"UrlZdjecia\";\"Kategoria\"";
-        }
+
+
     }
 }

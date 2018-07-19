@@ -85,10 +85,25 @@ namespace METCSV.WPF.ViewModels
             set => SetProperty(ref _setProfits, value);
         }
 
+        private bool _exportEnabled;
+        public bool ExportEnabled
+        {
+            get { return _exportEnabled; }
+            set { SetProperty(ref _exportEnabled, value); }
+        }
+
+        private List<Product> _products;
+        public List<Product> Products
+        {
+            get => _products;
+            set
+            {
+                SetProperty(ref _products, value); ExportEnabled = value != null;
+            }
+        }
+
         private ProductMerger _productMerger;
-
-        private List<Product> Products;
-
+        
         public MainWindowViewModel()
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
@@ -267,10 +282,21 @@ namespace METCSV.WPF.ViewModels
 
         public void Export(string path)
         {
+            //if (Products != null) // todo create settings for that. (To select json or csv)
+            //{
+            //    string json = JsonConvert.SerializeObject(Products, Formatting.Indented);
+            //    File.WriteAllText(path, json);
+            //}
+
             if (Products != null)
             {
-                string json = JsonConvert.SerializeObject(Products, Formatting.Indented);
-                File.WriteAllText(path, json);
+                CsvWriter cw = new CsvWriter();
+                var success = cw.ExportProducts(path, Products);
+                if (!success)
+                {
+                    Log.Error("Coś poszło nie tak z zapisem.");
+                    MessageBox.Show("Coś poszło nie tak z zapisem.");
+                }
             }
         }
     }
