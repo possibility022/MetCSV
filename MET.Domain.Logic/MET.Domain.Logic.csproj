@@ -50,12 +50,13 @@
     <Compile Include="FillListDomain.cs" />
     <Compile Include="HiddenProductsDomain.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="ProductMerger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
-      <Project>{40576D61-D49E-4AAE-B078-73A6A8A69836}</Project>
+      <Project>{40576d61-d49e-4aae-b078-73a6a8a69836}</Project>
       <Name>METCSV.Common</Name>
     </ProjectReference>
   </ItemGroup>

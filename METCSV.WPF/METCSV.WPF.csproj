@@ -73,9 +73,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.6\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
     </Reference>
@@ -124,7 +121,6 @@
     <Compile Include="Configuration\AbDownloaderSettings.cs" />
     <Compile Include="Configuration\EngineSettings.cs" />
     <Compile Include="Configuration\LamaDownloaderSettings.cs" />
-    <Compile Include="Configuration\Log.cs" />
     <Compile Include="Configuration\MetDownloaderSettings.cs" />
     <Compile Include="Configuration\TechDataDownloaderSettings.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
@@ -133,7 +129,6 @@
     <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
-    <Compile Include="Engine\ProductMerger.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\HelpMe.cs" />
@@ -265,6 +260,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Engine\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,4 @@
-﻿using MET.Domain;
-using METCSV.Common.Converters;
+﻿using METCSV.Common.Converters;
 using METCSV.Common.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace METCSV.Domain.Logic
+namespace MET.Domain.Logic
 {
     public class FillListDomain
     {

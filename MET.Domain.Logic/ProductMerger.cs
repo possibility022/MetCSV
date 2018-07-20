@@ -1,15 +1,13 @@
-﻿using MET.Domain; using MET.Workflows;
-using MET.Domain.Logic.Comparers;
-using METCSV.Domain.Logic;
-using METCSV.WPF.Configuration;
+﻿using MET.Domain.Logic.Comparers;
+using METCSV.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace METCSV.WPF.Engine
+namespace MET.Domain.Logic
 {
-    class ProductMerger
+    public class ProductMerger
     {
         private ConcurrentDictionary<string, Product> _hiddenMetProducts;
 

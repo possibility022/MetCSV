@@ -4,9 +4,9 @@ using NLog.Targets;
 using System;
 using System.IO;
 
-namespace METCSV.WPF.Configuration
+namespace METCSV.Common
 {
-    static class Log
+    public static class Log
     {
 
         private const string LAYOUT = "${longdate}|${level:uppercase=true}|Thread: [${threadid}] | Message: \t${message}\t${exception:format=tostring,StackTrace,Data}";

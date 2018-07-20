@@ -1,11 +1,10 @@
-﻿using MET.Domain;
-using METCSV.Common.ExtensionMethods;
+﻿using METCSV.Common.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace METCSV.Domain.Logic
+namespace MET.Domain.Logic
 {
     public class EndOfLiveDomain
     {

@@ -1,12 +1,11 @@
-﻿using MET.Domain;
-using MET.Domain.Logic.Comparers;
+﻿using MET.Domain.Logic.Comparers;
 using METCSV.Common.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace METCSV.Domain.Logic
+namespace MET.Domain.Logic
 {
     public class CompareDomain
     {
