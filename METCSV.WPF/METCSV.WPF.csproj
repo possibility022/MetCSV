@@ -245,6 +245,10 @@
       <Project>{991bffdd-be3f-4cb3-9c32-09dfaa2fddfd}</Project>
       <Name>MET.Domain.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj">
+      <Project>{5f6d2be9-1d47-42c7-8c58-d87215c1f12b}</Project>
+      <Name>MET.Workflows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
       <Project>{40576d61-d49e-4aae-b078-73a6a8a69836}</Project>
       <Name>METCSV.Common</Name>

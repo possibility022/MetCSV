@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{40576D61-D49E-4AAE-B078-73A6A8A69836}</ProjectGuid>
+    <ProjectGuid>{5F6D2BE9-1D47-42C7-8C58-D87215C1F12B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>METCSV.Common</RootNamespace>
-    <AssemblyName>METCSV.Common</AssemblyName>
+    <RootNamespace>MET.Workflows</RootNamespace>
+    <AssemblyName>MET.Workflows</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,18 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparers\ProductByPartNumber.cs" />
-    <Compile Include="Comparers\ProductByProductPrice.cs" />
-    <Compile Include="Comparers\ProductBySapManuHash.cs" />
-    <Compile Include="Comparers\ProductSorter.cs" />
-    <Compile Include="Converters\CustomConverters.cs" />
-    <Compile Include="Encrypting.cs" />
-    <Compile Include="ExtensionMethods\TaskExtensions.cs" />
-    <Compile Include="Product.cs" />
+    <Compile Include="CsvReader.cs" />
+    <Compile Include="CsvWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyCopy.cs" />
-    <Compile Include="Providers.cs" />
-    <Compile Include="RandomValues.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
