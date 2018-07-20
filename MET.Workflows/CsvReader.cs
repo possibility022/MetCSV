@@ -2,7 +2,7 @@
 using System.Text;
 using Microsoft.VisualBasic.FileIO;
 
-namespace METCSV.Common
+namespace MET.Workflows
 {
     public class CsvReader
     {
