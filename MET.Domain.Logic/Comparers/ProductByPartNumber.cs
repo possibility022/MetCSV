@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace METCSV.Common.Comparers
+namespace MET.Domain.Logic.Comparers
 {
     public class ProductByPartNumber : IComparer<Product>
     {

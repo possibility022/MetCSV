@@ -42,10 +42,16 @@
   <ItemGroup>
     <Compile Include="AllPartNumbersDomain.cs" />
     <Compile Include="CompareDomain.cs" />
+    <Compile Include="Comparers\ProductByPartNumber.cs" />
+    <Compile Include="Comparers\ProductByProductPrice.cs" />
+    <Compile Include="Comparers\ProductBySapManuHash.cs" />
+    <Compile Include="Comparers\ProductSorter.cs" />
     <Compile Include="EndOfLiveDomain.cs" />
     <Compile Include="FillListDomain.cs" />
     <Compile Include="HiddenProductsDomain.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">

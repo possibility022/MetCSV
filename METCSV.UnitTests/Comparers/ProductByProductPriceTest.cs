@@ -1,5 +1,5 @@
-﻿using METCSV.Common;
-using METCSV.Common.Comparers;
+﻿using MET.Domain;
+using MET.Domain.Logic.Comparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.Comparers

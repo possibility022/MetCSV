@@ -6,7 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using METCSV.Common;
+using MET.Domain; using MET.Workflows;
 using METCSV.WPF.Enums;
 using OpenPop.Mime;
 using OpenPop.Pop3;

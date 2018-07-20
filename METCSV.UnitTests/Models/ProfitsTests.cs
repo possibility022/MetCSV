@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using METCSV.Common;
+using MET.Domain;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

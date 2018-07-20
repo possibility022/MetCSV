@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using METCSV.Common;
+using MET.Domain; using MET.Workflows;
 using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Interfaces

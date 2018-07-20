@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using METCSV.Common;
 using METCSV.WPF;
 using METCSV.WPF.Configuration;
