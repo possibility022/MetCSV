@@ -6,9 +6,9 @@ namespace METCSV.Common.Converters
 {
     public static class CustomConverters
     {
-        public static ConcurrentDictionary<T, IList<Product>> ConvertToDictionaryOfLists<T>(IEnumerable<Product> products, Func<Product, T> key)
+        public static ConcurrentDictionary<T, IList<T2>> ConvertToDictionaryOfLists<T, T2>(IEnumerable<T2> products, Func<T2, T> key)
         {
-            Dictionary<T, IList<Product>> newDictionary = new Dictionary<T, IList<Product>>();
+            Dictionary<T, IList<T2>> newDictionary = new Dictionary<T, IList<T2>>();
             
             foreach(var p in products)
             {
@@ -19,11 +19,11 @@ namespace METCSV.Common.Converters
                 }
                 else
                 {
-                    newDictionary.Add(keyValue, new List<Product> { p });
+                    newDictionary.Add(keyValue, new List<T2> { p });
                 }
             }
 
-            return new ConcurrentDictionary<T, IList<Product>>(newDictionary);
+            return new ConcurrentDictionary<T, IList<T2>>(newDictionary);
         }
     }
 }

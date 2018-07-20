@@ -1,5 +1,5 @@
-﻿using METCSV.Common;
-using METCSV.Common.Comparers;
+﻿using MET.Domain;
+using MET.Domain.Logic.Comparers;
 using METCSV.Common.ExtensionMethods;
 using System;
 using System.Collections.Concurrent;
@@ -57,7 +57,7 @@ namespace METCSV.Domain.Logic
         private void Compare()
         {
             int partNumber = int.MinValue;
-            
+
             var partNumberTaken = false;
 
             while ((partNumberTaken = _allPartNumbers.TryTake(out partNumber)) || _allPartNumbers.Count > 0)
@@ -113,7 +113,7 @@ namespace METCSV.Domain.Logic
             for (int i = 1; i < products.Count; i++)
             {
                 var result = _netPriceComparer.Compare(products[i], cheapest);
-                
+
                 if (result == -1)
                 {
                     cheapest = products[i];

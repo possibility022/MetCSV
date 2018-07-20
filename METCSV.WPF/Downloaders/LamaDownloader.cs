@@ -3,9 +3,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using METCSV.WPF.Enums;
-using METCSV.Common;
+using MET.Domain; using MET.Workflows;
 using System.Threading;
-using METCSV.WPF.Configuration;
 
 namespace METCSV.WPF.Downloaders
 {

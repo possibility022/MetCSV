@@ -1,4 +1,4 @@
-﻿namespace METCSV.Common
+﻿namespace MET.Domain
 {
     public enum Providers
     {

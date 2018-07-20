@@ -6,7 +6,8 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
-using METCSV.Common;
+using MET.Domain;
+using MET.Workflows;
 using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.ProductReaders

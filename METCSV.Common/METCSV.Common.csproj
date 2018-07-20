@@ -41,17 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparers\ProductByPartNumber.cs" />
-    <Compile Include="Comparers\ProductByProductPrice.cs" />
-    <Compile Include="Comparers\ProductBySapManuHash.cs" />
-    <Compile Include="Comparers\ProductSorter.cs" />
     <Compile Include="Converters\CustomConverters.cs" />
     <Compile Include="Encrypting.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
-    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyCopy.cs" />
-    <Compile Include="Providers.cs" />
     <Compile Include="RandomValues.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace METCSV.Common
+namespace MET.Domain
 {
     [Serializable]
     public class Product

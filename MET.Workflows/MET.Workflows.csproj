@@ -45,5 +45,11 @@
     <Compile Include="CsvWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj">
+      <Project>{991bffdd-be3f-4cb3-9c32-09dfaa2fddfd}</Project>
+      <Name>MET.Domain.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

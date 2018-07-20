@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Threading;
-using METCSV.Common;
-using METCSV.WPF.Configuration;
+using MET.Domain; using MET.Workflows;
 using METCSV.WPF.Enums;
 
 namespace METCSV.WPF.Downloaders
