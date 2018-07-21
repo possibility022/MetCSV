@@ -86,7 +86,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -151,19 +150,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Enums\AbCsvProductsColumns.cs" />
-    <Compile Include="Enums\MetCsvProductsColums.cs" />
-    <Compile Include="Enums\TechDataCsvPricesColumns.cs" />
-    <Compile Include="Enums\TechDataCsvProductsColumns.cs" />
     <Compile Include="Interfaces\IProductProvider.cs" />
-    <Compile Include="Interfaces\IProductReader.cs" />
     <Compile Include="Mergers\ProductMerger.cs" />
     <Compile Include="ProductProvider\ProductProvderBase.cs" />
     <Compile Include="ProductProvider\ABProductProvider.cs" />
     <Compile Include="ProductProvider\LamaProductProvider.cs" />
     <Compile Include="ProductProvider\MetProductProvider.cs" />
     <Compile Include="ProductProvider\TechDataProductProvider.cs" />
-    <Compile Include="ProductReaders\ProductReaderBase.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -179,10 +172,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProductReaders\AbProductReader.cs" />
-    <Compile Include="ProductReaders\LamaProductReader.cs" />
-    <Compile Include="ProductReaders\MetProductReader.cs" />
-    <Compile Include="ProductReaders\TechDataProductReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

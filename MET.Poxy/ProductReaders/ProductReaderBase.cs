@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using MET.Domain;
 using METCSV.Common;
-using METCSV.WPF.Interfaces;
+using MET.Proxy.Interfaces;
 
-namespace METCSV.WPF.ProductReaders
+namespace MET.Proxy.ProductReaders
 {
-    abstract class ProductReaderBase : IProductReader
+    public abstract class ProductReaderBase : IProductReader
     {
         private OperationStatus _status;
 

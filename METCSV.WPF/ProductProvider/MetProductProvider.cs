@@ -1,9 +1,9 @@
 ﻿using MET.Domain;
 using MET.Proxy;
 using MET.Proxy.Offline;
-using METCSV.WPF.Interfaces;
-using METCSV.WPF.ProductReaders;
+using MET.Proxy.ProductReaders;
 using System.Threading;
+using MET.Proxy.Interfaces;
 
 namespace METCSV.WPF.ProductProvider
 {

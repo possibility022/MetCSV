@@ -2,8 +2,9 @@
 using MET.Proxy;
 using MET.Proxy.Offline;
 using METCSV.WPF.Interfaces;
-using METCSV.WPF.ProductReaders;
+using MET.Proxy.ProductReaders;
 using System.Threading;
+using MET.Proxy.Interfaces;
 
 namespace METCSV.WPF.ProductProvider
 {
@@ -20,7 +21,7 @@ namespace METCSV.WPF.ProductProvider
 
         private IProductReader GetProductReader()
         {
-            return new AbProductReader(_token);
+            return new AbProductReader(App.Settings.ABDownloader, _token);
         }
 
         private IDownloader GetDownloader()
