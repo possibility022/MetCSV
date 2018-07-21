@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
-using METCSV.WPF.Enums;
+using METCSV.Common;
 
-namespace METCSV.WPF.Interfaces
+namespace MET.Proxy
 {
     public interface IDownloader
     {

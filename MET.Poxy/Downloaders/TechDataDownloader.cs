@@ -1,35 +1,44 @@
-﻿using System;
+﻿using MET.Domain;
+using MET.Proxy.Configuration;
+using METCSV.Common;
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using MET.Domain; using MET.Workflows;
-using METCSV.WPF.Enums;
 
-namespace METCSV.WPF.Downloaders
+namespace MET.Proxy
 {
-    class TechDataDownloader : DownloaderBase
+    public class TechDataDownloader : DownloaderBase
     {
 
         public override Providers Provider => Providers.TechData;
 
-        readonly string User = App.Settings.TDDownloader.Login;
-        readonly string Password = App.Settings.TDDownloader.Password;
+        readonly string User;
+        readonly string Password;
 
-        readonly string Pattern = App.Settings.TDDownloader.Pattern;
+        readonly string Pattern;
 
-        readonly string FtpAddres = App.Settings.TDDownloader.FtpAddress;
+        readonly string FtpAddres;
 
-        readonly string FolderToExtract = App.Settings.TDDownloader.FolderToExtract;
+        readonly string FolderToExtract;
 
-        readonly string CsvMaterials = App.Settings.TDDownloader.CsvMaterials;
+        readonly string CsvMaterials;
 
-        readonly string CsvPrices = App.Settings.TDDownloader.CsvPrices;
+        readonly string CsvPrices;
 
-        public TechDataDownloader(CancellationToken token)
+        public TechDataDownloader(TechDataDownloaderSettings settings, CancellationToken token)
         {
             SetCancellationToken(token);
+
+            User = settings.Login;
+            Password = settings.Password;
+            Pattern = settings.Pattern;
+            FtpAddres = settings.FtpAddress;
+            FolderToExtract = settings.FolderToExtract;
+            CsvMaterials = settings.CsvMaterials;
+            CsvPrices = settings.CsvPrices;
         }
 
         protected override void Download()
@@ -133,7 +142,7 @@ namespace METCSV.WPF.Downloaders
         {
             StringBuilder result = new StringBuilder();
 
-            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/"));
+            var reqFtp = (FtpWebRequest)WebRequest.Create(new Uri($"ftp://{FtpAddres}/"));
 
             reqFtp.UseBinary = true;
             reqFtp.Credentials = new NetworkCredential(User, Password);

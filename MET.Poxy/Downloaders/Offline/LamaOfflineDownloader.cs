@@ -1,7 +1,7 @@
-﻿using MET.Domain; using MET.Workflows;
-namespace METCSV.WPF.Downloaders.Offline
+﻿using MET.Domain;
+namespace MET.Proxy.Offline
 {
-    class LamaOfflineDownloader : DownloaderBase
+    public class LamaOfflineDownloader : DownloaderBase
     {
 
         public override Providers Provider => Providers.Lama;

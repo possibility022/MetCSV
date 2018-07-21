@@ -1,4 +1,4 @@
-﻿namespace METCSV.WPF.Configuration
+﻿namespace MET.Proxy.Configuration
 {
     public class TechDataDownloaderSettings
     {

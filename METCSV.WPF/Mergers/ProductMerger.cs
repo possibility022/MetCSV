@@ -1,4 +1,4 @@
-﻿using MET.Domain; using MET.Workflows;
+﻿using MET.Domain;
 using System.Collections.Generic;
 
 namespace METCSV.WPF.Mergers

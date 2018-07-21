@@ -73,12 +73,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
-    </Reference>
-    <Reference Include="Pop3, Version=2.2.0.1, Culture=neutral, PublicKeyToken=e33d940baacd0f37, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pop3.2.2.0.1\lib\net40\Pop3.dll</HintPath>
-    </Reference>
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -89,7 +83,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -118,17 +111,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Configuration\AbDownloaderSettings.cs" />
     <Compile Include="Configuration\EngineSettings.cs" />
-    <Compile Include="Configuration\LamaDownloaderSettings.cs" />
-    <Compile Include="Configuration\MetDownloaderSettings.cs" />
-    <Compile Include="Configuration\TechDataDownloaderSettings.cs" />
     <Compile Include="Converters\DoubleToPercentConverter.cs" />
     <Compile Include="Converters\StringToIntConverter.cs" />
-    <Compile Include="Downloaders\Offline\ABOfflineDownloader.cs" />
-    <Compile Include="Downloaders\Offline\LamaOfflineDownloader.cs" />
-    <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
-    <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Helpers\Converters.cs" />
     <Compile Include="Helpers\HelpMe.cs" />
@@ -166,17 +151,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Downloaders\AbDownloader.cs" />
-    <Compile Include="Downloaders\DownloaderBase.cs" />
-    <Compile Include="Downloaders\LamaDownloader.cs" />
-    <Compile Include="Downloaders\MetDownloader.cs" />
-    <Compile Include="Downloaders\TechDataDownloader.cs" />
     <Compile Include="Enums\AbCsvProductsColumns.cs" />
     <Compile Include="Enums\MetCsvProductsColums.cs" />
-    <Compile Include="Enums\OperationStatus.cs" />
     <Compile Include="Enums\TechDataCsvPricesColumns.cs" />
     <Compile Include="Enums\TechDataCsvProductsColumns.cs" />
-    <Compile Include="Interfaces\IDownloader.cs" />
     <Compile Include="Interfaces\IProductProvider.cs" />
     <Compile Include="Interfaces\IProductReader.cs" />
     <Compile Include="Mergers\ProductMerger.cs" />
@@ -239,6 +217,10 @@
     <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj">
       <Project>{991bffdd-be3f-4cb3-9c32-09dfaa2fddfd}</Project>
       <Name>MET.Domain.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MET.Poxy\MET.Poxy.csproj">
+      <Project>{e4964df9-c36a-42c0-a269-69a313fb4a24}</Project>
+      <Name>MET.Poxy</Name>
     </ProjectReference>
     <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj">
       <Project>{5f6d2be9-1d47-42c7-8c58-d87215c1f12b}</Project>

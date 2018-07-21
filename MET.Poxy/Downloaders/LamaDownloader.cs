@@ -2,32 +2,39 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using METCSV.WPF.Enums;
-using MET.Domain; using MET.Workflows;
+using MET.Domain;
 using System.Threading;
+using MET.Proxy.Configuration;
+using METCSV.Common;
 
-namespace METCSV.WPF.Downloaders
+namespace MET.Proxy
 {
-    class LamaDownloader : DownloaderBase
+    public class LamaDownloader : DownloaderBase
     {
         public override Providers Provider => Providers.Lama;
 
-        public string UrlConnection { get; } = App.Settings.LamaDownloader.Url;
+        public string UrlConnection { get; }
 
-        readonly string FileName = App.Settings.LamaDownloader.XmlFile;
+        readonly string FileName;
 
-        readonly string CsvFileName = App.Settings.LamaDownloader.CsvFile;
+        readonly string CsvFileName;
 
-        readonly string Login = App.Settings.LamaDownloader.Login;
+        readonly string Login;
 
-        readonly string Password = App.Settings.LamaDownloader.Password;
+        readonly string Password;
 
-        readonly string Request = App.Settings.LamaDownloader.Request;
+        readonly string Request;
 
-        public LamaDownloader(CancellationToken token)
+        public LamaDownloader(LamaDownloaderSettings settings, CancellationToken token)
         {
             SetCancellationToken(token);
             DownloadedFiles = new[] { string.Empty, CsvFileName };
+            UrlConnection = settings.Url;
+            FileName = settings.XmlFile;
+            CsvFileName = settings.CsvFile;
+            Login = settings.Login;
+            Password = settings.Password;
+            Request = settings.Request;
         }
 
         protected override void Download()

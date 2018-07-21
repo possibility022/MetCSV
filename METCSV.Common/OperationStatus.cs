@@ -1,4 +1,4 @@
-﻿namespace METCSV.WPF.Enums
+﻿namespace METCSV.Common
 {
     public enum OperationStatus
     {

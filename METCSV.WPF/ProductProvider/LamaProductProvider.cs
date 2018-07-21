@@ -1,6 +1,6 @@
-﻿using MET.Domain; using MET.Workflows;
-using METCSV.WPF.Downloaders;
-using METCSV.WPF.Downloaders.Offline;
+﻿using MET.Domain;
+using MET.Proxy;
+using MET.Proxy.Offline;
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.ProductReaders;
 using System.Threading;
@@ -30,7 +30,7 @@ namespace METCSV.WPF.ProductProvider
             }
             else
             {
-                return new LamaDownloader(_token);
+                return new LamaDownloader(App.Settings.LamaDownloader, _token);
             }
         }
     }

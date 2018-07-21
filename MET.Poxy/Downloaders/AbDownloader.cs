@@ -2,41 +2,54 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using MET.Domain; using MET.Workflows;
-using METCSV.WPF.Enums;
+using MET.Domain;
+using MET.Proxy.Configuration;
+using METCSV.Common;
 using OpenPop.Mime;
 using OpenPop.Pop3;
+using System.IO.Compression;
 
-namespace METCSV.WPF.Downloaders
+namespace MET.Proxy
 {
-    class AbDownloader : DownloaderBase
+    public class AbDownloader : DownloaderBase
     {
-        readonly string EmailServerAddress = App.Settings.ABDownloader.EmailServerAddress;
-        readonly int EmailServerPort = App.Settings.ABDownloader.EmailServerPort;
-        readonly bool UseSSL = App.Settings.ABDownloader.EmailServerUseSSL;
+        readonly string EmailServerAddress;
+        readonly int EmailServerPort;
+        readonly bool UseSSL;
 
-        readonly string EmailLogin = App.Settings.ABDownloader.EmailLogin;
-        readonly string EmailPassword = App.Settings.ABDownloader.EmailPassword;
+        readonly string EmailLogin;
+        readonly string EmailPassword;
 
-        readonly string ZippedFile = App.Settings.ABDownloader.ZippedFile;
-        readonly string FolderToExtract = App.Settings.ABDownloader.FolderToExtract;
+        readonly string ZippedFile;
+        readonly string FolderToExtract;
 
-        readonly bool DeleteOld = App.Settings.ABDownloader.DeleteOldMessages;
+        readonly bool DeleteOld;
 
-        readonly string DateTimeRegexPattern = App.Settings.ABDownloader.DateTimeRegexPattern;
+        readonly string DateTimeRegexPattern;
+        readonly string DateTimeFormat1;
+        readonly string DateTimeFormat2;
 
-        readonly string DateTimeFormat1 = App.Settings.ABDownloader.DateTimeFormat1;
-
-        readonly string DateTimeFormat2 = App.Settings.ABDownloader.DateTimeFormat2;
-
-
-        public AbDownloader(CancellationToken cancellationToken)
+        public AbDownloader(AbDownloaderSettings settings,CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
+
+            EmailServerAddress = settings.EmailServerAddress;
+            EmailServerPort = settings.EmailServerPort;
+            UseSSL = settings.EmailServerUseSSL;
+
+            EmailLogin = settings.EmailLogin;
+            EmailPassword = settings.EmailPassword;
+
+            ZippedFile = settings.ZippedFile;
+            FolderToExtract = settings.FolderToExtract;
+            DeleteOld = settings.DeleteOldMessages;
+
+            DateTimeRegexPattern = settings.DateTimeRegexPattern;
+            DateTimeFormat1 = settings.DateTimeFormat1;
+            DateTimeFormat2 = settings.DateTimeFormat2;
         }
 
         public override Providers Provider => Providers.AB;

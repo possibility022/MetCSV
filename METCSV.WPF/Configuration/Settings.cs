@@ -1,4 +1,6 @@
-﻿namespace METCSV.WPF.Configuration
+﻿using MET.Proxy.Configuration;
+
+namespace METCSV.WPF.Configuration
 {
     public class Settings
     {

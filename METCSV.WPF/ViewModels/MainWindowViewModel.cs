@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using METCSV.WPF.Enums;
 using METCSV.WPF.Interfaces;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Helpers;
@@ -14,7 +13,6 @@ using System.Collections.Generic;
 using MET.Domain;
 using MET.Workflows;
 using System.Windows;
-using METCSV.WPF.Configuration;
 using METCSV.Common;
 
 namespace METCSV.WPF.ViewModels

@@ -1,5 +1,5 @@
-﻿using METCSV.Common;
-using METCSV.WPF.Configuration;
+﻿using MET.Proxy.Configuration;
+using METCSV.Common;
 using Prism.Mvvm;
 using System.Threading;
 using System.Threading.Tasks;

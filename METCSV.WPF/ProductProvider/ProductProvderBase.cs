@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MET.Domain; using MET.Workflows;
-using METCSV.WPF.Enums;
+using MET.Domain;
+using MET.Proxy;
+using METCSV.Common;
 using METCSV.WPF.Interfaces;
 using Prism.Mvvm;
 

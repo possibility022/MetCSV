@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using MET.Domain; using MET.Workflows;
-using METCSV.WPF.Enums;
+using MET.Domain;
+using MET.Proxy;
+using METCSV.Common;
 
 namespace METCSV.WPF.Interfaces
 {

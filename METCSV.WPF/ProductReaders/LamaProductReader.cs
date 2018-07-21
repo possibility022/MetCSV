@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using MET.Domain;
 using MET.Workflows;
-using METCSV.WPF.Enums;
+using METCSV.Common;
 
 namespace METCSV.WPF.ProductReaders
 {

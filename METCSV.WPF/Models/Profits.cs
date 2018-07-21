@@ -1,4 +1,4 @@
-﻿using MET.Domain; using MET.Workflows;
+﻿using MET.Domain;
 using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
 using System.Collections.Generic;
