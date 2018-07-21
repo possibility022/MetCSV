@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.Domain.Logic", "MET.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.Workflows", "MET.Workflows\MET.Workflows.csproj", "{5F6D2BE9-1D47-42C7-8C58-D87215C1F12B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.Poxy", "MET.Poxy\MET.Poxy.csproj", "{E4964DF9-C36A-42C0-A269-69A313FB4A24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5F6D2BE9-1D47-42C7-8C58-D87215C1F12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F6D2BE9-1D47-42C7-8C58-D87215C1F12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F6D2BE9-1D47-42C7-8C58-D87215C1F12B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

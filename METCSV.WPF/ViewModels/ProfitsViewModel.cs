@@ -1,4 +1,4 @@
-﻿using MET.Domain; using MET.Workflows;
+﻿using MET.Domain;
 using METCSV.WPF.Helpers;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;

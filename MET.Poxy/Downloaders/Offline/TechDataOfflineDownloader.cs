@@ -1,9 +1,9 @@
-﻿using MET.Domain; using MET.Workflows;
+﻿using MET.Domain;
 using System.IO;
 
-namespace METCSV.WPF.Downloaders.Offline
+namespace MET.Proxy.Offline
 {
-    class TechDataOfflineDownloader : DownloaderBase
+    public class TechDataOfflineDownloader : DownloaderBase
     {
 
         public override Providers Provider => Providers.TechData;
