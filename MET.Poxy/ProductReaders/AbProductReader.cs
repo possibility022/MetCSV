@@ -4,24 +4,28 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Web;
-using MET.Domain; using MET.Workflows;
+using MET.Domain;
+using MET.Proxy.Configuration;
+using MET.Proxy.Enums;
+using MET.Workflows;
 using METCSV.Common;
-using METCSV.WPF.Enums;
 
-namespace METCSV.WPF.ProductReaders
+namespace MET.Proxy.ProductReaders
 {
-    class AbProductReader : ProductReaderBase 
+    public class AbProductReader : ProductReaderBase 
     {
         public override Providers Provider => Providers.AB;
 
-        private readonly string CsvFileEncoding = App.Settings.ABDownloader.CsvFileEncoding;
-        private readonly string CsvDelimiter = App.Settings.ABDownloader.CsvDelimiter;
+        private readonly string CsvFileEncoding;
+        private readonly string CsvDelimiter;
 
-        public AbProductReader(CancellationToken token)
+        public AbProductReader(AbDownloaderSettings settings, CancellationToken token)
         {
             SetCancellationToken(token);
             ProviderName = "AB";
-            SapPrefix = App.Settings.ABDownloader.SAPPrefix;
+            SapPrefix = settings.SAPPrefix;
+            CsvFileEncoding = settings.CsvFileEncoding;
+            CsvDelimiter = settings.CsvDelimiter;
         }
 
         public override IList<Product> GetProducts(string filename, string filename2) =>

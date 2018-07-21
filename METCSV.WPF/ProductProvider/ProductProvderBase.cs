@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MET.Domain;
 using MET.Proxy;
+using MET.Proxy.Interfaces;
 using METCSV.Common;
 using METCSV.WPF.Interfaces;
 using Prism.Mvvm;

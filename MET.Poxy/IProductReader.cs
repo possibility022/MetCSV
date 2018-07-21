@@ -4,7 +4,7 @@ using System.Threading;
 using MET.Domain;
 using METCSV.Common;
 
-namespace METCSV.WPF.Interfaces
+namespace MET.Proxy.Interfaces
 {
     public interface IProductReader
     {

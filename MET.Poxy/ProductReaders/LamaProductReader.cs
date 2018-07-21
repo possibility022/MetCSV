@@ -7,24 +7,27 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using MET.Domain;
+using MET.Proxy.Configuration;
 using MET.Workflows;
 using METCSV.Common;
 
-namespace METCSV.WPF.ProductReaders
+namespace MET.Proxy.ProductReaders
 {
-    class LamaProductReader : ProductReaderBase
+    public class LamaProductReader : ProductReaderBase
     {
         public override Providers Provider => Providers.Lama;
 
-        private readonly string FileEncoding = App.Settings.LamaDownloader.CsvFileEncoding;
+        private readonly string FileEncoding;
 
-        private readonly string CsvDelimiter = App.Settings.LamaDownloader.CsvDelimiter;
+        private readonly string CsvDelimiter;
 
-        public LamaProductReader(CancellationToken token)
+        public LamaProductReader(LamaDownloaderSettings settings, CancellationToken token)
         {
             SetCancellationToken(token);
             ProviderName = "Lama";
-            SapPrefix = App.Settings.LamaDownloader.SAPPrefix;
+            SapPrefix = settings.SAPPrefix;
+            CsvDelimiter = settings.CsvDelimiter;
+            FileEncoding = settings.CsvFileEncoding;
         }
 
         public override IList<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);

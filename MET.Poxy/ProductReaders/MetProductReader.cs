@@ -4,14 +4,14 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Web;
-using MET.Workflows;
 using MET.Domain;
-using METCSV.WPF.Enums;
+using MET.Proxy.Enums;
+using MET.Workflows;
 using METCSV.Common;
 
-namespace METCSV.WPF.ProductReaders
+namespace MET.Proxy.ProductReaders
 {
-    class MetProductReader : ProductReaderBase
+    public class MetProductReader : ProductReaderBase
     {
         public override Providers Provider => Providers.MET;
 

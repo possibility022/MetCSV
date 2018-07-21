@@ -36,6 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,13 +58,27 @@
     <Compile Include="Downloaders\Offline\MetOfflineDownloader.cs" />
     <Compile Include="Downloaders\Offline\TechDataOfflineDownloader.cs" />
     <Compile Include="Downloaders\TechDataDownloader.cs" />
+    <Compile Include="Enums\AbCsvProductsColumns.cs" />
+    <Compile Include="Enums\MetCsvProductsColums.cs" />
+    <Compile Include="Enums\TechDataCsvPricesColumns.cs" />
+    <Compile Include="Enums\TechDataCsvProductsColumns.cs" />
     <Compile Include="IDownloader.cs" />
+    <Compile Include="IProductReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProductReaders\AbProductReader.cs" />
+    <Compile Include="ProductReaders\LamaProductReader.cs" />
+    <Compile Include="ProductReaders\MetProductReader.cs" />
+    <Compile Include="ProductReaders\ProductReaderBase.cs" />
+    <Compile Include="ProductReaders\TechDataProductReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj">
       <Project>{991bffdd-be3f-4cb3-9c32-09dfaa2fddfd}</Project>
       <Name>MET.Domain.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj">
+      <Project>{5F6D2BE9-1D47-42C7-8C58-D87215C1F12B}</Project>
+      <Name>MET.Workflows</Name>
     </ProjectReference>
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj">
       <Project>{40576D61-D49E-4AAE-B078-73A6A8A69836}</Project>

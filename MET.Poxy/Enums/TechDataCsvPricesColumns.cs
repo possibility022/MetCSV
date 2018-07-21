@@ -1,4 +1,4 @@
-﻿namespace METCSV.WPF.Enums
+﻿namespace MET.Proxy.Enums
 {
     enum TechDataCsvPricesColumns
     {

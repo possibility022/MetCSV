@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using MET.Domain;
 using MET.Proxy;
+using MET.Proxy.Interfaces;
 using METCSV.Common;
 
 namespace METCSV.WPF.Interfaces
