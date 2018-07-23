@@ -1,4 +1,5 @@
 ﻿using MET.Domain;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,19 +11,55 @@ namespace MET.Workflows
         private const string delimiter = ";";
         private const string quote = "\"";
 
-        private readonly string _headers = $"\"ID\"{delimiter}\"SymbolSAP\"{delimiter}\"KodProducenta\"{delimiter}\"ModelProduktu\"{delimiter}\"KodDostawcy\"{delimiter}\"NazwaProduktu\"{delimiter}\"NazwaProducenta\"{delimiter}\"NazwaDostawcy\"{delimiter}\"StanMagazynowy\"{delimiter}\"StatusProduktu\"{delimiter}\"CenaNetto\"{delimiter}\"CenaZakupuNetto\"{delimiter}\"UrlZdjecia\"{delimiter}\"Kategoria\"";
+        private const string IdHeader = "ID";
+        private const string SapHeader = "SymbolSAP";
+        private const string OryginalnyKodProducentaHeader = "OryginalnyKodProducenta";
+        private const string KodDostawcyHeader = "KodDostawcy";
+        private const string NazwaProducentaHeader = "NazwaProducenta";
+        private const string NazwaDostawcyHeader = "NazwaDostawcy";
+        private const string StanMagazynowyHeader = "StanMagazynowy";
+        private const string StatusProduktuHeader = "StatusProduktu";
+        private const string CenaNettoHeader = "CenaNetto";
+        private const string CenaZakupuNettoHeader = "CenaZakupuNetto";
+        private const string UrlZdjeciaHeader = "UrlZdjecia";
+        private const string KategoriaHeader = "Kategoria";
+        private const string NazwaProduktuHeader = "NazwaProduktu";
+        private const string KodProducentaHeader = "KodProducenta";
+        private const string ModelProduktuHeader = "ModelProduktu";
+
+        IReadOnlyCollection<string> ValuesOrder = new List<string>
+            {
+                IdHeader,
+                SapHeader,
+                OryginalnyKodProducentaHeader,
+                KodDostawcyHeader,
+                NazwaProduktuHeader,
+                NazwaProducentaHeader,
+                NazwaDostawcyHeader,
+                StanMagazynowyHeader,
+                StatusProduktuHeader,
+                CenaNettoHeader,
+                CenaZakupuNettoHeader
+            };
+
 
         public bool ExportProducts(string path, IEnumerable<Product> products)
         {
+            Dictionary<string, string> columns = new Dictionary<string, string>();
+
             try
             {
                 using (StreamWriter stream = new StreamWriter(File.Open(path, FileMode.Create), Encoding.GetEncoding("windows-1250")))
                 {
-                    stream.WriteLine(_headers);
-                    
+                    WriteHeader(stream, ValuesOrder);
+
+                    stream.WriteLine();
+
                     foreach (var p in products)
                     {
-                        WriteProduct(stream, p);
+                        AssingToDict(p, ref columns);
+
+                        WriteProduct(stream, columns, ValuesOrder);
                     }
                 }
 
@@ -35,87 +72,68 @@ namespace MET.Workflows
             }
         }
 
-        private void WriteProduct(StreamWriter writer, Product p)
+        private void AssingToDict(Product p, ref Dictionary<string, string> columns)
         {
-            writer.Write(quote);
+            columns[IdHeader] = p.ID.ToString();
+            columns[SapHeader] = p.SymbolSAP;
+            columns[OryginalnyKodProducentaHeader] = p.OryginalnyKodProducenta;
+            columns[KodProducentaHeader] = p.KodProducenta;
+            columns[ModelProduktuHeader] = p.ModelProduktu;
+            columns[KodDostawcyHeader] = p.KodDostawcy;
+            columns[NazwaProduktuHeader] = p.NazwaProduktu;
+            columns[NazwaProducentaHeader] = p.NazwaProducenta;
+            columns[NazwaDostawcyHeader] = p.NazwaDostawcy;
+            columns[StanMagazynowyHeader] = p.StanMagazynowy.ToString();
+            columns[StatusProduktuHeader] = p.StatusProduktu.ToString();
+            columns[CenaNettoHeader] = p.CenaNetto.ToString();
+            columns[CenaZakupuNettoHeader] = p.CenaZakupuNetto.ToString();
+            columns[UrlZdjeciaHeader] = p.UrlZdjecia;
+            columns[KategoriaHeader] = p.Kategoria;
+        }
 
-            writer.Write(p.ID);
+        private void WriteProduct(StreamWriter writer, Dictionary<string, string> p, IReadOnlyCollection<string> headers)
+        {
+            if (headers.Count == 0)
+                throw new InvalidOperationException("List of headers should have at least one element.");
 
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
+            var enumerator = headers.GetEnumerator();
 
-            writer.Write(p.SymbolSAP);
+            enumerator.MoveNext();
+            Write(writer, p[enumerator.Current]);
 
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.OryginalnyKodProducenta);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.OryginalnyKodProducenta);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.KodDostawcy);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.NazwaProducenta);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.NazwaDostawcy);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.StanMagazynowy);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.StatusProduktu);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.CenaNetto);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.CenaZakupuNetto);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.UrlZdjecia);
-
-            writer.Write(quote);
-            writer.Write(delimiter);
-            writer.Write(quote);
-
-            writer.Write(p.Kategoria);
-
-            writer.Write(quote);
+            for (int i = 0; i < headers.Count - 1; i++)
+            {
+                enumerator.MoveNext();
+                writer.Write(delimiter);
+                Write(writer, p[enumerator.Current]);
+            }
 
             writer.WriteLine();
+        }
+
+        private void WriteHeader(StreamWriter writer, IReadOnlyCollection<string> keys)
+        {
+            if (keys.Count == 0)
+                throw new InvalidOperationException("List of headers should have at least one element.");
+
+            var enumerator = keys.GetEnumerator();
+
+            enumerator.MoveNext();
+            Write(writer, enumerator.Current);
+
+            for (int i = 0; i < keys.Count - 1; i++)
+            {
+                enumerator.MoveNext();
+                writer.Write(delimiter);
+                Write(writer, enumerator.Current);
+            }
+        }
+
+        private void Write(StreamWriter writer, string value)
+        {
+            writer.Write(quote);
+            writer.Write(value);
+            writer.Write(quote);
         }
     }
 }

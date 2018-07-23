@@ -11,6 +11,10 @@ namespace METCSV.Common
 
         private const string LAYOUT = "${longdate}|${level:uppercase=true}|Thread: [${threadid}] | Message: \t${message}\t${exception:format=tostring,StackTrace,Data}";
 
+        private const string DateTimeFileFormat = "dd-M-yyyy_HH-mm-ss";
+
+        private const string LogsFolder = "Logs";
+
         public static Logger Logger { get; private set; }
 
         public static void ConfigureNLog()
@@ -18,19 +22,20 @@ namespace METCSV.Common
             var config = new LoggingConfiguration();
 
             var FileName = GenerateFileName();
-            
+
             var logfile = new FileTarget() { FileName = GenerateFileName(), Layout = LAYOUT };
 
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 
             LogManager.Configuration = config;
             Logger = LogManager.GetCurrentClassLogger();
-    }
+        }
 
         private static string GenerateFileName()
         {
-            var fileNameBase = DateTime.Now.ToString("dd-M-yyyy_HH-mm-ss");
+            var fileNameBase = DateTime.Now.ToString(DateTimeFileFormat);
             var fileName = $"{fileNameBase}.log";
+            fileName = Path.Combine(LogsFolder, fileName);
 
             for (int i = 0; i < 100; i++)
             {

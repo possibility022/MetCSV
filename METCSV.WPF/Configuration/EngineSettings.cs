@@ -2,7 +2,13 @@
 {
     public class EngineSettings
     {
-        public bool OfflineMode { get; set; } = false;
+        private bool _offlineMode = true;
+
+        public bool OfflineMode
+        {
+            get { return _offlineMode; }
+            set { }
+        }
 
         public bool SetProfits { get; set; } = true;
     }
