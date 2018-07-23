@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.Workflows", "MET.Workfl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.Poxy", "MET.Poxy\MET.Poxy.csproj", "{E4964DF9-C36A-42C0-A269-69A313FB4A24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.Proxy.AutoUpdate", "MET.Proxy.AutoUpdate\MET.Proxy.AutoUpdate.csproj", "{2FD00F30-C66B-4B97-B8BD-40DEA6DD0B10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4964DF9-C36A-42C0-A269-69A313FB4A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD00F30-C66B-4B97-B8BD-40DEA6DD0B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD00F30-C66B-4B97-B8BD-40DEA6DD0B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD00F30-C66B-4B97-B8BD-40DEA6DD0B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD00F30-C66B-4B97-B8BD-40DEA6DD0B10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
