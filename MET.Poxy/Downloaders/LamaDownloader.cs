@@ -28,13 +28,15 @@ namespace MET.Proxy
         public LamaDownloader(LamaDownloaderSettings settings, CancellationToken token)
         {
             SetCancellationToken(token);
-            DownloadedFiles = new[] { string.Empty, CsvFileName };
+            
             UrlConnection = settings.Url;
             FileName = settings.XmlFile;
             CsvFileName = settings.CsvFile;
             Login = settings.Login;
             Password = settings.Password;
             Request = settings.Request;
+
+            DownloadedFiles = new[] { string.Empty, CsvFileName };
         }
 
         protected override void Download()
