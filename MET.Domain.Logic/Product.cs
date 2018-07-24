@@ -29,9 +29,9 @@ namespace MET.Domain
 
         public string SymbolSAP { get => _symbolSAP; set { _symbolSAP = value; UpdateSapMenuHashSet(); } }
 
-        public string KodProducenta { get { return _kodProducenta; } }
+        public string KodProducenta { get; private set; } = string.Empty;
 
-        public string ModelProduktu { get { return _modelProduktu; } }
+        public string ModelProduktu { get; private set; }
 
         public string OryginalnyKodProducenta
         {
@@ -47,8 +47,8 @@ namespace MET.Domain
                 }
 
                 _oryginalnyKodProducenta = value;
-                _modelProduktu = _value;
-                _kodProducenta = _value;
+                ModelProduktu = _value;
+                KodProducenta = _value;
                 UpdateCodeAndManu();
             }
         }
@@ -79,7 +79,7 @@ namespace MET.Domain
 
         public bool Hidden { get; set; }
 
-        
+
 
         /// <summary>
         /// Gets the sapnumber ^ manufacturer hash.
@@ -87,32 +87,28 @@ namespace MET.Domain
         /// <value>
         /// The sap manu hash.
         /// </value>
-        public int SapManuHash { get => _sapManuHashSet; private set => _sapManuHashSet = value; }
+        public int SapManuHash { get; private set; }
         /// <summary>
         /// Gets the manufacturer code ^ manufacturer name.
         /// </summary>
         /// <value>
         /// The code and manu.
         /// </value>
-        public int PartNumber { get => _partNumber; private set => _partNumber = value; }
+        public int PartNumber { get; private set; }
 
-        string _kodProducenta = string.Empty;
-        string _modelProduktu;
         string _oryginalnyKodProducenta;
-        private int _sapManuHashSet;
         private string _symbolSAP = string.Empty;
         private string _nazwaProducenta = string.Empty;
-        private int _partNumber;
 
         private void UpdateSapMenuHashSet()
         {
-            _sapManuHashSet = $"{SymbolSAP}_||_{NazwaProducenta}".GetHashCode();
+            SapManuHash = $"{SymbolSAP}_||_{NazwaProducenta}".GetHashCode();
             //_sapManuHashSet = SymbolSAP.GetHashCode() ^ NazwaProducenta.GetHashCode();
         }
 
         private void UpdateCodeAndManu()
         {
-            _partNumber = $"{KodProducenta}_||_{NazwaProducenta}".GetHashCode();
+            PartNumber = $"{KodProducenta}_||_{NazwaProducenta}".GetHashCode();
 
             //_partNumber = (KodProducenta + NazwaProducenta).GetHashCode(); // OK, Here we have problem when KodProducetna is ABC and NazwaProducenta is XYZ then
             // part number will be the same as product where KodProducenta is AB and NazwaProducenta is AXYZ :(
