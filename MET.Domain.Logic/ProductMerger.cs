@@ -99,7 +99,7 @@ namespace MET.Domain.Logic
             combinedList.AddRange(_techDataProducts);
             combinedList.AddRange(_abProducts);
 
-            var endOfLife = _metBag.Where(p => p.Kategoria == "EOL");
+            var endOfLife = _metBag.Where(p => p.Kategoria == EndOfLiveDomain.EndOfLifeCategory);
             combinedList.AddRange(endOfLife);
 
             combinedList.Sort(new ProductSorter());
