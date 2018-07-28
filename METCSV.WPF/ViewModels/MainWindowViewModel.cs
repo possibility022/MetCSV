@@ -58,6 +58,34 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _stepFiveStatus, value); }
         }
 
+        private OperationStatus _stepSixStatus;
+        public OperationStatus StepSixStatus
+        {
+            get { return _stepSixStatus; }
+            set { SetProperty(ref _stepSixStatus, value); }
+        }
+
+        private OperationStatus _stepSevenStatus;
+        public OperationStatus StepSevenStatus
+        {
+            get { return _stepSevenStatus; }
+            set { SetProperty(ref _stepSevenStatus, value); }
+        }
+
+        private OperationStatus _stepeightStatus;
+        public OperationStatus StepEightStatus
+        {
+            get { return _stepeightStatus; }
+            set { SetProperty(ref _stepeightStatus, value); }
+        }
+
+        private OperationStatus _stepNineStatus;
+        public OperationStatus StepNineStatus
+        {
+            get { return _stepNineStatus; }
+            set { SetProperty(ref _stepNineStatus, value); }
+        }
+
         internal void Closing()
         {
             App.Settings.Engine.SetProfits = SetProfits;
@@ -246,6 +274,22 @@ namespace METCSV.WPF.ViewModels
                     break;
                 case 6:
                     StepFiveStatus = OperationStatus.Complete;
+                    StepSixStatus = OperationStatus.InProgress;
+                    break;
+                case 7:
+                    StepSixStatus = OperationStatus.Complete;
+                    StepSevenStatus = OperationStatus.InProgress;
+                    break;
+                case 8:
+                    StepSevenStatus = OperationStatus.Complete;
+                    StepEightStatus = OperationStatus.InProgress;
+                    break;
+                case 9:
+                    StepEightStatus = OperationStatus.Complete;
+                    StepNineStatus = OperationStatus.InProgress;
+                    break;
+                case int.MaxValue:
+                    StepNineStatus = OperationStatus.Complete;
                     break;
                 case -1:
                     SetErrorIconOnWorkingStep(ref _stepOneStatus);
@@ -253,6 +297,10 @@ namespace METCSV.WPF.ViewModels
                     SetErrorIconOnWorkingStep(ref _stepThreeStatus);
                     SetErrorIconOnWorkingStep(ref _stepFourStatus);
                     SetErrorIconOnWorkingStep(ref _stepFiveStatus);
+                    SetErrorIconOnWorkingStep(ref _stepSixStatus);
+                    SetErrorIconOnWorkingStep(ref _stepSevenStatus);
+                    SetErrorIconOnWorkingStep(ref _stepeightStatus);
+                    SetErrorIconOnWorkingStep(ref _stepNineStatus);
                     break;
             }
         }
@@ -269,6 +317,10 @@ namespace METCSV.WPF.ViewModels
                 RaisePropertyChanged(nameof(StepThreeStatus));
                 RaisePropertyChanged(nameof(StepFourStatus));
                 RaisePropertyChanged(nameof(StepFiveStatus));
+                RaisePropertyChanged(nameof(StepSixStatus));
+                RaisePropertyChanged(nameof(StepSevenStatus));
+                RaisePropertyChanged(nameof(StepEightStatus));
+                RaisePropertyChanged(nameof(StepNineStatus));
             }
         }
 

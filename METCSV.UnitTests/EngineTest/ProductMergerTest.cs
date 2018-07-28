@@ -64,6 +64,28 @@ namespace METCSV.UnitTests.EngineTest
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public void TechDataProductsWillHaveStatus0()
+        {
+            // Assert
+            var result = ValidateList(_workOnList, ValidateForTechDataEOL);
+            Assert.IsTrue(result);
+        }
+
+        private bool ValidateForTechDataEOL(IEnumerable<Product> products)
+        {
+            foreach (var p in products)
+            {
+                if (p.Provider == Providers.TechData && p.OryginalnyKodProducenta.Contains("?TN"))
+                {
+                    if (p.Kategoria != "EOL_TN" || p.StatusProduktu || p.CenaNetto > 0 || p.CenaZakupuNetto > 0)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         private bool ValidateGroupForEOLVisibility(IList<Product> group)
         {
             return group.Where(p => p.Kategoria == "EOL").All(p2 => !p2.StatusProduktu);
@@ -86,7 +108,7 @@ namespace METCSV.UnitTests.EngineTest
 
             if (selected != null)
             {
-                foreach(var p in group)
+                foreach (var p in group)
                 {
                     if (!ReferenceEquals(p, selected))
                     {
@@ -140,6 +162,5 @@ namespace METCSV.UnitTests.EngineTest
 
             return dict;
         }
-
     }
 }
