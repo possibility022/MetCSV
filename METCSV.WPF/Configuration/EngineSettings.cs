@@ -2,7 +2,7 @@
 {
     public class EngineSettings
     {
-        private bool _offlineMode = true;
+        private bool _offlineMode = false;
 
         public bool OfflineMode
         {
