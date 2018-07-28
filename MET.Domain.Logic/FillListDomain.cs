@@ -110,9 +110,13 @@ namespace MET.Domain.Logic
         {
             foreach (var p in products)
             {
-                if (object.ReferenceEquals(p, selectedProduct) == false)
+
+                // Copying to local variable. It will allow to use [ref]
+                Product v = p;
+
+                if (!ReferenceEquals(p, selectedProduct))
                 {
-                    p.Kategoria = "EOL";
+                    EndOfLiveDomain.SetEndOfLife(ref v);
                 }
                 else
                 {

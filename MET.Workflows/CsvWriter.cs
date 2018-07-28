@@ -31,7 +31,8 @@ namespace MET.Workflows
             {
                 IdHeader,
                 SapHeader,
-                OryginalnyKodProducentaHeader,
+                KodProducentaHeader,
+                ModelProduktuHeader,
                 KodDostawcyHeader,
                 NazwaProduktuHeader,
                 NazwaProducentaHeader,
@@ -84,7 +85,7 @@ namespace MET.Workflows
             columns[NazwaProducentaHeader] = p.NazwaProducenta;
             columns[NazwaDostawcyHeader] = p.NazwaDostawcy;
             columns[StanMagazynowyHeader] = p.StanMagazynowy.ToString();
-            columns[StatusProduktuHeader] = p.StatusProduktu.ToString();
+            columns[StatusProduktuHeader] = p.StatusProduktu ? "1" : "0";
             columns[CenaNettoHeader] = p.CenaNetto.ToString();
             columns[CenaZakupuNettoHeader] = p.CenaZakupuNetto.ToString();
             columns[UrlZdjeciaHeader] = p.UrlZdjecia;
