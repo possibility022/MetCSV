@@ -8,6 +8,7 @@ namespace MET.Domain.Logic
 {
     public class EndOfLiveDomain
     {
+        public const string EndOfLifeCategory = "EOL";
 
         ConcurrentBag<Product> _metProducts;
         ConcurrentDictionary<int, Product> _sapManuHash;
@@ -61,11 +62,19 @@ namespace MET.Domain.Logic
                         if (manufacturersCode.ContainsKey(p.KodProducenta) == false
                             && sapManuHash.ContainsKey(p.SapManuHash) == false)
                         {
-                            p.Kategoria = "EOL"; // todo to enum or common values?
+                            SetEndOfLife(ref p);
                         }
                     }
                 }
             }
+        }
+
+        public static void SetEndOfLife(ref Product p)
+        {
+            p.Kategoria = EndOfLifeCategory;
+            p.StatusProduktu = false;
+            p.SetCennaNetto(0);
+            p.CenaZakupuNetto = 0;
         }
     }
 }

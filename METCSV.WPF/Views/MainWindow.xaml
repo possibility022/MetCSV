@@ -10,7 +10,7 @@
     xmlns:usercontrols="clr-namespace:METCSV.WPF.UserControls"
     Title="MainWindow"
     Width="540"
-    Height="495"
+    Height="620"
     Closing="Window_Closing"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
@@ -179,6 +179,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -216,27 +220,69 @@
                 Height="40"
                 Status="{Binding StepFiveStatus}" />
 
+            <usercontrols:StepsControl
+                Grid.Row="5"
+                Grid.Column="0"
+                Height="40"
+                Status="{Binding StepSixStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="6"
+                Grid.Column="0"
+                Height="40"
+                Status="{Binding StepSevenStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="7"
+                Grid.Column="0"
+                Height="40"
+                Status="{Binding StepEightStatus}" />
+
+            <usercontrols:StepsControl
+                Grid.Row="8"
+                Grid.Column="0"
+                Height="40"
+                Status="{Binding StepNineStatus}" />
+
             <Label
                 Grid.Row="0"
                 Grid.Column="1"
-                Content="Krok 1: Filtruj ukryte produkty" />
+                Content="Krok 1: Akcja przed generowaniem." />
             <Label
                 Grid.Row="1"
                 Grid.Column="1"
-                Content="Krok 2: Utwórz listę wszystkich part numberów" />
+                Content="Krok 2: Utwórz kolekcje równoległe.." />
             <Label
                 Grid.Row="2"
                 Grid.Column="1"
-                Content="Krok 3: Uzupełnij dane" />
+                Content="Krok 3: Filtruj ukryte produkty." />
             <Label
                 Grid.Row="3"
                 Grid.Column="1"
-                Content="Krok 4: Ustaw kategorię [End of Life]" />
+                Content="Krok 4: Utwórz listę wszystkich part numberów." />
             <Label
                 Grid.Row="4"
                 Grid.Column="1"
-                Content="Krok 5: Porównaj" />
+                Content="Krok 5: Uzupełnij dane." />
 
+            <Label
+                Grid.Row="5"
+                Grid.Column="1"
+                Content="Krok 6: Ustaw kategorię [End of Life]." />
+            <Label
+                Grid.Row="6"
+                Grid.Column="1"
+                Content="Krok 7: Porównaj." />
+
+            <Label
+                Grid.Row="7"
+                Grid.Column="1"
+                Content="Krok 8: Połącz liste." />
+
+            <Label
+                Grid.Row="8"
+                Grid.Column="1"
+                Content="Krok 9: Akcja po wygenerowaniu." />
         </Grid>
 
         <CheckBox
