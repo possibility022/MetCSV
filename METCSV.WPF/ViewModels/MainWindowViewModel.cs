@@ -14,6 +14,7 @@ using MET.Domain;
 using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
+using AutoUpdaterDotNET;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -84,11 +85,6 @@ namespace METCSV.WPF.ViewModels
         {
             get { return _stepNineStatus; }
             set { SetProperty(ref _stepNineStatus, value); }
-        }
-
-        internal void Closing()
-        {
-            App.Settings.Engine.SetProfits = SetProfits;
         }
 
         IProductProvider _met;
@@ -348,6 +344,16 @@ namespace METCSV.WPF.ViewModels
                     MessageBox.Show("Coś poszło nie tak z zapisem.");
                 }
             }
+        }
+
+        internal void Closing()
+        {
+            App.Settings.Engine.SetProfits = SetProfits;
+        }
+
+        internal void Loaded()
+        {
+            AutoUpdater.Start(App.Settings.Engine.NewVersionURL, System.Reflection.Assembly.GetExecutingAssembly());
         }
     }
 }
