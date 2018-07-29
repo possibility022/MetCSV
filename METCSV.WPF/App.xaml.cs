@@ -1,4 +1,5 @@
-﻿using METCSV.Common;
+﻿using AutoUpdaterDotNET;
+using METCSV.Common;
 using METCSV.WPF.Configuration;
 using METCSV.WPF.Workflows;
 using System;
@@ -23,6 +24,7 @@ namespace METCSV.WPF
             // After that line, a BindingException will be thrown each time
             // a binding error occurs
             BindingExceptionThrower.Attach();
+            AutoUpdater.ShowSkipButton = false;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             Log.ConfigureNLog();

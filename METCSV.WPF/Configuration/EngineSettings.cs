@@ -1,4 +1,6 @@
-﻿namespace METCSV.WPF.Configuration
+﻿using System.Reflection;
+
+namespace METCSV.WPF.Configuration
 {
     public class EngineSettings
     {
@@ -11,5 +13,6 @@
         }
 
         public bool SetProfits { get; set; } = true;
+        public string NewVersionURL { get; set; } = "http://tbsys.ddns.net/metcsv/version.xml";
     }
 }
