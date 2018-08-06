@@ -17,9 +17,8 @@ namespace MET.Proxy.ProductReaders
 
         private readonly string CsvDelimiter;
 
-        public TechDataProductReader(TechDataDownloaderSettings settings, CancellationToken token)
+        public TechDataProductReader(TechDataDownloaderSettings settings, CancellationToken token) : base(token)
         {
-            SetCancellationToken(token);
             ProviderName = "TechData";
             SapPrefix = settings.SAPPrefix;
             CsvDelimiter = settings.CsvDelimiter;
@@ -62,6 +61,8 @@ namespace MET.Proxy.ProductReaders
 
             foreach (var fields in producents)
             {
+                ThrowIfCanceled();
+
                 if (linePassCount > 0)
                 {
                     linePassCount--;
@@ -87,6 +88,7 @@ namespace MET.Proxy.ProductReaders
 
             foreach (string[] fields in producents)
             {
+                ThrowIfCanceled();
 
                 if (linePassCount > 0)
                 {

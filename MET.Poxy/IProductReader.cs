@@ -19,7 +19,5 @@ namespace MET.Proxy.Interfaces
         string SapPrefix { get; }
 
         Providers Provider { get; }
-
-        void SetCancellationToken(CancellationToken token);
     }
 }

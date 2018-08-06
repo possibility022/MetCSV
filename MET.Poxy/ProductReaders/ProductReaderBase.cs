@@ -4,6 +4,7 @@ using System.Threading;
 using MET.Domain;
 using METCSV.Common;
 using MET.Proxy.Interfaces;
+using METCSV.Common.Exceptions;
 
 namespace MET.Proxy.ProductReaders
 {
@@ -11,7 +12,7 @@ namespace MET.Proxy.ProductReaders
     {
         private OperationStatus _status;
 
-        private CancellationToken _token;
+        protected CancellationToken _token;
 
         public abstract IList<Product> GetProducts(string filename, string filename2);
 
@@ -36,7 +37,7 @@ namespace MET.Proxy.ProductReaders
 
         public string SapPrefix { get; protected set; }
 
-        public void SetCancellationToken(CancellationToken token)
+        public ProductReaderBase(CancellationToken token)
         {
             _token = token;
         }
@@ -59,6 +60,12 @@ namespace MET.Proxy.ProductReaders
         private string FormatMessage(string message)
         {
             return $"[{Provider}] - {message}";
+        }
+
+        protected void ThrowIfCanceled()
+        {
+            if (_token.IsCancellationRequested)
+                throw new CancelledException();
         }
     }
 }
