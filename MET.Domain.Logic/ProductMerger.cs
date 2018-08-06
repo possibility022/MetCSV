@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace MET.Domain.Logic
 {
@@ -33,20 +34,33 @@ namespace MET.Domain.Logic
 
         public event EventHandler<int> StepChanged;
 
+        public event EventHandler<OperationStatus> OnGenerateStateChange;
+
+        private CancellationToken _token;
+
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
-        public ProductMerger(ICollection<Product> met, ICollection<Product> lama, ICollection<Product> td, ICollection<Product> ab)
+        public ProductMerger(ICollection<Product> met, ICollection<Product> lama, ICollection<Product> td, ICollection<Product> ab, CancellationToken token)
         {
             _metInit = met;
             _lamaInit = lama;
             _techInit = td;
             _abInit = ab;
+            _token = token;
         }
 
         public bool Generate()
         {
-            _finalList = new List<Product>();
+            if (_token.IsCancellationRequested)
+            {
+                Log.Info("Generowanie anulowane przez użytkownika.");
+                return false;
+            }
 
+            OnGenerateStateChange?.Invoke(this, OperationStatus.InProgress);
+
+            _finalList = new List<Product>();
+            
             try
             {
                 // STEP 1
@@ -97,12 +111,15 @@ namespace MET.Domain.Logic
                 // Complete
                 StepChanged?.Invoke(this, int.MaxValue);
 
+                OnGenerateStateChange?.Invoke(this, OperationStatus.Complete);
+
                 return true;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Generate przerwany.");
                 StepChanged?.Invoke(this, -1);
+                OnGenerateStateChange?.Invoke(this, OperationStatus.Faild);
                 return false;
             }
         }

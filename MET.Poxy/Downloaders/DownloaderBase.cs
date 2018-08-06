@@ -16,6 +16,11 @@ namespace MET.Proxy
                 Download();
                 LogInfo("Pobieranie ukończone.");
             }
+            catch (CancelledException)
+            {
+                LogInfo("Anulowano przez użytkownika.");
+                Status = OperationStatus.Faild;
+            }
             catch (Exception ex)
             {
                 LogError(ex, "Pobieranie nie powiodło się.");

@@ -11,11 +11,10 @@ namespace METCSV.WPF.ProductProvider
     class ABProductProvider : ProductProviderBase
     {
 
-        public ABProductProvider(CancellationToken token)
+        public ABProductProvider(CancellationToken token) : base(token)
         {
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
-            _token = token;
             Provider = Providers.AB;
         }
 

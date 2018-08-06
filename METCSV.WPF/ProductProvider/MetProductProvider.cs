@@ -9,9 +9,8 @@ namespace METCSV.WPF.ProductProvider
 {
     class MetProductProvider : ProductProviderBase
     {
-        public MetProductProvider(CancellationToken token)
+        public MetProductProvider(CancellationToken token) : base(token)
         {
-            _token = token;
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
             Provider = Providers.MET;

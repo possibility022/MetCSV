@@ -23,7 +23,7 @@ namespace METCSV.WPF.ViewModels
 
         private CancellationTokenSource _cancellationTokenSource;
 
-        private OperationStatus _stepOneStatus = OperationStatus.ReadyToStart;
+        private OperationStatus _stepOneStatus;
 
         public OperationStatus StepOneStatus
         {
@@ -101,6 +101,10 @@ namespace METCSV.WPF.ViewModels
         ProfitsViewModel _profitsViewModel;
         private bool _setProfits;
 
+        OperationStatus _generatorProgess = OperationStatus.ReadyToStart;
+
+        Task _stepTwoTask;
+
         public bool SetProfits
         {
             get => _setProfits;
@@ -125,7 +129,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         private ProductMerger _productMerger;
-        
+
         public MainWindowViewModel()
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
@@ -142,8 +146,6 @@ namespace METCSV.WPF.ViewModels
 
         private async Task<bool> DownloadAndLoadAsync()
         {
-
-
             var met = ProductProviderBase.DownloadAndLoadAsync(_met);
             var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
             var techData = ProductProviderBase.DownloadAndLoadAsync(_techData);
@@ -164,6 +166,9 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
+            if (_generatorProgess == OperationStatus.InProgress)
+                return false;
+
             try
             {
                 Initialize();
@@ -195,14 +200,18 @@ namespace METCSV.WPF.ViewModels
                         dataContext.AddManufacturers(techDataProviders.Result);
                         dataContext.AddManufacturers(abProviders.Result);
 
-                        _profitsView.Show();
+                        _profitsView.ShowDialog();
                     }
                     else
                     {
-                        result = await StepTwoAsync();
-                        return result;
+                        return StartStepTwoTask();
                     }
+
                     return true;
+                }
+                else
+                {
+                    Log.Error("Pobieranie i wczytywanie nie powiodło się. Sprawdź logi.");
                 }
             }
             catch (Exception ex)
@@ -212,6 +221,20 @@ namespace METCSV.WPF.ViewModels
             }
 
             return false;
+        }
+
+        private bool StartStepTwoTask()
+        {
+            if (_stepTwoTask == null || _stepTwoTask.Status >= TaskStatus.RanToCompletion)
+            {
+                _stepTwoTask = StepTwoAsync();
+                return true;
+            }
+            else
+            {
+                Log.Error("You cannot start 2nd step two task ");
+                return false;
+            }
         }
 
         public async Task<bool> StepTwoAsync()
@@ -234,15 +257,21 @@ namespace METCSV.WPF.ViewModels
                 _met.GetProducts(),
                 _lama.GetProducts(),
                 _techData.GetProducts(),
-                _ab.GetProducts());
+                _ab.GetProducts(),
+                _cancellationTokenSource.Token);
 
             _productMerger.StepChanged += _productMerger_StepChanged;
+            _productMerger.OnGenerateStateChange += _productMerger_OnGenerateStateChange;
 
             await Task.Run(() => _productMerger.Generate());
 
             Products = new List<Product>(_productMerger.FinalList);
-
             return true;
+        }
+
+        private void _productMerger_OnGenerateStateChange(object sender, OperationStatus e)
+        {
+            _generatorProgess = e;
         }
 
         private void _productMerger_StepChanged(object sender, int e)
@@ -323,7 +352,7 @@ namespace METCSV.WPF.ViewModels
         private void ProfitsWindowClosed(object sender, EventArgs e)
         {
             _profitsViewModel.SaveAllProfits();
-            var t = Task.Run(() => StepTwoAsync());
+            StartStepTwoTask();
         }
 
         public void Export(string path)
@@ -349,6 +378,11 @@ namespace METCSV.WPF.ViewModels
         internal void Closing()
         {
             App.Settings.Engine.SetProfits = SetProfits;
+        }
+
+        internal void Stop()
+        {
+            _cancellationTokenSource?.Cancel();
         }
 
         internal void Loaded()

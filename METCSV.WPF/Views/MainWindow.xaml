@@ -301,6 +301,7 @@
             Margin="10"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
+            <Button Click="StopClick" Content="Stop" />
             <Button Click="Button_Click" Content="Rozpocznij" />
             <Button Click="Button_Click_1" Content="Ustawienia" />
             <Button
