@@ -18,20 +18,21 @@ namespace METCSV.WPF.ProductProvider
         private IProductReader _productReader;
         private OperationStatus _downloaderStatus;
         private OperationStatus _readerStatus;
+
         public Providers Provider { get; protected set; }
 
         protected CancellationToken _token;
 
-        IList<Product> _products = null;
+        IList<Product> _products;
+
+        public ProductProviderBase(CancellationToken cancellationToken)
+        {
+            _token = cancellationToken;
+        }
 
         public IList<Product> GetProducts()
         {
             return _products;
-        }
-
-        public void SetCancellationToken(CancellationToken token)
-        {
-            _token = token;
         }
 
         public void SetProductDownloader(IDownloader downloader)

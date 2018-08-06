@@ -9,11 +9,10 @@ namespace METCSV.WPF.ProductProvider
 {
     class LamaProductProvider : ProductProviderBase
     {
-        public LamaProductProvider(CancellationToken token)
+        public LamaProductProvider(CancellationToken token) : base (token)
         {
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
-            _token = token;
             Provider = Providers.Lama;
         }
 

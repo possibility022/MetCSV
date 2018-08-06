@@ -57,5 +57,10 @@ namespace METCSV.WPF
         {
             MainWindowViewModel.Loaded();
         }
+
+        private void StopClick(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel.Stop();
+        }
     }
 }
