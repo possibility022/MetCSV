@@ -15,9 +15,8 @@ namespace MET.Proxy.ProductReaders
     {
         public override Providers Provider => Providers.MET;
 
-        public MetProductReader(CancellationToken token)
+        public MetProductReader(CancellationToken token) : base(token)
         {
-            SetCancellationToken(token);
             ProviderName = "MET";
         }
 
@@ -53,6 +52,8 @@ namespace MET.Proxy.ProductReaders
             
             foreach (var fields in producents)
             {
+                ThrowIfCanceled();
+
                 if (linePassCount > 0)
                 {
                     linePassCount--;

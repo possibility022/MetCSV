@@ -19,9 +19,8 @@ namespace MET.Proxy.ProductReaders
         private readonly string CsvFileEncoding;
         private readonly string CsvDelimiter;
 
-        public AbProductReader(AbDownloaderSettings settings, CancellationToken token)
+        public AbProductReader(AbDownloaderSettings settings, CancellationToken token) : base(token)
         {
-            SetCancellationToken(token);
             ProviderName = "AB";
             SapPrefix = settings.SAPPrefix;
             CsvFileEncoding = settings.CsvFileEncoding;
@@ -33,6 +32,8 @@ namespace MET.Proxy.ProductReaders
 
         public IList<Product> GetProducts(string csvPath, Encoding encoding)
         {
+            ThrowIfCanceled();
+
             Status = OperationStatus.InProgress;
 
             if (encoding == null)
@@ -73,6 +74,8 @@ namespace MET.Proxy.ProductReaders
             
             foreach (var fields in producents)
             {
+                ThrowIfCanceled();
+
                 if (passLinesCount > 0 || fields.Length < 12)
                 {
                     passLinesCount--;

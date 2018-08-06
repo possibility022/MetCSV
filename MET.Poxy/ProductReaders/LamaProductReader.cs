@@ -21,9 +21,8 @@ namespace MET.Proxy.ProductReaders
 
         private readonly string CsvDelimiter;
 
-        public LamaProductReader(LamaDownloaderSettings settings, CancellationToken token)
+        public LamaProductReader(LamaDownloaderSettings settings, CancellationToken token) : base(token)
         {
-            SetCancellationToken(token);
             ProviderName = "Lama";
             SapPrefix = settings.SAPPrefix;
             CsvDelimiter = settings.CsvDelimiter;
@@ -69,6 +68,8 @@ namespace MET.Proxy.ProductReaders
 
             foreach (var fields in producents)
             {
+                ThrowIfCanceled();
+
                 if (linePassCount > 0)
                 {
                     linePassCount--;
@@ -103,6 +104,8 @@ namespace MET.Proxy.ProductReaders
 
             foreach (var p in producents)
             {
+                ThrowIfCanceled();
+
                 if (producentsDict.ContainsKey(p.SymbolSAP))
                 {
                     LogError($"Met producents file contains two the same sap numbers. Check that out. SAP : {p.SymbolSAP}");
@@ -115,6 +118,7 @@ namespace MET.Proxy.ProductReaders
 
             for (int i = 0; i < products.Count; i++)
             {
+                ThrowIfCanceled();
 
                 if (producentsDict.ContainsKey(products[i].SymbolSAP))
                 {
@@ -153,6 +157,8 @@ namespace MET.Proxy.ProductReaders
 
             foreach (var product in xml.Root.Elements())
             {
+                ThrowIfCanceled();
+
                 var urls = GetUrlsLama(product); // wszystkie Urle danego produktu
 
                 if (product.Element("KOD").Value == "" || product.Element("PN").Value == "")
