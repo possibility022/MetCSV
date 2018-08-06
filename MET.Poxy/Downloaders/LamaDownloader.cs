@@ -28,7 +28,7 @@ namespace MET.Proxy
         public LamaDownloader(LamaDownloaderSettings settings, CancellationToken token)
         {
             SetCancellationToken(token);
-            
+
             UrlConnection = settings.Url;
             FileName = settings.XmlFile;
             CsvFileName = settings.CsvFile;
@@ -80,17 +80,18 @@ namespace MET.Proxy
             {
                 if (responseStream == null)
                 {
+                    Log.Error("Strumień odpowiedzi jest pusty.");
                     Status = OperationStatus.Faild;
                     return;
                 }
 
-                int Length = 2048;
-                Byte[] buffer = new Byte[Length];
-                int bytesRead = responseStream.Read(buffer, 0, Length);
+                byte[] buffer = new Byte[2048];
+                int bytesRead = responseStream.Read(buffer, 0, buffer.Length);
                 while (bytesRead > 0)
                 {
+                    ThrowIfCanceled();
                     streamWriter.Write(buffer, 0, bytesRead);
-                    bytesRead = responseStream.Read(buffer, 0, Length);
+                    bytesRead = responseStream.Read(buffer, 0, buffer.Length);
                 }
 
                 responseStream.Close();

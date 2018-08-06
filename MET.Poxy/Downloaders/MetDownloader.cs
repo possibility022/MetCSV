@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Threading;
 using MET.Domain;
 using MET.Proxy.Configuration;
@@ -27,14 +28,19 @@ namespace MET.Proxy
             DownloadedFiles = new[] { string.Empty };
 
             using (var client = new WebClient())
+            using (var webStream = client.OpenRead(Url))
+            using (var fileStream = new StreamWriter(FileName))
             {
-                client.DownloadFile(Url, FileName);
 
-                //todo implement cancelation token
+                byte[] buffer = new byte[2048];
 
+                int readed = 0;
 
-                // "http://met.redcart.pl/export/d9b11de494035a84e68e5faa6063692a.csv" // Stary link ale jest uzwyany?
-                //client.DownloadFile("http://met.redcart.pl/export/9900a7cdd99448e6d1080827e09c73da.csv", fileName); //Nowy link
+                while((readed = webStream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ThrowIfCanceled();
+                    fileStream.BaseStream.Write(buffer, 0, readed);
+                }
             }
 
             DownloadedFiles[0] = FileName;
