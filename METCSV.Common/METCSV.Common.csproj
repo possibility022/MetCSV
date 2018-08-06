@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Converters\CustomConverters.cs" />
     <Compile Include="Encrypting.cs" />
+    <Compile Include="Exceptions\CancelledException.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OperationStatus.cs" />

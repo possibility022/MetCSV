@@ -1,6 +1,7 @@
 ﻿using MET.Domain;
 using MET.Proxy.Configuration;
 using METCSV.Common;
+using METCSV.Common.Exceptions;
 using System;
 using System.IO;
 using System.Net;
@@ -86,6 +87,9 @@ namespace MET.Proxy
             {
                 DateTime newDateTime = GetDate(regex.Match(date).Value);
 
+
+                ThrowIfCanceled();
+
                 if (newDateTime > dateTime)
                 {
                     dateTime = newDateTime;
@@ -117,25 +121,29 @@ namespace MET.Proxy
             reqFtp.UseBinary = true;
             reqFtp.Proxy = null;
             reqFtp.UsePassive = false;
-            FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse();
-            Stream responseStream = response.GetResponseStream();
-            FileStream writeStream = new FileStream(file, FileMode.Create);
-            int length = 2048;
-            Byte[] buffer = new Byte[length];
 
-            if (responseStream == null)
+            using (FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse())
+            using (Stream responseStream = response.GetResponseStream())
+            using (FileStream writeStream = new FileStream(file, FileMode.Create))
             {
-                throw new InvalidOperationException("Nie otrzymano strumienia odpowiedzi. (Probowano pobrac plik (krok 2))");
-            }
+                int length = 2048;
+                Byte[] buffer = new Byte[length];
 
-            int bytesRead = responseStream.Read(buffer, 0, length);
-            while (bytesRead > 0)
-            {
-                writeStream.Write(buffer, 0, bytesRead);
-                bytesRead = responseStream.Read(buffer, 0, length);
+                if (responseStream == null)
+                {
+                    throw new InvalidOperationException("Nie otrzymano strumienia odpowiedzi. (Probowano pobrac plik (krok 2))");
+                }
+
+                int bytesRead = responseStream.Read(buffer, 0, length);
+                while (bytesRead > 0)
+                {
+
+                    ThrowIfCanceled();
+
+                    writeStream.Write(buffer, 0, bytesRead);
+                    bytesRead = responseStream.Read(buffer, 0, length);
+                }
             }
-            writeStream.Close();
-            response.Close();
         }
 
         public string[] GetFileList()
@@ -159,6 +167,8 @@ namespace MET.Proxy
                 string line = reader.ReadLine();
                 while (line != null)
                 {
+                    ThrowIfCanceled();
+
                     result.Append(line);
                     result.Append("\n");
                     line = reader.ReadLine();

@@ -2,6 +2,7 @@
 using System.Threading;
 using MET.Domain;
 using METCSV.Common;
+using METCSV.Common.Exceptions;
 
 namespace MET.Proxy
 {
@@ -64,6 +65,11 @@ namespace MET.Proxy
             Log.Error(ex, FormatMessage(message));
         }
 
+        protected void LogError(string message)
+        {
+            Log.Error(FormatMessage(message));
+        }
+
         protected void LogInfo(string message)
         {
             Log.Info(FormatMessage(message));
@@ -72,6 +78,12 @@ namespace MET.Proxy
         private string FormatMessage(string message)
         {
             return $"[{Provider}] - {message}";
+        }
+
+        protected void ThrowIfCanceled()
+        {
+            if (CancellationToken.IsCancellationRequested)
+                throw new CancelledException();
         }
     }
 }

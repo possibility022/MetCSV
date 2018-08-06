@@ -8,9 +8,9 @@ using System.Threading;
 using MET.Domain;
 using MET.Proxy.Configuration;
 using METCSV.Common;
-using OpenPop.Mime;
-using OpenPop.Pop3;
 using System.IO.Compression;
+using MailKit.Net.Pop3;
+using MimeKit;
 
 namespace MET.Proxy
 {
@@ -32,7 +32,7 @@ namespace MET.Proxy
         readonly string DateTimeFormat1;
         readonly string DateTimeFormat2;
 
-        public AbDownloader(AbDownloaderSettings settings,CancellationToken cancellationToken)
+        public AbDownloader(AbDownloaderSettings settings, CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
 
@@ -52,6 +52,8 @@ namespace MET.Proxy
             DateTimeFormat2 = settings.DateTimeFormat2;
         }
 
+        Pop3Client _client;
+
         public override Providers Provider => Providers.AB;
 
         public ICollection<Product> GetResults { get; private set; }
@@ -64,14 +66,17 @@ namespace MET.Proxy
 
             DownloadedFiles = new[] { string.Empty };
 
-            using (var client = new Pop3Client())
+            using (_client = new Pop3Client())
             {
-                client.Connect(
+                _client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
+                _client.Connect(
                     EmailServerAddress,
                     EmailServerPort,
-                    UseSSL);
-
-                client.Authenticate(EmailLogin, EmailPassword);
+                    UseSSL,
+                    CancellationToken);
+                
+                _client.Authenticate(EmailLogin, EmailPassword, CancellationToken);
 
                 if (DeleteOld)
                 {
@@ -79,23 +84,23 @@ namespace MET.Proxy
                     //deleteOldMessages(client); //todo implement and allow to manage from config.
                 }
 
-                int theLatestMessage = GetNewestMessage(client);
+                int theLatestMessage = GetNewestMessageIndex(_client);
 
-                if (CancellationToken.IsCancellationRequested)
+                if (theLatestMessage < 0)
                 {
                     Status = OperationStatus.Faild;
+                    LogInfo("Nie znaleziono najnowszej wiadomości.");
                     return;
                 }
 
-                Message message = client.GetMessage(theLatestMessage);
+                var message = _client.GetMessage(theLatestMessage, CancellationToken);
 
-                List<MessagePart> part = message.FindAllAttachments();
-                MessagePart attachment = part.First();
+                var attachment = message.Attachments.First() as MimePart;
 
-                if (CancellationToken.IsCancellationRequested)
+                if (attachment == null)
                 {
                     Status = OperationStatus.Faild;
-                    return;
+                    LogError("Problem z załącznikiem w mailu. Sprawdz czy załącznik istnieje");
                 }
 
                 ExportAttachmentToFile(ZippedFile, attachment);
@@ -103,48 +108,43 @@ namespace MET.Proxy
                 if (Directory.Exists(FolderToExtract))
                     Directory.Delete(FolderToExtract, true);
 
-                if (CancellationToken.IsCancellationRequested)
-                {
-                    Status = OperationStatus.Faild;
-                    return;
-                }
-
                 ZipFile.ExtractToDirectory(ZippedFile, FolderToExtract);
                 DirectoryInfo dir = new DirectoryInfo(FolderToExtract);
-                DownloadedFiles[0] = dir.GetFiles()[0].FullName;
-                client.Disconnect();
+                DownloadedFiles[0] = dir.GetFiles().First().FullName;
+                _client.Disconnect(true);
+            }
+
+            ThrowIfCanceled();
+        }
+
+        private void ExportAttachmentToFile(string zippedFile, MimePart attachment)
+        {
+            using (var stream = new StreamWriter(zippedFile))
+            {
+                attachment.Content.DecodeTo(stream.BaseStream, CancellationToken);
             }
         }
 
-        private static void ExportAttachmentToFile(string zippedFile, MessagePart attachment)
+        private int GetNewestMessageIndex(Pop3Client client)
         {
-            using (FileStream stream = new FileStream(zippedFile, FileMode.Create))
+            int newerMessage = -1;
+            DateTime date = new DateTime(1, 1, 1);
+
+            var headers = client.GetMessageHeaders(0, client.Count, CancellationToken);
+
+            for (int i = 0; i < headers.Count; i++)
             {
-                BinaryWriter binaryStream = new BinaryWriter(stream);
-                binaryStream.Write(attachment.Body);
-                binaryStream.Close();
-            }
-        }
+                ThrowIfCanceled();
 
-        private int GetNewestMessage(Pop3Client client)
-        {
-            int newerMessage = 1;
-            int count = client.GetMessageCount();
-
-            Message message = client.GetMessage(newerMessage);
-            var newestDateTime = ParseDate(message.Headers.Date);
-
-            if (count > 1)
-            {
-                for (int i = 2; i <= count; i++)
+                HeaderList header = headers[i];
+                if (header.Contains(HeaderId.Date))
                 {
-                    var header = client.GetMessageHeaders(i);
-                    var dt = ParseDate(header.Date);
-
-                    if (DateTime.Compare(newestDateTime, dt) < 1)
+                    var headerValue = header[header.IndexOf(HeaderId.Date)].Value;
+                    var emailDate = ParseDate(headerValue);
+                    if (emailDate > date)
                     {
+                        date = emailDate;
                         newerMessage = i;
-                        newestDateTime = dt;
                     }
                 }
             }
@@ -154,8 +154,6 @@ namespace MET.Proxy
 
         private DateTime ParseDate(string input)
         {
-            
-
             Regex rgx = new Regex(DateTimeRegexPattern, RegexOptions.IgnoreCase);
             MatchCollection matches = rgx.Matches(input);
 
@@ -173,18 +171,9 @@ namespace MET.Proxy
             catch (FormatException)
             { //to moglo sie zdazyc
             }
-
-            try
-            {
-                dateTime = DateTime.ParseExact(matches[0].Value, DateTimeFormat2, provider);
-                return dateTime;
-            }
-            catch (FormatException ex)
-            {
-                
-            }
-
-            return new DateTime();
+            
+            dateTime = DateTime.ParseExact(matches[0].Value, DateTimeFormat2, provider);
+            return dateTime;
         }
     }
 }
