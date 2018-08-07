@@ -250,7 +250,7 @@ namespace METCSV.WPF.ViewModels
 
             if (_productMerger != null)
             {
-                _productMerger.StepChanged -= _productMerger_StepChanged; //todo move to final
+                _productMerger.StepChanged -= _productMerger_StepChanged;
             }
 
             _productMerger = new ProductMerger(

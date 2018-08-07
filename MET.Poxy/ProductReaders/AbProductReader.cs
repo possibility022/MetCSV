@@ -48,7 +48,7 @@ namespace MET.Proxy.ProductReaders
 
                 if (!File.Exists(csvPath))
                 {
-                    throw new FileNotFoundException("Nie znaleziono pliku csv. " + csvPath);     //todo remove throwing
+                    LogError($"Nie znaleziono pliku csv: {csvPath}");
                 }
 
                 products = ReadProductsFromCsvFile(csvPath, encoding, 2);

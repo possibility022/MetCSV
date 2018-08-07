@@ -1,4 +1,5 @@
 ﻿using MET.Domain;
+using METCSV.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,7 +69,7 @@ namespace MET.Workflows
             }
             catch (IOException ex)
             {
-                // todo log;
+                Log.Error(ex, "Nie udało się zapisać pliku wyjściowego.");
                 return false;
             }
         }
