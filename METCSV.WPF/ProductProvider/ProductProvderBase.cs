@@ -82,7 +82,9 @@ namespace METCSV.WPF.ProductProvider
 
             if (downloader.Status != OperationStatus.Complete)
             {
-                throw new InvalidOperationException("Nie mozna rozpoczac czytania pliku jesli pobieranie nie powiodlo sie.");
+                ReaderStatus = OperationStatus.Faild;
+                Log.Info("Wczytywanie przerwane ze względu na nieukończone pobieranie.");
+                return new List<Product>();
             }
 
             string filename2 =

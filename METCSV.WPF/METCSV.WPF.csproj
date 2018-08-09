@@ -223,6 +223,10 @@
       <Project>{40576d61-d49e-4aae-b078-73a6a8a69836}</Project>
       <Name>METCSV.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj">
+      <Project>{5C9A4F46-263D-4C23-B361-F09E14BB109E}</Project>
+      <Name>Notifications.Wpf</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
