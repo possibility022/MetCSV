@@ -60,5 +60,10 @@ namespace Notifications.Wpf
         {
             Areas.Add(area);
         }
+
+        public void CloseWindow()
+        {
+            _window?.Close();
+        }
     }
 }
