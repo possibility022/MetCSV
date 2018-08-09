@@ -15,12 +15,13 @@ using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
 using AutoUpdaterDotNET;
+using Notifications.Wpf;
 
 namespace METCSV.WPF.ViewModels
 {
     class MainWindowViewModel : BindableBase
     {
-
+        private const string NotificationTitle = "CSV Generator";
         private CancellationTokenSource _cancellationTokenSource;
 
         private OperationStatus _stepOneStatus;
@@ -315,6 +316,12 @@ namespace METCSV.WPF.ViewModels
                     break;
                 case int.MaxValue:
                     StepNineStatus = OperationStatus.Complete;
+                    App.NotificationManager.Show(new NotificationContent
+                    {
+                        Message = "Zakończono generowanie powodzeniem.",
+                        Title = NotificationTitle,
+                        Type = NotificationType.Success
+                    });
                     break;
                 case -1:
                     SetErrorIconOnWorkingStep(ref _stepOneStatus);
@@ -326,6 +333,12 @@ namespace METCSV.WPF.ViewModels
                     SetErrorIconOnWorkingStep(ref _stepSevenStatus);
                     SetErrorIconOnWorkingStep(ref _stepeightStatus);
                     SetErrorIconOnWorkingStep(ref _stepNineStatus);
+                    App.NotificationManager.Show(new NotificationContent
+                    {
+                        Message = "Zakończono generowanie niepowodzeniem.",
+                        Title = NotificationTitle,
+                        Type = NotificationType.Error
+                    });
                     break;
             }
         }
@@ -378,6 +391,7 @@ namespace METCSV.WPF.ViewModels
         internal void Closing()
         {
             App.Settings.Engine.SetProfits = SetProfits;
+            App.NotificationManager.CloseWindow();
         }
 
         internal void Stop()
