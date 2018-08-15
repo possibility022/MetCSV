@@ -110,11 +110,11 @@ namespace METCSV.WPF.ProductProvider
             DownloaderStatus = e;
         }
 
-        static public async Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
+        static public Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
         {
             Task<bool> task = new Task<bool>(productProvider.DownloadAndLoad);
             task.Start();
-            return await task;
+            return task;
         }
 
         public bool DownloadAndLoad()

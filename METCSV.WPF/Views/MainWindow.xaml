@@ -10,7 +10,7 @@
     xmlns:usercontrols="clr-namespace:METCSV.WPF.UserControls"
     Title="MainWindow"
     Width="540"
-    Height="620"
+    Height="665"
     Closing="Window_Closing"
     Loaded="Window_Loaded"
     ResizeMode="NoResize"

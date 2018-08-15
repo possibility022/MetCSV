@@ -38,12 +38,5 @@ namespace METCSV.WPF.Helpers
                 p.SetCennaNetto(p.CenaZakupuNetto + (p.CenaZakupuNetto * profit));
             }
         }
-
-        public static Task CalculatePricesInBackground(IEnumerable<Product> products, Profits profits)
-        {
-            Task t = new Task(() => CalculatePrices(products, profits));
-            t.Start();
-            return t;
-        }
     }
 }
