@@ -5,7 +5,6 @@ using METCSV.WPF.Interfaces;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Helpers;
 using Prism.Mvvm;
-using System.Diagnostics;
 using METCSV.WPF.Views;
 using METCSV.WPF.Workflows;
 using MET.Domain.Logic;
@@ -99,12 +98,9 @@ namespace METCSV.WPF.ViewModels
         public IProductProvider AB { get => _ab; set => SetProperty(ref _ab, value); }
 
         ProfitsWindow _profitsView;
-        ProfitsViewModel _profitsViewModel;
         private bool _setProfits;
 
         OperationStatus _generatorProgess = OperationStatus.ReadyToStart;
-
-        Task _stepTwoTask;
 
         public bool SetProfits
         {
@@ -125,7 +121,8 @@ namespace METCSV.WPF.ViewModels
             get => _products;
             set
             {
-                SetProperty(ref _products, value); ExportEnabled = value != null;
+                SetProperty(ref _products, value);
+                ExportEnabled = value != null;
             }
         }
 
@@ -147,68 +144,63 @@ namespace METCSV.WPF.ViewModels
 
         private async Task<bool> DownloadAndLoadAsync()
         {
+            Initialize();
+
             var met = ProductProviderBase.DownloadAndLoadAsync(_met);
             var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
             var techData = ProductProviderBase.DownloadAndLoadAsync(_techData);
             var ab = ProductProviderBase.DownloadAndLoadAsync(_ab);
 
-            await met;
-            await lama;
-            await techData;
-            await ab;
-
-            Debug.WriteLine($"MET: Object: {_met.GetProducts()}; Status: {met.Result}");
-            Debug.WriteLine($"LAMA: Object: {_lama.GetProducts()}; Status: {lama.Result}");
-            Debug.WriteLine($"TechData Object: {_techData.GetProducts()}; Status: {techData.Result}");
-            Debug.WriteLine($"AB Object: {_ab.GetProducts()}; Status: {ab.Result}");
+            await Task.WhenAll(met, lama, techData, ab);
 
             return met.Result && lama.Result && techData.Result && ab.Result;
+        }
+
+        public async Task<ProfitsViewModel> PrepareProfitWindow()
+        {
+            ProfitsViewModel profitsViewModel;
+
+            _profitsView = new ProfitsWindow();
+            profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
+
+            var lamaProviders = HelpMe.GetProvidersAsync(_lama);
+            var techDataProviders = HelpMe.GetProvidersAsync(_techData);
+            var abProviders = HelpMe.GetProvidersAsync(_ab);
+
+            await Task.WhenAll(lamaProviders, techDataProviders, abProviders);
+
+            var dataContext = profitsViewModel;
+
+            dataContext.AddManufacturers(lamaProviders.Result);
+            dataContext.AddManufacturers(techDataProviders.Result);
+            dataContext.AddManufacturers(abProviders.Result);
+
+            return profitsViewModel;
         }
 
         public async Task<bool> StartClickAsync()
         {
             if (_generatorProgess == OperationStatus.InProgress)
                 return false;
-
+            else
+                _generatorProgess = OperationStatus.InProgress;
+            
             try
             {
-                Initialize();
-
                 var result = await DownloadAndLoadAsync();
 
                 if (result)
                 {
                     if (SetProfits)
                     {
-                        if (_profitsViewModel == null)
-                        {
-                            _profitsView = new ProfitsWindow();
-                            _profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
-                            _profitsView.Closed += ProfitsWindowClosed;
-                        }
-
-                        var lamaProviders = HelpMe.GetProvidersAsync(_lama);
-                        var techDataProviders = HelpMe.GetProvidersAsync(_techData);
-                        var abProviders = HelpMe.GetProvidersAsync(_ab);
-
-                        await lamaProviders;
-                        await techDataProviders;
-                        await abProviders;
-
-                        var dataContext = _profitsViewModel as ProfitsViewModel;
-
-                        dataContext.AddManufacturers(lamaProviders.Result);
-                        dataContext.AddManufacturers(techDataProviders.Result);
-                        dataContext.AddManufacturers(abProviders.Result);
+                        var profitsViewModel = await PrepareProfitWindow();
 
                         _profitsView.ShowDialog();
-                    }
-                    else
-                    {
-                        return StartStepTwoTask();
+
+                        profitsViewModel.SaveAllProfits();
                     }
 
-                    return true;
+                    await StepTwoAsync();
                 }
                 else
                 {
@@ -224,31 +216,16 @@ namespace METCSV.WPF.ViewModels
             return false;
         }
 
-        private bool StartStepTwoTask()
-        {
-            if (_stepTwoTask == null || _stepTwoTask.Status >= TaskStatus.RanToCompletion)
-            {
-                _stepTwoTask = StepTwoAsync();
-                return true;
-            }
-            else
-            {
-                Log.Error("You cannot start 2nd step two task ");
-                return false;
-            }
-        }
-
         public async Task<bool> StepTwoAsync()
         {
             var ab = ProfitsIO.LoadFromFile(Providers.AB);
             var td = ProfitsIO.LoadFromFile(Providers.TechData);
             var lama = ProfitsIO.LoadFromFile(Providers.Lama);
-
-            await HelpMe.CalculatePricesInBackground(_ab.GetProducts(), ab);
-            await HelpMe.CalculatePricesInBackground(_lama.GetProducts(), lama);
-            await HelpMe.CalculatePricesInBackground(_techData.GetProducts(), td);
-
-
+            
+            HelpMe.CalculatePrices(_ab.GetProducts(), ab);
+            HelpMe.CalculatePrices(_lama.GetProducts(), lama);
+            HelpMe.CalculatePrices(_techData.GetProducts(), td);
+            
             if (_productMerger != null)
             {
                 _productMerger.StepChanged -= _productMerger_StepChanged;
@@ -360,12 +337,6 @@ namespace METCSV.WPF.ViewModels
                 RaisePropertyChanged(nameof(StepEightStatus));
                 RaisePropertyChanged(nameof(StepNineStatus));
             }
-        }
-
-        private void ProfitsWindowClosed(object sender, EventArgs e)
-        {
-            _profitsViewModel.SaveAllProfits();
-            StartStepTwoTask();
         }
 
         public void Export(string path)
