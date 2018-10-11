@@ -9,7 +9,8 @@ namespace METCSV.Common
     public static class Log
     {
 
-        private const string LAYOUT = "${longdate}|${level:uppercase=true}|Thread: [${threadid}] | Message: \t${message}\t${exception:format=tostring,StackTrace,Data}";
+        private const string Layout = "${longdate}|${level:uppercase=true}|Thread: [${threadid}] | Message: \t${message}\t${exception:format=tostring,StackTrace,Data}";
+        private const string ProductChangesLayout = "${longdate}\t${message}";
 
         private const string DateTimeFileFormat = "dd-M-yyyy_HH-mm-ss";
 
@@ -23,18 +24,20 @@ namespace METCSV.Common
 
             var FileName = GenerateFileName();
 
-            var logfile = new FileTarget() { FileName = GenerateFileName(), Layout = LAYOUT };
+            var logFile = new FileTarget() { FileName = GenerateFileName(), Layout = Layout };
+            var logProductChangesFile = new FileTarget() { FileName = GenerateFileName("Product"), Layout = ProductChangesLayout };
 
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logFile);
+            config.AddRuleForOneLevel(LogLevel.Trace, logProductChangesFile);
 
             LogManager.Configuration = config;
             Logger = LogManager.GetCurrentClassLogger();
         }
 
-        private static string GenerateFileName()
+        private static string GenerateFileName(string namePrefix = null)
         {
             var fileNameBase = DateTime.Now.ToString(DateTimeFileFormat);
-            var fileName = $"{fileNameBase}.log";
+            var fileName = $"{namePrefix}{fileNameBase}.log";
             fileName = Path.Combine(LogsFolder, fileName);
 
             for (int i = 0; i < 100; i++)
@@ -45,7 +48,7 @@ namespace METCSV.Common
                 }
                 else
                 {
-                    fileName = $"{fileNameBase}_{i}.log";
+                    fileName = Path.Combine(LogsFolder, $"{namePrefix}{fileNameBase}_{i}.log");
                 }
             }
 
@@ -53,6 +56,11 @@ namespace METCSV.Common
                 throw new Exception();
 
             return fileName;
+        }
+
+        public static void LogProductInfo(string message)
+        {
+            Logger.Trace(message);
         }
 
         public static void Info(string message)

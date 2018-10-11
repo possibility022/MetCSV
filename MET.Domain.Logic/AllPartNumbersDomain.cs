@@ -1,5 +1,7 @@
-﻿using METCSV.Common.ExtensionMethods;
+﻿using METCSV.Common.Exceptions;
+using METCSV.Common.ExtensionMethods;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
@@ -29,7 +31,19 @@ namespace MET.Domain.Logic
 
             foreach (var product in products)
             {
-                _allPartNumbers.TryAdd(product.PartNumber, b);
+                var sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
+                int i = 0;
+                while (!sucess && (i < 10))
+                {
+                    sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
+                    i++;
+                    Thread.Sleep(i * 100);
+                }
+
+                if (i >= 10 && !sucess)
+                {
+                    throw new OperationException($"We could not add item to the concurrent exception after {i} tryouts. Item key: {product.PartNumber}");
+                }
             }
         }
     }
