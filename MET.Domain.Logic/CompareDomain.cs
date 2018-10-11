@@ -110,7 +110,7 @@ namespace MET.Domain.Logic
 
             var cheapest = FindCheapestProduct(products);
 
-            sb.AppendLine("Najtańszy produkt dla PartNumberu [{partNumber}] to:");
+            sb.AppendLine($"Najtańszy produkt dla PartNumberu [{partNumber}] to:");
             _objectFormatter.Get(sb, cheapest);
 
             if (cheapest.ID != null)

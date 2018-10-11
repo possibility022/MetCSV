@@ -1,7 +1,10 @@
-﻿using METCSV.Common.ExtensionMethods;
+﻿using METCSV.Common;
+using METCSV.Common.ExtensionMethods;
+using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
@@ -11,9 +14,11 @@ namespace MET.Domain.Logic
 
         ConcurrentDictionary<string, Product> _hidden;
 
-        public HiddenProductsDomain()
+        IObjectFormatter<Product> _objectFormatter;
+
+        public HiddenProductsDomain(IObjectFormatter<Product> objectFormatter = null)
         {
-            
+            _objectFormatter = objectFormatter ?? new BasicJsonFormatter<Product>();
         }
 
         public ConcurrentBag<Product> RemoveHiddenProducts(ConcurrentBag<Product> products)
@@ -35,6 +40,7 @@ namespace MET.Domain.Logic
         private void RemoveHiddenProducts_Logic(ConcurrentBag<Product> products, ConcurrentBag<Product> finalList)
         {
             Product outProduct = null;
+            var sb = new StringBuilder();
 
             if (_hidden == null)
             {
@@ -52,24 +58,34 @@ namespace MET.Domain.Logic
                 }
                 else
                 {
+                    sb.AppendLine($"Ustawiam flage HIDDEN produktu SymbolSap:[{outProduct.SymbolSAP}] na True");
                     outProduct.Hidden = true;
+                    sb.AppendLine("Produkt po zmianie: ");
+                    _objectFormatter.Get(sb, outProduct);
                 }
 
                 outProduct = null;
             }
+
+            Log.LogProductInfo(sb.ToString());
         }
 
         public ConcurrentDictionary<string, Product> CreateListOfHiddenProducts(IEnumerable<Product> products)
         {
             ConcurrentDictionary<string, Product> hidden = new ConcurrentDictionary<string, Product>();
 
+            var sb = new StringBuilder("Ukryte produkty, lista Symboli SAP:");
+
             foreach (var p in products)
             {
                 if (p.Hidden)
                 {
                     hidden.TryAdd(p.SymbolSAP, p);
+                    sb.AppendLine(p.SymbolSAP);
                 }
             }
+            
+            Log.LogProductInfo(sb.ToString());
 
             _hidden = hidden;
             return hidden;
