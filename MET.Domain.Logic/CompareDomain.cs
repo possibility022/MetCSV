@@ -1,8 +1,10 @@
 ﻿using MET.Domain.Logic.Comparers;
 using METCSV.Common.ExtensionMethods;
+using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
@@ -14,9 +16,12 @@ namespace MET.Domain.Logic
 
         ProductByProductPrice _netPriceComparer = new ProductByProductPrice();
 
-        public CompareDomain(IDictionary<int, byte> allPartNumbers)
+        IObjectFormatter<Product> _objectFormatter;
+
+        public CompareDomain(IDictionary<int, byte> allPartNumbers, IObjectFormatter<Product> objectFormatter = null)
         {
             _allPartNumbers = new ConcurrentBag<int>(allPartNumbers.Keys);
+            _objectFormatter = objectFormatter ?? new BasicJsonFormatter<Product>();
         }
 
         public void Compare(IEnumerable<Product> ab, IEnumerable<Product> td, IEnumerable<Product> lama)
@@ -55,8 +60,7 @@ namespace MET.Domain.Logic
 
         private void Compare()
         {
-            int partNumber = int.MinValue;
-
+            int partNumber;
             var partNumberTaken = false;
 
             while ((partNumberTaken = _allPartNumbers.TryTake(out partNumber)) || _allPartNumbers.Count > 0)
@@ -69,13 +73,17 @@ namespace MET.Domain.Logic
 
                     if (listTaken)
                     {
-                        SelectOneProduct(listToCompare);
+                        SelectOneProduct(listToCompare, partNumber);
+                    }
+                    else
+                    {
+                        _allPartNumbers.Add(partNumber);
                     }
                 }
             }
         }
 
-        private void SelectOneProduct(IList<Product> products)
+        private void SelectOneProduct(IList<Product> products, int partNumber)
         {
             if (products == null)
                 return;
@@ -83,23 +91,40 @@ namespace MET.Domain.Logic
             if (products.Count == 0)
                 return;
 
-            RemoveEmptyWarehouse(products);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
+            _objectFormatter.Get(sb, products);
+
+            RemoveEmptyWarehouse(products, sb);
 
             if (products.Count == 0)
+            {
+                sb.AppendLine($"List dla {partNumber} jest pusta. Wszystkie produkty są niedostępne?");
                 return;
+            }
+
+            sb.AppendLine("Wybieram najtańszy produkt z listy:");
+            _objectFormatter.Get(sb, products);
 
             var cheapest = FindCheapestProduct(products);
+
+            sb.AppendLine("Najtańszy produkt dla PartNumberu [{partNumber}] to:");
+            _objectFormatter.Get(sb, cheapest);
 
             if (cheapest.ID != null)
                 cheapest.StatusProduktu = true;
         }
 
-        private void RemoveEmptyWarehouse(IList<Product> products)
+        private void RemoveEmptyWarehouse(IList<Product> products, StringBuilder sb)
         {
             for (int i = 0; i < products.Count; i++)
             {
                 if (products[i].StanMagazynowy <= 0)
                 {
+                    sb.AppendLine("Stan magazynowy produktu jest pusty, usuwam go z listy: ");
+                    _objectFormatter.Get(sb, products[i]);
+
                     products.RemoveAt(i);
                     i--;
                 }
@@ -108,7 +133,7 @@ namespace MET.Domain.Logic
 
         private Product FindCheapestProduct(IList<Product> products)
         {
-            Product cheapest = products[0];
+            var cheapest = products[0];
             for (int i = 1; i < products.Count; i++)
             {
                 var result = _netPriceComparer.Compare(products[i], cheapest);

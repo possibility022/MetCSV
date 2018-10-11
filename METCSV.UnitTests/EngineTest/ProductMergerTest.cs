@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using MET.Domain;
 using MET.Domain.Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +22,8 @@ namespace METCSV.UnitTests.EngineTest
                 Factory.GetMetProducts(),
                 Factory.GetLamaProducts(),
                 Factory.GetTDProducts(),
-                Factory.GetABProducts());
+                Factory.GetABProducts(),
+                new CancellationTokenSource().Token);
 
             _productMerger.Generate();
         }
