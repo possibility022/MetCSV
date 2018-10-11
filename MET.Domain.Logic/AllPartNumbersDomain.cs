@@ -3,6 +3,7 @@ using METCSV.Common.ExtensionMethods;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MET.Domain.Logic
 {
@@ -33,6 +34,10 @@ namespace MET.Domain.Logic
             {
                 var sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
                 int i = 0;
+
+                if (_allPartNumbers.ContainsKey(product.PartNumber))
+                    continue;
+
                 while (!sucess && (i < 10))
                 {
                     sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
