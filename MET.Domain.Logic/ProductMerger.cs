@@ -1,9 +1,11 @@
 ﻿using MET.Domain.Logic.Comparers;
 using METCSV.Common;
+using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace MET.Domain.Logic
@@ -36,17 +38,20 @@ namespace MET.Domain.Logic
 
         public event EventHandler<OperationStatus> OnGenerateStateChange;
 
+        readonly IObjectFormatter<Product> ObjectFormatter;
+
         private CancellationToken _token;
 
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
-        public ProductMerger(ICollection<Product> met, ICollection<Product> lama, ICollection<Product> td, ICollection<Product> ab, CancellationToken token)
+        public ProductMerger(ICollection<Product> met, ICollection<Product> lama, ICollection<Product> td, ICollection<Product> ab, CancellationToken token, IObjectFormatter<Product> objectFormatter = null)
         {
             _metInit = met;
             _lamaInit = lama;
             _techInit = td;
             _abInit = ab;
             _token = token;
+            ObjectFormatter = objectFormatter ?? new BasicJsonFormatter<Product>();
         }
 
         public bool Generate()
@@ -126,6 +131,8 @@ namespace MET.Domain.Logic
 
         private void PreGenerateAction()
         {
+            var sb = new StringBuilder();
+
             HashSet<Product> productsToRemove = new HashSet<Product>();
             foreach (var p in _techInit)
             {
@@ -136,8 +143,14 @@ namespace MET.Domain.Logic
                     p.SetCennaNetto(0);
                     p.Kategoria = "EOL_TN";
                     productsToRemove.Add(p);
+
+                    sb.AppendLine("Produkt z oryginalnym kodem producenta: [] posiadał wartość ?TN. Ustawiam Status Produktu, Cene zakupu netto, Cene netto i kategorię. Produkt zostanie również usunięty z listy wejściowej.");
+                    sb.AppendLine("Produkt po zmianach:");
+                    ObjectFormatter.Get(sb, p);
                 }
             }
+
+            Log.LogProductInfo(sb.ToString());
 
             foreach (var p in productsToRemove)
             {

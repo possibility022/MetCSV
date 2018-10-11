@@ -51,5 +51,24 @@ namespace METCSV.UnitTests
             dict.TryGetValue(1, out outValue);
             Trace.Write(outValue);
         }
+
+        [TestMethod]
+        public void TryToAddSameKeyTwice()
+        {
+            var b = new byte();
+            var dict = new ConcurrentDictionary<int, byte>();
+
+            var results = dict.TryAdd(1, b);
+
+            if (!results)
+                Assert.Fail();
+
+            for (int i = 0; i < 10; i++)
+            {
+                var tryAgain = dict.TryAdd(1, b);
+                if (tryAgain)
+                    Assert.Fail();
+            }
+        }
     }
 }

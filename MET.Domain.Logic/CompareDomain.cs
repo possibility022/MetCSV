@@ -1,4 +1,5 @@
 ﻿using MET.Domain.Logic.Comparers;
+using METCSV.Common;
 using METCSV.Common.ExtensionMethods;
 using METCSV.Common.Formatters;
 using System;
@@ -75,7 +76,7 @@ namespace MET.Domain.Logic
                     {
                         SelectOneProduct(listToCompare, partNumber);
                     }
-                    else
+                    else if (_products.ContainsKey(partNumber))
                     {
                         _allPartNumbers.Add(partNumber);
                     }
@@ -114,6 +115,8 @@ namespace MET.Domain.Logic
 
             if (cheapest.ID != null)
                 cheapest.StatusProduktu = true;
+
+            Log.LogProductInfo(sb.ToString());
         }
 
         private void RemoveEmptyWarehouse(IList<Product> products, StringBuilder sb)

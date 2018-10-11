@@ -56,7 +56,6 @@
     <Compile Include="Encrypting.cs" />
     <Compile Include="Exceptions\CancelledException.cs" />
     <Compile Include="Exceptions\OperationException.cs" />
-    <Compile Include="ExtensionMethods\ConcurrentBagExtensions.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="Formatters\BasicJsonFormatter.cs" />
     <Compile Include="Formatters\IObjectFormatter.cs" />
