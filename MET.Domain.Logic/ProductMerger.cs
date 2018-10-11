@@ -169,7 +169,7 @@ namespace MET.Domain.Logic
 
         private void RemoveHiddenProducts()
         {
-            var hiddenEngine = new HiddenProductsDomain();
+            var hiddenEngine = new HiddenProductsDomain(ObjectFormatter);
 
             _hiddenMetProducts = hiddenEngine.CreateListOfHiddenProducts(_metBag);
 

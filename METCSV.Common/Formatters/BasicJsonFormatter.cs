@@ -6,14 +6,21 @@ namespace METCSV.Common.Formatters
 {
     public class BasicJsonFormatter<T> : IObjectFormatter<T>
     {
-        public void Get(StringBuilder sb, IEnumerable<T> item)
+        public void Get(StringBuilder sb, IEnumerable<T> items)
         {
-            sb.AppendLine(JsonConvert.SerializeObject(item, Formatting.Indented));
+            sb.AppendLine(Get(items));
         }
 
         public void Get(StringBuilder sb, T item)
         {
-            sb.AppendLine(JsonConvert.SerializeObject(item, Formatting.Indented));
+            sb.AppendLine(Get(item));
         }
+
+        public string Get(T item) 
+            => JsonConvert.SerializeObject(item, Formatting.Indented);
+
+
+        public string Get(IEnumerable<T> items) 
+            => JsonConvert.SerializeObject(items, Formatting.Indented);
     }
 }
