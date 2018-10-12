@@ -17,10 +17,10 @@ namespace MET.Domain.Logic
 
         IObjectFormatterConstructor<object> _objectFormatter;
 
-        public CompareDomain(IDictionary<int, byte> allPartNumbers, IObjectFormatterConstructor<object> objectFormatter = null)
+        public CompareDomain(IDictionary<int, byte> allPartNumbers, IObjectFormatterConstructor<object> objectFormatter)
         {
             _allPartNumbers = new ConcurrentBag<int>(allPartNumbers.Keys);
-            _objectFormatter = objectFormatter ?? new BasicJsonFormatter<object>();
+            _objectFormatter = objectFormatter;
         }
 
         public void Compare(IEnumerable<Product> ab, IEnumerable<Product> td, IEnumerable<Product> lama)

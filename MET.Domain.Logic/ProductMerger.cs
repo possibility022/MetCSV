@@ -111,7 +111,7 @@ namespace MET.Domain.Logic
 
                 // STEP 7
                 StepChanged?.Invoke(this, 7);
-                var compare = new CompareDomain(_allPartNumbers);
+                var compare = new CompareDomain(_allPartNumbers, ObjectFormatterSource);
                 compare.Compare(_abProducts, _techDataProducts, _lamaProducts);
 
                 // STEP 8 //SolveConflicts();
