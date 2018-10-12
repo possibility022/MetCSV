@@ -2,6 +2,7 @@
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic;
+using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -13,6 +14,14 @@ namespace METCSV.UnitTests.EngineTest
         Product[] _shortProviderList;
         Dictionary<int, byte> _allPartNumbers;
         IList<string> _partNumbersForOldLogic;
+
+        static ZeroOutputFormatter Formatter;
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext context)
+        {
+            Formatter = new ZeroOutputFormatter();
+        }
 
         [TestInitialize]
         public void InitializeData()
@@ -39,7 +48,7 @@ namespace METCSV.UnitTests.EngineTest
         public void EmptyWarehousesCanNotBeSelected()
         {
             //Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers);
+            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
 
             // Act
             d.Compare(_shortProviderList, new Product[] { }, new Product[] { });
@@ -54,7 +63,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectCheapestProduct()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers);
+            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
 
             // Act
             d.Compare(_shortProviderList, new Product[] { }, new Product[] { });
@@ -68,7 +77,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectOnlyOneProduct()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers);
+            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
             var bestProduct = _shortProviderList[3];
 
             // Act
@@ -92,7 +101,7 @@ namespace METCSV.UnitTests.EngineTest
             var shortProviderList = new List<Product>(_shortProviderList);
             shortProviderList.Add(new Product(Providers.AB) { ID = null, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 1 });
 
-            CompareDomain d = new CompareDomain(_allPartNumbers);
+            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
 
             // Act
             d.Compare(shortProviderList, new Product[] { }, new Product[] { });
@@ -106,7 +115,7 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowErrorIfListIsEmpty()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers);
+            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
 
             // Act
             d.Compare(new Product[] { }, new Product[] { }, new Product[] { });
@@ -125,7 +134,7 @@ namespace METCSV.UnitTests.EngineTest
                 p.StanMagazynowy = 0;
             }
 
-            CompareDomain d = new CompareDomain(_allPartNumbers);
+            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
 
             // Act
             d.Compare(new Product[] { }, new Product[] { }, _shortProviderList);

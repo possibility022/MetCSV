@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using MET.Domain;
 using MET.Domain.Logic;
+using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -23,7 +24,7 @@ namespace METCSV.UnitTests.EngineTest
                 Factory.GetLamaProducts(),
                 Factory.GetTDProducts(),
                 Factory.GetABProducts(),
-                new CancellationTokenSource().Token);
+                new CancellationTokenSource().Token, new ZeroOutputFormatter());
 
             _productMerger.Generate();
         }

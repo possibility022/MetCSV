@@ -1,5 +1,6 @@
 ﻿using MET.Domain;
 using MET.Domain.Logic;
+using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -10,6 +11,14 @@ namespace METCSV.UnitTests.EngineTest
 
         Product[] _shortMetList;
         Product[] _shortProviderList;
+
+        static ZeroOutputFormatter formatter;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+            formatter = new ZeroOutputFormatter();
+        }
 
         [TestInitialize]
         public void InitializeData()
@@ -36,7 +45,7 @@ namespace METCSV.UnitTests.EngineTest
             var metCount = met.Count;
             
             // Act
-            EndOfLiveDomain domain = new EndOfLiveDomain(met, provider);
+            EndOfLiveDomain domain = new EndOfLiveDomain(met, formatter, provider);
 
             // Assert
             Assert.AreEqual(metCount, met.Count);
@@ -47,7 +56,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             // Arrange
             var productWithOutEol = _shortMetList[1];
-            var domain = new EndOfLiveDomain(_shortMetList, _shortProviderList);
+            var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
 
             // Act
             domain.SetEndOfLife();
@@ -61,7 +70,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             // Arrange
             var productWithOutEol = _shortMetList[0];
-            var domain = new EndOfLiveDomain(_shortMetList, _shortProviderList);
+            var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
 
             // Act
             domain.SetEndOfLife();
@@ -75,7 +84,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             // Arrange
             var productWithEol = _shortMetList[2];
-            var domain = new EndOfLiveDomain(_shortMetList, _shortProviderList);
+            var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
 
             // Act
             domain.SetEndOfLife();
