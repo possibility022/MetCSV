@@ -1,5 +1,6 @@
 ﻿using MET.Proxy.Configuration;
 using METCSV.Common;
+using METCSV.WPF.Configuration;
 using Prism.Mvvm;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,13 @@ namespace METCSV.WPF.ViewModels
         {
             get { return _savedInfo; }
             set { SetProperty(ref _savedInfo, value); }
+        }
+
+        private bool _generalTabIsActive;
+        public bool GeneralTabIsActive
+        {
+            get { return _generalTabIsActive; }
+            set { SetProperty(ref _generalTabIsActive, value); }
         }
 
         private bool _metTabIsActive = true;
@@ -44,6 +52,13 @@ namespace METCSV.WPF.ViewModels
         {
             get { return _lamaTabIsActive; }
             set { SetProperty(ref _lamaTabIsActive, value); }
+        }
+
+        private EngineSettings _engineSettings;
+        public EngineSettings EngineSettings
+        {
+            get { return _engineSettings; }
+            set { SetProperty(ref _engineSettings, value); }
         }
 
         private MetDownloaderSettings _metSettings;
@@ -87,11 +102,14 @@ namespace METCSV.WPF.ViewModels
             LamaSettings = new LamaDownloaderSettings();
             TdSettings = new TechDataDownloaderSettings();
             AbSettings = new AbDownloaderSettings();
+            EngineSettings = new EngineSettings();
+            
 
             PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
             PropertyCopy.CopyValues(App.Settings.ABDownloader, AbSettings);
             PropertyCopy.CopyValues(App.Settings.TDDownloader, TdSettings);
             PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
+            PropertyCopy.CopyValues(App.Settings.Engine, EngineSettings);
         }
 
         private void HideInfoAfter()
@@ -114,6 +132,9 @@ namespace METCSV.WPF.ViewModels
             else if (LamaTabIsActive)
                 PropertyCopy.CopyValues(LamaSettings, App.Settings.LamaDownloader);
 
+            else if (GeneralTabIsActive)
+                PropertyCopy.CopyValues(EngineSettings, App.Settings.Engine);
+
             SavedInfo = Visibility.Visible;
 
             _hiddingTask = new Task(HideInfoAfter);
@@ -134,6 +155,9 @@ namespace METCSV.WPF.ViewModels
 
             else if (LamaTabIsActive)
                 PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
+
+            else if (GeneralTabIsActive)
+                PropertyCopy.CopyValues(App.Settings.Engine, EngineSettings);
         }
 
         public bool AllSaved()
@@ -149,6 +173,9 @@ namespace METCSV.WPF.ViewModels
                 return false;
 
             if (PropertyCopy.AnyChanges(LamaSettings, App.Settings.LamaDownloader))
+                return false;
+
+            if (PropertyCopy.AnyChanges(EngineSettings, App.Settings.Engine))
                 return false;
 
             return true;

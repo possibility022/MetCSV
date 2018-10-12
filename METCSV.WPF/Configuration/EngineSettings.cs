@@ -9,7 +9,7 @@ namespace METCSV.WPF.Configuration
         public bool OfflineMode
         {
             get { return _offlineMode; }
-            set { }
+            set { _offlineMode = value; }
         }
 
         public bool SetProfits { get; set; } = true;

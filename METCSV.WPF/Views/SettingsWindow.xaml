@@ -31,6 +31,46 @@
         </Grid.RowDefinitions>
 
         <TabControl Grid.Row="0">
+
+
+            <TabItem IsSelected="{Binding GeneralTabIsActive}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Ogólne" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Border
+                    Margin="10"
+                    BorderBrush="Black"
+                    BorderThickness="1">
+                    <Grid Margin="5">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Content="Użyj ostatnich plików. (Generowanie offline)" />
+                        <CheckBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            IsChecked="{Binding EngineSettings.OfflineMode, UpdateSourceTrigger=PropertyChanged}" />
+
+                    </Grid>
+                </Border>
+            </TabItem>
+
+
+
             <TabItem IsSelected="{Binding MetTabIsActive}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
