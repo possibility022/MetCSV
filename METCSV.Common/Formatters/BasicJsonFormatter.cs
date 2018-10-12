@@ -39,7 +39,7 @@ namespace METCSV.Common.Formatters
             sb.AppendLine(message);
         }
 
-        public void WriteLine(T item)
+        public void WriteObject(T item)
         {
             sb.AppendLine(JsonConvert.SerializeObject(item, Formatting.Indented));
         }

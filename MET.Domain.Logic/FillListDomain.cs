@@ -53,34 +53,44 @@ namespace MET.Domain.Logic
         {
             Product product = null;
 
+            var formatter = _objectFormatter.GetNewInstance();
+
             while (source.TryTake(out product) || source.Count > 0)
             {
                 if (product != null)
                 {
-                    var sb = new StringBuilder();// sadawd //todo refactor BasicJsonFormatter and interface
-
-
-
                     IList<Product> metOutList = null;
                     var taken = _met.TryGetValue(product.SapManuHash, out metOutList);
 
                     if (taken)
                     {
-                        var selected = SelectOneProductAsDataSource(metOutList);
-                        SetEOLToNotUsedProducts(metOutList, selected);
+                        formatter.WriteLine($"Wypełniam dane produktu: [{product.SymbolSAP}] i jego dane na podstawie pliku met.");
+                        formatter.WriteLine("Produkt przed zmianami: ");
+                        formatter.WriteObject(product);
 
+                        var selected = SelectOneProductAsDataSource(metOutList, formatter);
+                        SetEOLToNotUsedProducts(metOutList, selected, formatter);
+                        
                         if (string.IsNullOrWhiteSpace(selected.UrlZdjecia) == false)
                         {
                             // TO JEST Tak że jeśli zdjęcie już jest to ustawiamy puste. Jeśli nie ma to zostawiamy to od dostawcy.
+                            formatter.WriteLine($"Ustawiam url zdjecia na Empty dla produktu: [{selected.SymbolSAP}], aby uniknąć dodawania jeszcze raz tego samego zdjęcia do bazy danych.");
                             product.UrlZdjecia = string.Empty;
+                            selected.UrlZdjecia = string.Empty;
                         }
 
                         product.ID = selected.ID;
 
                         if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
                         {
+                            formatter.WriteLine("Przepisuję nazwę z produktu źródłowego pobranego z MET, ponieważ nazwa jest dosępna.");
                             product.NazwaProduktu = selected.NazwaProduktu;
                         }
+
+                        formatter.WriteLine("Produkt po zmianach:");
+                        formatter.WriteObject(product);
+                        formatter.Flush();
+
                     }
                     else
                     {
@@ -102,20 +112,24 @@ namespace MET.Domain.Logic
         /// </summary>
         /// <param name="metOutList">The products.</param>
         /// <returns></returns>
-        private Product SelectOneProductAsDataSource(IEnumerable<Product> metOutList)
+        private Product SelectOneProductAsDataSource(IEnumerable<Product> metOutList, IStringFormatter formatter)
         {
             foreach (var p in metOutList)
             {
                 if (p.UrlZdjecia.Length > 0)
                 {
+                    formatter.WriteLine($"Wybieram produkt: [{p.SymbolSAP}], posiada on URL.");
                     return p;
                 }
             }
+            
+            var product = metOutList.First();
+            formatter.WriteLine($"Wybieram produkt: [{product.SymbolSAP}], jest pierwszy na liscie.");
 
-            return metOutList.First();
+            return product;
         }
 
-        private void SetEOLToNotUsedProducts(IEnumerable<Product> products, Product selectedProduct)
+        private void SetEOLToNotUsedProducts(IEnumerable<Product> products, Product selectedProduct, IStringFormatter formatter)
         {
             foreach (var p in products)
             {
@@ -125,11 +139,8 @@ namespace MET.Domain.Logic
 
                 if (!ReferenceEquals(p, selectedProduct))
                 {
+                    formatter.WriteLine($"Ustawiam kategorę EOL na produkcie: [{v.SymbolSAP}], nie został on wybrany.");
                     EndOfLiveDomain.SetEndOfLife(ref v);
-                }
-                else
-                {
-                    p.UrlZdjecia = string.Empty;
                 }
             }
         }

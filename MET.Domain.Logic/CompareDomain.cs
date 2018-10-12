@@ -93,7 +93,7 @@ namespace MET.Domain.Logic
             var formatter = _objectFormatter.GetNewInstance();
 
             formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
-            formatter.WriteLine(products);
+            formatter.WriteObject(products);
 
             RemoveEmptyWarehouse(products, formatter);
 
@@ -104,12 +104,12 @@ namespace MET.Domain.Logic
             }
 
             formatter.WriteLine("Wybieram najtańszy produkt z listy:");
-            formatter.WriteLine(products);
+            formatter.WriteObject(products);
 
             var cheapest = FindCheapestProduct(products);
 
             formatter.WriteLine($"Najtańszy produkt dla PartNumberu [{partNumber}] to:");
-            formatter.WriteLine(cheapest);
+            formatter.WriteObject(cheapest);
 
             if (cheapest.ID != null)
                 cheapest.StatusProduktu = true;
@@ -124,7 +124,7 @@ namespace MET.Domain.Logic
                 if (products[i].StanMagazynowy <= 0)
                 {
                     formatter.WriteLine("Stan magazynowy produktu jest pusty, usuwam go z listy: ");
-                    formatter.WriteLine(products[i]);
+                    formatter.WriteObject(products[i]);
 
                     products.RemoveAt(i);
                     i--;
