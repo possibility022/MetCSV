@@ -24,9 +24,8 @@ namespace METCSV.Common.Formatters
 
         }
 
-        public void WriteLine(object item)
+        public void WriteObject(object item)
         {
-
         }
     }
 }

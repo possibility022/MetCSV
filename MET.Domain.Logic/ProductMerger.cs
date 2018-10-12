@@ -38,7 +38,8 @@ namespace MET.Domain.Logic
 
         public event EventHandler<OperationStatus> OnGenerateStateChange;
 
-        readonly IObjectFormatterConstructor<object> ObjectFormatter;
+        readonly IObjectFormatterConstructor<object> ObjectFormatterSource;
+        readonly IObjectFormatter<object> ObjectFormatter;
 
         private CancellationToken _token;
 
@@ -51,7 +52,8 @@ namespace MET.Domain.Logic
             _techInit = td;
             _abInit = ab;
             _token = token;
-            ObjectFormatter = objectFormatter ?? new BasicJsonFormatter<object>();
+            ObjectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
+            ObjectFormatter = ObjectFormatterSource.GetNewInstance();
         }
 
         public bool Generate()
@@ -87,26 +89,24 @@ namespace MET.Domain.Logic
                 // STEP 4
                 StepChanged?.Invoke(this, 4);
                 _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
-
-                var sb = new StringBuilder();
-                sb.AppendLine("Lista wszystkich Part Numberów: ");
+                
                 foreach(var partNumber in _allPartNumbers.Keys)
                 {
-                    sb.AppendLine(partNumber.ToString());
+                    ObjectFormatter.WriteLine(partNumber.ToString());
                 }
 
-                Log.LogProductInfo(sb.ToString());
+                ObjectFormatter.Flush();
 
                 // STEP 5
                 StepChanged?.Invoke(this, 5);
-                var fillList = new FillListDomain(_metBag, ObjectFormatter);
+                var fillList = new FillListDomain(_metBag, ObjectFormatterSource);
                 _lamaProducts = fillList.FillList(_lamaProducts);
                 _abProducts = fillList.FillList(_abProducts);
                 _techDataProducts = fillList.FillList(_techDataProducts);
 
                 // STEP 6
                 StepChanged?.Invoke(this, 6);
-                var setEndOfLive = new EndOfLiveDomain(_metBag, _lamaProducts, _abProducts, _techDataProducts);
+                var setEndOfLive = new EndOfLiveDomain(_metBag, ObjectFormatterSource, _lamaProducts, _abProducts, _techDataProducts);
                 setEndOfLive.SetEndOfLife();
 
                 // STEP 7
@@ -140,7 +140,7 @@ namespace MET.Domain.Logic
 
         private void PreGenerateAction()
         {
-            var formatter = ObjectFormatter.GetNewInstance();
+            var formatter = ObjectFormatterSource.GetNewInstance();
 
             HashSet<Product> productsToRemove = new HashSet<Product>();
             foreach (var p in _techInit)
@@ -155,7 +155,7 @@ namespace MET.Domain.Logic
 
                     formatter.WriteLine("Produkt z oryginalnym kodem producenta: [] posiadał wartość ?TN. Ustawiam Status Produktu, Cene zakupu netto, Cene netto i kategorię. Produkt zostanie również usunięty z listy wejściowej.");
                     formatter.WriteLine("Produkt po zmianach:");
-                    formatter.WriteLine(p);
+                    formatter.WriteObject(p);
                 }
             }
 
@@ -178,7 +178,7 @@ namespace MET.Domain.Logic
 
         private void RemoveHiddenProducts()
         {
-            var hiddenEngine = new HiddenProductsDomain(ObjectFormatter);
+            var hiddenEngine = new HiddenProductsDomain(ObjectFormatterSource);
 
             _hiddenMetProducts = hiddenEngine.CreateListOfHiddenProducts(_metBag);
 

@@ -61,7 +61,7 @@ namespace MET.Domain.Logic
                     formatter.WriteLine($"Ustawiam flage HIDDEN produktu SymbolSap:[{outProduct.SymbolSAP}] na True");
                     outProduct.Hidden = true;
                     formatter.WriteLine("Produkt po zmianie: ");
-                    formatter.WriteLine(outProduct);
+                    formatter.WriteObject(outProduct);
                 }
 
                 outProduct = null;
@@ -75,6 +75,8 @@ namespace MET.Domain.Logic
             ConcurrentDictionary<string, Product> hidden = new ConcurrentDictionary<string, Product>();
 
             var formatter = _objectFormatter.GetNewInstance();
+
+            formatter.WriteLine("Ukryte produkty: ");
 
             foreach (var p in products)
             {

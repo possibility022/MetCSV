@@ -1,15 +1,8 @@
-﻿using System;
-
-namespace METCSV.Common.Formatters
+﻿namespace METCSV.Common.Formatters
 {
-    public interface IObjectFormatter<T>
+    public interface IObjectFormatter<T> : IStringFormatter
     {
-        void WriteLine(string message);
 
-        void WriteLine(T item);
-
-        void Flush();
-
-        void SetFlushAction(Action<string> action);
+        void WriteObject(T item);
     }
 }

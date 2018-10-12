@@ -1,4 +1,5 @@
 ﻿using METCSV.Common.ExtensionMethods;
+using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,11 +15,15 @@ namespace MET.Domain.Logic
         ConcurrentDictionary<int, Product> _sapManuHash;
         ConcurrentDictionary<string, Product> _manufacturerCode;
 
-        public EndOfLiveDomain(IEnumerable<Product> metProducts, params IEnumerable<Product>[] providers)
+        IObjectFormatterConstructor<object> _formatter;
+
+        public EndOfLiveDomain(IEnumerable<Product> metProducts, IObjectFormatterConstructor<object> formatter, params IEnumerable<Product>[] providers)
         {
             _metProducts = new ConcurrentBag<Product>(metProducts);
             _sapManuHash = new ConcurrentDictionary<int, Product>();
             _manufacturerCode = new ConcurrentDictionary<string, Product>();
+
+            _formatter = formatter;
 
             foreach (var provider in providers)
             {
@@ -50,6 +55,7 @@ namespace MET.Domain.Logic
 
         private void SetEndOfLife_Logic(ConcurrentBag<Product> metProducts, ConcurrentDictionary<string, Product> manufacturersCode, ConcurrentDictionary<int, Product> sapManuHash)
         {
+            var formatter = _formatter.GetNewInstance();
 
             while (metProducts.TryTake(out Product p) || metProducts.Count > 0)
             {
@@ -62,6 +68,7 @@ namespace MET.Domain.Logic
                         if (manufacturersCode.ContainsKey(p.KodProducenta) == false
                             && sapManuHash.ContainsKey(p.SapManuHash) == false)
                         {
+                            formatter.WriteLine($"Ustawiam: KodProducenta: [{p.KodProducenta}] SAP: [{p.SymbolSAP}] na EOL, nie można go znaleźć w finalnej liście.");
                             SetEndOfLife(ref p);
                         }
                     }
