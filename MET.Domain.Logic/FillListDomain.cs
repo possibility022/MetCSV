@@ -1,9 +1,11 @@
 ﻿using METCSV.Common.Converters;
 using METCSV.Common.ExtensionMethods;
+using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
@@ -17,9 +19,12 @@ namespace MET.Domain.Logic
         ConcurrentDictionary<int, IList<Product>> _met;
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
-        public FillListDomain(IEnumerable<Product> metBag)
+        IObjectFormatterConstructor<object> _objectFormatter;
+
+        public FillListDomain(IEnumerable<Product> metBag, IObjectFormatterConstructor<object> objectFormatter)
         {
             _met = CustomConverters.ConvertToDictionaryOfLists(metBag, p => p.SapManuHash);
+            _objectFormatter = objectFormatter;
         }
 
         public ConcurrentBag<Product> FillList(ConcurrentBag<Product> products, int? maxThreads = null)
@@ -44,14 +49,18 @@ namespace MET.Domain.Logic
             return newList;
         }
 
-        private void FillList_Logic(ConcurrentBag<Product> list, ConcurrentBag<Product> newList)
+        private void FillList_Logic(ConcurrentBag<Product> source, ConcurrentBag<Product> target)
         {
             Product product = null;
 
-            while (list.TryTake(out product) || list.Count > 0)
+            while (source.TryTake(out product) || source.Count > 0)
             {
                 if (product != null)
                 {
+                    var sb = new StringBuilder();// sadawd //todo refactor BasicJsonFormatter and interface
+
+
+
                     IList<Product> metOutList = null;
                     var taken = _met.TryGetValue(product.SapManuHash, out metOutList);
 
@@ -78,12 +87,12 @@ namespace MET.Domain.Logic
                         // return to list to try again later.
                         if (_met.ContainsKey(product.SapManuHash))
                         {
-                            list.Add(product);
+                            source.Add(product);
                             continue;
                         }
                     }
 
-                    newList.Add(product);
+                    target.Add(product);
                 }
             }
         }

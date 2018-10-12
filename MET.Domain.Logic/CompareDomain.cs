@@ -1,11 +1,9 @@
 ﻿using MET.Domain.Logic.Comparers;
-using METCSV.Common;
 using METCSV.Common.ExtensionMethods;
 using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
@@ -17,12 +15,12 @@ namespace MET.Domain.Logic
 
         ProductByProductPrice _netPriceComparer = new ProductByProductPrice();
 
-        IObjectFormatter<Product> _objectFormatter;
+        IObjectFormatterConstructor<object> _objectFormatter;
 
-        public CompareDomain(IDictionary<int, byte> allPartNumbers, IObjectFormatter<Product> objectFormatter = null)
+        public CompareDomain(IDictionary<int, byte> allPartNumbers, IObjectFormatterConstructor<object> objectFormatter = null)
         {
             _allPartNumbers = new ConcurrentBag<int>(allPartNumbers.Keys);
-            _objectFormatter = objectFormatter ?? new BasicJsonFormatter<Product>();
+            _objectFormatter = objectFormatter ?? new BasicJsonFormatter<object>();
         }
 
         public void Compare(IEnumerable<Product> ab, IEnumerable<Product> td, IEnumerable<Product> lama)
@@ -92,41 +90,41 @@ namespace MET.Domain.Logic
             if (products.Count == 0)
                 return;
 
-            var sb = new StringBuilder();
+            var formatter = _objectFormatter.GetNewInstance();
 
-            sb.AppendLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
-            _objectFormatter.Get(sb, products);
+            formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
+            formatter.WriteLine(products);
 
-            RemoveEmptyWarehouse(products, sb);
+            RemoveEmptyWarehouse(products, formatter);
 
             if (products.Count == 0)
             {
-                sb.AppendLine($"List dla {partNumber} jest pusta. Wszystkie produkty są niedostępne?");
+                formatter.WriteLine($"List dla {partNumber} jest pusta. Wszystkie produkty są niedostępne?");
                 return;
             }
 
-            sb.AppendLine("Wybieram najtańszy produkt z listy:");
-            _objectFormatter.Get(sb, products);
+            formatter.WriteLine("Wybieram najtańszy produkt z listy:");
+            formatter.WriteLine(products);
 
             var cheapest = FindCheapestProduct(products);
 
-            sb.AppendLine($"Najtańszy produkt dla PartNumberu [{partNumber}] to:");
-            _objectFormatter.Get(sb, cheapest);
+            formatter.WriteLine($"Najtańszy produkt dla PartNumberu [{partNumber}] to:");
+            formatter.WriteLine(cheapest);
 
             if (cheapest.ID != null)
                 cheapest.StatusProduktu = true;
 
-            Log.LogProductInfo(sb.ToString());
+            formatter.Flush();
         }
 
-        private void RemoveEmptyWarehouse(IList<Product> products, StringBuilder sb)
+        private void RemoveEmptyWarehouse(IList<Product> products, IObjectFormatter<object> formatter)
         {
             for (int i = 0; i < products.Count; i++)
             {
                 if (products[i].StanMagazynowy <= 0)
                 {
-                    sb.AppendLine("Stan magazynowy produktu jest pusty, usuwam go z listy: ");
-                    _objectFormatter.Get(sb, products[i]);
+                    formatter.WriteLine("Stan magazynowy produktu jest pusty, usuwam go z listy: ");
+                    formatter.WriteLine(products[i]);
 
                     products.RemoveAt(i);
                     i--;
