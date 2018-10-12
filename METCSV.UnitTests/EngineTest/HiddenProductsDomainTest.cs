@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic;
+using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -10,6 +11,14 @@ namespace METCSV.UnitTests.EngineTest
     [TestClass]
     public class HiddenProductsDomainTest
     {
+        private static IObjectFormatterConstructor<object> formatterConstructor;
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext context)
+        {
+            formatterConstructor = new ZeroOutputFormatter();
+        }
+
         [TestMethod]
         public void RemoveAllHiddenProducts()
         {
@@ -18,7 +27,7 @@ namespace METCSV.UnitTests.EngineTest
             var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
             var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
 
-            HiddenProductsDomain domain = new HiddenProductsDomain();
+            HiddenProductsDomain domain = new HiddenProductsDomain(formatterConstructor);
 
             var hiddenProducts = domain.CreateListOfHiddenProducts(met);
 
@@ -37,7 +46,7 @@ namespace METCSV.UnitTests.EngineTest
         public void ListOfHiddenProductsContainsOnlyHiddenProducts()
         {
             var met = new ConcurrentBag<Product>(Factory.GetMetProducts());
-            HiddenProductsDomain domain = new HiddenProductsDomain();
+            HiddenProductsDomain domain = new HiddenProductsDomain(formatterConstructor);
             var hiddenProducts = domain.CreateListOfHiddenProducts(met);
 
             Assert.IsTrue(hiddenProducts.All(p => p.Value.Hidden));
@@ -49,7 +58,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
 
-            HiddenProductsDomain domain = new HiddenProductsDomain();
+            HiddenProductsDomain domain = new HiddenProductsDomain(formatterConstructor);
 
             var abClear = domain.RemoveHiddenProducts(ab);
         }

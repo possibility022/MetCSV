@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace METCSV.Common.Formatters
 {
     public interface IObjectFormatter<T>
     {
-        void Get(StringBuilder sb, IEnumerable<T> items);
+        void WriteLine(string message);
 
-        void Get(StringBuilder sb, T item);
+        void WriteLine(T item);
 
-        string Get(T item);
-        string Get(IEnumerable<T> items);
+        void Flush();
+
+        void SetFlushAction(Action<string> action);
     }
 }

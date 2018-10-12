@@ -14,11 +14,11 @@ namespace MET.Domain.Logic
 
         ConcurrentDictionary<string, Product> _hidden;
 
-        IObjectFormatter<Product> _objectFormatter;
+        IObjectFormatterConstructor<object> _objectFormatter;
 
-        public HiddenProductsDomain(IObjectFormatter<Product> objectFormatter = null)
+        public HiddenProductsDomain(IObjectFormatterConstructor<object> objectFormatter)
         {
-            _objectFormatter = objectFormatter ?? new BasicJsonFormatter<Product>();
+            _objectFormatter = objectFormatter;
         }
 
         public ConcurrentBag<Product> RemoveHiddenProducts(ConcurrentBag<Product> products)
@@ -40,7 +40,7 @@ namespace MET.Domain.Logic
         private void RemoveHiddenProducts_Logic(ConcurrentBag<Product> products, ConcurrentBag<Product> finalList)
         {
             Product outProduct = null;
-            var sb = new StringBuilder();
+            var formatter = _objectFormatter.GetNewInstance();
 
             if (_hidden == null)
             {
@@ -58,34 +58,34 @@ namespace MET.Domain.Logic
                 }
                 else
                 {
-                    sb.AppendLine($"Ustawiam flage HIDDEN produktu SymbolSap:[{outProduct.SymbolSAP}] na True");
+                    formatter.WriteLine($"Ustawiam flage HIDDEN produktu SymbolSap:[{outProduct.SymbolSAP}] na True");
                     outProduct.Hidden = true;
-                    sb.AppendLine("Produkt po zmianie: ");
-                    _objectFormatter.Get(sb, outProduct);
+                    formatter.WriteLine("Produkt po zmianie: ");
+                    formatter.WriteLine(outProduct);
                 }
 
                 outProduct = null;
             }
 
-            Log.LogProductInfo(sb.ToString());
+            formatter.Flush();
         }
 
         public ConcurrentDictionary<string, Product> CreateListOfHiddenProducts(IEnumerable<Product> products)
         {
             ConcurrentDictionary<string, Product> hidden = new ConcurrentDictionary<string, Product>();
 
-            var sb = new StringBuilder("Ukryte produkty, lista Symboli SAP:");
+            var formatter = _objectFormatter.GetNewInstance();
 
             foreach (var p in products)
             {
                 if (p.Hidden)
                 {
                     hidden.TryAdd(p.SymbolSAP, p);
-                    sb.AppendLine(p.SymbolSAP);
+                    formatter.WriteLine(p.SymbolSAP);
                 }
             }
-            
-            Log.LogProductInfo(sb.ToString());
+
+            formatter.Flush();
 
             _hidden = hidden;
             return hidden;

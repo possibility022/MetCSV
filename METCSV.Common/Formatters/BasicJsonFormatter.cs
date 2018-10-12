@@ -1,26 +1,47 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
 using System.Text;
 
 namespace METCSV.Common.Formatters
 {
-    public class BasicJsonFormatter<T> : IObjectFormatter<T>
+    public class BasicJsonFormatter<T> : IObjectFormatter<T>, IObjectFormatterConstructor<T>
     {
-        public void Get(StringBuilder sb, IEnumerable<T> items)
+
+        StringBuilder sb = new StringBuilder();
+        private Action<string> _action;
+
+        public BasicJsonFormatter()
         {
-            sb.AppendLine(Get(items));
+            _action = Log.LogProductInfo;
         }
 
-        public void Get(StringBuilder sb, T item)
+        public void Flush()
         {
-            sb.AppendLine(Get(item));
+            _action.Invoke(sb.ToString());
+            sb.Clear();
         }
 
-        public string Get(T item) 
-            => JsonConvert.SerializeObject(item, Formatting.Indented);
+        public IObjectFormatter<T> GetNewInstance()
+        {
+            var obj = new BasicJsonFormatter<T>();
+            obj.SetFlushAction(_action);
 
+            return obj;
+        }
 
-        public string Get(IEnumerable<T> items) 
-            => JsonConvert.SerializeObject(items, Formatting.Indented);
+        public void SetFlushAction(Action<string> action)
+        {
+            _action = action;
+        }
+
+        public void WriteLine(string message)
+        {
+            sb.AppendLine(message);
+        }
+
+        public void WriteLine(T item)
+        {
+            sb.AppendLine(JsonConvert.SerializeObject(item, Formatting.Indented));
+        }
     }
 }
