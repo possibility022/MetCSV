@@ -59,7 +59,7 @@ namespace MET.Domain.Logic
             if (oldP.CenaZakupuNetto < newProduct.CenaZakupuNetto)
                 return true;
 
-            return (oldP.CenaZakupuNetto * 20 / 100) < (oldP.CenaZakupuNetto - newProduct.CenaZakupuNetto);
+            return (oldP.CenaZakupuNetto * 20 / 100) > (oldP.CenaZakupuNetto - newProduct.CenaZakupuNetto);
         }
     }
 }
