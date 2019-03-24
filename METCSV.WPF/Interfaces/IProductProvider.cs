@@ -24,5 +24,6 @@ namespace METCSV.WPF.Interfaces
         Providers Provider { get; }
 
         ICollection<Product> LoadOldProducts();
+        void SaveAsOldProducts(ICollection<Product> products);
     }
 }

@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MET.Domain;
 using MET.Proxy;
 using MET.Proxy.Interfaces;
+using MET.Workflows;
 using METCSV.Common;
 using METCSV.WPF.Interfaces;
 using Prism.Mvvm;
 
 namespace METCSV.WPF.ProductProvider
 {
-    abstract class ProductProviderBase : BindableBase, IProductProvider
+    abstract public class ProductProviderBase : BindableBase, IProductProvider
     {
 
         protected const string ArchiveFolder = "Archive";
@@ -30,16 +33,16 @@ namespace METCSV.WPF.ProductProvider
         protected CancellationToken _token;
 
         IList<Product> _products;
+        IList<Product> _oldProducts;
 
         public ProductProviderBase(CancellationToken cancellationToken)
         {
             _token = cancellationToken;
         }
 
-        public IList<Product> GetProducts()
-        {
-            return _products;
-        }
+        public IList<Product> GetProducts() => _products;
+
+        public IList<Product> GetOldProducts() => _oldProducts;
 
         public void SetProductDownloader(IDownloader downloader)
         {
@@ -81,7 +84,7 @@ namespace METCSV.WPF.ProductProvider
             // ReSharper disable once DelegateSubtraction
             _downloader.OnDownloadingStatusChanged -= OnDownloadingStatusChanged;
         }
-        
+
         private IList<Product> ReadFile(IProductReader productReader, IDownloader downloader)
         {
             productReader.OnStatusChanged += OnProductReaderStatusChanged;
@@ -97,9 +100,9 @@ namespace METCSV.WPF.ProductProvider
                 downloader.DownloadedFiles.Length >= 2 ?
                     downloader.DownloadedFiles[1]
                     : string.Empty;
-            
+
             var producets = productReader.GetProducts(downloader.DownloadedFiles[0], filename2);
-            
+
             // ReSharper disable once DelegateSubtraction
             productReader.OnStatusChanged -= OnProductReaderStatusChanged;
 
@@ -130,15 +133,48 @@ namespace METCSV.WPF.ProductProvider
             return _productReader.Status == OperationStatus.Complete && _downloader.Status == OperationStatus.Complete;
         }
 
+        private const string fileExtension = ".bin";
+
         public ICollection<Product> LoadOldProducts()
         {
-            var file = Directory.GetFiles(ArchiveFolder)
-                .Where(r => r.StartsWith(ArchiveFileNamePrefix))
+            var file = Directory
+                .GetFiles(ArchiveFolder)
                 .Select(f => new FileInfo(f))
+                .Where(r => r.Name.StartsWith(ArchiveFileNamePrefix) && r.Name.EndsWith(fileExtension) && r.LastWriteTime.Date != DateTime.Today.Date)
+                //.Where(r => r.Name.EndsWith(fileExtension))
                 .OrderByDescending(fi => fi.CreationTime)
                 .FirstOrDefault();
 
-            
+            if (file == null)
+                return null;
+
+            using (Stream stream = File.Open(file.FullName, FileMode.Open))
+            {
+                var bin = new BinaryFormatter();
+                return (List<Product>)bin.Deserialize(stream);
+            }
+        }
+
+        private string GenerateFileName()
+            => $"{ArchiveFileNamePrefix}_{DateTime.Now.Date.ToString("d")}{fileExtension}";
+
+        public void SaveAsOldProducts(ICollection<Product> products)
+        {
+            try
+            {
+                if (!Directory.Exists(ArchiveFolder))
+                    Directory.CreateDirectory(ArchiveFolder);
+
+                using (Stream stream = File.Open(Path.Combine(ArchiveFolder, GenerateFileName()), FileMode.Create))
+                {
+                    var bin = new BinaryFormatter();
+                    bin.Serialize(stream, products);
+                }
+            }
+            catch (IOException io)
+            {
+                Log.Error(io);
+            }
         }
     }
 }
