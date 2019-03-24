@@ -10,6 +10,7 @@ namespace METCSV.WPF.ProductProvider
 {
     class ABProductProvider : ProductProviderBase
     {
+        protected override string ArchiveFileNamePrefix => "AB";
 
         public ABProductProvider(CancellationToken token) : base(token)
         {

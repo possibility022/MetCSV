@@ -9,6 +9,8 @@ namespace METCSV.WPF.ProductProvider
 {
     class LamaProductProvider : ProductProviderBase
     {
+        protected override string ArchiveFileNamePrefix => "LAMA";
+
         public LamaProductProvider(CancellationToken token) : base (token)
         {
             SetProductDownloader(GetDownloader());
