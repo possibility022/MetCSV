@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MET.Domain;
@@ -13,6 +15,10 @@ namespace METCSV.WPF.ProductProvider
 {
     abstract class ProductProviderBase : BindableBase, IProductProvider
     {
+
+        protected const string ArchiveFolder = "Archive";
+
+        protected abstract string ArchiveFileNamePrefix { get; }
 
         private IDownloader _downloader;
         private IProductReader _productReader;
@@ -122,6 +128,17 @@ namespace METCSV.WPF.ProductProvider
             DownloadData();
             _products = ReadFile(_productReader, _downloader);
             return _productReader.Status == OperationStatus.Complete && _downloader.Status == OperationStatus.Complete;
+        }
+
+        public ICollection<Product> LoadOldProducts()
+        {
+            var file = Directory.GetFiles(ArchiveFolder)
+                .Where(r => r.StartsWith(ArchiveFileNamePrefix))
+                .Select(f => new FileInfo(f))
+                .OrderByDescending(fi => fi.CreationTime)
+                .FirstOrDefault();
+
+            
         }
     }
 }
