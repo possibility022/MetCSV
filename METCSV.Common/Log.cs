@@ -22,8 +22,6 @@ namespace METCSV.Common
         {
             var config = new LoggingConfiguration();
 
-            var FileName = GenerateFileName();
-
             var logFile = new FileTarget() { FileName = GenerateFileName(), Layout = Layout };
             var logProductChangesFile = new FileTarget() { FileName = GenerateFileName("Product"), Layout = ProductChangesLayout };
 
