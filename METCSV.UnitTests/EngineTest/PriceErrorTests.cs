@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic;
+using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -56,7 +57,7 @@ namespace METCSV.UnitTests.EngineTest
                 }
             };
 
-            domain = new PriceErrorDomain(oldProduct, newProduct);
+            domain = new PriceErrorDomain(oldProduct, newProduct, 20, new ZeroOutputFormatter());
         }
                 
 

@@ -245,6 +245,7 @@ namespace METCSV.WPF.ViewModels
 
             _productMerger = new ProductMerger(
                 products,
+                App.Settings.Engine.MaximumPriceErrorDifference,
                 _cancellationTokenSource.Token);
 
             _productMerger.StepChanged += _productMerger_StepChanged;

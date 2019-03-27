@@ -43,6 +43,7 @@ namespace METCSV.UnitTests.EngineTest
 
             _productMerger = new ProductMerger(
                 products,
+                20,
                 new CancellationTokenSource().Token, new ZeroOutputFormatter());
 
             _productMerger.Generate();

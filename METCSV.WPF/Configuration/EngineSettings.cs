@@ -14,5 +14,7 @@ namespace METCSV.WPF.Configuration
 
         public bool SetProfits { get; set; } = true;
         public string NewVersionURL { get; set; } = "http://tbsys.ddns.net/metcsv/version.xml";
+
+        public int MaximumPriceErrorDifference { get; set; } = 20;
     }
 }
