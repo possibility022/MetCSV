@@ -137,13 +137,18 @@ namespace METCSV.WPF.ProductProvider
 
         public ICollection<Product> LoadOldProducts()
         {
-            var file = Directory
+            FileInfo file = null;
+
+
+            if (Directory.Exists(ArchiveFolder))
+                file = Directory
                 .GetFiles(ArchiveFolder)
                 .Select(f => new FileInfo(f))
                 .Where(r => r.Name.StartsWith(ArchiveFileNamePrefix) && r.Name.EndsWith(fileExtension) && r.LastWriteTime.Date != DateTime.Today.Date)
                 //.Where(r => r.Name.EndsWith(fileExtension))
                 .OrderByDescending(fi => fi.CreationTime)
                 .FirstOrDefault();
+
 
             if (file == null)
                 return null;

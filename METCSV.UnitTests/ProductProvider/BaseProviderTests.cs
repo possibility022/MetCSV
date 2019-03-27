@@ -73,5 +73,20 @@ namespace METCSV.UnitTests.ProductProvider
             // Assert
             Assert.AreEqual(products.Count, loadedList.Count);
         }
+
+        [TestMethod]
+        public void ReturnNullWhenFolderDoesNotExists()
+        {
+            // Arrange
+            if (Directory.Exists(provider.Archive))
+                Directory.Delete(provider.Archive, true);
+
+            // Act
+            var loadedList = provider.LoadOldProducts();
+
+            // Assert
+            Assert.IsNull(loadedList);
+
+        }
     }
 }
