@@ -49,6 +49,7 @@
     <Compile Include="EndOfLiveDomain.cs" />
     <Compile Include="FillListDomain.cs" />
     <Compile Include="HiddenProductsDomain.cs" />
+    <Compile Include="Models\Products.cs" />
     <Compile Include="PriceErrorDomain.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductMerger.cs" />

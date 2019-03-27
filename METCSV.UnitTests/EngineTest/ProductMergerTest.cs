@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using MET.Domain;
 using MET.Domain.Logic;
+using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,11 +20,27 @@ namespace METCSV.UnitTests.EngineTest
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
+            var met = Factory.GetMetProducts();
+            var lama = Factory.GetLamaProducts();
+            var td = Factory.GetTDProducts();
+            var ab = Factory.GetABProducts();
+
+            var ab_old = Factory.GetABProducts();
+            var s = ab_old.First();
+            s.CenaZakupuNetto = s.CenaZakupuNetto - 20;
+
+            var products = new Products()
+            {
+                MetProducts = met,
+                LamaProducts = lama,
+                TechDataProducts = td,
+                AbProducts = ab,
+                 AbProducts_Old = ab_old
+            };
+
+
             _productMerger = new ProductMerger(
-                Factory.GetMetProducts(),
-                Factory.GetLamaProducts(),
-                Factory.GetTDProducts(),
-                Factory.GetABProducts(),
+                products,
                 new CancellationTokenSource().Token, new ZeroOutputFormatter());
 
             _productMerger.Generate();
