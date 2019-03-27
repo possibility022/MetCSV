@@ -17,6 +17,8 @@ namespace METCSV.UnitTests.EngineTest
 
         List<Product> _workOnList;
 
+        static string sapManuHashOfProductsWhichHasPriceError;
+
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
@@ -26,8 +28,9 @@ namespace METCSV.UnitTests.EngineTest
             var ab = Factory.GetABProducts();
 
             var ab_old = Factory.GetABProducts();
-            var s = ab_old.First();
-            s.CenaZakupuNetto = s.CenaZakupuNetto - 20;
+            var someProduct = ab_old.Last(r => r.StanMagazynowy > 0);
+            someProduct.CenaZakupuNetto = someProduct.CenaZakupuNetto + (30 * someProduct.CenaZakupuNetto / 100) - 1;
+            sapManuHashOfProductsWhichHasPriceError = someProduct.SapManuHash;
 
             var products = new Products()
             {
@@ -35,9 +38,8 @@ namespace METCSV.UnitTests.EngineTest
                 LamaProducts = lama,
                 TechDataProducts = td,
                 AbProducts = ab,
-                 AbProducts_Old = ab_old
+                AbProducts_Old = ab_old
             };
-
 
             _productMerger = new ProductMerger(
                 products,
@@ -50,6 +52,16 @@ namespace METCSV.UnitTests.EngineTest
         public void Initialize()
         {
             _workOnList = new List<Product>(_productMerger.FinalList);
+        }
+
+        [TestMethod]
+        public void ValidateThatProductWithPriceErrorIsNotInWarehouse()
+        {
+            var product = _productMerger
+                .FinalList
+                .Single(r => r.SapManuHash == sapManuHashOfProductsWhichHasPriceError && r.Provider == Providers.AB);
+
+            Assert.AreEqual(0, product.StanMagazynowy);
         }
 
         [TestMethod]
