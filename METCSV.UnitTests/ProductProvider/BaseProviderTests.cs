@@ -51,6 +51,7 @@ namespace METCSV.UnitTests.ProductProvider
         }
 
         [TestMethod]
+        [Ignore]
         public void SerializeAndDeserialize()
         {
             // Act
