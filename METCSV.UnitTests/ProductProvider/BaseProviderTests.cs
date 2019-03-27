@@ -31,7 +31,23 @@ namespace METCSV.UnitTests.ProductProvider
         private void CopyTestFileToArchive()
         {
             Directory.CreateDirectory(provider.Archive);
-            File.Copy(Path.Combine("Repository", "FilesWithDifferentCreationDate", testFileName), Path.Combine(provider.Archive, testFileName), true);
+            var file = Path.Combine(provider.Archive, testFileName);
+
+            File.Copy(Path.Combine("Repository", "FilesWithDifferentCreationDate", testFileName), file, true);
+
+            DateTime yesterday;
+
+            if (DateTime.Now.Day == 1)
+            {
+                if (DateTime.Now.Month == 1)
+                    yesterday = new DateTime(DateTime.Now.Year, 12, 1);
+                else
+                    yesterday = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, 1);
+            }
+            else
+                yesterday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 1);
+
+            File.SetLastWriteTime(file, yesterday);
         }
 
         [TestMethod]
