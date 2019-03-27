@@ -34,7 +34,7 @@ namespace METCSV.Common
             Logger = LogManager.GetCurrentClassLogger();
         }
 
-        private static string GenerateFileName(string namePrefix = null)
+        private static string GenerateFileName(string namePrefix = "")
         {
             var fileNameBase = DateTime.Now.ToString(DateTimeFileFormat);
             var fileName = $"{namePrefix}{fileNameBase}.log";
