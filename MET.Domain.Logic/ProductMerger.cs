@@ -31,6 +31,7 @@ namespace MET.Domain.Logic
         ConcurrentBag<Product> _abProducts;
 
         Products _products;
+        private readonly int maxiumumPriceDifference;
 
         public event EventHandler<int> StepChanged;
 
@@ -43,10 +44,10 @@ namespace MET.Domain.Logic
 
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
-        public ProductMerger(Products products , CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
+        public ProductMerger(Products products, int maxiumumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
             _products = products;
-
+            this.maxiumumPriceDifference = maxiumumPriceDifference;
             _token = token;
             ObjectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
             ObjectFormatter = ObjectFormatterSource.GetNewInstance();
@@ -63,7 +64,7 @@ namespace MET.Domain.Logic
             OnGenerateStateChange?.Invoke(this, OperationStatus.InProgress);
 
             _finalList = new List<Product>();
-            
+
             try
             {
                 // STEP 1
@@ -83,12 +84,12 @@ namespace MET.Domain.Logic
                 // STEP 3
                 StepChanged?.Invoke(this, 3);
                 RemoveHiddenProducts();
-                
+
                 // STEP 4
                 StepChanged?.Invoke(this, 4);
                 _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
-                
-                foreach(var partNumber in _allPartNumbers.Keys)
+
+                foreach (var partNumber in _allPartNumbers.Keys)
                 {
                     ObjectFormatter.WriteLine(partNumber.ToString());
                 }
@@ -172,26 +173,26 @@ namespace MET.Domain.Logic
 
             if (_products.AbProducts_Old != null)
             {
-                priceError = new PriceErrorDomain(_products.AbProducts_Old, _products.AbProducts);
+                priceError = new PriceErrorDomain(_products.AbProducts_Old, _products.AbProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
 
             if (_products.LamaProducts_Old != null)
             {
-                priceError = new PriceErrorDomain(_products.LamaProducts_Old, _products.LamaProducts);
+                priceError = new PriceErrorDomain(_products.LamaProducts_Old, _products.LamaProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
 
             if (_products.TechDataProducts_Old != null)
             {
-                priceError = new PriceErrorDomain(_products.TechDataProducts_Old, _products.TechDataProducts);
+                priceError = new PriceErrorDomain(_products.TechDataProducts_Old, _products.TechDataProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
         }
 
         private void PostGenerateAction()
         {
-            foreach(var p in _productsOutOfAnalyze)
+            foreach (var p in _productsOutOfAnalyze)
             {
                 _finalList.Add(p);
             }

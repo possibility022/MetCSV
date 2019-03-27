@@ -10,13 +10,19 @@ namespace MET.Domain.Logic
         private readonly ConcurrentDictionary<string, Product> oldProducts = new ConcurrentDictionary<string, Product>();
 
         private IEnumerable<Product> newProducts;
-        private readonly IObjectFormatter<Product> objectFormatter;
+        private readonly IObjectFormatter<object> objectFormatter;
 
-        public PriceErrorDomain(IEnumerable<Product> oldProducts, IEnumerable<Product> newProducts, IObjectFormatter<Product> objectFormatter)
+        readonly int maxDifference;
+
+        public PriceErrorDomain(IEnumerable<Product> oldProducts, IEnumerable<Product> newProducts, int maxDifference, IObjectFormatter<object> objectFormatter)
         {
+            if (maxDifference < 0 || maxDifference > 100)
+                throw new ArgumentException(nameof(maxDifference));
+
             ToConcurrentDictionary(oldProducts, ref this.oldProducts);
             this.newProducts = newProducts;
             this.objectFormatter = objectFormatter;
+            this.maxDifference = maxDifference;
         }
 
         private void SetWarehouseToZero(Product p)
@@ -73,7 +79,7 @@ namespace MET.Domain.Logic
             if (oldProduct.CenaZakupuNetto < newProduct.CenaZakupuNetto)
                 return true;
 
-            return (oldProduct.CenaZakupuNetto * 20 / 100) > (oldProduct.CenaZakupuNetto - newProduct.CenaZakupuNetto);
+            return (oldProduct.CenaZakupuNetto * maxDifference / 100) > (oldProduct.CenaZakupuNetto - newProduct.CenaZakupuNetto);
         }
     }
 }
