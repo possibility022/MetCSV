@@ -87,14 +87,14 @@ namespace MET.Domain
         /// <value>
         /// The sap manu hash.
         /// </value>
-        public int SapManuHash { get; private set; }
+        public string SapManuHash { get; private set; }
         /// <summary>
         /// Gets the manufacturer code ^ manufacturer name.
         /// </summary>
         /// <value>
         /// The code and manu.
         /// </value>
-        public int PartNumber { get; private set; }
+        public string PartNumber { get; private set; }
 
         string _oryginalnyKodProducenta;
         private string _symbolSAP = string.Empty;
@@ -102,13 +102,12 @@ namespace MET.Domain
 
         private void UpdateSapMenuHashSet()
         {
-            SapManuHash = $"{SymbolSAP}_||_{NazwaProducenta}".GetHashCode();
-            //_sapManuHashSet = SymbolSAP.GetHashCode() ^ NazwaProducenta.GetHashCode();
+            SapManuHash = $"{SymbolSAP}_||_{NazwaProducenta}";
         }
 
         private void UpdateCodeAndManu()
         {
-            PartNumber = $"{KodProducenta}_||_{NazwaProducenta}".GetHashCode();
+            PartNumber = $"{KodProducenta}_||_{NazwaProducenta}";
 
             //_partNumber = (KodProducenta + NazwaProducenta).GetHashCode(); // OK, Here we have problem when KodProducetna is ABC and NazwaProducenta is XYZ then
             // part number will be the same as product where KodProducenta is AB and NazwaProducenta is AXYZ :(

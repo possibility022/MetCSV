@@ -17,7 +17,7 @@ namespace MET.Domain.Logic
 
         List<Product> _finalList;
 
-        ConcurrentDictionary<int, byte> _allPartNumbers = new ConcurrentDictionary<int, byte>();
+        ConcurrentDictionary<string, byte> _allPartNumbers = new ConcurrentDictionary<string, byte>();
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
         /// <summary>

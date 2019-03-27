@@ -9,11 +9,10 @@ namespace MET.Domain.Logic
 {
     public static class AllPartNumbersDomain
     {
-        public static ConcurrentDictionary<int, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
+        public static ConcurrentDictionary<string, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
         {
-            ConcurrentDictionary<int, byte> allPartNumbers = new ConcurrentDictionary<int, byte>();
-            Task[] tasks = new Task[4];
-
+            var allPartNumbers = new ConcurrentDictionary<string, byte>();
+            var tasks = new Task[4];
 
             tasks[0] = new Task(() => GetAllPartNumbers_Logic(list1, allPartNumbers));
             tasks[1] = new Task(() => GetAllPartNumbers_Logic(list2, allPartNumbers));
@@ -26,7 +25,7 @@ namespace MET.Domain.Logic
             return allPartNumbers;
         }
 
-        private static void GetAllPartNumbers_Logic(ConcurrentBag<Product> products, ConcurrentDictionary<int, byte> _allPartNumbers)
+        private static void GetAllPartNumbers_Logic(ConcurrentBag<Product> products, ConcurrentDictionary<string, byte> _allPartNumbers)
         {
             byte b = new byte();
 
