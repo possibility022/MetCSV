@@ -161,9 +161,9 @@ namespace METCSV.UnitTests.EngineTest
             return true;
         }
 
-        private Dictionary<int, IList<Product>> CreateGrouppedDict(IEnumerable<Product> products)
+        private Dictionary<string, IList<Product>> CreateGrouppedDict(IEnumerable<Product> products)
         {
-            var dict = new Dictionary<int, IList<Product>>();
+            var dict = new Dictionary<string, IList<Product>>();
 
             foreach (var p in products)
             {

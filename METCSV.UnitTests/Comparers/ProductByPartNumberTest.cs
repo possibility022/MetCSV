@@ -27,7 +27,7 @@ namespace METCSV.UnitTests.Comparers
         {
             var result = _comparer.Compare(_productXYZ, _productABC);
 
-            if (_productXYZ.PartNumber > _productABC.PartNumber)
+            if (string.Compare(_productXYZ.PartNumber, _productABC.PartNumber) > 0)
                 Assert.AreEqual(1, result);
             else
                 Assert.AreEqual(-1, result);
@@ -38,7 +38,7 @@ namespace METCSV.UnitTests.Comparers
         {
             var result = _comparer.Compare(_productABC, _productXYZ);
 
-            if (_productXYZ.PartNumber > _productABC.PartNumber)
+            if (string.Compare(_productXYZ.PartNumber, _productABC.PartNumber) > 0)
                 Assert.AreEqual(-1, result);
             else
                 Assert.AreEqual(1, result);

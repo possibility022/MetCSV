@@ -47,7 +47,7 @@ namespace METCSV.UnitTests.EngineTest
             IsOnTheList(ab, list);
         }
 
-        private static void IsOnTheList(ConcurrentBag<Product> sourceList, ConcurrentDictionary<int, byte> list)
+        private static void IsOnTheList(ConcurrentBag<Product> sourceList, ConcurrentDictionary<string, byte> list)
         {
             foreach (var v in sourceList)
             {

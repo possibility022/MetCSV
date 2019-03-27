@@ -12,7 +12,7 @@ namespace METCSV.UnitTests.EngineTest
     {
 
         Product[] _shortProviderList;
-        Dictionary<int, byte> _allPartNumbers;
+        Dictionary<string, byte> _allPartNumbers;
         IList<string> _partNumbersForOldLogic;
 
         static ZeroOutputFormatter Formatter;
@@ -34,7 +34,7 @@ namespace METCSV.UnitTests.EngineTest
             };
 
             _partNumbersForOldLogic = _shortProviderList.Select(p => p.KodProducenta).ToList();
-            _allPartNumbers = new Dictionary<int, byte>();
+            _allPartNumbers = new Dictionary<string, byte>();
 
             byte b = new byte();
             foreach (var p in _shortProviderList)

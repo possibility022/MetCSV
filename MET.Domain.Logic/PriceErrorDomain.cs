@@ -6,7 +6,7 @@ namespace MET.Domain.Logic
 {
     public class PriceErrorDomain
     {
-        private readonly ConcurrentDictionary<int, Product> oldProducts = new ConcurrentDictionary<int, Product>();
+        private readonly ConcurrentDictionary<string, Product> oldProducts = new ConcurrentDictionary<string, Product>();
 
         private IEnumerable<Product> newProducts;
 
@@ -27,7 +27,7 @@ namespace MET.Domain.Logic
             }
         }
 
-        private void ToConcurrentDictionary(IEnumerable<Product> oldProducts, ref ConcurrentDictionary<int, Product> dict)
+        private void ToConcurrentDictionary(IEnumerable<Product> oldProducts, ref ConcurrentDictionary<string, Product> dict)
         {
             foreach (var prod in oldProducts)
             {
