@@ -16,6 +16,7 @@ using METCSV.Common;
 using AutoUpdaterDotNET;
 using Notifications.Wpf;
 using MET.Domain.Logic.Models;
+using System.IO;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -134,6 +135,13 @@ namespace METCSV.WPF.ViewModels
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
         }
 
+        private void CheckLamaFile()
+        {
+            var fi = new FileInfo(App.Settings.LamaDownloader.CsvFile);
+            if ((DateTime.Now - fi.LastWriteTime).Days > 50)
+                MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}");
+        }
+
         private void Initialize()
         {
             _cancellationTokenSource = new CancellationTokenSource();
@@ -181,6 +189,8 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
+            CheckLamaFile();
+
             if (_generatorProgess == OperationStatus.InProgress)
                 return false;
             else
