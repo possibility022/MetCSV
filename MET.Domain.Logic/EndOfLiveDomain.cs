@@ -12,7 +12,7 @@ namespace MET.Domain.Logic
         public const string EndOfLifeCategory = "EOL";
 
         ConcurrentBag<Product> _metProducts;
-        ConcurrentDictionary<int, Product> _sapManuHash;
+        ConcurrentDictionary<string, Product> _sapManuHash;
         ConcurrentDictionary<string, Product> _manufacturerCode;
 
         IObjectFormatterConstructor<object> _formatter;
@@ -20,7 +20,7 @@ namespace MET.Domain.Logic
         public EndOfLiveDomain(IEnumerable<Product> metProducts, IObjectFormatterConstructor<object> formatter, params IEnumerable<Product>[] providers)
         {
             _metProducts = new ConcurrentBag<Product>(metProducts);
-            _sapManuHash = new ConcurrentDictionary<int, Product>();
+            _sapManuHash = new ConcurrentDictionary<string, Product>();
             _manufacturerCode = new ConcurrentDictionary<string, Product>();
 
             _formatter = formatter;
@@ -53,7 +53,7 @@ namespace MET.Domain.Logic
             tasks.WaitAll();
         }
 
-        private void SetEndOfLife_Logic(ConcurrentBag<Product> metProducts, ConcurrentDictionary<string, Product> manufacturersCode, ConcurrentDictionary<int, Product> sapManuHash)
+        private void SetEndOfLife_Logic(ConcurrentBag<Product> metProducts, ConcurrentDictionary<string, Product> manufacturersCode, ConcurrentDictionary<string, Product> sapManuHash)
         {
             var formatter = _formatter.GetNewInstance();
 

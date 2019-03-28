@@ -16,7 +16,7 @@ namespace MET.Domain.Logic
         /// <summary>
         /// This dictionary should contains Sap Manu Hash Set as the key and product as the value.
         /// </summary>
-        ConcurrentDictionary<int, IList<Product>> _met;
+        ConcurrentDictionary<string, IList<Product>> _met;
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
         IObjectFormatterConstructor<object> _objectFormatter;
@@ -34,9 +34,9 @@ namespace MET.Domain.Logic
                 throw new ArgumentOutOfRangeException(nameof(maxThreads));
             }
 
-            ConcurrentBag<Product> newList = new ConcurrentBag<Product>();
+            var newList = new ConcurrentBag<Product>();
             int threads = maxThreads ?? Environment.ProcessorCount;
-            Task[] tasks = new Task[threads];
+            var tasks = new Task[threads];
 
             for (int i = 0; i < tasks.Length; i++)
             {
@@ -135,7 +135,7 @@ namespace MET.Domain.Logic
             {
 
                 // Copying to local variable. It will allow to use [ref]
-                Product v = p;
+                var v = p;
 
                 if (!ReferenceEquals(p, selectedProduct))
                 {

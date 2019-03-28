@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using MET.Domain;
 using MET.Domain.Logic;
+using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,14 +17,33 @@ namespace METCSV.UnitTests.EngineTest
 
         List<Product> _workOnList;
 
+        static string sapManuHashOfProductsWhichHasPriceError;
+
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
+            var met = Factory.GetMetProducts();
+            var lama = Factory.GetLamaProducts();
+            var td = Factory.GetTDProducts();
+            var ab = Factory.GetABProducts();
+
+            var ab_old = Factory.GetABProducts();
+            var someProduct = ab_old.Last(r => r.StanMagazynowy > 0);
+            someProduct.CenaZakupuNetto = someProduct.CenaZakupuNetto + (30 * someProduct.CenaZakupuNetto / 100) - 1;
+            sapManuHashOfProductsWhichHasPriceError = someProduct.SapManuHash;
+
+            var products = new Products()
+            {
+                MetProducts = met,
+                LamaProducts = lama,
+                TechDataProducts = td,
+                AbProducts = ab,
+                AbProducts_Old = ab_old
+            };
+
             _productMerger = new ProductMerger(
-                Factory.GetMetProducts(),
-                Factory.GetLamaProducts(),
-                Factory.GetTDProducts(),
-                Factory.GetABProducts(),
+                products,
+                20,
                 new CancellationTokenSource().Token, new ZeroOutputFormatter());
 
             _productMerger.Generate();
@@ -33,6 +53,16 @@ namespace METCSV.UnitTests.EngineTest
         public void Initialize()
         {
             _workOnList = new List<Product>(_productMerger.FinalList);
+        }
+
+        [TestMethod]
+        public void ValidateThatProductWithPriceErrorIsNotInWarehouse()
+        {
+            var product = _productMerger
+                .FinalList
+                .Single(r => r.SapManuHash == sapManuHashOfProductsWhichHasPriceError && r.Provider == Providers.AB);
+
+            Assert.AreEqual(0, product.StanMagazynowy);
         }
 
         [TestMethod]
@@ -144,9 +174,9 @@ namespace METCSV.UnitTests.EngineTest
             return true;
         }
 
-        private Dictionary<int, IList<Product>> CreateGrouppedDict(IEnumerable<Product> products)
+        private Dictionary<string, IList<Product>> CreateGrouppedDict(IEnumerable<Product> products)
         {
-            var dict = new Dictionary<int, IList<Product>>();
+            var dict = new Dictionary<string, IList<Product>>();
 
             foreach (var p in products)
             {
