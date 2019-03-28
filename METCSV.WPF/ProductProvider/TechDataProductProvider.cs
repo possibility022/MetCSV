@@ -9,6 +9,8 @@ namespace METCSV.WPF.ProductProvider
 {
     class TechDataProductProvider : ProductProviderBase
     {
+        protected override string ArchiveFileNamePrefix => "TechData";
+
         public TechDataProductProvider(CancellationToken token) : base(token)
         {
             SetProductDownloader(GetDownloader());

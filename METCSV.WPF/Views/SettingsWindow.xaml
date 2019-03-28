@@ -59,12 +59,20 @@
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
-                            Content="Użyj ostatnich plików. (Generowanie offline)" />
+                            Content="Użyj ostatnich plików. (Generowanie offline):" />
                         <CheckBox
                             Grid.Row="0"
                             Grid.Column="1"
                             IsChecked="{Binding EngineSettings.OfflineMode, UpdateSourceTrigger=PropertyChanged}" />
 
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Maksymalna róznica w cenach:" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding EngineSettings.MaximumPriceErrorDifference, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </Border>
             </TabItem>
