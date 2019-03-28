@@ -67,10 +67,13 @@
     <Compile Include="EngineTest\EndOfLiveDomainTest.cs" />
     <Compile Include="EngineTest\CompareDomainTest.cs" />
     <Compile Include="EngineTest\ProductMergerTest.cs" />
+    <Compile Include="EngineTest\PriceErrorTests.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ProfitsTests.cs" />
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProductProvider\BaseProviderImplementation.cs" />
+    <Compile Include="ProductProvider\BaseProviderTests.cs" />
     <Compile Include="QuickTest.cs" />
     <Compile Include="ProductsTests.cs" />
     <Compile Include="EncryptingTest.cs" />
@@ -83,6 +86,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Repository\abproducts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Repository\FilesWithDifferentCreationDate\TestFilePrefix_23.03.2019.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Repository\lamaproducts.json">

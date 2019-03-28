@@ -1,4 +1,5 @@
 ﻿using MET.Domain.Logic.Comparers;
+using MET.Domain.Logic.Models;
 using METCSV.Common;
 using METCSV.Common.Formatters;
 using System;
@@ -16,7 +17,7 @@ namespace MET.Domain.Logic
 
         List<Product> _finalList;
 
-        ConcurrentDictionary<int, byte> _allPartNumbers = new ConcurrentDictionary<int, byte>();
+        ConcurrentDictionary<string, byte> _allPartNumbers = new ConcurrentDictionary<string, byte>();
         ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
 
         /// <summary>
@@ -29,10 +30,8 @@ namespace MET.Domain.Logic
         ConcurrentBag<Product> _techDataProducts;
         ConcurrentBag<Product> _abProducts;
 
-        ICollection<Product> _metInit;
-        ICollection<Product> _lamaInit;
-        ICollection<Product> _techInit;
-        ICollection<Product> _abInit;
+        Products _products;
+        private readonly int maxiumumPriceDifference;
 
         public event EventHandler<int> StepChanged;
 
@@ -45,12 +44,10 @@ namespace MET.Domain.Logic
 
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
-        public ProductMerger(ICollection<Product> met, ICollection<Product> lama, ICollection<Product> td, ICollection<Product> ab, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
+        public ProductMerger(Products products, int maxiumumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
-            _metInit = met;
-            _lamaInit = lama;
-            _techInit = td;
-            _abInit = ab;
+            _products = products;
+            this.maxiumumPriceDifference = maxiumumPriceDifference;
             _token = token;
             ObjectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
             ObjectFormatter = ObjectFormatterSource.GetNewInstance();
@@ -67,30 +64,32 @@ namespace MET.Domain.Logic
             OnGenerateStateChange?.Invoke(this, OperationStatus.InProgress);
 
             _finalList = new List<Product>();
-            
+
             try
             {
                 // STEP 1
                 StepChanged?.Invoke(this, 1);
                 PreGenerateAction();
+                SetWarehouseToZeroIfPriceError();
 
 
                 // STEP 2
                 StepChanged?.Invoke(this, 2);
-                _metBag = new ConcurrentBag<Product>(_metInit);
-                _lamaProducts = new ConcurrentBag<Product>(_lamaInit);
-                _techDataProducts = new ConcurrentBag<Product>(_techInit);
-                _abProducts = new ConcurrentBag<Product>(_abInit);
+                _metBag = new ConcurrentBag<Product>(_products.MetProducts);
+                _lamaProducts = new ConcurrentBag<Product>(_products.LamaProducts);
+                _techDataProducts = new ConcurrentBag<Product>(_products.TechDataProducts);
+                _abProducts = new ConcurrentBag<Product>(_products.AbProducts);
+
 
                 // STEP 3
                 StepChanged?.Invoke(this, 3);
                 RemoveHiddenProducts();
-                
+
                 // STEP 4
                 StepChanged?.Invoke(this, 4);
                 _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
-                
-                foreach(var partNumber in _allPartNumbers.Keys)
+
+                foreach (var partNumber in _allPartNumbers.Keys)
                 {
                     ObjectFormatter.WriteLine(partNumber.ToString());
                 }
@@ -131,7 +130,7 @@ namespace MET.Domain.Logic
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Generate przerwany.");
+                Log.Error(ex, "Generowanie przerwane.");
                 StepChanged?.Invoke(this, -1);
                 OnGenerateStateChange?.Invoke(this, OperationStatus.Faild);
                 return false;
@@ -142,8 +141,8 @@ namespace MET.Domain.Logic
         {
             var formatter = ObjectFormatterSource.GetNewInstance();
 
-            HashSet<Product> productsToRemove = new HashSet<Product>();
-            foreach (var p in _techInit)
+            var productsToRemove = new HashSet<Product>();
+            foreach (var p in _products.TechDataProducts)
             {
                 if (p.OryginalnyKodProducenta.Contains("?TN"))
                 {
@@ -163,14 +162,37 @@ namespace MET.Domain.Logic
 
             foreach (var p in productsToRemove)
             {
-                _techInit.Remove(p);
+                _products.TechDataProducts.Remove(p);
                 _productsOutOfAnalyze.Add(p);
+            }
+        }
+
+        private void SetWarehouseToZeroIfPriceError()
+        {
+            PriceErrorDomain priceError;
+
+            if (_products.AbProducts_Old != null)
+            {
+                priceError = new PriceErrorDomain(_products.AbProducts_Old, _products.AbProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
+                priceError.ValidateSingleProduct();
+            }
+
+            if (_products.LamaProducts_Old != null)
+            {
+                priceError = new PriceErrorDomain(_products.LamaProducts_Old, _products.LamaProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
+                priceError.ValidateSingleProduct();
+            }
+
+            if (_products.TechDataProducts_Old != null)
+            {
+                priceError = new PriceErrorDomain(_products.TechDataProducts_Old, _products.TechDataProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
+                priceError.ValidateSingleProduct();
             }
         }
 
         private void PostGenerateAction()
         {
-            foreach(var p in _productsOutOfAnalyze)
+            foreach (var p in _productsOutOfAnalyze)
             {
                 _finalList.Add(p);
             }
@@ -190,7 +212,7 @@ namespace MET.Domain.Logic
 
         private List<Product> CombineList()
         {
-            List<Product> combinedList = new List<Product>();
+            var combinedList = new List<Product>();
             combinedList.AddRange(_lamaProducts);
             combinedList.AddRange(_techDataProducts);
             combinedList.AddRange(_abProducts);

@@ -22,8 +22,6 @@ namespace METCSV.Common
         {
             var config = new LoggingConfiguration();
 
-            var FileName = GenerateFileName();
-
             var logFile = new FileTarget() { FileName = GenerateFileName(), Layout = Layout };
             var logProductChangesFile = new FileTarget() { FileName = GenerateFileName("Product"), Layout = ProductChangesLayout };
 
@@ -34,7 +32,7 @@ namespace METCSV.Common
             Logger = LogManager.GetCurrentClassLogger();
         }
 
-        private static string GenerateFileName(string namePrefix = null)
+        private static string GenerateFileName(string namePrefix = "")
         {
             var fileNameBase = DateTime.Now.ToString(DateTimeFileFormat);
             var fileName = $"{namePrefix}{fileNameBase}.log";
