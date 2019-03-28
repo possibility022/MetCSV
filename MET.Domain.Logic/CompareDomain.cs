@@ -10,22 +10,22 @@ namespace MET.Domain.Logic
 {
     public class CompareDomain
     {
-        ConcurrentBag<int> _allPartNumbers;
-        ConcurrentDictionary<int, IList<Product>> _products;
+        ConcurrentBag<string> _allPartNumbers;
+        ConcurrentDictionary<string, IList<Product>> _products;
 
         ProductByProductPrice _netPriceComparer = new ProductByProductPrice();
 
         IObjectFormatterConstructor<object> _objectFormatter;
 
-        public CompareDomain(IDictionary<int, byte> allPartNumbers, IObjectFormatterConstructor<object> objectFormatter)
+        public CompareDomain(IDictionary<string, byte> allPartNumbers, IObjectFormatterConstructor<object> objectFormatter)
         {
-            _allPartNumbers = new ConcurrentBag<int>(allPartNumbers.Keys);
+            _allPartNumbers = new ConcurrentBag<string>(allPartNumbers.Keys);
             _objectFormatter = objectFormatter;
         }
 
         public void Compare(IEnumerable<Product> ab, IEnumerable<Product> td, IEnumerable<Product> lama)
         {
-            _products = new ConcurrentDictionary<int, IList<Product>>();
+            _products = new ConcurrentDictionary<string, IList<Product>>();
 
             Task[] tasks = new Task[3];
             tasks[0] = new Task(() => AddToCollection(ab));
@@ -59,7 +59,7 @@ namespace MET.Domain.Logic
 
         private void Compare()
         {
-            int partNumber;
+            string partNumber;
             var partNumberTaken = false;
 
             while ((partNumberTaken = _allPartNumbers.TryTake(out partNumber)) || _allPartNumbers.Count > 0)
@@ -82,7 +82,7 @@ namespace MET.Domain.Logic
             }
         }
 
-        private void SelectOneProduct(IList<Product> products, int partNumber)
+        private void SelectOneProduct(IList<Product> products, string partNumber)
         {
             if (products == null)
                 return;

@@ -22,5 +22,8 @@ namespace METCSV.WPF.Interfaces
         OperationStatus ReaderStatus { get; }
 
         Providers Provider { get; }
+
+        ICollection<Product> LoadOldProducts();
+        void SaveAsOldProducts(ICollection<Product> products);
     }
 }
