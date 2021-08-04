@@ -215,7 +215,9 @@ namespace METCSV.WPF.ViewModels
                 }
                 else
                 {
-                    Log.Error("Pobieranie i wczytywanie nie powiodło się. Sprawdź logi.");
+                    var message = "Pobieranie i wczytywanie nie powiodło się. Sprawdź logi.";
+                    MessageBox.Show(message, "Uwaga!");
+                    Log.Error(message);
                 }
             }
             catch (Exception ex)

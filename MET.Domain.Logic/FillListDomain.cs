@@ -83,7 +83,7 @@ namespace MET.Domain.Logic
 
                         if (string.IsNullOrWhiteSpace(selected.NazwaProduktu) == false)
                         {
-                            formatter.WriteLine("Przepisuję nazwę z produktu źródłowego pobranego z MET, ponieważ nazwa jest dosępna.");
+                            formatter.WriteLine("Przepisuję nazwę z produktu źródłowego pobranego z MET, ponieważ nazwa jest dostępna.");
                             product.NazwaProduktu = selected.NazwaProduktu;
                         }
 
@@ -112,7 +112,7 @@ namespace MET.Domain.Logic
         /// </summary>
         /// <param name="metOutList">The products.</param>
         /// <returns></returns>
-        private Product SelectOneProductAsDataSource(IEnumerable<Product> metOutList, IStringFormatter formatter)
+        private Product SelectOneProductAsDataSource(ICollection<Product> metOutList, IStringFormatter formatter)
         {
             foreach (var p in metOutList)
             {
@@ -124,6 +124,12 @@ namespace MET.Domain.Logic
             }
             
             var product = metOutList.First();
+
+            if (metOutList.Count > 1)
+            {
+                formatter.WriteLine("Jest wiele produktów o tym samym Symbolu SAP na liście.");
+            }
+
             formatter.WriteLine($"Wybieram produkt: [{product.SymbolSAP}], jest pierwszy na liscie.");
 
             return product;

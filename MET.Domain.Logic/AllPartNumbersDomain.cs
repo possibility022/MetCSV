@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace MET.Domain.Logic
 {
@@ -30,10 +29,10 @@ namespace MET.Domain.Logic
             return _allPartNumbers;
         }
 
+        static byte b = new byte();
+
         private void GetAllPartNumbers_Logic(IEnumerable<Product> products)
         {
-            byte b = new byte();
-
             foreach (var product in products)
             {
                 var sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
