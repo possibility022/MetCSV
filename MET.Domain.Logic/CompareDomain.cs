@@ -4,6 +4,7 @@ using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
@@ -23,19 +24,11 @@ namespace MET.Domain.Logic
             _objectFormatter = objectFormatter;
         }
 
-        public void Compare(IEnumerable<Product> ab, IEnumerable<Product> td, IEnumerable<Product> lama)
+        public void Compare(ConcurrentDictionary<string, IList<Product>> combinedCollection)
         {
-            _products = new ConcurrentDictionary<string, IList<Product>>();
+            _products = combinedCollection;
 
-            Task[] tasks = new Task[3];
-            tasks[0] = new Task(() => AddToCollection(ab));
-            tasks[1] = new Task(() => AddToCollection(td));
-            tasks[2] = new Task(() => AddToCollection(lama));
-
-            tasks.StartAll();
-            tasks.WaitAll();
-
-            tasks = new Task[Environment.ProcessorCount];
+            var tasks = new Task[Environment.ProcessorCount];
 
             for (int i = 0; i < tasks.Length; i++)
             {
@@ -46,29 +39,16 @@ namespace MET.Domain.Logic
             tasks.WaitAll();
         }
 
-        private void AddToCollection(IEnumerable<Product> productsToAdd)
-        {
-            foreach (var p in productsToAdd)
-            {
-                _products.AddOrUpdate(
-                    p.PartNumber,
-                    new List<Product>() { p },
-                    (key, oldValue) => { oldValue.Add(p); return oldValue; });
-            }
-        }
-
         private void Compare()
         {
             string partNumber;
-            var partNumberTaken = false;
+            bool partNumberTaken;
 
             while ((partNumberTaken = _allPartNumbers.TryTake(out partNumber)) || _allPartNumbers.Count > 0)
             {
                 if (partNumberTaken)
                 {
-                    IList<Product> listToCompare = null;
-
-                    var listTaken = _products.TryGetValue(partNumber, out listToCompare);
+                    var listTaken = _products.TryGetValue(partNumber, out var listToCompare);
 
                     if (listTaken)
                     {
@@ -95,12 +75,19 @@ namespace MET.Domain.Logic
             formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
             formatter.WriteObject(products);
 
-            RemoveEmptyWarehouse(products, formatter);
+
+            // Todo move it to new domain
+            //RemoveEmptyWarehouse(products, formatter);
+
+            if (products.All(r => r.StanMagazynowy <= 0))
+            {
+                formatter.WriteLine($"Wszystkie produkty dla {partNumber} są niedostępne");
+                return;
+            }
 
             if (products.Count == 0)
             {
-                formatter.WriteLine($"List dla {partNumber} jest pusta. Wszystkie produkty są niedostępne?");
-                return;
+                throw new Exception($"Something went wrong. List of products for {partNumber} is empty.");
             }
 
             formatter.WriteLine("Wybieram najtańszy produkt z listy:");
@@ -134,9 +121,12 @@ namespace MET.Domain.Logic
 
         private Product FindCheapestProduct(IList<Product> products)
         {
-            var cheapest = products[0];
+            var cheapest = products.First(r => r.StanMagazynowy > 0);
             for (int i = 1; i < products.Count; i++)
             {
+                if (products[i].StanMagazynowy <= 0)
+                    continue;
+
                 var result = _netPriceComparer.Compare(products[i], cheapest);
 
                 if (result == -1)

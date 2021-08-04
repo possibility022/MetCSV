@@ -113,9 +113,18 @@ namespace MET.Domain.Logic
                 setEndOfLive.SetEndOfLife();
 
                 // STEP 7
+                // Combine products into groups
                 StepChanged?.Invoke(this, 7);
+
+                var groupingEngine = new GroupingDomain();
+                var combined = groupingEngine.CombineIntoGroups(_lamaProducts, _abProducts, _techDataProducts);
+                
+                // Compare products
                 var compare = new CompareDomain(_allPartNumbers, ObjectFormatterSource);
-                compare.Compare(_abProducts, _techDataProducts, _lamaProducts);
+                compare.Compare(combined);
+
+                // Set Correct Names
+                // todo
 
                 // STEP 8 //SolveConflicts();
                 StepChanged?.Invoke(this, 8);
