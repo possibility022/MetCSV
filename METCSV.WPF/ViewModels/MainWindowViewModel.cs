@@ -261,7 +261,7 @@ namespace METCSV.WPF.ViewModels
             _productMerger.StepChanged += _productMerger_StepChanged;
             _productMerger.OnGenerateStateChange += _productMerger_OnGenerateStateChange;
 
-            await Task.Run(() => _productMerger.Generate());
+            await _productMerger.Generate();
 
             Products = new List<Product>(_productMerger.FinalList);
             return true;

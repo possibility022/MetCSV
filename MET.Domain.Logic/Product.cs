@@ -115,8 +115,9 @@ namespace MET.Domain
             //_partNumber = KodProducenta.GetHashCode() ^ NazwaProducenta.GetHashCode(); // This soulution is bad
         }
 
-
-
-
+        public override string ToString()
+        {
+            return $"{Provider} {OryginalnyKodProducenta} {SymbolSAP}";
+        }
     }
 }
