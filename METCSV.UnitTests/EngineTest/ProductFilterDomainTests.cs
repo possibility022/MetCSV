@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MET.Domain;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Models;
+using METCSV.Common;
 
 namespace METCSV.UnitTests.EngineTest
 {
@@ -13,6 +15,12 @@ namespace METCSV.UnitTests.EngineTest
     {
         private ProductFilterDomain filterDomain;
 
+        [ClassInitialize]
+        public static void InitializeClass(TestContext context)
+        {
+            Log.ConfigureNLogForTests();
+        }
+
         [TestInitialize]
         public void TestInit()
         {
@@ -20,21 +28,73 @@ namespace METCSV.UnitTests.EngineTest
         }
 
         [TestMethod]
-        public async Task TestMethod1()
+        public async Task ProductWillBeRemovedFromList()
         {
-            await filterDomain.RemoveProductsWithSpecificCode(new Products()
+            // Arrange
+            var products = GetDefaultList("ABC?XYZ");
+
+            // Act
+            await filterDomain.RemoveProductsWithSpecificCode(products);
+            
+            // Assett
+            Assert.AreEqual(0, products.LamaProducts.Count);
+        }
+
+        [TestMethod]
+        public async Task ProductWill_NOT_BeRemovedFromList()
+        {
+            // Arrange
+            var products = GetDefaultList("ABC");
+
+            // Act
+            await filterDomain.RemoveProductsWithSpecificCode(products);
+
+            // Assett
+            Assert.AreEqual(1, products.LamaProducts.Count);
+        }
+
+        [TestMethod]
+        public async Task ProductWill_NOT_BeRemovedFromList_WhenThereIsQuestionMarkButNoMoreChars()
+        {
+            // Arrange
+            var products = GetDefaultList("ABC?");
+
+            // Act
+            await filterDomain.RemoveProductsWithSpecificCode(products);
+
+            // Assett
+            Assert.AreEqual(1, products.LamaProducts.Count);
+        }
+
+        [TestMethod]
+        public async Task ProductWillBeRemovedFromList_WhenStartsWithQuestionMark()
+        {
+            // Arrange
+            var products = GetDefaultList("?xyz");
+
+            // Act
+            await filterDomain.RemoveProductsWithSpecificCode(products);
+
+            // Assett
+            Assert.AreEqual(0, products.LamaProducts.Count);
+        }
+
+
+        private Products GetDefaultList(string productCode)
+        {
+            return new Products()
             {
                 LamaProducts = new List<Product>()
                 {
                     new Product(Providers.AB)
                     {
-                        ID = 1, SymbolSAP = "ABC", 
-                        NazwaProducenta = "Producent", 
-                        OryginalnyKodProducenta = "A?x",
+                        ID = 1, SymbolSAP = "ABC",
+                        NazwaProducenta = "Producent",
+                        OryginalnyKodProducenta = productCode,
                         StanMagazynowy = 1, CenaZakupuNetto = 10
                     },
                 }
-            });
+            };
         }
     }
 }
