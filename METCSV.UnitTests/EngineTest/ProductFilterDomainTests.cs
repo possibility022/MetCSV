@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MET.Domain;
 using MET.Domain.Logic;
@@ -14,6 +12,11 @@ namespace METCSV.UnitTests.EngineTest
     public class ProductFilterDomainTests
     {
         private ProductFilterDomain filterDomain;
+
+        // Program musi ignorować produkty u każdego dystrybutora, które mają w kodzie producenta: ?dopisek. np.
+        // 2VLADAWK#2819?SAN 
+        // ALJIDAW?A
+        // ?AZAZ
 
         [ClassInitialize]
         public static void InitializeClass(TestContext context)
