@@ -32,6 +32,13 @@ namespace METCSV.Common
             Logger = LogManager.GetCurrentClassLogger();
         }
 
+        public static void ConfigureNLogForTests()
+        {
+            var config = new LoggingConfiguration();
+            LogManager.Configuration = config;
+            Logger = LogManager.GetCurrentClassLogger();
+        }
+
         private static string GenerateFileName(string namePrefix = "")
         {
             var fileNameBase = DateTime.Now.ToString(DateTimeFileFormat);

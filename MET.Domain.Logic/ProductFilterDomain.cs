@@ -37,9 +37,9 @@ namespace MET.Domain.Logic
                 foreach (var product in products)
                 {
                     var lastIndex = product.OryginalnyKodProducenta?.LastIndexOf('?');
-                    if (lastIndex > 0)
+                    if (lastIndex >= 0)
                     {
-                        if (product.OryginalnyKodProducenta.Length > (lastIndex - 1))
+                        if ((product.OryginalnyKodProducenta.Length -1) > (lastIndex))
                         {
                             toRemove.Add(product);
                         }
