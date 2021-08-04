@@ -52,6 +52,7 @@
     <Compile Include="Models\Products.cs" />
     <Compile Include="PriceErrorDomain.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="ProductFilterDomain.cs" />
     <Compile Include="ProductMerger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers.cs" />

@@ -17,9 +17,11 @@ namespace MET.Domain.Logic
             _allPartNumbers = new ConcurrentDictionary<string, byte>();
             var tasks = new Task[lists.Length];
 
-            for (int i = 0; i < tasks.Length; i++)
+
+            for (var i = 0; i < lists.Length; i++)
             {
-                tasks[i] = new Task(() => GetAllPartNumbers_Logic(lists[i]));
+                var list = lists[i];
+                tasks[i] = new Task(() => GetAllPartNumbers_Logic(list));
             }
 
             tasks.StartAll();

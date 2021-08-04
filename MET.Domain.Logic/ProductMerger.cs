@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
 {
@@ -53,7 +54,7 @@ namespace MET.Domain.Logic
             ObjectFormatter = ObjectFormatterSource.GetNewInstance();
         }
 
-        public bool Generate()
+        public async Task<bool> Generate()
         {
             if (_token.IsCancellationRequested)
             {
@@ -69,7 +70,7 @@ namespace MET.Domain.Logic
             {
                 // STEP 1
                 StepChanged?.Invoke(this, 1);
-                PreGenerateAction();
+                await PreGenerateAction();
                 SetWarehouseToZeroIfPriceError();
 
 
@@ -140,7 +141,7 @@ namespace MET.Domain.Logic
             }
         }
 
-        private void PreGenerateAction()
+        private async Task PreGenerateAction()
         {
             var formatter = ObjectFormatterSource.GetNewInstance();
 
@@ -168,6 +169,14 @@ namespace MET.Domain.Logic
                 _products.TechDataProducts.Remove(p);
                 _productsOutOfAnalyze.Add(p);
             }
+
+            await RemoveProductsWithSpecificCode();
+        }
+
+        private async Task RemoveProductsWithSpecificCode()
+        {
+            var filter = new ProductFilterDomain();
+            await filter.RemoveProductsWithSpecificCode(_products);
         }
 
         private void SetWarehouseToZeroIfPriceError()
@@ -192,6 +201,10 @@ namespace MET.Domain.Logic
                 priceError.ValidateSingleProduct();
             }
         }
+
+        
+
+
 
         private void PostGenerateAction()
         {

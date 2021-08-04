@@ -46,7 +46,7 @@ namespace METCSV.UnitTests.EngineTest
                 20,
                 new CancellationTokenSource().Token, new ZeroOutputFormatter());
 
-            _productMerger.Generate();
+            _productMerger.Generate().Wait();
         }
 
         [TestInitialize]
