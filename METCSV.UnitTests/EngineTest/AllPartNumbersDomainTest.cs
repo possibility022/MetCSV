@@ -9,6 +9,14 @@ namespace METCSV.UnitTests.EngineTest
     [TestClass]
     public class AllPartNumbersDomainTest
     {
+        private AllPartNumbersDomain allPartNumbers;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            allPartNumbers = new AllPartNumbersDomain();
+        }
+
         [TestMethod]
         [Ignore] // this test take up to 4 min
         public void AllPartNumbersOnTheListShouldBeOnAtLeastOneOfTheRestLists()
@@ -18,7 +26,7 @@ namespace METCSV.UnitTests.EngineTest
             var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
             var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
 
-            var list = AllPartNumbersDomain.GetAllPartNumbers(lama, met, td, ab);
+            var list = allPartNumbers.GetAllPartNumbers(lama, met, td, ab);
 
             foreach(var v in list)
             {
@@ -39,7 +47,7 @@ namespace METCSV.UnitTests.EngineTest
             var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
             var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
 
-            var list = AllPartNumbersDomain.GetAllPartNumbers(lama, met, td, ab);
+            var list = allPartNumbers.GetAllPartNumbers(lama, met, td, ab);
             
             IsOnTheList(lama, list);
             IsOnTheList(met, list);

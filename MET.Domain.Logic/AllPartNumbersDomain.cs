@@ -1,31 +1,34 @@
 ﻿using METCSV.Common.Exceptions;
 using METCSV.Common.ExtensionMethods;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
 namespace MET.Domain.Logic
 {
-    public static class AllPartNumbersDomain
+    public class AllPartNumbersDomain
     {
-        public static ConcurrentDictionary<string, byte> GetAllPartNumbers(ConcurrentBag<Product> list1, ConcurrentBag<Product> list2, ConcurrentBag<Product> list3, ConcurrentBag<Product> list4)
-        {
-            var allPartNumbers = new ConcurrentDictionary<string, byte>();
-            var tasks = new Task[4];
+        private ConcurrentDictionary<string, byte> _allPartNumbers;
 
-            tasks[0] = new Task(() => GetAllPartNumbers_Logic(list1, allPartNumbers));
-            tasks[1] = new Task(() => GetAllPartNumbers_Logic(list2, allPartNumbers));
-            tasks[2] = new Task(() => GetAllPartNumbers_Logic(list3, allPartNumbers));
-            tasks[3] = new Task(() => GetAllPartNumbers_Logic(list4, allPartNumbers));
+        public ConcurrentDictionary<string, byte> GetAllPartNumbers(params IEnumerable<Product>[] lists)
+        {
+            _allPartNumbers = new ConcurrentDictionary<string, byte>();
+            var tasks = new Task[lists.Length];
+
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                tasks[i] = new Task(() => GetAllPartNumbers_Logic(lists[i]));
+            }
 
             tasks.StartAll();
             tasks.WaitAll();
 
-            return allPartNumbers;
+            return _allPartNumbers;
         }
 
-        private static void GetAllPartNumbers_Logic(ConcurrentBag<Product> products, ConcurrentDictionary<string, byte> _allPartNumbers)
+        private void GetAllPartNumbers_Logic(IEnumerable<Product> products)
         {
             byte b = new byte();
 

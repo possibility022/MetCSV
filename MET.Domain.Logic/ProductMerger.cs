@@ -87,7 +87,10 @@ namespace MET.Domain.Logic
 
                 // STEP 4
                 StepChanged?.Invoke(this, 4);
-                _allPartNumbers = AllPartNumbersDomain.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
+
+                AllPartNumbersDomain allPartNumbers = new AllPartNumbersDomain();
+
+                _allPartNumbers = allPartNumbers.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
 
                 foreach (var partNumber in _allPartNumbers.Keys)
                 {
