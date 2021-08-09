@@ -14,7 +14,7 @@ namespace METCSV.UnitTests.EngineTest
     {
 
         ConcurrentDictionary<string, IList<Product>> _shortProviderList;
-        Dictionary<string, byte> _allPartNumbers;
+        AllPartNumbersDomain allPartNumbersDomain;
 
         static ZeroOutputFormatter Formatter;
 
@@ -27,6 +27,7 @@ namespace METCSV.UnitTests.EngineTest
         [TestInitialize]
         public void InitializeData()
         {
+            allPartNumbersDomain = new AllPartNumbersDomain();
             _shortProviderList = new ConcurrentDictionary<string, IList<Product>>();
             var success = _shortProviderList.TryAdd(string.Empty, new List<Product>()
             {
@@ -39,10 +40,7 @@ namespace METCSV.UnitTests.EngineTest
             if (success == false)
                 throw new Exception("Something wrong with adding elements to list on test init.");
 
-            _allPartNumbers = new Dictionary<string, byte>();
-
-            byte b = new byte();
-            _allPartNumbers[string.Empty] = b;
+            allPartNumbersDomain.AddPartNumber("");
         }
 
         [TestMethod]
@@ -50,7 +48,7 @@ namespace METCSV.UnitTests.EngineTest
         public void EmptyWarehousesCanNotBeSelected()
         {
             //Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
+            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(_shortProviderList);
@@ -65,7 +63,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectCheapestProduct()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
+            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(_shortProviderList);
@@ -84,7 +82,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectOnlyOneProduct()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
+            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
             var bestProduct = _shortProviderList[string.Empty][3];
 
             // Act
@@ -117,7 +115,7 @@ namespace METCSV.UnitTests.EngineTest
                 new Product(Providers.AB) { ID = null, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 1 }
             });
 
-            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
+            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(shortProviderList);
@@ -133,7 +131,7 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowErrorIfListIsEmpty()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
+            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(new ConcurrentDictionary<string, IList<Product>>());
@@ -153,7 +151,7 @@ namespace METCSV.UnitTests.EngineTest
                     product.StanMagazynowy = 0;
                 }
 
-            CompareDomain d = new CompareDomain(_allPartNumbers, Formatter);
+            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(_shortProviderList);

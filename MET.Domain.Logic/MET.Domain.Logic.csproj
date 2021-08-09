@@ -48,9 +48,12 @@
     <Compile Include="Comparers\ProductSorter.cs" />
     <Compile Include="EndOfLiveDomain.cs" />
     <Compile Include="FillListDomain.cs" />
-    <Compile Include="GroupingDomain.cs" />
     <Compile Include="HiddenProductsDomain.cs" />
+    <Compile Include="GroupsActionExecutors\IActionExecutor.cs" />
+    <Compile Include="Models\GrouppedProducts.cs" />
     <Compile Include="Models\Products.cs" />
+    <Compile Include="GroupsActionExecutors\ProductNameDomain.cs" />
+    <Compile Include="Orchestrator.cs" />
     <Compile Include="PriceErrorDomain.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductFilterDomain.cs" />

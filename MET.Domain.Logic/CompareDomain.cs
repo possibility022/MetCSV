@@ -11,22 +11,24 @@ namespace MET.Domain.Logic
 {
     public class CompareDomain
     {
-        ConcurrentBag<string> _allPartNumbers;
-        ConcurrentDictionary<string, IList<Product>> _products;
+        ConcurrentQueue<string> allPartNumbers;
+        ConcurrentDictionary<string, IList<Product>> products;
 
-        ProductByProductPrice _netPriceComparer = new ProductByProductPrice();
+        readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
 
-        IObjectFormatterConstructor<object> _objectFormatter;
+        private readonly IAllPartsNumberDomain allPartNumbersDomain;
+        readonly IObjectFormatterConstructor<object> objectFormatter;
 
-        public CompareDomain(IDictionary<string, byte> allPartNumbers, IObjectFormatterConstructor<object> objectFormatter)
+        public CompareDomain(IAllPartsNumberDomain allPartNumbersDomain, IObjectFormatterConstructor<object> objectFormatter)
         {
-            _allPartNumbers = new ConcurrentBag<string>(allPartNumbers.Keys);
-            _objectFormatter = objectFormatter;
+            this.allPartNumbersDomain = allPartNumbersDomain;
+            this.objectFormatter = objectFormatter;
         }
 
         public void Compare(ConcurrentDictionary<string, IList<Product>> combinedCollection)
         {
-            _products = combinedCollection;
+            products = combinedCollection;
+            allPartNumbers = new ConcurrentQueue<string>(allPartNumbersDomain.GetAllPartNumbers().Keys);
 
             var tasks = new Task[Environment.ProcessorCount];
 
@@ -44,19 +46,19 @@ namespace MET.Domain.Logic
             string partNumber;
             bool partNumberTaken;
 
-            while ((partNumberTaken = _allPartNumbers.TryTake(out partNumber)) || _allPartNumbers.Count > 0)
+            while ((partNumberTaken = allPartNumbers.TryDequeue(out partNumber)) || allPartNumbers.Count > 0)
             {
                 if (partNumberTaken)
                 {
-                    var listTaken = _products.TryGetValue(partNumber, out var listToCompare);
+                    var listTaken = products.TryGetValue(partNumber, out var listToCompare);
 
                     if (listTaken)
                     {
                         SelectOneProduct(listToCompare, partNumber);
                     }
-                    else if (_products.ContainsKey(partNumber))
+                    else if (products.ContainsKey(partNumber))
                     {
-                        _allPartNumbers.Add(partNumber);
+                        allPartNumbers.Enqueue(partNumber);
                     }
                 }
             }
@@ -70,7 +72,7 @@ namespace MET.Domain.Logic
             if (products.Count == 0)
                 return;
 
-            var formatter = _objectFormatter.GetNewInstance();
+            var formatter = objectFormatter.GetNewInstance();
 
             formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
             formatter.WriteObject(products);
@@ -127,7 +129,7 @@ namespace MET.Domain.Logic
                 if (products[i].StanMagazynowy <= 0)
                     continue;
 
-                var result = _netPriceComparer.Compare(products[i], cheapest);
+                var result = netPriceComparer.Compare(products[i], cheapest);
 
                 if (result == -1)
                 {

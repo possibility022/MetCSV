@@ -91,7 +91,8 @@ namespace MET.Domain.Logic
 
                 AllPartNumbersDomain allPartNumbers = new AllPartNumbersDomain();
 
-                _allPartNumbers = allPartNumbers.GetAllPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
+                allPartNumbers.AddPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
+                _allPartNumbers = allPartNumbers.GetAllPartNumbers();
 
                 foreach (var partNumber in _allPartNumbers.Keys)
                 {
@@ -116,12 +117,12 @@ namespace MET.Domain.Logic
                 // Combine products into groups
                 StepChanged?.Invoke(this, 7);
 
-                var groupingEngine = new GroupingDomain();
-                var combined = groupingEngine.CombineIntoGroups(_lamaProducts, _abProducts, _techDataProducts);
+                //var groupingEngine = new GroupingDomain();
+                //var combined = groupingEngine.CombineIntoGroups(_lamaProducts, _abProducts, _techDataProducts);
                 
-                // Compare products
-                var compare = new CompareDomain(_allPartNumbers, ObjectFormatterSource);
-                compare.Compare(combined);
+                //// Compare products
+                //var compare = new CompareDomain(_allPartNumbers, ObjectFormatterSource);
+                //compare.Compare(combined);
 
                 // Set Correct Names
                 // todo

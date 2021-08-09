@@ -1,58 +1,55 @@
 ﻿using METCSV.Common.Exceptions;
-using METCSV.Common.ExtensionMethods;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
 {
-    public class AllPartNumbersDomain
+    public class AllPartNumbersDomain : IAllPartsNumberDomain
     {
-        private ConcurrentDictionary<string, byte> _allPartNumbers;
-
-        public ConcurrentDictionary<string, byte> GetAllPartNumbers(params IEnumerable<Product>[] lists)
-        {
-            _allPartNumbers = new ConcurrentDictionary<string, byte>();
-            var tasks = new Task[lists.Length];
-
-
-            for (var i = 0; i < lists.Length; i++)
-            {
-                var list = lists[i];
-                tasks[i] = new Task(() => GetAllPartNumbers_Logic(list));
-            }
-
-            tasks.StartAll();
-            tasks.WaitAll();
-
-            return _allPartNumbers;
-        }
-
+        private readonly ConcurrentDictionary<string, byte> allPartNumbers;
         static byte b = new byte();
-
-        private void GetAllPartNumbers_Logic(IEnumerable<Product> products)
+        
+        public AllPartNumbersDomain()
         {
-            foreach (var product in products)
+            allPartNumbers = new ConcurrentDictionary<string, byte>();
+        }
+
+        public ConcurrentDictionary<string, byte> GetAllPartNumbers() => new ConcurrentDictionary<string, byte>(allPartNumbers);
+
+        public void AddPartNumbers(params IEnumerable<Product>[] lists)
+        {
+            foreach (var list in lists)
             {
-                var sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
-                int i = 0;
-
-                if (_allPartNumbers.ContainsKey(product.PartNumber))
-                    continue;
-
-                while (!sucess && (i < 10))
+                foreach (var product in list)
                 {
-                    sucess = _allPartNumbers.TryAdd(product.PartNumber, b);
-                    i++;
-                    Thread.Sleep(i * 100);
-                }
-
-                if (i >= 10 && !sucess)
-                {
-                    throw new OperationException($"We could not add item to the concurrent exception after {i} tryouts. Item key: {product.PartNumber}");
+                    AddPartNumber(product.PartNumber);
                 }
             }
         }
+
+        public void AddPartNumber(string partNumber)
+        {
+            AddPartNumber(partNumber, 0);
+        }
+
+        private void AddPartNumber(string partNumber, int retry)
+        {
+            var success = allPartNumbers.TryAdd(partNumber, b);
+
+            if (retry >= 10)
+            {
+                throw new OperationException($"We could not add item to the concurrent exception after {retry} tryouts. Item key: {partNumber}");
+            }
+
+            if (!success)
+                AddPartNumber(partNumber, retry++);
+        }
+
+    }
+
+    public interface IAllPartsNumberDomain
+    {
+        ConcurrentDictionary<string, byte> GetAllPartNumbers();
+        void AddPartNumber(string partNumber);
     }
 }

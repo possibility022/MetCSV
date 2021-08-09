@@ -72,6 +72,7 @@
     <Compile Include="EngineTest\ProductMergerTest.cs" />
     <Compile Include="EngineTest\PriceErrorTests.cs" />
     <Compile Include="EngineTest\ProductFilterDomainTests.cs" />
+    <Compile Include="EngineTest\ProductNameDomainTests.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Models\ProfitsTests.cs" />
     <Compile Include="PerformanceTests.cs" />
