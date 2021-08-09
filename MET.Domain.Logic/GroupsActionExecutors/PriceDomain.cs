@@ -1,78 +1,21 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MET.Domain.Logic.Comparers;
-using METCSV.Common.ExtensionMethods;
 using METCSV.Common.Formatters;
 
 namespace MET.Domain.Logic.GroupsActionExecutors
 {
     public class PriceDomain : IActionExecutor
     {
-        ConcurrentQueue<string> allPartNumbers;
-        ConcurrentDictionary<string, IList<Product>> products;
-
         readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
-
-        private readonly IAllPartsNumberDomain allPartNumbersDomain;
-        readonly IObjectFormatterConstructor<object> objectFormatter;
-
-        public PriceDomain(IAllPartsNumberDomain allPartNumbersDomain, IObjectFormatterConstructor<object> objectFormatter)
-        {
-            this.allPartNumbersDomain = allPartNumbersDomain;
-            this.objectFormatter = objectFormatter;
-        }
-
-        public void Compare(ConcurrentDictionary<string, IList<Product>> combinedCollection)
-        {
-            products = combinedCollection;
-            allPartNumbers = new ConcurrentQueue<string>(allPartNumbersDomain.GetAllPartNumbers().Keys);
-
-            var tasks = new Task[Environment.ProcessorCount];
-
-            for (int i = 0; i < tasks.Length; i++)
-            {
-                tasks[i] = new Task(Compare);
-            }
-
-            tasks.StartAll();
-            tasks.WaitAll();
-        }
-
-        private void Compare()
-        {
-            string partNumber;
-            bool partNumberTaken;
-
-            while ((partNumberTaken = allPartNumbers.TryDequeue(out partNumber)) || allPartNumbers.Count > 0)
-            {
-                if (partNumberTaken)
-                {
-                    var listTaken = products.TryGetValue(partNumber, out var listToCompare);
-
-                    if (listTaken)
-                    {
-                        SelectOneProduct(listToCompare, partNumber);
-                    }
-                    else if (products.ContainsKey(partNumber))
-                    {
-                        allPartNumbers.Enqueue(partNumber);
-                    }
-                }
-            }
-        }
-
-        private void SelectOneProduct(IList<Product> products, string partNumber)
+        
+        private void SelectOneProduct(ICollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
         {
             if (products == null)
                 return;
 
             if (products.Count == 0)
                 return;
-
-            var formatter = objectFormatter.GetNewInstance();
 
             formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
             formatter.WriteObject(products);
@@ -82,7 +25,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             //RemoveEmptyWarehouse(products, formatter);
 
             var availableProducts = products.Where(r => r.StanMagazynowy > 0).ToList();
-            var includeAll = !products.Any();
+            var includeAll = !availableProducts.Any();
 
             var workOnThisList = includeAll ? products : availableProducts;
 
@@ -120,19 +63,20 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             }
         }
 
-        private Product FindCheapestProduct(IList<Product> products, bool includeAll)
+        private Product FindCheapestProduct(ICollection<Product> products, bool includeAll)
         {
             var cheapest = products.First(product => ProductFilter(product, includeAll));
-            for (int i = 1; i < products.Count; i++)
+
+            foreach (var product in products)
             {
-                if (!ProductFilter(products[i], includeAll))
+                if (!ProductFilter(product, includeAll))
                     continue;
 
-                var result = netPriceComparer.Compare(products[i], cheapest);
+                var result = netPriceComparer.Compare(product, cheapest);
 
                 if (result == -1)
                 {
-                    cheapest = products[i];
+                    cheapest = product;
                 }
             }
 
@@ -150,7 +94,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         public void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts,
             IObjectFormatter<object> objectFormatter)
         {
-            throw new NotImplementedException();
+            SelectOneProduct(vendorProducts, partNumber, objectFormatter);
         }
     }
 }
