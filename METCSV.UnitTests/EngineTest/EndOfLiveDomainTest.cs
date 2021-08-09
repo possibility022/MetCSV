@@ -25,14 +25,14 @@ namespace METCSV.UnitTests.EngineTest
         {
             //Arrange
             _shortMetList = new[] {
-                new Product(Providers.AB) {SymbolSAP = "ABC1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
-                new Product(Providers.AB) {SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
-                new Product(Providers.AB) {SymbolSAP = "ABC3", NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
+                new Product(Providers.None) {SymbolSAP = "ABC1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
+                new Product(Providers.None) {SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
+                new Product(Providers.None) {SymbolSAP = "ABC3", NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
             };
             
             _shortProviderList = new[] {
-                new Product(Providers.AB) { SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
-                new Product(Providers.AB) { SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
+                new Product(Providers.None) { SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
+                new Product(Providers.None) { SymbolSAP = "ABC2", NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
             };
         }
 
@@ -92,5 +92,6 @@ namespace METCSV.UnitTests.EngineTest
             // Assert
             Assert.AreEqual("EOL", productWithEol.Kategoria);
         }
+
     }
 }
