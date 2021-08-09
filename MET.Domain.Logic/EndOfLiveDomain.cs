@@ -3,13 +3,15 @@ using METCSV.Common.Formatters;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MET.Domain.Logic
 {
-    public class EndOfLiveDomain
+    public class EndOfLiveDomain : IActionExecutor
     {
         public const string EndOfLifeCategory = "EOL";
+        public const string EndOfLifeProductNamePrefix = "EOL - wycofany z oferty - ";
 
         readonly ConcurrentBag<Product> metProducts;
         readonly ConcurrentDictionary<string, Product> sapManuHash;
@@ -76,19 +78,45 @@ namespace MET.Domain.Logic
                             && sapManuHash.ContainsKey(p.SapManuHash) == false)
                         {
                             formatter.WriteLine($"Ustawiam: KodProducenta: [{p.KodProducenta}] SAP: [{p.SymbolSAP}] na EOL, nie można go znaleźć w finalnej liście.");
-                            SetEndOfLife(ref p);
+                            SetEndOfLife(p);
                         }
                     }
                 }
             }
         }
 
-        public static void SetEndOfLife(ref Product p)
+        public static void SetEndOfLife(Product p)
         {
             p.Kategoria = EndOfLifeCategory;
             p.StatusProduktu = false;
             p.SetCennaNetto(0);
             p.CenaZakupuNetto = 0;
+        }
+
+        private static void AddPrefixToProductName(Product p)
+        {
+            if (p.NazwaProduktu != null)
+                p.NazwaProduktu = $"{EndOfLifeProductNamePrefix}{p.NazwaProduktu}";
+        }
+
+        public void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts,
+            IObjectFormatter<object> objectFormatter)
+        {
+            objectFormatter.WriteLine("Sprawdzam czy ustawić status EOL.");
+
+            if (!vendorProducts.Any())
+            {
+                if (metProducts.Any())
+                {
+                    foreach (var product in metProducts)
+                    {
+                        objectFormatter.WriteLine($"Brakuje produktów u dostawcow. Ustawiam EOL dla {product}: ");
+                        objectFormatter.WriteObject(product);
+                        SetEndOfLife(product);
+                        AddPrefixToProductName(product);
+                    }
+                }
+            }
         }
     }
 }
