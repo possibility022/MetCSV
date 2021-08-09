@@ -49,7 +49,7 @@ namespace METCSV.UnitTests.EngineTest
         public void EmptyWarehousesCanNotBeSelected()
         {
             //Arrange
-            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
+            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(_shortProviderList);
@@ -64,7 +64,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectCheapestProduct()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
+            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(_shortProviderList);
@@ -83,7 +83,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectOnlyOneProduct()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
+            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
             var bestProduct = _shortProviderList[string.Empty][3];
 
             // Act
@@ -116,7 +116,7 @@ namespace METCSV.UnitTests.EngineTest
                 new Product(Providers.AB) { ID = null, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 1 }
             });
 
-            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
+            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(shortProviderList);
@@ -132,7 +132,7 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowErrorIfListIsEmpty()
         {
             // Arrange
-            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
+            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(new ConcurrentDictionary<string, IList<Product>>());
@@ -152,7 +152,7 @@ namespace METCSV.UnitTests.EngineTest
                     product.StanMagazynowy = 0;
                 }
 
-            CompareDomain d = new CompareDomain(allPartNumbersDomain, Formatter);
+            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
 
             // Act
             d.Compare(_shortProviderList);

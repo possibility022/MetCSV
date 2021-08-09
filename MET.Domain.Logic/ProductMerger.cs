@@ -121,7 +121,7 @@ namespace MET.Domain.Logic
                 //var combined = groupingEngine.CombineIntoGroups(_lamaProducts, _abProducts, _techDataProducts);
                 
                 //// Compare products
-                //var compare = new CompareDomain(_allPartNumbers, ObjectFormatterSource);
+                //var compare = new PriceDomain(_allPartNumbers, ObjectFormatterSource);
                 //compare.Compare(combined);
 
                 // Set Correct Names
