@@ -11,19 +11,21 @@ namespace MET.Domain.Logic
     {
         public const string EndOfLifeCategory = "EOL";
 
-        ConcurrentBag<Product> _metProducts;
-        ConcurrentDictionary<string, Product> _sapManuHash;
-        ConcurrentDictionary<string, Product> _manufacturerCode;
+        readonly ConcurrentBag<Product> metProducts;
+        readonly ConcurrentDictionary<string, Product> sapManuHash;
+        readonly ConcurrentDictionary<string, Product> manufacturerCode;
 
-        IObjectFormatterConstructor<object> _formatter;
+        private Task[] tasks;
 
-        public EndOfLiveDomain(IEnumerable<Product> metProducts, IObjectFormatterConstructor<object> formatter, params IEnumerable<Product>[] providers)
+        readonly IObjectFormatterConstructor<object> formatterFactory;
+
+        public EndOfLiveDomain(IEnumerable<Product> metProducts, IObjectFormatterConstructor<object> formatterFactory, params IEnumerable<Product>[] providers)
         {
-            _metProducts = new ConcurrentBag<Product>(metProducts);
-            _sapManuHash = new ConcurrentDictionary<string, Product>();
-            _manufacturerCode = new ConcurrentDictionary<string, Product>();
+            this.metProducts = new ConcurrentBag<Product>(metProducts);
+            sapManuHash = new ConcurrentDictionary<string, Product>();
+            manufacturerCode = new ConcurrentDictionary<string, Product>();
 
-            _formatter = formatter;
+            this.formatterFactory = formatterFactory;
 
             foreach (var provider in providers)
             {
@@ -35,37 +37,42 @@ namespace MET.Domain.Logic
         {
             foreach (var p in products)
             {
-                _sapManuHash.TryAdd(p.SapManuHash, p);
-                _manufacturerCode.TryAdd(p.KodProducenta, p);
+                sapManuHash.TryAdd(p.SapManuHash, p);
+                manufacturerCode.TryAdd(p.KodProducenta, p);
             }
         }
 
         public void SetEndOfLife()
         {
-            Task[] tasks = new Task[Environment.ProcessorCount];
+            if (tasks != null)
+                throw new InvalidOperationException("It looks like another thread has already started. Tasks are not empty.");
+
+            tasks = new Task[Environment.ProcessorCount];
 
             for (int i = 0; i < tasks.Length; i++)
             {
-                tasks[i] = new Task(() => SetEndOfLife_Logic(_metProducts, _manufacturerCode, _sapManuHash));
+                tasks[i] = new Task(() => SetEndOfLife_Logic());
             }
 
             tasks.StartAll();
             tasks.WaitAll();
+
+            tasks = null;
         }
 
-        private void SetEndOfLife_Logic(ConcurrentBag<Product> metProducts, ConcurrentDictionary<string, Product> manufacturersCode, ConcurrentDictionary<string, Product> sapManuHash)
+        private void SetEndOfLife_Logic()
         {
-            var formatter = _formatter.GetNewInstance();
+            var formatter = this.formatterFactory.GetNewInstance();
 
             while (metProducts.TryTake(out Product p) || metProducts.Count > 0)
             {
                 if (p != null)
                 {
                     if (
-                        manufacturersCode.TryGetValue(p.KodProducenta, out Product _) == false
+                        manufacturerCode.TryGetValue(p.KodProducenta, out Product _) == false
                         && sapManuHash.TryGetValue(p.SapManuHash, out Product _) == false)
                     {
-                        if (manufacturersCode.ContainsKey(p.KodProducenta) == false
+                        if (manufacturerCode.ContainsKey(p.KodProducenta) == false
                             && sapManuHash.ContainsKey(p.SapManuHash) == false)
                         {
                             formatter.WriteLine($"Ustawiam: KodProducenta: [{p.KodProducenta}] SAP: [{p.SymbolSAP}] na EOL, nie można go znaleźć w finalnej liście.");
