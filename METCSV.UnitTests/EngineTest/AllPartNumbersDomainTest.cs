@@ -26,9 +26,9 @@ namespace METCSV.UnitTests.EngineTest
             var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
             var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
 
-            var list = allPartNumbers.GetAllPartNumbers(lama, met, td, ab);
+            allPartNumbers.AddPartNumbers(lama, met, td, ab);
 
-            foreach(var v in list)
+            foreach(var v in allPartNumbers.GetAllPartNumbers())
             {
                 Assert.IsTrue(
                     met.Any(p => p.PartNumber == v.Key) 
@@ -47,8 +47,9 @@ namespace METCSV.UnitTests.EngineTest
             var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
             var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
 
-            var list = allPartNumbers.GetAllPartNumbers(lama, met, td, ab);
-            
+            allPartNumbers.AddPartNumbers(lama, met, td, ab);
+            var list = allPartNumbers.GetAllPartNumbers();
+
             IsOnTheList(lama, list);
             IsOnTheList(met, list);
             IsOnTheList(td, list);
