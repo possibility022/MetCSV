@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic;
+using MET.Domain.Logic.GroupsActionExecutors;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

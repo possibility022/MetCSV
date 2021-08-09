@@ -1,15 +1,15 @@
-﻿using MET.Domain.Logic.Comparers;
-using METCSV.Common.ExtensionMethods;
-using METCSV.Common.Formatters;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MET.Domain.Logic.Comparers;
+using METCSV.Common.ExtensionMethods;
+using METCSV.Common.Formatters;
 
-namespace MET.Domain.Logic
+namespace MET.Domain.Logic.GroupsActionExecutors
 {
-    public class CompareDomain
+    public class CompareDomain : IActionExecutor
     {
         ConcurrentQueue<string> allPartNumbers;
         ConcurrentDictionary<string, IList<Product>> products;
@@ -81,21 +81,20 @@ namespace MET.Domain.Logic
             // Todo move it to new domain
             //RemoveEmptyWarehouse(products, formatter);
 
-            if (products.All(r => r.StanMagazynowy <= 0))
+            var availableProducts = products.Where(r => r.StanMagazynowy > 0).ToList();
+            var includeAll = !products.Any();
+
+            var workOnThisList = includeAll ? products : availableProducts;
+
+            if (!includeAll)
             {
                 formatter.WriteLine($"Wszystkie produkty dla {partNumber} są niedostępne");
-                return;
-            }
-
-            if (products.Count == 0)
-            {
-                throw new Exception($"Something went wrong. List of products for {partNumber} is empty.");
             }
 
             formatter.WriteLine("Wybieram najtańszy produkt z listy:");
-            formatter.WriteObject(products);
+            formatter.WriteObject(workOnThisList);
 
-            var cheapest = FindCheapestProduct(products);
+            var cheapest = FindCheapestProduct(workOnThisList, includeAll);
 
             formatter.WriteLine($"Najtańszy produkt dla PartNumberu [{partNumber}] to:");
             formatter.WriteObject(cheapest);
@@ -121,12 +120,12 @@ namespace MET.Domain.Logic
             }
         }
 
-        private Product FindCheapestProduct(IList<Product> products)
+        private Product FindCheapestProduct(IList<Product> products, bool includeAll)
         {
-            var cheapest = products.First(r => r.StanMagazynowy > 0);
+            var cheapest = products.First(product => ProductFilter(product, includeAll));
             for (int i = 1; i < products.Count; i++)
             {
-                if (products[i].StanMagazynowy <= 0)
+                if (!ProductFilter(products[i], includeAll))
                     continue;
 
                 var result = netPriceComparer.Compare(products[i], cheapest);
@@ -140,5 +139,18 @@ namespace MET.Domain.Logic
             return cheapest;
         }
 
+        private static bool ProductFilter(Product p, bool includeNotAvailable)
+        {
+            if (includeNotAvailable)
+                return true;
+
+            return p.StanMagazynowy > 0;
+        }
+
+        public void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts,
+            IObjectFormatter<object> objectFormatter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
