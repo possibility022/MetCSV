@@ -9,7 +9,7 @@ using METCSV.Common.Formatters;
 
 namespace MET.Domain.Logic.GroupsActionExecutors
 {
-    public class CompareDomain : IActionExecutor
+    public class PriceDomain : IActionExecutor
     {
         ConcurrentQueue<string> allPartNumbers;
         ConcurrentDictionary<string, IList<Product>> products;
@@ -19,7 +19,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         private readonly IAllPartsNumberDomain allPartNumbersDomain;
         readonly IObjectFormatterConstructor<object> objectFormatter;
 
-        public CompareDomain(IAllPartsNumberDomain allPartNumbersDomain, IObjectFormatterConstructor<object> objectFormatter)
+        public PriceDomain(IAllPartsNumberDomain allPartNumbersDomain, IObjectFormatterConstructor<object> objectFormatter)
         {
             this.allPartNumbersDomain = allPartNumbersDomain;
             this.objectFormatter = objectFormatter;

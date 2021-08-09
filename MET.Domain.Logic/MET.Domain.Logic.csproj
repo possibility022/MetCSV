@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllPartNumbersDomain.cs" />
-    <Compile Include="GroupsActionExecutors\CompareDomain.cs" />
+    <Compile Include="GroupsActionExecutors\PriceDomain.cs" />
     <Compile Include="Comparers\ProductByPartNumber.cs" />
     <Compile Include="Comparers\ProductByProductPrice.cs" />
     <Compile Include="Comparers\ProductBySapManuHash.cs" />
