@@ -146,7 +146,7 @@ namespace MET.Domain.Logic
                 if (!ReferenceEquals(p, selectedProduct))
                 {
                     formatter.WriteLine($"Ustawiam kategorę EOL na produkcie: [{v.SymbolSAP}], nie został on wybrany.");
-                    EndOfLiveDomain.SetEndOfLife(ref v);
+                    EndOfLiveDomain.SetEndOfLife(v);
                 }
             }
         }
