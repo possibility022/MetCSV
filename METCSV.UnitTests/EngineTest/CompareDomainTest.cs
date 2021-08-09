@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using MET.Domain;
-using MET.Domain.Logic;
 using MET.Domain.Logic.GroupsActionExecutors;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,24 +13,23 @@ namespace METCSV.UnitTests.EngineTest
     public class CompareDomainTest
     {
 
-        IList<Product> _shortProviderList;
-        AllPartNumbersDomain allPartNumbersDomain;
+        IList<Product> shortProviderList;
 
         private PriceDomain priceDomain;
 
-        static ZeroOutputFormatter Formatter;
+        static ZeroOutputFormatter _formatter;
 
         [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
-            Formatter = new ZeroOutputFormatter();
+            _formatter = new ZeroOutputFormatter();
         }
 
         [TestInitialize]
         public void InitializeData()
         {
             priceDomain = new PriceDomain();
-            _shortProviderList = new List<Product>()
+            shortProviderList = new List<Product>()
             {
                 new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 10},
                 new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 0, CenaZakupuNetto = 4},
@@ -45,11 +43,11 @@ namespace METCSV.UnitTests.EngineTest
         public void EmptyWarehousesCanNotBeSelected()
         {
             // Act
-            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
+            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
 
             //Assert
-            Assert.IsFalse(_shortProviderList[1].StatusProduktu);
-            Assert.IsFalse(_shortProviderList[2].StatusProduktu);
+            Assert.IsFalse(shortProviderList[1].StatusProduktu);
+            Assert.IsFalse(shortProviderList[2].StatusProduktu);
         }
 
         [TestMethod]
@@ -57,15 +55,15 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectCheapestProduct()
         {
             // Act
-            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
+            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
 
-            foreach (var product in _shortProviderList)
+            foreach (var product in shortProviderList)
             {
                 Console.WriteLine(product.CenaZakupuNetto);
             }
 
             // Assert
-            Assert.IsTrue(_shortProviderList[3].StatusProduktu);
+            Assert.IsTrue(shortProviderList[3].StatusProduktu);
         }
 
         [TestMethod]
@@ -73,13 +71,13 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectOnlyOneProduct()
         {
             // Arrange
-            var bestProduct = _shortProviderList[3];
+            var bestProduct = shortProviderList[3];
 
             // Act
-            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
+            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
 
             // Assert
-            foreach (var product in _shortProviderList)
+            foreach (var product in shortProviderList)
             {
                 if (object.ReferenceEquals(product, bestProduct))
                 {
@@ -105,7 +103,7 @@ namespace METCSV.UnitTests.EngineTest
             });
             
             // Act
-            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
+            priceDomain.ExecuteAction("", this.shortProviderList, new List<Product>(), _formatter);
 
             var list = shortProviderList.Single().Value;
 
@@ -118,7 +116,7 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowErrorIfListIsEmpty()
         {
             // Act
-            priceDomain.ExecuteAction("", new List<Product>(), new List<Product>(), Formatter);
+            priceDomain.ExecuteAction("", new List<Product>(), new List<Product>(), _formatter);
 
             // Assert
             // Ok if no exceptions
@@ -129,16 +127,39 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowExceptionIfListContainsOnlyEmptyWarehouses()
         {
             // Arrange
-            foreach (var product in _shortProviderList)
+            foreach (var product in shortProviderList)
             {
                 product.StanMagazynowy = 0;
             }
 
             // Act
-            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
+            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
 
             // Assert
             // Ok if no exceptions
+        }
+
+        [TestMethod]
+        [Timeout(5 * 1000)]
+        public void SelectTheCheapestWhenAllAreNotAvailable()
+        {
+            // Arrange
+            foreach (var product in shortProviderList)
+            {
+                product.StanMagazynowy = 0;
+            }
+
+            // Act
+            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
+
+            // Assert
+            var theCheapest = shortProviderList.Single(r => r.StatusProduktu);
+            Assert.AreEqual(shortProviderList[1], theCheapest);
+
+            // Only the cheapest should have status set to true
+            Assert.IsTrue(shortProviderList
+                .Where(r => !ReferenceEquals(theCheapest, r))
+                .All(p => !p.StatusProduktu));
         }
     }
 }
