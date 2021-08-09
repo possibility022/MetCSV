@@ -246,8 +246,8 @@ namespace METCSV.WPF.ViewModels
                 MetProducts = _met.GetProducts(),
                 TechDataProducts = _techData.GetProducts(),
                 TechDataProducts_Old = _techData.LoadOldProducts(),
-                LamaProducts = _techData.GetProducts(),
-                LamaProducts_Old = _techData.LoadOldProducts()
+                LamaProducts = _lama.GetProducts(),
+                LamaProducts_Old = _lama.LoadOldProducts()
             };
 
             if (_productMerger != null)
