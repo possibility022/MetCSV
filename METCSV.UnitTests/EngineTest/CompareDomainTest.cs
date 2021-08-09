@@ -14,8 +14,10 @@ namespace METCSV.UnitTests.EngineTest
     public class CompareDomainTest
     {
 
-        ConcurrentDictionary<string, IList<Product>> _shortProviderList;
+        IList<Product> _shortProviderList;
         AllPartNumbersDomain allPartNumbersDomain;
+
+        private PriceDomain priceDomain;
 
         static ZeroOutputFormatter Formatter;
 
@@ -28,54 +30,42 @@ namespace METCSV.UnitTests.EngineTest
         [TestInitialize]
         public void InitializeData()
         {
-            allPartNumbersDomain = new AllPartNumbersDomain();
-            _shortProviderList = new ConcurrentDictionary<string, IList<Product>>();
-            var success = _shortProviderList.TryAdd(string.Empty, new List<Product>()
+            priceDomain = new PriceDomain();
+            _shortProviderList = new List<Product>()
             {
                 new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 10},
                 new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 0, CenaZakupuNetto = 4},
                 new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 0, CenaZakupuNetto = 5},
                 new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 6}
-            });
-
-            if (success == false)
-                throw new Exception("Something wrong with adding elements to list on test init.");
-
-            allPartNumbersDomain.AddPartNumber("");
+            };
         }
 
         [TestMethod]
         [Timeout(5 * 1000)]
         public void EmptyWarehousesCanNotBeSelected()
         {
-            //Arrange
-            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
-
             // Act
-            d.Compare(_shortProviderList);
+            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
 
             //Assert
-            Assert.IsFalse(_shortProviderList[string.Empty][1].StatusProduktu);
-            Assert.IsFalse(_shortProviderList[string.Empty][2].StatusProduktu);
+            Assert.IsFalse(_shortProviderList[1].StatusProduktu);
+            Assert.IsFalse(_shortProviderList[2].StatusProduktu);
         }
 
         [TestMethod]
         [Timeout(5 * 1000)]
         public void SelectCheapestProduct()
         {
-            // Arrange
-            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
-
             // Act
-            d.Compare(_shortProviderList);
+            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
 
-            foreach (var product in _shortProviderList[string.Empty])
+            foreach (var product in _shortProviderList)
             {
                 Console.WriteLine(product.CenaZakupuNetto);
             }
 
             // Assert
-            Assert.IsTrue(_shortProviderList[string.Empty][3].StatusProduktu);
+            Assert.IsTrue(_shortProviderList[3].StatusProduktu);
         }
 
         [TestMethod]
@@ -83,24 +73,22 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectOnlyOneProduct()
         {
             // Arrange
-            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
-            var bestProduct = _shortProviderList[string.Empty][3];
+            var bestProduct = _shortProviderList[3];
 
             // Act
-            d.Compare(_shortProviderList);
+            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
 
             // Assert
-            foreach (var partNumber in _shortProviderList)
-                foreach (var product in partNumber.Value)
+            foreach (var product in _shortProviderList)
+            {
+                if (object.ReferenceEquals(product, bestProduct))
                 {
-                    if (object.ReferenceEquals(product, bestProduct))
-                    {
-                        Assert.IsTrue(product.StatusProduktu);
-                        continue;
-                    }
-
-                    Assert.IsFalse(product.StatusProduktu);
+                    Assert.IsTrue(product.StatusProduktu);
+                    continue;
                 }
+
+                Assert.IsFalse(product.StatusProduktu);
+            }
 
         }
 
@@ -115,11 +103,9 @@ namespace METCSV.UnitTests.EngineTest
             {
                 new Product(Providers.AB) { ID = null, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 1 }
             });
-
-            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
-
+            
             // Act
-            d.Compare(shortProviderList);
+            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
 
             var list = shortProviderList.Single().Value;
 
@@ -131,11 +117,8 @@ namespace METCSV.UnitTests.EngineTest
         [Timeout(5 * 1000)]
         public void DoNotThrowErrorIfListIsEmpty()
         {
-            // Arrange
-            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
-
             // Act
-            d.Compare(new ConcurrentDictionary<string, IList<Product>>());
+            priceDomain.ExecuteAction("", new List<Product>(), new List<Product>(), Formatter);
 
             // Assert
             // Ok if no exceptions
@@ -146,16 +129,13 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowExceptionIfListContainsOnlyEmptyWarehouses()
         {
             // Arrange
-            foreach (var partNumber in _shortProviderList)
-                foreach (var product in partNumber.Value)
-                {
-                    product.StanMagazynowy = 0;
-                }
-
-            PriceDomain d = new PriceDomain(allPartNumbersDomain, Formatter);
+            foreach (var product in _shortProviderList)
+            {
+                product.StanMagazynowy = 0;
+            }
 
             // Act
-            d.Compare(_shortProviderList);
+            priceDomain.ExecuteAction("", _shortProviderList, new List<Product>(), Formatter);
 
             // Assert
             // Ok if no exceptions
