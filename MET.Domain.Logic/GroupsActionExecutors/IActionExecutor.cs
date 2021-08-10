@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using METCSV.Common.Formatters;
+﻿using MET.Domain.Logic.Models;
 
-namespace MET.Domain.Logic
+namespace MET.Domain.Logic.GroupsActionExecutors
 {
     public interface IActionExecutor
     {
-        void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts, IObjectFormatter<object> objectFormatter);
+        void ExecuteAction(ProductGroup productGroup);
     }
 }
