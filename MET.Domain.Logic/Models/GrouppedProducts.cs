@@ -1,48 +1,73 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using METCSV.Common.Formatters;
 
 namespace MET.Domain.Logic.Models
 {
-    public class GroupedProducts
+    public class ProductGroupFactory
     {
-        private readonly ConcurrentDictionary<string, IList<Product>> allProducts;
+        private readonly IObjectFormatterConstructor<object> constructor;
+        private readonly ConcurrentDictionary<string, ProductGroup> products;
 
-        private readonly ConcurrentDictionary<string, IList<Product>> metProducts;
 
-        public GroupedProducts()
+        public ProductGroupFactory(IObjectFormatterConstructor<object> constructor)
         {
-            metProducts = new ConcurrentDictionary<string, IList<Product>>();
-            allProducts = new ConcurrentDictionary<string, IList<Product>>();
+            products = new ConcurrentDictionary<string, ProductGroup>();
+            this.constructor = constructor;
         }
 
-        public void AddProduct(Product products)
+        public void AddProduct(Product product)
         {
-            AddToCollection(products, allProducts);
+            AddToVendorCollection(product);
         }
 
         public void AddProducts(IEnumerable<Product> products)
         {
             foreach (var product in products)
             {
-                AddToCollection(product, this.allProducts);
+                AddToVendorCollection(product);
             }
         }
 
-        private static void AddToCollection(Product product, ConcurrentDictionary<string, IList<Product>> collection)
+        private void AddToVendorCollection(Product product)
         {
-            collection.AddOrUpdate(
+            products.AddOrUpdate(
                 product.PartNumber,
-                new List<Product>() { product },
-                (key, oldValue) => { oldValue.Add(product); return oldValue; });
+                str =>
+                {
+                    var productGroup = new ProductGroup(product.PartNumber, this.constructor.GetNewInstance());
+                    productGroup.AddVendorProduct(product);
+                    return productGroup;
+                },
+                (key, oldValue) =>
+                {
+                    oldValue.AddVendorProduct(product);
+                    return oldValue;
+                });
         }
+
+        private void AddToMetCollection(Product product)
+        {
+            products.AddOrUpdate(
+                product.PartNumber,
+                str =>
+                {
+                    var productGroup = new ProductGroup(product.PartNumber, this.constructor.GetNewInstance());
+                    productGroup.AddMetProduct(product);
+                    return productGroup;
+                },
+                (key, oldValue) =>
+                {
+                    oldValue.AddMetProduct(product); 
+                    return oldValue;
+                });
+        }
+
 
         public void AddMetProduct(Product metProduct)
         {
-            if (metProduct.Provider != Providers.MET)
-                throw new Exception("You can add only met products here.");
-
-            AddToCollection(metProduct, metProducts);
+            AddToMetCollection(metProduct);
         }
 
         public void ApplyActionPerGroup(Action<IList<Product>> action)

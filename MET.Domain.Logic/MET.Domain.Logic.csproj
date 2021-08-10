@@ -51,6 +51,7 @@
     <Compile Include="HiddenProductsDomain.cs" />
     <Compile Include="GroupsActionExecutors\IActionExecutor.cs" />
     <Compile Include="Models\GrouppedProducts.cs" />
+    <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="GroupsActionExecutors\ProductNameDomain.cs" />
     <Compile Include="Orchestrator.cs" />
