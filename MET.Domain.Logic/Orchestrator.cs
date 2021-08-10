@@ -34,7 +34,7 @@ namespace MET.Domain.Logic
 
         public void Orchestrate()
         {
-            var groupedProducts = new GroupedProducts();
+            var groupedProducts = new ProductGroupFactory(objectFormatter);
             foreach (var list in lists)
             {
                 foreach (var product in list)
