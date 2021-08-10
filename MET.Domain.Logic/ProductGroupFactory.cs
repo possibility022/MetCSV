@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
 
-namespace MET.Domain.Logic.Models
+namespace MET.Domain.Logic
 {
     public class ProductGroupFactory
     {
