@@ -5,6 +5,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MET.Domain.Logic.GroupsActionExecutors;
+using MET.Domain.Logic.Models;
 
 namespace MET.Domain.Logic
 {
@@ -99,19 +101,19 @@ namespace MET.Domain.Logic
                 p.NazwaProduktu = $"{EndOfLifeProductNamePrefix}{p.NazwaProduktu}";
         }
 
-        public void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts,
-            IObjectFormatter<object> objectFormatter)
+        public void ExecuteAction(ProductGroup productGroup)
         {
-            objectFormatter.WriteLine("Sprawdzam czy ustawić status EOL.");
+            var formatter = productGroup.ObjectFormatter;
+            formatter.WriteLine("Sprawdzam czy ustawić status EOL.");
 
-            if (!vendorProducts.Any())
+            if (!productGroup.VendorProducts.Any())
             {
                 if (metProducts.Any())
                 {
                     foreach (var product in metProducts)
                     {
-                        objectFormatter.WriteLine($"Brakuje produktów u dostawcow. Ustawiam EOL dla {product}: ");
-                        objectFormatter.WriteObject(product);
+                        formatter.WriteLine($"Brakuje produktów u dostawcow. Ustawiam EOL dla {product}: ");
+                        formatter.WriteObject(product);
                         SetEndOfLife(product);
                         AddPrefixToProductName(product);
                     }

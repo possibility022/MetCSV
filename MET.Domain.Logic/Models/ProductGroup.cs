@@ -6,7 +6,7 @@ namespace MET.Domain.Logic.Models
 {
     public class ProductGroup
     {
-        private readonly string partNumber;
+        public string PartNumber { get; }
         private readonly List<Product> vendorProducts = new List<Product>(3);
         private readonly List<Product> metProducts = new List<Product>(1);
 
@@ -18,7 +18,7 @@ namespace MET.Domain.Logic.Models
 
         public ProductGroup(string partNumber, IObjectFormatter<object> objectFormatter)
         {
-            this.partNumber = partNumber;
+            this.PartNumber = partNumber;
             ObjectFormatter = objectFormatter;
         }
 
@@ -44,7 +44,7 @@ namespace MET.Domain.Logic.Models
 
         private void ThrowIfWrongPartNumber(Product product)
         {
-            if (product.PartNumber != partNumber)
+            if (product.PartNumber != PartNumber)
                 throw new InvalidOperationException("Cannot add product with different part number.");
         }
     }

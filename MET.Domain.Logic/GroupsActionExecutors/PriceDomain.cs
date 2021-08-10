@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MET.Domain.Logic.Comparers;
+using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
 
 namespace MET.Domain.Logic.GroupsActionExecutors
@@ -9,7 +10,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
     {
         readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
         
-        private void SelectOneProduct(ICollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
+        private void SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
         {
             if (products == null)
                 return;
@@ -91,10 +92,9 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             return p.StanMagazynowy > 0;
         }
 
-        public void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts,
-            IObjectFormatter<object> objectFormatter)
+        public void ExecuteAction(ProductGroup productGroup)
         {
-            SelectOneProduct(vendorProducts, partNumber, objectFormatter);
+            SelectOneProduct(productGroup.VendorProducts, productGroup.PartNumber, productGroup.ObjectFormatter);
         }
     }
 }

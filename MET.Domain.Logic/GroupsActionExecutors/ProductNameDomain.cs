@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using METCSV.Common.Formatters;
+using MET.Domain.Logic.Models;
 
-namespace MET.Domain.Logic
+namespace MET.Domain.Logic.GroupsActionExecutors
 {
     public class ProductNameDomain : IActionExecutor
     {
@@ -13,32 +13,33 @@ namespace MET.Domain.Logic
         /// TD
         /// AB
 
-        public void ExecuteAction(string partNumber, ICollection<Product> vendorProducts, ICollection<Product> metProducts, IObjectFormatter<object> objectFormatter)
+        public void ExecuteAction(ProductGroup productGroup)
         {
-            objectFormatter.WriteLine("Ustawiam nazwe produktu dla " + partNumber);
+            var objectFormatter = productGroup.ObjectFormatter;
+            objectFormatter.WriteLine("Ustawiam nazwe produktu dla " + productGroup.PartNumber);
 
             string name;
 
-            if (!vendorProducts.Any())
+            if (!productGroup.VendorProducts.Any())
                 return;
 
-            if (metProducts.Any())
+            if (productGroup.MetProducts.Any())
             {
                 objectFormatter.WriteLine("Mamy nazwe produktu ze sklepu met.");
 
-                if (metProducts.Count > 1)
+                if (productGroup.MetProducts.Count > 1)
                 {
                     objectFormatter.WriteLine("Mamy więcej niż jeden produkt dla tego part numberu na liście CSV z MET. Używam pierwszego na liście");
                 }
 
-                name = metProducts.First().NazwaProduktu;
+                name = productGroup.MetProducts.First().NazwaProduktu;
             }
             else
             {
-                name = SelectName(vendorProducts);
+                name = SelectName(productGroup.VendorProducts);
             }
 
-            foreach(var prod in vendorProducts)
+            foreach(var prod in productGroup.VendorProducts)
             {
                 prod.NazwaProduktu = name;
             }
@@ -51,7 +52,7 @@ namespace MET.Domain.Logic
             {Providers.AB, 2 },
         };
 
-        private string SelectName(ICollection<Product> vendorProducts)
+        private string SelectName(IReadOnlyCollection<Product> vendorProducts)
         {
             var first = vendorProducts.First();
             if (first != null)
