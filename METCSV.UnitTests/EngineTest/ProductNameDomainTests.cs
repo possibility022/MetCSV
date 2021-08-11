@@ -1,8 +1,9 @@
 ﻿using MET.Domain;
-using MET.Domain.Logic;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using MET.Domain.Logic.GroupsActionExecutors;
+using MET.Domain.Logic.Models;
 
 namespace METCSV.UnitTests.EngineTest
 {
@@ -12,24 +13,23 @@ namespace METCSV.UnitTests.EngineTest
         ProductNameDomain executor;
 
         Product[] list;
+        private ProductGroup productGroup;
 
         [TestInitialize]
         public void TestInit()
         {
             executor = new ProductNameDomain();
-            list = new[] {
-                new Product (Providers.Lama){ UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" },
-                new Product (Providers.AB){ UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2"   },
-                new Product (Providers.TechData){ UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3" } };
+
+            productGroup = new ProductGroup(string.Empty, new ZeroOutputFormatter());
+            productGroup.AddVendorProduct(new Product(Providers.Lama) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" });
+            productGroup.AddVendorProduct(new Product(Providers.AB) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2" });
+            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3" });
         }
 
         [TestMethod]
         public void PrioritiesTest_LamaIs1st()
         {
-            executor.ExecuteAction("XYZ",
-                list,
-            new Product[] { },
-            new ZeroOutputFormatter());
+            executor.ExecuteAction(productGroup);
 
             Assert.IsTrue(list.All(r => r.NazwaProduktu == "Nazwa1"));
         }
@@ -39,10 +39,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             list = list.Where(r => r.Provider != Providers.Lama).ToArray();
 
-            executor.ExecuteAction("XYZ",
-                list,
-                new Product[] { },
-                new ZeroOutputFormatter());
+            executor.ExecuteAction(productGroup);
 
             Assert.IsTrue(list.All(r => r.NazwaProduktu == "Nazwa3"));
         }
@@ -53,10 +50,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             list = list.Where(r => r.Provider != Providers.Lama && r.Provider != Providers.TechData).ToArray();
 
-            executor.ExecuteAction("XYZ",
-                list,
-                new Product[] { },
-                new ZeroOutputFormatter());
+            executor.ExecuteAction(productGroup);
 
             Assert.IsTrue(list.All(r => r.NazwaProduktu == "Nazwa2"));
         }
@@ -64,14 +58,7 @@ namespace METCSV.UnitTests.EngineTest
         [TestMethod]
         public void PrioritiesTest_MetTopHasPriority()
         {
-            executor.ExecuteAction("XYZ",
-                list,
-                new Product[]
-                {
-                    new Product (Providers.MET){ UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa4" }
-                },
-                new ZeroOutputFormatter());
-
+            productGroup.AddMetProduct(new Product(Providers.MET) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa4" });
             Assert.IsTrue(list.All(r => r.NazwaProduktu == "Nazwa4"));
         }
     }

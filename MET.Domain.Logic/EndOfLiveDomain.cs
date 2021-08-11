@@ -93,6 +93,7 @@ namespace MET.Domain.Logic
             p.StatusProduktu = false;
             p.SetCennaNetto(0);
             p.CenaZakupuNetto = 0;
+            p.StanMagazynowy = 0;
         }
 
         private static void AddPrefixToProductName(Product p)

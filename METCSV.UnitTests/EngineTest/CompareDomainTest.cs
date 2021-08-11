@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic.GroupsActionExecutors;
+using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,6 +20,8 @@ namespace METCSV.UnitTests.EngineTest
 
         static ZeroOutputFormatter _formatter;
 
+        private ProductGroup productGroup;
+
         [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
@@ -29,13 +32,44 @@ namespace METCSV.UnitTests.EngineTest
         public void InitializeData()
         {
             priceDomain = new PriceDomain();
-            shortProviderList = new List<Product>()
+            productGroup = new ProductGroup(null, _formatter);
+
+            productGroup.AddVendorProduct(new Product(Providers.AB)
             {
-                new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 10},
-                new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 0, CenaZakupuNetto = 4},
-                new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 0, CenaZakupuNetto = 5},
-                new Product(Providers.AB) {ID = 1, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 6}
-            };
+                ID = 1,
+                SymbolSAP = "ABC",
+                NazwaProducenta = "Producent",
+                OryginalnyKodProducenta = "A",
+                StanMagazynowy = 1,
+                CenaZakupuNetto = 10
+            });
+            productGroup.AddVendorProduct(new Product(Providers.AB)
+            {
+                ID = 1,
+                SymbolSAP = "ABC",
+                NazwaProducenta = "Producent",
+                OryginalnyKodProducenta = "A",
+                StanMagazynowy = 0,
+                CenaZakupuNetto = 4
+            });
+            productGroup.AddVendorProduct(new Product(Providers.AB)
+            {
+                ID = 1,
+                SymbolSAP = "ABC",
+                NazwaProducenta = "Producent",
+                OryginalnyKodProducenta = "A",
+                StanMagazynowy = 0,
+                CenaZakupuNetto = 5
+            });
+            productGroup.AddVendorProduct(new Product(Providers.AB)
+            {
+                ID = 1,
+                SymbolSAP = "ABC",
+                NazwaProducenta = "Producent",
+                OryginalnyKodProducenta = "A",
+                StanMagazynowy = 1,
+                CenaZakupuNetto = 6
+            });
         }
 
         [TestMethod]
@@ -43,7 +77,7 @@ namespace METCSV.UnitTests.EngineTest
         public void EmptyWarehousesCanNotBeSelected()
         {
             // Act
-            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             //Assert
             Assert.IsFalse(shortProviderList[1].StatusProduktu);
@@ -55,7 +89,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SelectCheapestProduct()
         {
             // Act
-            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             foreach (var product in shortProviderList)
             {
@@ -74,7 +108,7 @@ namespace METCSV.UnitTests.EngineTest
             var bestProduct = shortProviderList[3];
 
             // Act
-            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             // Assert
             foreach (var product in shortProviderList)
@@ -101,9 +135,9 @@ namespace METCSV.UnitTests.EngineTest
             {
                 new Product(Providers.AB) { ID = null, SymbolSAP = "ABC", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A", StanMagazynowy = 1, CenaZakupuNetto = 1 }
             });
-            
+
             // Act
-            priceDomain.ExecuteAction("", this.shortProviderList, new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             var list = shortProviderList.Single().Value;
 
@@ -116,7 +150,7 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNotThrowErrorIfListIsEmpty()
         {
             // Act
-            priceDomain.ExecuteAction("", new List<Product>(), new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             // Assert
             // Ok if no exceptions
@@ -133,7 +167,7 @@ namespace METCSV.UnitTests.EngineTest
             }
 
             // Act
-            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             // Assert
             // Ok if no exceptions
@@ -150,7 +184,7 @@ namespace METCSV.UnitTests.EngineTest
             }
 
             // Act
-            priceDomain.ExecuteAction("", shortProviderList, new List<Product>(), _formatter);
+            priceDomain.ExecuteAction(productGroup);
 
             // Assert
             var theCheapest = shortProviderList.Single(r => r.StatusProduktu);

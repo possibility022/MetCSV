@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllPartNumbersDomain.cs" />
+    <Compile Include="Extensions\ProductGroupExtensions.cs" />
     <Compile Include="GroupsActionExecutors\PriceDomain.cs" />
     <Compile Include="Comparers\ProductByPartNumber.cs" />
     <Compile Include="Comparers\ProductByProductPrice.cs" />

@@ -2,6 +2,8 @@
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic;
+using MET.Domain.Logic.Extensions;
+using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,6 +17,7 @@ namespace METCSV.UnitTests.EngineTest
         Product[] _shortProviderList;
 
         static ZeroOutputFormatter formatter;
+        private ProductGroup productGroup;
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
@@ -36,6 +39,10 @@ namespace METCSV.UnitTests.EngineTest
                 new Product(Providers.None) { SymbolSAP = "ABC", NazwaProduktu  = "Produkt",  NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
                 new Product(Providers.None) { SymbolSAP = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
             };
+
+            productGroup = new ProductGroup(string.Empty, formatter);
+            productGroup.AddVendorProducts(_shortProviderList);
+            productGroup.AddMetProducts(_shortMetList);
         }
 
         [TestMethod]
@@ -99,8 +106,10 @@ namespace METCSV.UnitTests.EngineTest
         public void SetEol_ToAllMetWhenNoVendors()
         {
             var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
-
-            domain.ExecuteAction(string.Empty, new List<Product>(), _shortMetList, formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
+            productGroup.AddMetProducts(_shortMetList);
+            
+            domain.ExecuteAction(productGroup);
 
             foreach (var product in _shortMetList)
             {
@@ -112,8 +121,12 @@ namespace METCSV.UnitTests.EngineTest
         public void DoNot_SetEol_ToMetProductsWhenThereIsAtLeastOne()
         {
             var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
+            productGroup = new ProductGroup(string.Empty, formatter);
+            productGroup.AddMetProducts(_shortMetList);
+            productGroup.AddVendorProduct(new Product(Providers.AB));
 
-            domain.ExecuteAction(string.Empty, new List<Product>() { new Product(Providers.None) }, _shortMetList, formatter);
+            // act
+            domain.ExecuteAction(productGroup);
 
             foreach (var product in _shortMetList)
             {
@@ -122,11 +135,14 @@ namespace METCSV.UnitTests.EngineTest
         }
 
         [TestMethod]
-        public void AddNamePrefix_ToMetProductsWhenThereIsAtLeastOne()
+        public void AddNamePrefix_ToAllMetWhenNoVendors()
         {
             var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
+            productGroup = new ProductGroup(string.Empty, formatter);
+            productGroup.AddMetProducts(_shortMetList);
 
-            domain.ExecuteAction(string.Empty, new List<Product>(), _shortMetList, formatter);
+            // act
+            domain.ExecuteAction(productGroup);
 
             foreach (var product in _shortMetList)
             {
@@ -139,11 +155,31 @@ namespace METCSV.UnitTests.EngineTest
         {
             var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
 
-            domain.ExecuteAction(string.Empty, new List<Product>() { new Product(Providers.None) }, _shortMetList, formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
+            productGroup.AddMetProducts(_shortMetList);
+            productGroup.AddVendorProduct(new Product(Providers.AB));
+
+            // act
+            domain.ExecuteAction(productGroup);
 
             foreach (var product in _shortMetList)
             {
                 Assert.IsFalse(product.NazwaProduktu.Contains(EndOfLiveDomain.EndOfLifeProductNamePrefix));
+            }
+        }
+
+        [TestMethod]
+        public void SetWarehouseToZero_IfProductIsSetToEol()
+        {
+            var domain = new EndOfLiveDomain(_shortMetList, formatter, _shortProviderList);
+            productGroup = new ProductGroup(string.Empty, formatter);
+            productGroup.AddMetProducts(_shortMetList);
+
+            domain.ExecuteAction(productGroup);
+
+            foreach (var product in _shortMetList)
+            {
+                Assert.AreEqual(0, product.StanMagazynowy);
             }
         }
 
