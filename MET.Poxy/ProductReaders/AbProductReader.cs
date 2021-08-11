@@ -97,7 +97,8 @@ namespace MET.Proxy.ProductReaders
                     StatusProduktu = false,
                     CenaZakupuNetto = Double.Parse(fields[(int)AbCsvProductsColumns.cena_netto].Replace('.', ',')),
                     UrlZdjecia = null,
-                    Kategoria = HttpUtility.HtmlDecode(fields[(int)AbCsvProductsColumns.kategoria])
+                    Kategoria = HttpUtility.HtmlDecode(fields[(int)AbCsvProductsColumns.kategoria]),
+                    EAN = fields[(int)AbCsvProductsColumns.EAN],
                 });
             }
 

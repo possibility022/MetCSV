@@ -111,7 +111,8 @@ namespace MET.Proxy.ProductReaders
                     StatusProduktu = false,
                     CenaZakupuNetto = -1,
                     UrlZdjecia = null,
-                    Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPr_kod]
+                    Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPr_kod],
+                    EAN = fields[(int)TechDataCsvProductsColumns.EAN],
                 });
             }
 
