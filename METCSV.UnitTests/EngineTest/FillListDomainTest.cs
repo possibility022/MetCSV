@@ -18,15 +18,8 @@ namespace METCSV.UnitTests.EngineTest
         IEnumerable<Product> _shortMetList;
         ConcurrentBag<Product> _shortListToFill;
 
-        static IObjectFormatterConstructor<object> formatterConstructor;
-
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext context)
-        {
-            formatterConstructor = new ZeroOutputFormatter();
-        }
-
+        static readonly IObjectFormatterConstructor<object> FormatterConstructor = ZeroOutputFormatter.Instance;
+        
 
         [TestInitialize]
         public void InitializeData()
@@ -51,7 +44,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SettingEOLtoNotSelectedProducts()
         {
             //Arrange
-            var domain = new FillListDomain(_shortMetList, formatterConstructor);
+            var domain = new FillListDomain(_shortMetList, FormatterConstructor);
             var productWithNonNullUrl = _shortMetList.First(p => p.UrlZdjecia.Length > 0);
 
             //Act
@@ -75,7 +68,7 @@ namespace METCSV.UnitTests.EngineTest
         public void ProductWithURLCanNotHaveEOL()
         {
             //Arrange
-            var domain = new FillListDomain(_shortMetList, formatterConstructor);
+            var domain = new FillListDomain(_shortMetList, FormatterConstructor);
             var productWithNonNullUrl = _shortMetList.First(p => p.UrlZdjecia.Length > 0);
 
             //Act
@@ -89,7 +82,7 @@ namespace METCSV.UnitTests.EngineTest
         public void OutProductShouldHaveEmptyURLIfOneOnTheMetListContainsURL()
         {
             //Arrange
-            var domain = new FillListDomain(_shortMetList, formatterConstructor);
+            var domain = new FillListDomain(_shortMetList, FormatterConstructor);
             var productWithNonNullUrl = _shortMetList.First(p => p.UrlZdjecia.Length > 0);
 
             //Act
@@ -103,7 +96,7 @@ namespace METCSV.UnitTests.EngineTest
         public void CopyIdTest()
         {
             //Arrange
-            var domain = new FillListDomain(_shortMetList, formatterConstructor);
+            var domain = new FillListDomain(_shortMetList, FormatterConstructor);
             var selectedProduct = _shortMetList.First(p => p.UrlZdjecia.Length > 0);
 
             //Act
@@ -118,7 +111,7 @@ namespace METCSV.UnitTests.EngineTest
         public void SetNameTest()
         {
             //Arrange
-            var domain = new FillListDomain(_shortMetList, formatterConstructor);
+            var domain = new FillListDomain(_shortMetList, FormatterConstructor);
             var selectedProduct = _shortMetList.First(p => p.UrlZdjecia.Length > 0);
 
             //Act
