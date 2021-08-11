@@ -8,8 +8,12 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 {
     public class PriceDomain : IActionExecutor
     {
+        // Program musi porównywać ceny od 3 dystrybutorów uwzględniając stan magazynowy powyżej 0. Wyświetlać ma się najniższa cena od dystrybutora, który ma na stanie minimum 1 szt. Produktów.
+        // Program musi ignorować produkty u każdego dystrybutora które mają w kodzie producenta ?+dopisek np.. 2981273#AKD?PRX
+        // Jeżeli u każdego dystrybutora stan wynosi 0 wtedy wyświetlić najmniejszą cenę
+
         readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
-        
+
         private void SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
         {
             if (products == null)
@@ -64,7 +68,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             }
         }
 
-        private Product FindCheapestProduct(ICollection<Product> products, bool includeAll)
+        private Product FindCheapestProduct(IReadOnlyCollection<Product> products, bool includeAll)
         {
             var cheapest = products.First(product => ProductFilter(product, includeAll));
 
