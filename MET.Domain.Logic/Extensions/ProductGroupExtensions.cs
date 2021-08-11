@@ -1,0 +1,24 @@
+﻿using System.Collections.Generic;
+using MET.Domain.Logic.Models;
+
+namespace MET.Domain.Logic.Extensions
+{
+    public static class ProductGroupExtensions
+    {
+        public static void AddVendorProducts(this ProductGroup productGroup, IEnumerable<Product> products)
+        {
+            foreach (var product in products)
+            {
+                productGroup.AddVendorProduct(product);
+            }
+        }
+
+        public static void AddMetProducts(this ProductGroup productGroup, IEnumerable<Product> products)
+        {
+            foreach (var product in products)
+            {
+                productGroup.AddMetProduct(product);
+            }
+        }
+    }
+}
