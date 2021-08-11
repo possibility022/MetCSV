@@ -178,7 +178,8 @@ namespace MET.Proxy.ProductReaders
                     StanMagazynowy = Int32.Parse(product.Element("SKLAD_NUM").Value),
                     StatusProduktu = false,
                     CenaZakupuNetto = Double.Parse(product.Element("CENA").Value),
-                    UrlZdjecia = urls.Count > 0 ? urls[0] : null
+                    UrlZdjecia = urls.Count > 0 ? urls[0] : null,
+                    EAN = HttpUtility.HtmlDecode(product.Element("EAN").Value),
                 });
             }
 

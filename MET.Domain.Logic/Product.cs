@@ -59,6 +59,7 @@ namespace MET.Domain
         public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateCodeAndManu(); } }
 
         public string NazwaDostawcy { get; set; }
+        public string EAN { get; set; }
 
         public int StanMagazynowy { get; set; }
 
