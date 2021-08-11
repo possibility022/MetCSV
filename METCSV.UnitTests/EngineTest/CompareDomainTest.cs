@@ -18,15 +18,9 @@ namespace METCSV.UnitTests.EngineTest
 
         private PriceDomain priceDomain;
 
-        static ZeroOutputFormatter _formatter;
+        static ZeroOutputFormatter _formatter = ZeroOutputFormatter.Instance;
 
         private ProductGroup productGroup;
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext context)
-        {
-            _formatter = new ZeroOutputFormatter();
-        }
 
         [TestInitialize]
         public void InitializeData()

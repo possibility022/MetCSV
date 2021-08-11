@@ -57,7 +57,7 @@ namespace METCSV.UnitTests.EngineTest
                 }
             };
 
-            domain = new PriceErrorDomain(oldProduct, newProduct, 20, new ZeroOutputFormatter());
+            domain = new PriceErrorDomain(oldProduct, newProduct, 20, ZeroOutputFormatter.Instance);
         }
                 
 

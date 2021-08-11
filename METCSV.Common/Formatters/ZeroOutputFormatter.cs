@@ -4,6 +4,9 @@ namespace METCSV.Common.Formatters
 {
     public class ZeroOutputFormatter : IObjectFormatter<object>, IObjectFormatterConstructor<object>
     {
+
+        public static ZeroOutputFormatter Instance = new ZeroOutputFormatter();
+
         public void Flush()
         {
 

@@ -20,7 +20,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             executor = new ProductNameDomain();
 
-            productGroup = new ProductGroup(string.Empty, new ZeroOutputFormatter());
+            productGroup = new ProductGroup(string.Empty, ZeroOutputFormatter.Instance);
             productGroup.AddVendorProduct(new Product(Providers.Lama) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" });
             productGroup.AddVendorProduct(new Product(Providers.AB) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2" });
             productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3" });

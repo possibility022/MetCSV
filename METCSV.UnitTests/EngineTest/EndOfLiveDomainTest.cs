@@ -16,14 +16,8 @@ namespace METCSV.UnitTests.EngineTest
         Product[] _shortMetList;
         Product[] _shortProviderList;
 
-        static ZeroOutputFormatter formatter;
+        static ZeroOutputFormatter formatter = ZeroOutputFormatter.Instance;
         private ProductGroup productGroup;
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext context)
-        {
-            formatter = new ZeroOutputFormatter();
-        }
 
         [TestInitialize]
         public void InitializeData()

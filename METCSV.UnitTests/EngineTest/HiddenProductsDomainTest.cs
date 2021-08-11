@@ -11,13 +11,8 @@ namespace METCSV.UnitTests.EngineTest
     [TestClass]
     public class HiddenProductsDomainTest
     {
-        private static IObjectFormatterConstructor<object> formatterConstructor;
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext context)
-        {
-            formatterConstructor = new ZeroOutputFormatter();
-        }
+        private static IObjectFormatterConstructor<object> formatterConstructor = ZeroOutputFormatter.Instance;
+        
 
         [TestMethod]
         public void RemoveAllHiddenProducts()
