@@ -80,6 +80,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             var cheapest = SelectOneProduct(productGroup.VendorProducts, productGroup.PartNumber, productGroup.ObjectFormatter);
             productGroup.FinalProduct.CenaZakupuNetto = cheapest.CenaZakupuNetto;
             productGroup.FinalProduct.SetCennaNetto(cheapest.CenaNetto);
+            productGroup.CheapestProduct = cheapest;
         }
     }
 }

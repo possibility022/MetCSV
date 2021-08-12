@@ -16,6 +16,7 @@ namespace MET.Domain.Logic.Models
         public IObjectFormatter<object> ObjectFormatter { get; private set; }
 
         public Product FinalProduct { get; private set; } = new Product(Providers.None);
+        public Product CheapestProduct { get; set; }
 
         public ProductGroup(string partNumber, IObjectFormatter<object> objectFormatter)
         {

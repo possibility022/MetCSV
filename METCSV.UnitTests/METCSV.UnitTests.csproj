@@ -85,6 +85,7 @@
     <Compile Include="EncryptingTest.cs" />
     <Compile Include="PropertyCopyTest.cs" />
     <Compile Include="ViewModels\ProfitsViewModelTests.cs" />
+    <Compile Include="EngineTest\WarehouseStatusDomainTests.cs" />
     <Compile Include="Workflows\ProfitsIOTests.cs" />
     <Compile Include="Workflows\SettingsIOTests.cs" />
   </ItemGroup>
