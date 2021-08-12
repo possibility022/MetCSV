@@ -108,7 +108,7 @@ namespace MET.Domain
 
         private void UpdateCodeAndManu()
         {
-            PartNumber = $"{KodProducenta}_||_{NazwaProducenta}";
+            PartNumber = $"{KodProducenta.ToUpperInvariant()}_||_{NazwaProducenta.ToUpperInvariant()}";
 
             //_partNumber = (KodProducenta + NazwaProducenta).GetHashCode(); // OK, Here we have problem when KodProducetna is ABC and NazwaProducenta is XYZ then
             // part number will be the same as product where KodProducenta is AB and NazwaProducenta is AXYZ :(
