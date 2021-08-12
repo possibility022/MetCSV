@@ -31,14 +31,8 @@ namespace MET.Domain.Logic
 
             if (!productGroup.VendorProducts.Any())
             {
-                foreach (var product in productGroup.MetProducts)
-                {
-                    formatter.WriteLine($"Brakuje produktów u dostawcow. Ustawiam EOL dla {product}: ");
-                    formatter.WriteObject(product);
-                    SetEndOfLife(product);
-                    AddPrefixToProductName(product);
-                }
-
+                SetEndOfLife(productGroup.FinalProduct);
+                AddPrefixToProductName(productGroup.FinalProduct);
             }
         }
     }

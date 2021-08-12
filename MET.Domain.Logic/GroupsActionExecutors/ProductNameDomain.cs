@@ -15,13 +15,16 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         public void ExecuteAction(ProductGroup productGroup)
         {
+            var name = GetName(productGroup);
+            productGroup.FinalProduct.NazwaProduktu = name;
+        }
+
+        private string GetName(ProductGroup productGroup)
+        {
             var objectFormatter = productGroup.ObjectFormatter;
             objectFormatter.WriteLine("Ustawiam nazwe produktu dla " + productGroup.PartNumber);
 
             string name;
-
-            if (!productGroup.VendorProducts.Any())
-                return;
 
             if (productGroup.MetProducts.Any())
             {
@@ -36,13 +39,10 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             }
             else
             {
-                name = SelectName(productGroup.VendorProducts);
+                name = SelectNameFromVendorList(productGroup.VendorProducts);
             }
 
-            foreach(var prod in productGroup.VendorProducts)
-            {
-                prod.NazwaProduktu = name;
-            }
+            return name;
         }
 
         private static IReadOnlyDictionary<Providers, int> Priorieties = new Dictionary<Providers, int>
@@ -52,7 +52,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             {Providers.AB, 2 },
         };
 
-        private string SelectName(IReadOnlyCollection<Product> vendorProducts)
+        private string SelectNameFromVendorList(IReadOnlyCollection<Product> vendorProducts)
         {
             var first = vendorProducts.First();
             if (first != null)

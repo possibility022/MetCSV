@@ -14,20 +14,17 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
 
-        private void SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
+        private Product SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
         {
             if (products == null)
-                return;
+                return null;
 
             if (products.Count == 0)
-                return;
+                return null;
 
             formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
             formatter.WriteObject(products);
-
-
-            // Todo move it to new domain
-            //RemoveEmptyWarehouse(products, formatter);
+            
 
             var availableProducts = products.Where(r => r.StanMagazynowy > 0).ToList();
             var includeAll = !availableProducts.Any();
@@ -47,25 +44,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             formatter.WriteLine($"Najtańszy produkt dla PartNumberu [{partNumber}] to:");
             formatter.WriteObject(cheapest);
 
-            if (cheapest.ID != null)
-                cheapest.StatusProduktu = true;
-
-            formatter.Flush();
-        }
-
-        private void RemoveEmptyWarehouse(IList<Product> products, IObjectFormatter<object> formatter)
-        {
-            for (int i = 0; i < products.Count; i++)
-            {
-                if (products[i].StanMagazynowy <= 0)
-                {
-                    formatter.WriteLine("Stan magazynowy produktu jest pusty, usuwam go z listy: ");
-                    formatter.WriteObject(products[i]);
-
-                    products.RemoveAt(i);
-                    i--;
-                }
-            }
+            return cheapest;
         }
 
         private Product FindCheapestProduct(IReadOnlyCollection<Product> products, bool includeAll)
@@ -98,7 +77,9 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         public void ExecuteAction(ProductGroup productGroup)
         {
-            SelectOneProduct(productGroup.VendorProducts, productGroup.PartNumber, productGroup.ObjectFormatter);
+            var cheapest = SelectOneProduct(productGroup.VendorProducts, productGroup.PartNumber, productGroup.ObjectFormatter);
+            productGroup.FinalProduct.CenaZakupuNetto = cheapest.CenaZakupuNetto;
+            productGroup.FinalProduct.SetCennaNetto(cheapest.CenaNetto);
         }
     }
 }
