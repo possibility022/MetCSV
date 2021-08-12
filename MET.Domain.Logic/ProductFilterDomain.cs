@@ -1,13 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
 using METCSV.Common;
+using METCSV.Common.Formatters;
 
 namespace MET.Domain.Logic
 {
     public class ProductFilterDomain
     {
-        public async Task RemoveProductsWithSpecificCode(Products products)
+        private readonly IObjectFormatterConstructor<object> constructor;
+
+        public ProductFilterDomain(IObjectFormatterConstructor<object> constructor)
+        {
+            this.constructor = constructor;
+        }
+
+        public Task RemoveProductsWithSpecificCode(Products products)
         {
             var tasks = new List<Task>();
 
@@ -19,7 +29,19 @@ namespace MET.Domain.Logic
             AddTaskToList(tasks, products.LamaProducts_Old);
             AddTaskToList(tasks, products.TechDataProducts_Old);
 
-            await Task.WhenAll(tasks);
+            return Task.WhenAll(tasks);
+        }
+
+        public Task RemoveProductsWithSpecificCode(ICollection<Product>[] productsList)
+        {
+            var tasks = new List<Task>(productsList.Length);
+
+            foreach (var collection in productsList)
+            {
+                AddTaskToList(tasks, collection);
+            }
+
+            return Task.WhenAll(tasks);
         }
 
         private void AddTaskToList(List<Task> tasks, ICollection<Product> products)
@@ -36,6 +58,7 @@ namespace MET.Domain.Logic
 
                 foreach (var product in products)
                 {
+                    var logger = constructor.GetNewInstance();
                     var lastIndex = product.OryginalnyKodProducenta?.LastIndexOf('?');
                     if (lastIndex >= 0)
                     {
@@ -49,7 +72,22 @@ namespace MET.Domain.Logic
                         }
                     }
 
-                    
+                    if (product.OryginalnyKodProducenta.Contains("?TN"))
+                    {
+                        product.StatusProduktu = false;
+                        product.CenaZakupuNetto = 0;
+                        product.SetCennaNetto(0);
+                        product.Kategoria = "EOL_TN";
+                        toRemove.Add(product);
+
+
+
+                        logger.WriteLine("Produkt z oryginalnym kodem producenta: [] posiadał wartość ?TN. Ustawiam Status Produktu, Cene zakupu netto, Cene netto i kategorię. Produkt zostanie również usunięty z listy wejściowej.");
+                        logger.WriteLine("Produkt po zmianach:");
+                        logger.WriteObject(product);
+                    }
+
+
                 }
 
                 foreach (var product in toRemove)
@@ -59,7 +97,5 @@ namespace MET.Domain.Logic
                 }
             });
         }
-
-
     }
 }

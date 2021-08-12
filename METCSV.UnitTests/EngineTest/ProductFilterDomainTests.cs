@@ -5,6 +5,7 @@ using MET.Domain;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Models;
 using METCSV.Common;
+using METCSV.Common.Formatters;
 
 namespace METCSV.UnitTests.EngineTest
 {
@@ -27,7 +28,7 @@ namespace METCSV.UnitTests.EngineTest
         [TestInitialize]
         public void TestInit()
         {
-            filterDomain = new ProductFilterDomain();
+            filterDomain = new ProductFilterDomain(ZeroOutputFormatter.Instance);
         }
 
         [TestMethod]
