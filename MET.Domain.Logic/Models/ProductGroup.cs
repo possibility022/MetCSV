@@ -27,8 +27,6 @@ namespace MET.Domain.Logic.Models
             if (product.Provider == Providers.MET)
                 throw new InvalidOperationException("Cannot add product from MET provider to vendor list.");
 
-            ThrowIfWrongPartNumber(product);
-
             vendorProducts.Add(product);
         }
 
@@ -37,15 +35,7 @@ namespace MET.Domain.Logic.Models
             if (product.Provider != Providers.MET)
                 throw new InvalidOperationException($"Cannot add product to MET list with given provider: {product.Provider}");
 
-            ThrowIfWrongPartNumber(product);
-
             metProducts.Add(product);
-        }
-
-        private void ThrowIfWrongPartNumber(Product product)
-        {
-            if (product.PartNumber != PartNumber)
-                throw new InvalidOperationException("Cannot add product with different part number.");
         }
     }
 }
