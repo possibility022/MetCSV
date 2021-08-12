@@ -75,5 +75,23 @@ namespace METCSV.UnitTests
             var content = File.ReadAllText(@"Repository\metproducts.json");
             return JsonConvert.DeserializeObject<List<Product>>(content);
         }
+
+        public static List<Product> GetShortVendorList()
+        {
+            return new List<Product>()
+            {
+                new Product(Providers.None) { SymbolSAP = "ABC", NazwaProduktu  = "Produkt",  NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
+                new Product(Providers.None) { SymbolSAP = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
+            };
+        }
+
+        public static List<Product> GetShortMetList()
+        {
+            return new List<Product> {
+                new Product(Providers.MET) {SymbolSAP = "ABC1", NazwaProduktu  = "Produkt1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
+                new Product(Providers.MET) {SymbolSAP = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
+                new Product(Providers.MET) {SymbolSAP = "ABC3", NazwaProduktu  = "Produkt3",  NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
+            };
+        }
     }
 }
