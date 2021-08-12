@@ -38,7 +38,7 @@ namespace METCSV.UnitTests.EngineTest
         }
 
         [TestMethod]
-        public void SetEol_ToAllMetWhenNoVendors()
+        public void SetEol_ToFinalProduct()
         {
             var domain = new EndOfLiveDomain();
             productGroup = new ProductGroup(string.Empty, _formatter);
@@ -46,10 +46,7 @@ namespace METCSV.UnitTests.EngineTest
 
             domain.ExecuteAction(productGroup);
 
-            foreach (var product in shortMetList)
-            {
-                Assert.AreEqual("EOL", product.Kategoria);
-            }
+            Assert.AreEqual("EOL", productGroup.FinalProduct.Kategoria);
         }
 
         [TestMethod]
@@ -63,10 +60,7 @@ namespace METCSV.UnitTests.EngineTest
             // act
             domain.ExecuteAction(productGroup);
 
-            foreach (var product in shortMetList)
-            {
-                Assert.AreNotEqual("EOL", product.Kategoria);
-            }
+            Assert.AreNotEqual("EOL", productGroup.FinalProduct.Kategoria);
         }
 
         [TestMethod]
@@ -79,10 +73,7 @@ namespace METCSV.UnitTests.EngineTest
             // act
             domain.ExecuteAction(productGroup);
 
-            foreach (var product in shortMetList)
-            {
-                Assert.IsTrue(product.NazwaProduktu.StartsWith(EndOfLiveDomain.EndOfLifeProductNamePrefix));
-            }
+            Assert.IsTrue(productGroup.FinalProduct.NazwaProduktu.StartsWith(EndOfLiveDomain.EndOfLifeProductNamePrefix));
         }
 
         [TestMethod]
@@ -96,10 +87,7 @@ namespace METCSV.UnitTests.EngineTest
             domain.ExecuteAction(productGroup);
             domain.ExecuteAction(productGroup);
 
-            foreach (var product in shortMetList)
-            {
-                Assert.IsFalse(product.NazwaProduktu.StartsWith(EndOfLiveDomain.EndOfLifeProductNamePrefix + EndOfLiveDomain.EndOfLifeProductNamePrefix));
-            }
+            Assert.IsFalse(productGroup.FinalProduct.NazwaProduktu.StartsWith(EndOfLiveDomain.EndOfLifeProductNamePrefix + EndOfLiveDomain.EndOfLifeProductNamePrefix));
         }
 
         [TestMethod]
@@ -114,10 +102,7 @@ namespace METCSV.UnitTests.EngineTest
             // act
             domain.ExecuteAction(productGroup);
 
-            foreach (var product in shortMetList)
-            {
-                Assert.IsFalse(product.NazwaProduktu.Contains(EndOfLiveDomain.EndOfLifeProductNamePrefix));
-            }
+            Assert.IsFalse(productGroup.FinalProduct.NazwaProduktu.Contains(EndOfLiveDomain.EndOfLifeProductNamePrefix));
         }
 
         [TestMethod]
@@ -129,10 +114,7 @@ namespace METCSV.UnitTests.EngineTest
 
             domain.ExecuteAction(productGroup);
 
-            foreach (var product in shortMetList)
-            {
-                Assert.AreEqual(0, product.StanMagazynowy);
-            }
+            Assert.AreEqual(0, productGroup.FinalProduct.StanMagazynowy);
         }
 
     }

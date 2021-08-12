@@ -9,12 +9,13 @@ namespace MET.Domain.Logic.Models
         public string PartNumber { get; }
         private readonly List<Product> vendorProducts = new List<Product>(3);
         private readonly List<Product> metProducts = new List<Product>(1);
-
+        
         public IReadOnlyList<Product> VendorProducts => vendorProducts;
         public IReadOnlyList<Product> MetProducts => metProducts;
 
         public IObjectFormatter<object> ObjectFormatter { get; private set; }
 
+        public Product FinalProduct { get; private set; } = new Product(Providers.None);
 
         public ProductGroup(string partNumber, IObjectFormatter<object> objectFormatter)
         {

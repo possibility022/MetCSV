@@ -52,7 +52,8 @@ namespace MET.Domain
                 UpdateCodeAndManu();
             }
         }
-        public string NazwaProduktu { get; set; }
+
+        public string NazwaProduktu { get; set; } = string.Empty;
 
         public string KodDostawcy { get; set; }
 
