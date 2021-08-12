@@ -84,6 +84,17 @@ namespace METCSV.UnitTests.EngineTest
 
         [TestMethod]
         [Timeout(5 * 1000)]
+        public void SelectCheapestProduct_IsSetInProductGroup()
+        {
+            // Act
+            priceDomain.ExecuteAction(productGroup);
+
+            // Assert
+            Assert.AreEqual(productGroup.VendorProducts[3], productGroup.CheapestProduct);
+        }
+
+        [TestMethod]
+        [Timeout(5 * 1000)]
         public void DoNotThrowErrorIfListIsEmpty()
         {
             // Act
@@ -125,6 +136,23 @@ namespace METCSV.UnitTests.EngineTest
 
             // Assert
             Assert.AreEqual(productGroup.VendorProducts[1].CenaNetto, productGroup.FinalProduct.CenaNetto);
+        }
+
+        [TestMethod]
+        [Timeout(5 * 1000)]
+        public void SelectTheCheapestWhenAllAreNotAvailable_IsSetInProductGroup()
+        {
+            // Arrange
+            foreach (var product in productGroup.VendorProducts)
+            {
+                product.StanMagazynowy = 0;
+            }
+
+            // Act
+            priceDomain.ExecuteAction(productGroup);
+
+            // Assert
+            Assert.AreEqual(productGroup.VendorProducts[1], productGroup.CheapestProduct);
         }
     }
 }
