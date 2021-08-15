@@ -15,9 +15,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
                 return;
             }
 
-            if (productGroup.CheapestProduct == null)
-                throw new InvalidOperationException(
-                    "Cheapest product was not set for product group. We can not set warehouse status.");
+            HelpMe.ThrowIfNull(productGroup.CheapestProduct);
 
             productGroup.FinalProduct.StanMagazynowy = productGroup.CheapestProduct.StanMagazynowy;
         }
