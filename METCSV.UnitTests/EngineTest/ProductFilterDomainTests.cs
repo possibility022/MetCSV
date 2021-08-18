@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MET.Domain;
 using MET.Domain.Logic;
@@ -80,6 +81,17 @@ namespace METCSV.UnitTests.EngineTest
             await filterDomain.RemoveProductsWithSpecificCode(products);
 
             // Assett
+            Assert.AreEqual(0, products.LamaProducts.Count);
+        }
+
+        [TestMethod]
+        public async Task RemoveHiddenProducts()
+        {
+            var products = GetDefaultList("ABC");
+            products.LamaProducts.First().Hidden = true;
+
+            await filterDomain.RemoveProductsWithSpecificCode(products);
+
             Assert.AreEqual(0, products.LamaProducts.Count);
         }
 
