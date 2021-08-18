@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using MET.Domain.Logic.Models;
+﻿using MET.Domain.Logic.Models;
 
 namespace MET.Domain.Logic.GroupsActionExecutors
 {
@@ -8,16 +6,15 @@ namespace MET.Domain.Logic.GroupsActionExecutors
     {
         public void ExecuteAction(ProductGroup productGroup)
         {
-            if (productGroup.MetProducts.Any(r =>
-                r.Kategoria == EndOfLiveDomain.EndOfLifeCategory))
+            if (productGroup.FinalProduct.Kategoria == EndOfLiveDomain.EndOfLifeCategory)
             {
                 productGroup.FinalProduct.StanMagazynowy = 0;
                 return;
             }
 
-            HelpMe.ThrowIfNull(productGroup.CheapestProduct);
+            HelpMe.ThrowIfNull(productGroup.DataSourceProduct);
 
-            productGroup.FinalProduct.StanMagazynowy = productGroup.CheapestProduct.StanMagazynowy;
+            productGroup.FinalProduct.StanMagazynowy = productGroup.DataSourceProduct.StanMagazynowy;
         }
     }
 }
