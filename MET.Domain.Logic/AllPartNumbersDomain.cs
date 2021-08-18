@@ -1,5 +1,4 @@
-﻿using METCSV.Common.Exceptions;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace MET.Domain.Logic
@@ -29,20 +28,7 @@ namespace MET.Domain.Logic
 
         public void AddPartNumber(string partNumber)
         {
-            AddPartNumber(partNumber, 0);
-        }
-
-        private void AddPartNumber(string partNumber, int retry)
-        {
-            var success = allPartNumbers.TryAdd(partNumber, b);
-
-            if (retry >= 10)
-            {
-                throw new OperationException($"We could not add item to the concurrent exception after {retry} tryouts. Item key: {partNumber}");
-            }
-
-            if (!success)
-                AddPartNumber(partNumber, retry++);
+            allPartNumbers.TryAdd(partNumber, b);
         }
 
     }
