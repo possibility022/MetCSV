@@ -9,9 +9,11 @@ namespace MET.Domain.Logic
     public class ProductGroupFactory
     {
         private readonly IObjectFormatterConstructor<object> constructor;
+
+        public IReadOnlyDictionary<string, ProductGroup> Products => products;
+
         private readonly ConcurrentDictionary<string, ProductGroup> products;
-
-
+        
         public ProductGroupFactory(IObjectFormatterConstructor<object> constructor)
         {
             products = new ConcurrentDictionary<string, ProductGroup>();
@@ -60,7 +62,7 @@ namespace MET.Domain.Logic
                 },
                 (key, oldValue) =>
                 {
-                    oldValue.AddMetProduct(product); 
+                    oldValue.AddMetProduct(product);
                     return oldValue;
                 });
         }
