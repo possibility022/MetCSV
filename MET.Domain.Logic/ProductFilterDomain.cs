@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
 using METCSV.Common;
 using METCSV.Common.Formatters;
@@ -87,7 +85,11 @@ namespace MET.Domain.Logic
                         logger.WriteObject(product);
                     }
 
-
+                    if (product.Hidden)
+                    {
+                        toRemove.Add(product);
+                        logger.WriteLine("Produkt ukryty.");
+                    }
                 }
 
                 foreach (var product in toRemove)
