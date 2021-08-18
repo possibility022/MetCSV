@@ -78,6 +78,9 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         public void ExecuteAction(ProductGroup productGroup)
         {
             var cheapest = SelectOneProduct(productGroup.VendorProducts, productGroup.PartNumber, productGroup.ObjectFormatter);
+            if (cheapest == null)
+                return;
+
             productGroup.FinalProduct.CenaZakupuNetto = cheapest.CenaZakupuNetto;
             productGroup.FinalProduct.SetCennaNetto(cheapest.CenaNetto);
             productGroup.CheapestProduct = cheapest;
