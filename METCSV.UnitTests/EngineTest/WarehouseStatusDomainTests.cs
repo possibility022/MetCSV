@@ -26,14 +26,14 @@ namespace METCSV.UnitTests.EngineTest
         [TestMethod]
         public void ThrowWhenCheapestProductIsNotSet()
         {
-            productGroup.CheapestProduct = null;
+            productGroup.DataSourceProduct = null;
             domain.ExecuteAction(productGroup);
         }
 
         [TestMethod]
         public void SetTheSameWarehouseValue()
         {
-            productGroup.CheapestProduct = new Product(Providers.None) { StanMagazynowy = 123 };
+            productGroup.DataSourceProduct = new Product(Providers.None) { StanMagazynowy = 123 };
             domain.ExecuteAction(productGroup);
 
             Assert.AreEqual(123, productGroup.FinalProduct.StanMagazynowy);
@@ -42,8 +42,8 @@ namespace METCSV.UnitTests.EngineTest
         [TestMethod]
         public void SetZeroWhenEol()
         {
-            productGroup.CheapestProduct = new Product(Providers.None) { StanMagazynowy = 123 };
-            productGroup.AddMetProduct(new Product(Providers.MET) { Kategoria = EndOfLiveDomain.EndOfLifeCategory });
+            productGroup.DataSourceProduct = new Product(Providers.None) { StanMagazynowy = 123 };
+            productGroup.FinalProduct.Kategoria = EndOfLiveDomain.EndOfLifeCategory;
             domain.ExecuteAction(productGroup);
 
             Assert.AreEqual(0, productGroup.FinalProduct.StanMagazynowy);
