@@ -42,9 +42,11 @@
   <ItemGroup>
     <Compile Include="AllPartNumbersDomain.cs" />
     <Compile Include="Extensions\ProductGroupExtensions.cs" />
+    <Compile Include="FinalListCombineDomain.cs" />
     <Compile Include="GroupsActionExecutors\CodeAtTheVendor.cs" />
     <Compile Include="GroupsActionExecutors\IdDomain.cs" />
     <Compile Include="GroupsActionExecutors\IFinalProductConstructor.cs" />
+    <Compile Include="GroupsActionExecutors\OverrideDefaultValuesDomain.cs" />
     <Compile Include="GroupsActionExecutors\PriceDomain.cs" />
     <Compile Include="Comparers\ProductByPartNumber.cs" />
     <Compile Include="Comparers\ProductByProductPrice.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="EndOfLiveDomain.cs" />
     <Compile Include="FillListDomain.cs" />
     <Compile Include="GroupsActionExecutors\SapNumberDomain.cs" />
+    <Compile Include="GroupsActionExecutors\SourceProductSelector.cs" />
     <Compile Include="GroupsActionExecutors\WarehouseStatusDomain.cs" />
     <Compile Include="HelpMe.cs" />
     <Compile Include="HiddenProductsDomain.cs" />
