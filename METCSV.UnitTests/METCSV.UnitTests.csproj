@@ -71,6 +71,7 @@
     <Compile Include="EngineTest\EndOfLiveDomainTest.cs" />
     <Compile Include="EngineTest\CompareDomainTest.cs" />
     <Compile Include="EngineTest\IdDomainTests.cs" />
+    <Compile Include="EngineTest\OrchestratorTests.cs" />
     <Compile Include="EngineTest\ProductMergerTest.cs" />
     <Compile Include="EngineTest\PriceErrorTests.cs" />
     <Compile Include="EngineTest\ProductFilterDomainTests.cs" />
