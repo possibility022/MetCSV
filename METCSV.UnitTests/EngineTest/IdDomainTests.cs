@@ -1,4 +1,5 @@
-﻿using MET.Domain;
+﻿using System;
+using MET.Domain;
 using MET.Domain.Logic.Extensions;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
@@ -16,7 +17,7 @@ namespace METCSV.UnitTests.EngineTest
         [TestInitialize]
         public void TestInit()
         {
-            idDomain = new IdDomain();
+            idDomain = new IdDomain(false);
             productGroup = new ProductGroup(string.Empty, ZeroOutputFormatter.Instance);
         }
 
@@ -38,6 +39,26 @@ namespace METCSV.UnitTests.EngineTest
             idDomain.ExecuteAction(productGroup);
 
             Assert.AreEqual(null, productGroup.FinalProduct.ID);
+        }
+
+        [TestMethod]
+        public void DoNotThrow_WhenFlagIsOn()
+        {
+            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 123, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 1234, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            idDomain = new IdDomain(true);
+
+            idDomain.ExecuteAction(productGroup);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Throw_WhenFlagIsOn()
+        {
+            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 123, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 1234, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+
+            idDomain.ExecuteAction(productGroup);
         }
 
     }
