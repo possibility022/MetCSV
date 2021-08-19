@@ -28,7 +28,8 @@ namespace METCSV.UnitTests.EngineTest
             _orchestrator.AddMetCollection(met);
             _orchestrator.SetCollections(lama, td, ab);
 
-            _orchestrator.Orchestrate();
+            var t = _orchestrator.Orchestrate();
+            t.Wait();
         }
 
         [TestInitialize]

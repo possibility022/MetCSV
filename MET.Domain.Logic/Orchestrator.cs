@@ -58,8 +58,10 @@ namespace MET.Domain.Logic
             this.metProducts = metProducts;
         }
 
-        public void Orchestrate()
+        public async Task Orchestrate()
         {
+            var filter = new ProductFilterDomain(objectFormatter);
+            await filter.RemoveProductsWithSpecificCode(lists);
             var groupedProducts = GroupProducts();
             var results = Parallel.ForEach(groupedProducts, ExecuteActions);
             productGroups = groupedProducts;

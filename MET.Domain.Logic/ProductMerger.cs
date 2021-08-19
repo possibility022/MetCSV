@@ -19,13 +19,7 @@ namespace MET.Domain.Logic
         List<Product> _finalList;
 
         ConcurrentDictionary<string, byte> _allPartNumbers = new ConcurrentDictionary<string, byte>();
-        ConcurrentDictionary<string, Product> _partNumbersConfilcts = new ConcurrentDictionary<string, Product>();
-
-        /// <summary>
-        /// The products out of analyze. Well, store here all the products which you want to omit in main logic and perform post generate method on them.
-        /// </summary>
-        ConcurrentBag<Product> _productsOutOfAnalyze = new ConcurrentBag<Product>();
-
+        
         ConcurrentBag<Product> _metBag;
         ConcurrentBag<Product> _lamaProducts;
         ConcurrentBag<Product> _techDataProducts;
@@ -39,7 +33,6 @@ namespace MET.Domain.Logic
         public event EventHandler<OperationStatus> OnGenerateStateChange;
 
         readonly IObjectFormatterConstructor<object> ObjectFormatterSource;
-        readonly IObjectFormatter<object> ObjectFormatter;
 
         private CancellationToken _token;
 
@@ -51,7 +44,6 @@ namespace MET.Domain.Logic
             this.maxiumumPriceDifference = maxiumumPriceDifference;
             _token = token;
             ObjectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
-            ObjectFormatter = ObjectFormatterSource.GetNewInstance();
         }
 
         public async Task<bool> Generate()
@@ -70,48 +62,58 @@ namespace MET.Domain.Logic
             {
                 // STEP 1
                 StepChanged?.Invoke(this, 1);
-                await PreGenerateAction();
                 SetWarehouseToZeroIfPriceError();
 
+                Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), ObjectFormatterSource, true);
+
+                orchestrator.AddMetCollection(_products.MetProducts);
+                orchestrator.SetCollections(_products.AbProducts, _products.LamaProducts, _products.TechDataProducts);
+                await orchestrator.Orchestrate();
+
+                FinalListCombineDomain finalListCombineDomain = new FinalListCombineDomain();
+                var finalList = finalListCombineDomain.CreateFinalList(orchestrator.GetGeneratedProductGroups());
+
+                finalList.Sort(new ProductSorter());
+                _finalList = finalList;
 
                 // STEP 2
                 StepChanged?.Invoke(this, 2);
-                _metBag = new ConcurrentBag<Product>(_products.MetProducts);
-                _lamaProducts = new ConcurrentBag<Product>(_products.LamaProducts);
-                _techDataProducts = new ConcurrentBag<Product>(_products.TechDataProducts);
-                _abProducts = new ConcurrentBag<Product>(_products.AbProducts);
+                //_metBag = new ConcurrentBag<Product>(_products.MetProducts);
+                //_lamaProducts = new ConcurrentBag<Product>(_products.LamaProducts);
+                //_techDataProducts = new ConcurrentBag<Product>(_products.TechDataProducts);
+                //_abProducts = new ConcurrentBag<Product>(_products.AbProducts);
 
 
                 // STEP 3
                 StepChanged?.Invoke(this, 3);
-                RemoveHiddenProducts();
+                //RemoveHiddenProducts();
 
                 // STEP 4
                 StepChanged?.Invoke(this, 4);
 
-                AllPartNumbersDomain allPartNumbers = new AllPartNumbersDomain();
+                //AllPartNumbersDomain allPartNumbers = new AllPartNumbersDomain();
 
-                allPartNumbers.AddPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
-                _allPartNumbers = allPartNumbers.GetAllPartNumbers();
+                //allPartNumbers.AddPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
+                //_allPartNumbers = allPartNumbers.GetAllPartNumbers();
 
-                foreach (var partNumber in _allPartNumbers.Keys)
-                {
-                    ObjectFormatter.WriteLine(partNumber.ToString());
-                }
+                //foreach (var partNumber in _allPartNumbers.Keys)
+                //{
+                //    ObjectFormatter.WriteLine(partNumber.ToString());
+                //}
 
-                ObjectFormatter.Flush();
+                //ObjectFormatter.Flush();
 
                 // STEP 5
                 StepChanged?.Invoke(this, 5);
-                var fillList = new FillListDomain(_metBag, ObjectFormatterSource);
-                _lamaProducts = fillList.FillList(_lamaProducts);
-                _abProducts = fillList.FillList(_abProducts);
-                _techDataProducts = fillList.FillList(_techDataProducts);
+                //var fillList = new FillListDomain(_metBag, ObjectFormatterSource);
+                //_lamaProducts = fillList.FillList(_lamaProducts);
+                //_abProducts = fillList.FillList(_abProducts);
+                //_techDataProducts = fillList.FillList(_techDataProducts);
 
                 // STEP 6
-                StepChanged?.Invoke(this, 6);
-                var setEndOfLive = new EndOfLiveDomain(_metBag, ObjectFormatterSource, _lamaProducts, _abProducts, _techDataProducts);
-                setEndOfLive.SetEndOfLife();
+                //StepChanged?.Invoke(this, 6);
+                //var setEndOfLive = new EndOfLiveDomain(_metBag, ObjectFormatterSource, _lamaProducts, _abProducts, _techDataProducts);
+                //setEndOfLive.SetEndOfLife();
 
                 // STEP 7
                 // Combine products into groups
@@ -129,11 +131,10 @@ namespace MET.Domain.Logic
 
                 // STEP 8 //SolveConflicts();
                 StepChanged?.Invoke(this, 8);
-                _finalList = CombineList();
+                //_finalList = CombineList();
 
                 // STEP 9
                 StepChanged?.Invoke(this, 9);
-                PostGenerateAction();
 
                 // Complete
                 StepChanged?.Invoke(this, int.MaxValue);
@@ -149,44 +150,6 @@ namespace MET.Domain.Logic
                 OnGenerateStateChange?.Invoke(this, OperationStatus.Faild);
                 return false;
             }
-        }
-
-        private async Task PreGenerateAction()
-        {
-            var formatter = ObjectFormatterSource.GetNewInstance();
-
-            var productsToRemove = new HashSet<Product>();
-            foreach (var p in _products.TechDataProducts)
-            {
-                if (p.OryginalnyKodProducenta.Contains("?TN"))
-                {
-                    p.StatusProduktu = false;
-                    p.CenaZakupuNetto = 0;
-                    p.SetCennaNetto(0);
-                    p.Kategoria = "EOL_TN";
-                    productsToRemove.Add(p);
-
-                    formatter.WriteLine("Produkt z oryginalnym kodem producenta: [] posiadał wartość ?TN. Ustawiam Status Produktu, Cene zakupu netto, Cene netto i kategorię. Produkt zostanie również usunięty z listy wejściowej.");
-                    formatter.WriteLine("Produkt po zmianach:");
-                    formatter.WriteObject(p);
-                }
-            }
-
-            formatter.Flush();
-
-            foreach (var p in productsToRemove)
-            {
-                _products.TechDataProducts.Remove(p);
-                _productsOutOfAnalyze.Add(p);
-            }
-
-            await RemoveProductsWithSpecificCode();
-        }
-
-        private async Task RemoveProductsWithSpecificCode()
-        {
-            var filter = new ProductFilterDomain();
-            await filter.RemoveProductsWithSpecificCode(_products);
         }
 
         private void SetWarehouseToZeroIfPriceError()
@@ -210,30 +173,6 @@ namespace MET.Domain.Logic
                 priceError = new PriceErrorDomain(_products.TechDataProducts_Old, _products.TechDataProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
-        }
-
-        
-
-
-
-        private void PostGenerateAction()
-        {
-            foreach (var p in _productsOutOfAnalyze)
-            {
-                _finalList.Add(p);
-            }
-        }
-
-        private void RemoveHiddenProducts()
-        {
-            var hiddenEngine = new HiddenProductsDomain(ObjectFormatterSource);
-
-            _hiddenMetProducts = hiddenEngine.CreateListOfHiddenProducts(_metBag);
-
-            _metBag = hiddenEngine.RemoveHiddenProducts(_metBag);
-            _lamaProducts = hiddenEngine.RemoveHiddenProducts(_lamaProducts);
-            _techDataProducts = hiddenEngine.RemoveHiddenProducts(_techDataProducts);
-            _abProducts = hiddenEngine.RemoveHiddenProducts(_abProducts);
         }
 
         private List<Product> CombineList()
