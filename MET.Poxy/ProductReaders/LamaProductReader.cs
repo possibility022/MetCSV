@@ -169,7 +169,7 @@ namespace MET.Proxy.ProductReaders
                 products.Add(new Product(Provider)
                 {
                     ID = null,
-                    SymbolSAP = SapPrefix + HttpUtility.HtmlDecode(product.Element("KOD").Value),
+                    SymbolSAP = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     OryginalnyKodProducenta = HttpUtility.HtmlDecode(product.Element("PN").Value),
                     KodDostawcy = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     NazwaProduktu = HttpUtility.HtmlDecode(product.Element("NAZEV").Value),

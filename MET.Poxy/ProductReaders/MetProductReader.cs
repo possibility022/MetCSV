@@ -64,7 +64,7 @@ namespace MET.Proxy.ProductReaders
                     products.Add(new Product(Provider)
                     {
                         ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
-                        SymbolSAP = fields[(int)MetCsvProductsColums.SymbolSAP],
+                        SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP]),
                         //ModelProduktu = fields[(int)Met.ModelProduktu],
                         OryginalnyKodProducenta = fields[(int)MetCsvProductsColums.ModelProduktu],
                         NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)MetCsvProductsColums.NazwaProduktu]),
@@ -80,6 +80,20 @@ namespace MET.Proxy.ProductReaders
             }
 
             return products;
+        }
+
+        private string DecodeSapSymbol(string sourceValue)
+        {
+            if (sourceValue.StartsWith("AB"))
+                return sourceValue.Remove(0, "AB".Length);
+
+            if (sourceValue.StartsWith("LAMA"))
+                return sourceValue.Remove(0, "LAMA".Length);
+
+            if (sourceValue.StartsWith("TechData"))
+                return sourceValue.Remove(0, "TechData".Length);
+
+            return sourceValue;
         }
     }
 }

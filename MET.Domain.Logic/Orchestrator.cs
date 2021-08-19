@@ -19,14 +19,16 @@ namespace MET.Domain.Logic
                 new EndOfLiveDomain(),
                 new PriceDomain(),
                 new SourceProductSelector(),
-                new WarehouseStatusDomain()
+                new WarehouseStatusDomain(),
+                new ProductStatusDomain(),
             };
 
             finalProductConstructors = new IFinalProductConstructor[]
             {
                 new CodeAtTheVendor(),
                 new SapNumberDomain(),
-                new OverrideDefaultValuesDomain()
+                new OverrideDefaultValuesDomain(),
+                new ProductStatusDomain(),
             };
         }
 
