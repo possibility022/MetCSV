@@ -65,7 +65,6 @@
     <Compile Include="Comparers\ProductByPartNumberTest.cs" />
     <Compile Include="Comparers\ProductBySapManuHashTest.cs" />
     <Compile Include="EngineTest\CodeAtTheVendorTests.cs" />
-    <Compile Include="EngineTest\HiddenProductsDomainTest.cs" />
     <Compile Include="EngineTest\AllPartNumbersDomainTest.cs" />
     <Compile Include="EngineTest\FillListDomainTest.cs" />
     <Compile Include="EngineTest\EndOfLiveDomainTest.cs" />
