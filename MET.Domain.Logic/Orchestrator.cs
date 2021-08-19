@@ -27,8 +27,10 @@ namespace MET.Domain.Logic
             {
                 new CodeAtTheVendor(),
                 new SapNumberDomain(),
-                new OverrideDefaultValuesDomain(),
+                new EanDomain(),
                 new ProductStatusDomain(),
+
+                new OverrideDefaultValuesDomain(), // this one should be last
             };
         }
 

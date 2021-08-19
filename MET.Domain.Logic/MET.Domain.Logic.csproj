@@ -44,6 +44,7 @@
     <Compile Include="Extensions\ProductGroupExtensions.cs" />
     <Compile Include="FinalListCombineDomain.cs" />
     <Compile Include="GroupsActionExecutors\CodeAtTheVendor.cs" />
+    <Compile Include="GroupsActionExecutors\EanDomain.cs" />
     <Compile Include="GroupsActionExecutors\IdDomain.cs" />
     <Compile Include="GroupsActionExecutors\IFinalProductConstructor.cs" />
     <Compile Include="GroupsActionExecutors\OverrideDefaultValuesDomain.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="HelpMe.cs" />
     <Compile Include="HiddenProductsDomain.cs" />
     <Compile Include="GroupsActionExecutors\IActionExecutor.cs" />
+    <Compile Include="MetCustomProductsDomain.cs" />
     <Compile Include="ProductGroupFactory.cs" />
     <Compile Include="Models\ProductGroup.cs" />
     <Compile Include="Models\Products.cs" />
