@@ -21,30 +21,35 @@ namespace MET.Workflows
         private const string StanMagazynowyHeader = "StanMagazynowy";
         private const string StatusProduktuHeader = "StatusProduktu";
         private const string CenaNettoHeader = "CenaNetto";
+        private const string CzasRealizacjiZamowieniaHeader = "CzasRealizacjiZamowienia";
+        private const string CzasGwarancjiHeader = "CzasGwarancji";
         private const string CenaZakupuNettoHeader = "CenaZakupuNetto";
         private const string UrlZdjeciaHeader = "UrlZdjecia";
         private const string KategoriaHeader = "Kategoria";
         private const string NazwaProduktuHeader = "NazwaProduktu";
         private const string KodProducentaHeader = "KodProducenta";
+        private const string ScieskaKategoriiHeader = "SciezkaKategorii";
         private const string ModelProduktuHeader = "ModelProduktu";
-        private const string KodKreskowy = "KodKreskowy";
+        private const string KodKreskowyHEader = "KodKreskowy";
 
-        IReadOnlyCollection<string> ValuesOrder = new List<string>
+        readonly IReadOnlyCollection<string> valuesOrder = new List<string>
             {
                 IdHeader,
-                SapHeader,
-                KodProducentaHeader,
-                ModelProduktuHeader,
-                KodDostawcyHeader,
                 NazwaProduktuHeader,
-                NazwaProducentaHeader,
-                NazwaDostawcyHeader,
-                StanMagazynowyHeader,
-                StatusProduktuHeader,
                 CenaNettoHeader,
                 CenaZakupuNettoHeader,
-                KodKreskowy,
+                StanMagazynowyHeader,
+                KodDostawcyHeader,
+                SapHeader,
+                ModelProduktuHeader,
+                StatusProduktuHeader,
+                ScieskaKategoriiHeader,
 
+                KodProducentaHeader,
+                NazwaProducentaHeader,
+                NazwaDostawcyHeader,
+
+                KodKreskowyHEader,
             };
 
 
@@ -56,7 +61,7 @@ namespace MET.Workflows
             {
                 using (StreamWriter stream = new StreamWriter(File.Open(path, FileMode.Create), Encoding.GetEncoding("windows-1250")))
                 {
-                    WriteHeader(stream, ValuesOrder);
+                    WriteHeader(stream, valuesOrder);
 
                     stream.WriteLine();
 
@@ -64,7 +69,7 @@ namespace MET.Workflows
                     {
                         AssingToDict(p, ref columns);
 
-                        WriteProduct(stream, columns, ValuesOrder);
+                        WriteProduct(stream, columns, valuesOrder);
                     }
                 }
 
@@ -91,10 +96,13 @@ namespace MET.Workflows
             columns[StanMagazynowyHeader] = p.StanMagazynowy.ToString();
             columns[StatusProduktuHeader] = p.StatusProduktu ? "1" : "0";
             columns[CenaNettoHeader] = p.CenaNetto.ToString();
+            columns[CzasGwarancjiHeader] = "1";
+            columns[CzasRealizacjiZamowieniaHeader] = "2";
+            columns[ScieskaKategoriiHeader] = string.Empty;
             columns[CenaZakupuNettoHeader] = p.CenaZakupuNetto.ToString();
             columns[UrlZdjeciaHeader] = p.UrlZdjecia;
             columns[KategoriaHeader] = p.Kategoria;
-            columns[KodKreskowy] = p.EAN;
+            columns[KodKreskowyHEader] = p.EAN;
         }
 
         private void WriteProduct(StreamWriter writer, Dictionary<string, string> p, IReadOnlyCollection<string> headers)
