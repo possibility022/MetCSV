@@ -8,6 +8,7 @@ namespace MET.Domain.Logic.Models
         public ICollection<Product> AbProducts{ get; set; }
         public ICollection<Product> TechDataProducts{ get; set; }
         public ICollection<Product> LamaProducts{ get; set; }
+        public ICollection<Product> MetCustomProducts{ get; set; }
 
         public ICollection<Product> AbProducts_Old{ get; set; }
         public ICollection<Product> TechDataProducts_Old{ get; set; }

@@ -49,7 +49,7 @@ namespace MET.Proxy.ProductReaders
             CsvReader reader = new CsvReader() { Delimiter = ";" };
 
             IEnumerable<string[]> producents = reader.ReadCsv(path, encoding);
-            
+
             foreach (var fields in producents)
             {
                 ThrowIfCanceled();
@@ -59,24 +59,23 @@ namespace MET.Proxy.ProductReaders
                     linePassCount--;
                     continue;
                 }
-
-                if (fields[(int)MetCsvProductsColums.SymbolSAP].StartsWith("MET") == false)
-                    products.Add(new Product(Provider)
-                    {
-                        ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
-                        SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP]),
-                        //ModelProduktu = fields[(int)Met.ModelProduktu],
-                        OryginalnyKodProducenta = fields[(int)MetCsvProductsColums.ModelProduktu],
-                        NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)MetCsvProductsColums.NazwaProduktu]),
-                        NazwaProducenta = fields[(int)MetCsvProductsColums.NazwaProducenta],
-                        KodDostawcy = fields[(int)MetCsvProductsColums.KodUDostawcy],
-                        StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)MetCsvProductsColums.StatusProduktu])),
-                        UrlZdjecia = fields[(int)MetCsvProductsColums.AdresURLzdjecia],
-                        Hidden = fields[(int)MetCsvProductsColums.Kategoria].StartsWith("_HIDDEN")
-                        //Wszystkie kategorie które zaczynają się 
-                        //_HIDDEN mają być traktowane jak jedna kategoria.
-                        //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
-                    });
+                
+                products.Add(new Product(Provider)
+                {
+                    ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
+                    SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP]),
+                    //ModelProduktu = fields[(int)Met.ModelProduktu],
+                    OryginalnyKodProducenta = fields[(int)MetCsvProductsColums.ModelProduktu],
+                    NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)MetCsvProductsColums.NazwaProduktu]),
+                    NazwaProducenta = fields[(int)MetCsvProductsColums.NazwaProducenta],
+                    KodDostawcy = fields[(int)MetCsvProductsColums.KodUDostawcy],
+                    StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)MetCsvProductsColums.StatusProduktu])),
+                    UrlZdjecia = fields[(int)MetCsvProductsColums.AdresURLzdjecia],
+                    Hidden = fields[(int)MetCsvProductsColums.Kategoria].StartsWith("_HIDDEN")
+                    //Wszystkie kategorie które zaczynają się 
+                    //_HIDDEN mają być traktowane jak jedna kategoria.
+                    //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
+                });
             }
 
             return products;

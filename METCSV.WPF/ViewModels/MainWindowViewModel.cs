@@ -239,11 +239,16 @@ namespace METCSV.WPF.ViewModels
             HelpMe.CalculatePrices(_lama.GetProducts(), lama);
             HelpMe.CalculatePrices(_techData.GetProducts(), td);
 
+            var metProducts = _met.GetProducts();
+            var metProd = new MetCustomProductsDomain();
+            var metCustomProducts = metProd.ModifyList(metProducts);
+
             var products = new Products()
             {
                 AbProducts = _ab.GetProducts(),
                 AbProducts_Old = _ab.LoadOldProducts(),
-                MetProducts = _met.GetProducts(),
+                MetProducts = metProducts,
+                MetCustomProducts = metCustomProducts,
                 TechDataProducts = _techData.GetProducts(),
                 TechDataProducts_Old = _techData.LoadOldProducts(),
                 LamaProducts = _lama.GetProducts(),

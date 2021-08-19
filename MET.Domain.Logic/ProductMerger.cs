@@ -3,10 +3,7 @@ using MET.Domain.Logic.Models;
 using METCSV.Common;
 using METCSV.Common.Formatters;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,16 +11,7 @@ namespace MET.Domain.Logic
 {
     public class ProductMerger
     {
-        private ConcurrentDictionary<string, Product> _hiddenMetProducts;
-
         List<Product> _finalList;
-
-        ConcurrentDictionary<string, byte> _allPartNumbers = new ConcurrentDictionary<string, byte>();
-        
-        ConcurrentBag<Product> _metBag;
-        ConcurrentBag<Product> _lamaProducts;
-        ConcurrentBag<Product> _techDataProducts;
-        ConcurrentBag<Product> _abProducts;
 
         Products _products;
         private readonly int maxiumumPriceDifference;
@@ -111,7 +99,7 @@ namespace MET.Domain.Logic
                 //_techDataProducts = fillList.FillList(_techDataProducts);
 
                 // STEP 6
-                //StepChanged?.Invoke(this, 6);
+                StepChanged?.Invoke(this, 6);
                 //var setEndOfLive = new EndOfLiveDomain(_metBag, ObjectFormatterSource, _lamaProducts, _abProducts, _techDataProducts);
                 //setEndOfLive.SetEndOfLife();
 
@@ -175,19 +163,19 @@ namespace MET.Domain.Logic
             }
         }
 
-        private List<Product> CombineList()
-        {
-            var combinedList = new List<Product>();
-            combinedList.AddRange(_lamaProducts);
-            combinedList.AddRange(_techDataProducts);
-            combinedList.AddRange(_abProducts);
+        //private List<Product> CombineList()
+        //{
+        //    var combinedList = new List<Product>();
+        //    combinedList.AddRange(_lamaProducts);
+        //    combinedList.AddRange(_techDataProducts);
+        //    combinedList.AddRange(_abProducts);
 
-            var endOfLife = _metBag.Where(p => p.Kategoria == EndOfLiveDomain.EndOfLifeCategory);
-            combinedList.AddRange(endOfLife);
+        //    var endOfLife = _metBag.Where(p => p.Kategoria == EndOfLiveDomain.EndOfLifeCategory);
+        //    combinedList.AddRange(endOfLife);
 
-            combinedList.Sort(new ProductSorter());
+        //    combinedList.Sort(new ProductSorter());
 
-            return combinedList;
-        }
+        //    return combinedList;
+        //}
     }
 }
