@@ -9,19 +9,8 @@ namespace MET.Domain.Logic
         {
             var list = new List<Product>();
             
-
             foreach (var productGroup in productGroups)
             {
-
-                if (productGroup.FinalProduct.SymbolSAP == null)
-                {
-                    var x = 0;
-                }
-                if (productGroup.FinalProduct.SymbolSAP?.Contains("WMHHIP0UC098653") == true)
-                {
-                    var a = 0;
-                }
-
                 list.Add(productGroup.FinalProduct);
             }
 

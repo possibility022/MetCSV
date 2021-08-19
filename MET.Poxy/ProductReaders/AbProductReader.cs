@@ -85,7 +85,7 @@ namespace MET.Proxy.ProductReaders
                 products.Add(new Product(Provider)
                 {
                     ID = null,
-                    SymbolSAP = SapPrefix + fields[(int)AbCsvProductsColumns.indeks],
+                    SymbolSAP = fields[(int)AbCsvProductsColumns.indeks],
                     //KodProducenta = fields[(int)AB.indeks_p],
                     //ModelProduktu = fields[(int)AB.indeks_p],
                     OryginalnyKodProducenta = fields[(int)AbCsvProductsColumns.indeks_p],

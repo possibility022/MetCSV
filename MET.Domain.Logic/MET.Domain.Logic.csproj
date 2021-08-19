@@ -54,6 +54,7 @@
     <Compile Include="Comparers\ProductSorter.cs" />
     <Compile Include="EndOfLiveDomain.cs" />
     <Compile Include="FillListDomain.cs" />
+    <Compile Include="GroupsActionExecutors\ProductStatusDomain.cs" />
     <Compile Include="GroupsActionExecutors\SapNumberDomain.cs" />
     <Compile Include="GroupsActionExecutors\SourceProductSelector.cs" />
     <Compile Include="GroupsActionExecutors\WarehouseStatusDomain.cs" />
