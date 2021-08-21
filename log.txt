@@ -1,0 +1,483 @@
+2021-08-21 17:28:00.054 +02:00 [INF] Loaded 5 extensions
+2021-08-21 17:28:01.902 +02:00 [INF] MSBuild registered from C:\Program Files\dotnet\sdk\5.0.302\
+2021-08-21 17:28:02.619 +02:00 [INF] Found Visual Studio v16.10.31424.327 [C:\Programy\VS2019]
+2021-08-21 17:28:02.629 +02:00 [INF] Found Visual Studio v17.0.31606.5 [C:\Program Files\Microsoft Visual Studio\2022\Preview]
+2021-08-21 17:28:05.432 +02:00 [INF] Initializing upgrade step Select an entrypoint
+2021-08-21 17:28:05.436 +02:00 [INF] Setting entrypoint to user selected project: C:\Workspace\MetCSV\METCSV.WPF\METCSV.WPF.csproj
+2021-08-21 17:28:05.449 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:28:05.579 +02:00 [INF] Initializing upgrade step Back up project
+2021-08-21 17:28:26.374 +02:00 [INF] Skipping upgrade step Back up project
+2021-08-21 17:28:26.374 +02:00 [INF] Upgrade step Back up project skipped
+2021-08-21 17:28:32.806 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-08-21 17:28:37.826 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-08-21 17:28:37.829 +02:00 [INF] Converting project file format with try-convert, version 0.9.232202
+2021-08-21 17:28:38.666 +02:00 [INF] [dotnet] C:\Workspace\MetCSV\METCSV.WPF\METCSV.WPF.csproj contains an App.config file. App.config is replaced by appsettings.json in .NET Core. You will need to delete App.config and migrate to appsettings.json if it's applicable to your project.
+2021-08-21 17:28:41.658 +02:00 [INF] [dotnet] Conversion complete!
+2021-08-21 17:28:42.661 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-08-21 17:28:48.062 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-08-21 17:28:50.807 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-08-21 17:28:52.659 +02:00 [INF] Marking package Microsoft.Xaml.Behaviors.Wpf for removal because it appears to be a transitive dependency
+2021-08-21 17:28:52.674 +02:00 [INF] Marking package Prism.Core for removal because it appears to be a transitive dependency
+2021-08-21 17:28:52.678 +02:00 [INF] Marking package System.ValueTuple for removal because it appears to be a transitive dependency
+2021-08-21 17:28:52.684 +02:00 [INF] Marking assembly reference System.Configuration for removal based on package mapping configuration System.Configuration
+2021-08-21 17:28:52.687 +02:00 [INF] Adding package System.Configuration.ConfigurationManager based on package mapping configuration System.Configuration
+2021-08-21 17:28:52.688 +02:00 [INF] Marking assembly reference System.ServiceModel for removal based on package mapping configuration System.ServiceModel
+2021-08-21 17:28:52.691 +02:00 [INF] Adding package System.ServiceModel.Primitives based on package mapping configuration System.ServiceModel
+2021-08-21 17:28:52.691 +02:00 [INF] Adding package System.ServiceModel.Http based on package mapping configuration System.ServiceModel
+2021-08-21 17:28:52.692 +02:00 [INF] Adding package System.ServiceModel.Duplex based on package mapping configuration System.ServiceModel
+2021-08-21 17:28:52.693 +02:00 [INF] Adding package System.ServiceModel.NetTcp based on package mapping configuration System.ServiceModel
+2021-08-21 17:28:52.694 +02:00 [INF] Adding package System.ServiceModel.Security based on package mapping configuration System.ServiceModel
+2021-08-21 17:28:52.694 +02:00 [INF] Adding package System.ServiceModel.Federation based on package mapping configuration System.ServiceModel
+2021-08-21 17:29:01.363 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.241603) needs added
+2021-08-21 17:29:01.372 +02:00 [INF] References to be removed: Operation { Item = System.Configuration, OperationDetails = OperationDetails { Risk = Medium, Details = System.Collections.Generic.List`1[System.String] } }
+Operation { Item = System.ServiceModel, OperationDetails = OperationDetails { Risk = Medium, Details = System.Collections.Generic.List`1[System.String] } }
+2021-08-21 17:29:01.373 +02:00 [INF] Packages to be removed: Operation { Item = Microsoft.Xaml.Behaviors.Wpf, Version=1.1.31, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = Prism.Core, Version=8.1.97, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ValueTuple, Version=4.5.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:29:01.375 +02:00 [INF] Packages to be added: Operation { Item = System.Configuration.ConfigurationManager, Version=5.0.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Primitives, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Http, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Duplex, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.NetTcp, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Security, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Federation, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:29:07.878 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-08-21 17:29:07.881 +02:00 [INF] Removing outdated assembly reference: System.Configuration
+2021-08-21 17:29:07.883 +02:00 [INF] Removing outdated assembly reference: System.ServiceModel
+2021-08-21 17:29:07.884 +02:00 [INF] Removing outdated package reference: Microsoft.Xaml.Behaviors.Wpf, Version=1.1.31
+2021-08-21 17:29:07.886 +02:00 [INF] Removing outdated package reference: Prism.Core, Version=8.1.97
+2021-08-21 17:29:07.887 +02:00 [INF] Removing outdated package reference: System.ValueTuple, Version=4.5.0
+2021-08-21 17:29:07.889 +02:00 [INF] Adding package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-08-21 17:29:07.891 +02:00 [INF] Adding package reference: System.ServiceModel.Primitives, Version=4.8.1
+2021-08-21 17:29:07.892 +02:00 [INF] Adding package reference: System.ServiceModel.Http, Version=4.8.1
+2021-08-21 17:29:07.893 +02:00 [INF] Adding package reference: System.ServiceModel.Duplex, Version=4.8.1
+2021-08-21 17:29:07.894 +02:00 [INF] Adding package reference: System.ServiceModel.NetTcp, Version=4.8.1
+2021-08-21 17:29:07.896 +02:00 [INF] Adding package reference: System.ServiceModel.Security, Version=4.8.1
+2021-08-21 17:29:07.897 +02:00 [INF] Adding package reference: System.ServiceModel.Federation, Version=4.8.1
+2021-08-21 17:29:07.898 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603
+2021-08-21 17:29:13.626 +02:00 [INF] Marking package System.ServiceModel.Primitives for removal because it appears to be a transitive dependency
+2021-08-21 17:29:13.630 +02:00 [INF] Marking package System.ServiceModel.Http for removal because it appears to be a transitive dependency
+2021-08-21 17:29:13.640 +02:00 [INF] Marking package System.ServiceModel.Security for removal because it appears to be a transitive dependency
+2021-08-21 17:29:13.716 +02:00 [INF] Removing outdated package reference: System.ServiceModel.Primitives, Version=4.8.1
+2021-08-21 17:29:13.718 +02:00 [INF] Removing outdated package reference: System.ServiceModel.Http, Version=4.8.1
+2021-08-21 17:29:13.719 +02:00 [INF] Removing outdated package reference: System.ServiceModel.Security, Version=4.8.1
+2021-08-21 17:29:16.734 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-08-21 17:29:19.573 +02:00 [INF] Initializing upgrade step Update TFM
+2021-08-21 17:29:19.700 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:29:19.783 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-08-21 17:29:24.621 +02:00 [INF] Applying upgrade step Update TFM
+2021-08-21 17:29:24.625 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:29:34.508 +02:00 [INF] Updated TFM to net5.0-windows
+2021-08-21 17:29:34.510 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-08-21 17:29:45.338 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-08-21 17:29:47.565 +02:00 [WRN] No version of FontAwesome.WPF found that supports ["net5.0-windows"]; leaving unchanged
+2021-08-21 17:29:48.028 +02:00 [INF] Adding Microsoft.Windows.Compatibility 5.0.2
+2021-08-21 17:29:48.033 +02:00 [INF] Packages to be added: Operation { Item = Microsoft.Windows.Compatibility, Version=5.0.2, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:29:51.681 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-08-21 17:29:51.682 +02:00 [INF] Adding package reference: Microsoft.Windows.Compatibility, Version=5.0.2
+2021-08-21 17:30:00.917 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-08-21 17:30:00.922 +02:00 [INF] Marking package System.Configuration.ConfigurationManager for removal because it appears to be a transitive dependency
+2021-08-21 17:30:01.535 +02:00 [WRN] No version of FontAwesome.WPF found that supports ["net5.0-windows"]; leaving unchanged
+2021-08-21 17:30:01.547 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-08-21 17:30:01.547 +02:00 [INF] Removing outdated package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-08-21 17:30:04.286 +02:00 [WRN] No version of FontAwesome.WPF found that supports ["net5.0-windows"]; leaving unchanged
+2021-08-21 17:30:04.297 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-08-21 17:30:20.817 +02:00 [INF] Initializing upgrade step Add template files
+2021-08-21 17:30:20.824 +02:00 [INF] 0 expected template items needed
+2021-08-21 17:30:20.825 +02:00 [INF] Initializing upgrade step Upgrade app config files
+2021-08-21 17:30:20.864 +02:00 [INF] Found 0 app settings for upgrade: 
+2021-08-21 17:30:20.867 +02:00 [INF] Found 0 connection strings for upgrade: 
+2021-08-21 17:30:20.880 +02:00 [INF] Initializing upgrade step Update source code
+2021-08-21 17:30:20.885 +02:00 [INF] Running analyzers on METCSV.WPF
+2021-08-21 17:30:22.864 +02:00 [INF] Identified 0 diagnostics in project METCSV.WPF
+2021-08-21 17:30:22.897 +02:00 [INF] Initializing upgrade step Move to next project
+2021-08-21 17:30:32.232 +02:00 [INF] Applying upgrade step Move to next project
+2021-08-21 17:30:32.233 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-08-21 17:30:37.637 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:30:37.644 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:30:37.649 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:30:37.649 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:30:37.661 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:30:37.662 +02:00 [INF] Initializing upgrade step Finalize upgrade
+2021-08-21 17:30:37.667 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:30:51.084 +02:00 [INF] Applying upgrade step Finalize upgrade
+2021-08-21 17:30:51.086 +02:00 [INF] Upgrade step Finalize upgrade applied successfully
+2021-08-21 17:30:58.521 +02:00 [INF] Upgrade has completed. Please review any changes.
+2021-08-21 17:30:58.527 +02:00 [INF] No state to save
+2021-08-21 17:31:16.916 +02:00 [INF] Loaded 5 extensions
+2021-08-21 17:31:17.885 +02:00 [INF] MSBuild registered from C:\Program Files\dotnet\sdk\5.0.302\
+2021-08-21 17:31:18.623 +02:00 [INF] Found Visual Studio v16.10.31424.327 [C:\Programy\VS2019]
+2021-08-21 17:31:18.629 +02:00 [INF] Found Visual Studio v17.0.31606.5 [C:\Program Files\Microsoft Visual Studio\2022\Preview]
+2021-08-21 17:31:20.896 +02:00 [INF] Initializing upgrade step Select an entrypoint
+2021-08-21 17:31:20.959 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:31:25.026 +02:00 [INF] Applying upgrade step Select an entrypoint
+2021-08-21 17:31:41.537 +02:00 [INF] Upgrade step Select an entrypoint applied successfully
+2021-08-21 17:31:45.517 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:31:45.525 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:31:45.531 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:31:45.532 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:31:45.559 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:31:56.935 +02:00 [INF] Applying upgrade step Select project to upgrade
+2021-08-21 17:31:56.951 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:32:02.869 +02:00 [INF] Upgrade step Select project to upgrade applied successfully
+2021-08-21 17:32:04.597 +02:00 [INF] Initializing upgrade step Back up project
+2021-08-21 17:32:06.128 +02:00 [INF] Applying upgrade step Back up project
+2021-08-21 17:32:12.373 +02:00 [INF] Backing up C:\Workspace\MetCSV\METCSV.Common to C:\Workspace\MetCSV.backup\METCSV.Common
+2021-08-21 17:32:12.520 +02:00 [INF] Project backed up to C:\Workspace\MetCSV.backup\METCSV.Common
+2021-08-21 17:32:12.524 +02:00 [INF] Upgrade step Back up project applied successfully
+2021-08-21 17:32:13.817 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-08-21 17:32:16.466 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-08-21 17:32:16.469 +02:00 [INF] Converting project file format with try-convert, version 0.9.232202
+2021-08-21 17:32:19.205 +02:00 [INF] [dotnet] Conversion complete!
+2021-08-21 17:32:19.711 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-08-21 17:32:21.325 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-08-21 17:32:26.303 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-08-21 17:32:27.874 +02:00 [INF] Marking assembly reference System.Configuration for removal based on package mapping configuration System.Configuration
+2021-08-21 17:32:27.880 +02:00 [INF] Adding package System.Configuration.ConfigurationManager based on package mapping configuration System.Configuration
+2021-08-21 17:32:27.880 +02:00 [INF] Marking assembly reference System.ServiceModel for removal based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:27.881 +02:00 [INF] Adding package System.ServiceModel.Primitives based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:27.882 +02:00 [INF] Adding package System.ServiceModel.Http based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:27.883 +02:00 [INF] Adding package System.ServiceModel.Duplex based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:27.883 +02:00 [INF] Adding package System.ServiceModel.NetTcp based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:27.884 +02:00 [INF] Adding package System.ServiceModel.Security based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:27.885 +02:00 [INF] Adding package System.ServiceModel.Federation based on package mapping configuration System.ServiceModel
+2021-08-21 17:32:28.674 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.241603) needs added
+2021-08-21 17:32:28.681 +02:00 [INF] References to be removed: Operation { Item = System.Configuration, OperationDetails = OperationDetails { Risk = Medium, Details = System.Collections.Generic.List`1[System.String] } }
+Operation { Item = System.ServiceModel, OperationDetails = OperationDetails { Risk = Medium, Details = System.Collections.Generic.List`1[System.String] } }
+2021-08-21 17:32:28.682 +02:00 [INF] Packages to be added: Operation { Item = System.Configuration.ConfigurationManager, Version=5.0.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Primitives, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Http, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Duplex, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.NetTcp, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Security, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.ServiceModel.Federation, Version=4.8.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:32:47.672 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-08-21 17:32:47.675 +02:00 [INF] Removing outdated assembly reference: System.Configuration
+2021-08-21 17:32:47.677 +02:00 [INF] Removing outdated assembly reference: System.ServiceModel
+2021-08-21 17:32:47.679 +02:00 [INF] Adding package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-08-21 17:32:47.680 +02:00 [INF] Adding package reference: System.ServiceModel.Primitives, Version=4.8.1
+2021-08-21 17:32:47.681 +02:00 [INF] Adding package reference: System.ServiceModel.Http, Version=4.8.1
+2021-08-21 17:32:47.682 +02:00 [INF] Adding package reference: System.ServiceModel.Duplex, Version=4.8.1
+2021-08-21 17:32:47.683 +02:00 [INF] Adding package reference: System.ServiceModel.NetTcp, Version=4.8.1
+2021-08-21 17:32:47.684 +02:00 [INF] Adding package reference: System.ServiceModel.Security, Version=4.8.1
+2021-08-21 17:32:47.685 +02:00 [INF] Adding package reference: System.ServiceModel.Federation, Version=4.8.1
+2021-08-21 17:32:47.686 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603
+2021-08-21 17:32:49.908 +02:00 [INF] Marking package System.ServiceModel.Primitives for removal because it appears to be a transitive dependency
+2021-08-21 17:32:49.911 +02:00 [INF] Marking package System.ServiceModel.Http for removal because it appears to be a transitive dependency
+2021-08-21 17:32:49.915 +02:00 [INF] Marking package System.ServiceModel.Security for removal because it appears to be a transitive dependency
+2021-08-21 17:32:49.934 +02:00 [INF] Removing outdated package reference: System.ServiceModel.Primitives, Version=4.8.1
+2021-08-21 17:32:49.935 +02:00 [INF] Removing outdated package reference: System.ServiceModel.Http, Version=4.8.1
+2021-08-21 17:32:49.936 +02:00 [INF] Removing outdated package reference: System.ServiceModel.Security, Version=4.8.1
+2021-08-21 17:32:52.179 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-08-21 17:32:53.896 +02:00 [INF] Initializing upgrade step Update TFM
+2021-08-21 17:32:53.898 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:32:53.899 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-08-21 17:32:54.990 +02:00 [INF] Applying upgrade step Update TFM
+2021-08-21 17:32:54.993 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:32:57.482 +02:00 [INF] Updated TFM to net5.0-windows
+2021-08-21 17:32:57.483 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-08-21 17:33:02.104 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-08-21 17:33:04.621 +02:00 [INF] Adding Microsoft.Windows.Compatibility 5.0.2
+2021-08-21 17:33:04.629 +02:00 [INF] Packages to be added: Operation { Item = Microsoft.Windows.Compatibility, Version=5.0.2, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:33:05.699 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-08-21 17:33:05.700 +02:00 [INF] Adding package reference: Microsoft.Windows.Compatibility, Version=5.0.2
+2021-08-21 17:33:08.327 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-08-21 17:33:08.332 +02:00 [INF] Marking package System.Configuration.ConfigurationManager for removal because it appears to be a transitive dependency
+2021-08-21 17:33:08.408 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-08-21 17:33:08.409 +02:00 [INF] Removing outdated package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-08-21 17:33:11.058 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-08-21 17:33:12.448 +02:00 [INF] Initializing upgrade step Add template files
+2021-08-21 17:33:12.459 +02:00 [INF] 0 expected template items needed
+2021-08-21 17:33:12.466 +02:00 [INF] Initializing upgrade step Update source code
+2021-08-21 17:33:12.471 +02:00 [INF] Running analyzers on METCSV.Common
+2021-08-21 17:33:13.861 +02:00 [INF] Identified 0 diagnostics in project METCSV.Common
+2021-08-21 17:33:13.901 +02:00 [INF] Initializing upgrade step Move to next project
+2021-08-21 17:33:19.655 +02:00 [INF] Applying upgrade step Move to next project
+2021-08-21 17:33:19.656 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-08-21 17:33:29.026 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:33:29.045 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:33:29.051 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:33:29.059 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:33:29.064 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:33:29.068 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:33:29.069 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:33:29.078 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:33:29.084 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:33:29.088 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:33:31.233 +02:00 [INF] Applying upgrade step Select project to upgrade
+2021-08-21 17:33:31.241 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:33:31.261 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:33:33.889 +02:00 [INF] Upgrade step Select project to upgrade applied successfully
+2021-08-21 17:33:35.207 +02:00 [INF] Initializing upgrade step Back up project
+2021-08-21 17:33:37.827 +02:00 [INF] Skipping upgrade step Back up project
+2021-08-21 17:33:37.828 +02:00 [INF] Upgrade step Back up project skipped
+2021-08-21 17:33:38.910 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-08-21 17:33:39.586 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-08-21 17:33:39.587 +02:00 [INF] Converting project file format with try-convert, version 0.9.232202
+2021-08-21 17:33:42.358 +02:00 [INF] [dotnet] Conversion complete!
+2021-08-21 17:33:42.975 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-08-21 17:33:44.798 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-08-21 17:33:46.211 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-08-21 17:33:48.624 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.241603) needs added
+2021-08-21 17:33:48.626 +02:00 [INF] Packages to be added: Operation { Item = Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:33:50.231 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-08-21 17:33:50.232 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603
+2021-08-21 17:33:52.793 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-08-21 17:33:59.645 +02:00 [INF] Initializing upgrade step Update TFM
+2021-08-21 17:33:59.694 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:33:59.695 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-08-21 17:34:00.620 +02:00 [INF] Applying upgrade step Update TFM
+2021-08-21 17:34:00.622 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:34:03.593 +02:00 [INF] Updated TFM to net5.0-windows
+2021-08-21 17:34:03.594 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-08-21 17:34:04.762 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-08-21 17:34:06.593 +02:00 [INF] Marking package Microsoft.CSharp for removal because it appears to be a transitive dependency
+2021-08-21 17:34:06.597 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-08-21 17:34:06.613 +02:00 [INF] Packages to be removed: Operation { Item = Microsoft.CSharp, Version=4.7.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.Data.DataSetExtensions, Version=4.5.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:34:08.128 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-08-21 17:34:08.130 +02:00 [INF] Removing outdated package reference: Microsoft.CSharp, Version=4.7.0
+2021-08-21 17:34:08.130 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-08-21 17:34:11.064 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-08-21 17:34:12.124 +02:00 [INF] Initializing upgrade step Add template files
+2021-08-21 17:34:12.128 +02:00 [INF] 0 expected template items needed
+2021-08-21 17:34:12.135 +02:00 [INF] Initializing upgrade step Update source code
+2021-08-21 17:34:12.136 +02:00 [INF] Running analyzers on MET.Domain.Logic
+2021-08-21 17:34:12.634 +02:00 [INF] Identified 0 diagnostics in project MET.Domain.Logic
+2021-08-21 17:34:12.662 +02:00 [INF] Initializing upgrade step Move to next project
+2021-08-21 17:34:14.877 +02:00 [INF] Applying upgrade step Move to next project
+2021-08-21 17:34:14.878 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-08-21 17:34:16.338 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:16.412 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:34:16.421 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:16.426 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:34:16.434 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:16.439 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:34:16.440 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:34:16.444 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:34:16.448 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:34:16.458 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:16.464 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:34:17.994 +02:00 [INF] Applying upgrade step Select project to upgrade
+2021-08-21 17:34:18.001 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:34:18.020 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:34:18.042 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:19.823 +02:00 [INF] Upgrade step Select project to upgrade applied successfully
+2021-08-21 17:34:22.719 +02:00 [INF] Initializing upgrade step Back up project
+2021-08-21 17:34:24.030 +02:00 [INF] Applying upgrade step Back up project
+2021-08-21 17:34:26.812 +02:00 [INF] Backing up C:\Workspace\MetCSV\MET.Workflows to C:\Workspace\MetCSV.backup\MET.Workflows
+2021-08-21 17:34:27.082 +02:00 [INF] Project backed up to C:\Workspace\MetCSV.backup\MET.Workflows
+2021-08-21 17:34:27.093 +02:00 [INF] Upgrade step Back up project applied successfully
+2021-08-21 17:34:28.460 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-08-21 17:34:30.690 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-08-21 17:34:30.691 +02:00 [INF] Converting project file format with try-convert, version 0.9.232202
+2021-08-21 17:34:33.554 +02:00 [INF] [dotnet] Conversion complete!
+2021-08-21 17:34:34.320 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-08-21 17:34:37.401 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-08-21 17:34:38.530 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-08-21 17:34:41.162 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.241603) needs added
+2021-08-21 17:34:41.165 +02:00 [INF] Packages to be added: Operation { Item = Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:34:42.201 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-08-21 17:34:42.202 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603
+2021-08-21 17:34:45.037 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-08-21 17:34:47.013 +02:00 [INF] Initializing upgrade step Update TFM
+2021-08-21 17:34:47.051 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:47.111 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-08-21 17:34:48.487 +02:00 [INF] Applying upgrade step Update TFM
+2021-08-21 17:34:48.490 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:34:51.755 +02:00 [INF] Updated TFM to net5.0-windows
+2021-08-21 17:34:51.756 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-08-21 17:34:54.197 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-08-21 17:34:56.251 +02:00 [INF] Marking package Microsoft.CSharp for removal because it appears to be a transitive dependency
+2021-08-21 17:34:56.258 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-08-21 17:34:56.285 +02:00 [INF] Packages to be removed: Operation { Item = Microsoft.CSharp, Version=4.7.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.Data.DataSetExtensions, Version=4.5.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:34:57.248 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-08-21 17:34:57.249 +02:00 [INF] Removing outdated package reference: Microsoft.CSharp, Version=4.7.0
+2021-08-21 17:34:57.250 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-08-21 17:35:00.539 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-08-21 17:35:01.740 +02:00 [INF] Initializing upgrade step Add template files
+2021-08-21 17:35:01.747 +02:00 [INF] 0 expected template items needed
+2021-08-21 17:35:01.754 +02:00 [INF] Initializing upgrade step Update source code
+2021-08-21 17:35:01.754 +02:00 [INF] Running analyzers on MET.Workflows
+2021-08-21 17:35:01.912 +02:00 [INF] Identified 0 diagnostics in project MET.Workflows
+2021-08-21 17:35:01.947 +02:00 [INF] Initializing upgrade step Move to next project
+2021-08-21 17:35:03.449 +02:00 [INF] Applying upgrade step Move to next project
+2021-08-21 17:35:03.451 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-08-21 17:35:06.049 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:06.115 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:35:06.124 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:06.129 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:35:06.137 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:06.142 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:35:06.143 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:35:06.147 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:35:06.152 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:35:06.161 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:06.168 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:06.173 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:35:08.605 +02:00 [INF] Applying upgrade step Select project to upgrade
+2021-08-21 17:35:08.610 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:35:08.632 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:35:08.650 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:08.672 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:12.311 +02:00 [INF] Upgrade step Select project to upgrade applied successfully
+2021-08-21 17:35:13.906 +02:00 [INF] Initializing upgrade step Back up project
+2021-08-21 17:35:15.003 +02:00 [INF] Applying upgrade step Back up project
+2021-08-21 17:35:16.122 +02:00 [INF] Backing up C:\Workspace\MetCSV\MET.Poxy to C:\Workspace\MetCSV.backup\MET.Poxy
+2021-08-21 17:35:16.637 +02:00 [INF] Project backed up to C:\Workspace\MetCSV.backup\MET.Poxy
+2021-08-21 17:35:16.640 +02:00 [INF] Upgrade step Back up project applied successfully
+2021-08-21 17:35:17.543 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-08-21 17:35:18.309 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-08-21 17:35:18.310 +02:00 [INF] Converting project file format with try-convert, version 0.9.232202
+2021-08-21 17:35:18.839 +02:00 [INF] [dotnet] C:\Workspace\MetCSV\MET.Poxy\MET.Poxy.csproj contains a reference to System.Web, which is not supported on .NET Core. You may have significant work ahead of you to fully port this project.
+2021-08-21 17:35:21.077 +02:00 [INF] [dotnet] Conversion complete!
+2021-08-21 17:35:21.986 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-08-21 17:35:24.272 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-08-21 17:35:25.227 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-08-21 17:35:27.498 +02:00 [INF] Marking package MimeKit for removal because it appears to be a transitive dependency
+2021-08-21 17:35:27.500 +02:00 [INF] Marking package Portable.BouncyCastle for removal because it appears to be a transitive dependency
+2021-08-21 17:35:27.501 +02:00 [INF] Marking package System.Buffers for removal because it appears to be a transitive dependency
+2021-08-21 17:35:27.503 +02:00 [INF] Marking assembly reference System.Configuration for removal based on package mapping configuration System.Configuration
+2021-08-21 17:35:27.504 +02:00 [INF] Adding package System.Configuration.ConfigurationManager based on package mapping configuration System.Configuration
+2021-08-21 17:35:28.041 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.241603) needs added
+2021-08-21 17:35:28.044 +02:00 [INF] References to be removed: Operation { Item = System.Configuration, OperationDetails = OperationDetails { Risk = Medium, Details = System.Collections.Generic.List`1[System.String] } }
+2021-08-21 17:35:28.045 +02:00 [INF] Packages to be removed: Operation { Item = MimeKit, Version=2.14.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = Portable.BouncyCastle, Version=1.8.10, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.Buffers, Version=4.5.1, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:35:28.046 +02:00 [INF] Packages to be added: Operation { Item = System.Configuration.ConfigurationManager, Version=5.0.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:35:29.097 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-08-21 17:35:29.098 +02:00 [INF] Removing outdated assembly reference: System.Configuration
+2021-08-21 17:35:29.099 +02:00 [INF] Removing outdated package reference: MimeKit, Version=2.14.0
+2021-08-21 17:35:29.100 +02:00 [INF] Removing outdated package reference: Portable.BouncyCastle, Version=1.8.10
+2021-08-21 17:35:29.101 +02:00 [INF] Removing outdated package reference: System.Buffers, Version=4.5.1
+2021-08-21 17:35:29.102 +02:00 [INF] Adding package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-08-21 17:35:29.103 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603
+2021-08-21 17:35:32.345 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-08-21 17:35:32.934 +02:00 [INF] Initializing upgrade step Update TFM
+2021-08-21 17:35:32.973 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:33.051 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-08-21 17:35:33.915 +02:00 [INF] Applying upgrade step Update TFM
+2021-08-21 17:35:33.917 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:35:38.957 +02:00 [INF] Updated TFM to net5.0-windows
+2021-08-21 17:35:38.958 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-08-21 17:35:41.342 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-08-21 17:35:43.561 +02:00 [INF] Marking package Microsoft.CSharp for removal because it appears to be a transitive dependency
+2021-08-21 17:35:43.571 +02:00 [INF] Marking package System.Data.DataSetExtensions for removal because it appears to be a transitive dependency
+2021-08-21 17:35:43.580 +02:00 [INF] Marking package System.Configuration.ConfigurationManager for removal because it appears to be a transitive dependency
+2021-08-21 17:35:43.591 +02:00 [INF] Marking assembly reference System.Web for removal based on package mapping configuration ASP.NET
+2021-08-21 17:35:43.592 +02:00 [INF] Adding framework reference Microsoft.AspNetCore.App based on package mapping configuration ASP.NET
+2021-08-21 17:35:43.620 +02:00 [INF] References to be removed: Operation { Item = System.Web, OperationDetails = OperationDetails { Risk = Medium, Details = System.Collections.Generic.List`1[System.String] } }
+2021-08-21 17:35:43.621 +02:00 [INF] Packages to be removed: Operation { Item = Microsoft.CSharp, Version=4.7.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.Data.DataSetExtensions, Version=4.5.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+Operation { Item = System.Configuration.ConfigurationManager, Version=5.0.0, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:35:43.622 +02:00 [INF] Framework references to be added: Operation { Item = Microsoft.AspNetCore.App, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:35:44.559 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-08-21 17:35:44.560 +02:00 [INF] Removing outdated assembly reference: System.Web
+2021-08-21 17:35:44.561 +02:00 [INF] Removing outdated package reference: Microsoft.CSharp, Version=4.7.0
+2021-08-21 17:35:44.562 +02:00 [INF] Removing outdated package reference: System.Data.DataSetExtensions, Version=4.5.0
+2021-08-21 17:35:44.562 +02:00 [INF] Removing outdated package reference: System.Configuration.ConfigurationManager, Version=5.0.0
+2021-08-21 17:35:44.564 +02:00 [INF] Adding framework reference: Microsoft.AspNetCore.App
+2021-08-21 17:35:48.420 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-08-21 17:35:49.126 +02:00 [INF] Initializing upgrade step Add template files
+2021-08-21 17:35:49.131 +02:00 [INF] 0 expected template items needed
+2021-08-21 17:35:49.132 +02:00 [INF] Initializing upgrade step Upgrade app config files
+2021-08-21 17:35:49.152 +02:00 [INF] Found 0 app settings for upgrade: 
+2021-08-21 17:35:49.154 +02:00 [INF] Found 0 connection strings for upgrade: 
+2021-08-21 17:35:49.157 +02:00 [INF] 0 web page namespace imports need upgraded: 
+2021-08-21 17:35:49.172 +02:00 [INF] Initializing upgrade step Update source code
+2021-08-21 17:35:49.173 +02:00 [INF] Running analyzers on MET.Poxy
+2021-08-21 17:35:49.581 +02:00 [INF] Identified 3 diagnostics in project MET.Poxy
+2021-08-21 17:35:52.529 +02:00 [INF] Applying upgrade step Apply fix for UA0001: ASP.NET Core projects should not reference ASP.NET namespaces
+2021-08-21 17:35:52.753 +02:00 [INF] Diagnostic UA0001 fixed in C:\Workspace\MetCSV\MET.Poxy\ProductReaders\AbProductReader.cs
+2021-08-21 17:35:52.775 +02:00 [INF] Diagnostic UA0001 fixed in C:\Workspace\MetCSV\MET.Poxy\ProductReaders\LamaProductReader.cs
+2021-08-21 17:35:52.786 +02:00 [INF] Diagnostic UA0001 fixed in C:\Workspace\MetCSV\MET.Poxy\ProductReaders\MetProductReader.cs
+2021-08-21 17:35:52.788 +02:00 [INF] Running analyzers on MET.Poxy
+2021-08-21 17:35:53.070 +02:00 [INF] Identified 0 diagnostics in project MET.Poxy
+2021-08-21 17:35:53.071 +02:00 [INF] Applying upgrade step Update source code
+2021-08-21 17:35:55.312 +02:00 [INF] Upgrade step Update source code applied successfully
+2021-08-21 17:35:55.313 +02:00 [INF] Upgrade step Apply fix for UA0001: ASP.NET Core projects should not reference ASP.NET namespaces applied successfully
+2021-08-21 17:36:01.758 +02:00 [INF] Initializing upgrade step Move to next project
+2021-08-21 17:36:03.482 +02:00 [INF] Applying upgrade step Move to next project
+2021-08-21 17:36:03.483 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-08-21 17:36:06.332 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:06.426 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:06.433 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:06.441 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:06.447 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:06.451 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:06.452 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:36:06.460 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:06.464 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:36:06.469 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:06.478 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:06.485 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:06.490 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:07.673 +02:00 [INF] Applying upgrade step Select project to upgrade
+2021-08-21 17:36:07.678 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:07.699 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:36:07.719 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:07.737 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:07.759 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:11.188 +02:00 [INF] Upgrade step Select project to upgrade applied successfully
+2021-08-21 17:36:12.296 +02:00 [INF] Initializing upgrade step Back up project
+2021-08-21 17:36:13.243 +02:00 [INF] Applying upgrade step Back up project
+2021-08-21 17:36:15.448 +02:00 [INF] Backing up C:\Workspace\MetCSV\Notifications.Wpf to C:\Workspace\MetCSV.backup\Notifications.Wpf
+2021-08-21 17:36:15.538 +02:00 [INF] Project backed up to C:\Workspace\MetCSV.backup\Notifications.Wpf
+2021-08-21 17:36:15.545 +02:00 [INF] Upgrade step Back up project applied successfully
+2021-08-21 17:36:20.039 +02:00 [INF] Initializing upgrade step Convert project file to SDK style
+2021-08-21 17:36:21.037 +02:00 [INF] Applying upgrade step Convert project file to SDK style
+2021-08-21 17:36:21.038 +02:00 [INF] Converting project file format with try-convert, version 0.9.232202
+2021-08-21 17:36:23.051 +02:00 [INF] [dotnet] Conversion complete!
+2021-08-21 17:36:24.143 +02:00 [INF] Project file converted successfully! The project may require additional changes to build successfully against the new .NET target.
+2021-08-21 17:36:26.268 +02:00 [INF] Upgrade step Convert project file to SDK style applied successfully
+2021-08-21 17:36:27.472 +02:00 [INF] Initializing upgrade step Clean up NuGet package references
+2021-08-21 17:36:30.117 +02:00 [INF] Reference to .NET Upgrade Assistant analyzer package (Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, version 0.2.241603) needs added
+2021-08-21 17:36:30.119 +02:00 [INF] Packages to be added: Operation { Item = Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:36:31.218 +02:00 [INF] Applying upgrade step Clean up NuGet package references
+2021-08-21 17:36:31.219 +02:00 [INF] Adding package reference: Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers, Version=0.2.241603
+2021-08-21 17:36:34.609 +02:00 [INF] Upgrade step Clean up NuGet package references applied successfully
+2021-08-21 17:36:35.323 +02:00 [INF] Initializing upgrade step Update TFM
+2021-08-21 17:36:35.324 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:35.325 +02:00 [INF] TFM needs updated to net5.0-windows
+2021-08-21 17:36:36.104 +02:00 [INF] Applying upgrade step Update TFM
+2021-08-21 17:36:36.106 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:39.539 +02:00 [INF] Updated TFM to net5.0-windows
+2021-08-21 17:36:39.540 +02:00 [INF] Upgrade step Update TFM applied successfully
+2021-08-21 17:36:41.036 +02:00 [INF] Initializing upgrade step Update NuGet Packages
+2021-08-21 17:36:44.111 +02:00 [INF] Adding Microsoft.Windows.Compatibility 5.0.2
+2021-08-21 17:36:44.113 +02:00 [INF] Packages to be added: Operation { Item = Microsoft.Windows.Compatibility, Version=5.0.2, OperationDetails = OperationDetails { Risk = None, Details = System.Linq.EmptyPartition`1[System.String] } }
+2021-08-21 17:36:45.144 +02:00 [INF] Applying upgrade step Update NuGet Packages
+2021-08-21 17:36:45.145 +02:00 [INF] Adding package reference: Microsoft.Windows.Compatibility, Version=5.0.2
+2021-08-21 17:36:50.066 +02:00 [INF] Upgrade step Update NuGet Packages applied successfully
+2021-08-21 17:36:51.572 +02:00 [INF] Initializing upgrade step Add template files
+2021-08-21 17:36:51.575 +02:00 [INF] 0 expected template items needed
+2021-08-21 17:36:51.582 +02:00 [INF] Initializing upgrade step Update source code
+2021-08-21 17:36:51.582 +02:00 [INF] Running analyzers on Notifications.Wpf
+2021-08-21 17:36:51.791 +02:00 [INF] Identified 0 diagnostics in project Notifications.Wpf
+2021-08-21 17:36:51.813 +02:00 [INF] Initializing upgrade step Move to next project
+2021-08-21 17:36:54.787 +02:00 [INF] Applying upgrade step Move to next project
+2021-08-21 17:36:54.788 +02:00 [INF] Upgrade step Move to next project applied successfully
+2021-08-21 17:36:56.227 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.351 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:56.356 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.368 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:56.373 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.378 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:56.378 +02:00 [INF] Initializing upgrade step Select project to upgrade
+2021-08-21 17:36:56.385 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:56.390 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\METCSV.Common\METCSV.Common.csproj
+2021-08-21 17:36:56.395 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.402 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.406 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:56.411 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.411 +02:00 [INF] No projects need upgraded for selected entrypoint
+2021-08-21 17:36:56.412 +02:00 [INF] Initializing upgrade step Finalize upgrade
+2021-08-21 17:36:56.422 +02:00 [INF] Recommending TFM net5.0-windows because of dependency on project C:\Workspace\MetCSV\MET.Domain.Logic\MET.Domain.Logic.csproj
+2021-08-21 17:36:56.427 +02:00 [INF] Recommending Windows TFM net5.0-windows because the project either has Windows-specific dependencies or builds to a WinExe
+2021-08-21 17:36:59.865 +02:00 [INF] Applying upgrade step Finalize upgrade
+2021-08-21 17:36:59.866 +02:00 [INF] Upgrade step Finalize upgrade applied successfully
+2021-08-21 17:37:02.198 +02:00 [INF] Upgrade has completed. Please review any changes.
