@@ -15,9 +15,21 @@ namespace MET.Proxy.ProductReaders
     {
         public override Providers Provider => Providers.MET;
 
+        private static bool EncodingInitialized = false;
+
         public MetProductReader(CancellationToken token) : base(token)
         {
             ProviderName = "MET";
+            InitializeEncoding();
+        }
+
+        private static void InitializeEncoding()
+        {
+            if (!EncodingInitialized)
+            {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                EncodingInitialized = true;
+            }
         }
 
         public override IList<Product> GetProducts(string path, string thisPathIsIgnored) => GetMetProducts(path);
