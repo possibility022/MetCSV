@@ -24,7 +24,6 @@ namespace MET.Proxy.ProductReaders
         public LamaProductReader(LamaDownloaderSettings settings, CancellationToken token) : base(token)
         {
             ProviderName = "Lama";
-            SapPrefix = settings.SAPPrefix;
             CsvDelimiter = settings.CsvDelimiter;
             FileEncoding = settings.CsvFileEncoding;
         }
@@ -81,7 +80,7 @@ namespace MET.Proxy.ProductReaders
 
                 products.Add(new Product(Provider)
                 {
-                    SymbolSAP = SapPrefix + fields[4],//nr kat
+                    SymbolSAP = fields[4],//nr kat
                     NazwaProducenta = fields[16]
                 });
             }

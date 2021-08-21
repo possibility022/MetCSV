@@ -22,7 +22,6 @@ namespace MET.Proxy.ProductReaders
         public AbProductReader(AbDownloaderSettings settings, CancellationToken token) : base(token)
         {
             ProviderName = "AB";
-            SapPrefix = settings.SAPPrefix;
             CsvFileEncoding = settings.CsvFileEncoding;
             CsvDelimiter = settings.CsvDelimiter;
         }

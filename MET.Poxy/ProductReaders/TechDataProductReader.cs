@@ -20,7 +20,6 @@ namespace MET.Proxy.ProductReaders
         public TechDataProductReader(TechDataDownloaderSettings settings, CancellationToken token) : base(token)
         {
             ProviderName = "TechData";
-            SapPrefix = settings.SAPPrefix;
             CsvDelimiter = settings.CsvDelimiter;
         }
 

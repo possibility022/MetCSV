@@ -35,8 +35,6 @@ namespace MET.Proxy.ProductReaders
 
         public abstract Providers Provider { get; }
 
-        public string SapPrefix { get; protected set; }
-
         public ProductReaderBase(CancellationToken token)
         {
             _token = token;
