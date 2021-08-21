@@ -16,8 +16,6 @@ namespace MET.Proxy.Interfaces
 
         string ProviderName { get; }
 
-        string SapPrefix { get; }
-
         Providers Provider { get; }
     }
 }
