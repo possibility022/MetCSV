@@ -29,6 +29,7 @@ namespace MET.Domain.Logic
                 new SapNumberDomain(),
                 new EanDomain(),
                 new ProductStatusDomain(),
+                new CopyPropertiesValues(),
 
                 new OverrideDefaultValuesDomain(), // this one should be last
             };
@@ -67,6 +68,12 @@ namespace MET.Domain.Logic
             var filter = new ProductFilterDomain(objectFormatter);
             await filter.RemoveProductsWithSpecificCode(lists);
             var groupedProducts = GroupProducts();
+
+            foreach (var groupedProduct in groupedProducts)
+            {
+                ExecuteActions(groupedProduct);
+            }
+
             var results = Parallel.ForEach(groupedProducts, ExecuteActions);
             productGroups = groupedProducts;
         }

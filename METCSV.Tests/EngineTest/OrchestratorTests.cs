@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MET.Domain;
 using MET.Domain.Logic;
+using MET.Proxy.ProductReaders;
 using METCSV.Common;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace METCSV.UnitTests.EngineTest
 {
@@ -42,6 +46,28 @@ namespace METCSV.UnitTests.EngineTest
 
             workOnList = new List<Product>(finalList);
         }
+
+        //[TestMethod]
+        //public void Test()
+        //{
+        //    var file = @"Repository\metproducts.json";
+        //    JArray ja;
+            
+        //    using (var reader = new JsonTextReader(new StreamReader(file)))
+        //    {
+        //        ja = (JArray)JArray.ReadFrom(reader);
+
+        //        foreach (var jt in ja)
+        //        {
+        //            var jo = (JObject)jt;
+        //            var val = jt["SymbolSAP"].Value<string>();
+        //            var newVal = MetProductReader.DecodeSapSymbol(val);
+        //            jt["SymbolSAP"] = newVal;
+        //        }
+        //    }
+
+        //    File.WriteAllText(file, ja.ToString(Formatting.Indented));
+        //}
 
 
         // TODO implement
