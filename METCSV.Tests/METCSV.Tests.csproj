@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
+    <PackageReference Include="coverlet.collector" Version="3.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj" />
+    <ProjectReference Include="..\MET.Poxy\MET.Poxy.csproj" />
+    <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj" />
+    <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj" />
+    <ProjectReference Include="..\METCSV.WPF\METCSV.WPF.csproj" />
+    <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Repository\abproducts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Repository\FilesWithDifferentCreationDate\TestFilePrefix_23.03.2019.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Repository\lamaproducts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Repository\metproducts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Repository\techjDataproducts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
