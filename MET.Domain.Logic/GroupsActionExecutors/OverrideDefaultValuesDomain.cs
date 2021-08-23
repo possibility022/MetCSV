@@ -51,7 +51,8 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             }
             else if (type == StringType)
             {
-                return (string)value == default;
+                var v = (string)value;
+                return v is null or "";
             }
             else if (type == BoolType)
             {
