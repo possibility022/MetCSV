@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace MET.Domain
+namespace MET.Data.Models
 {
     [Serializable]
     public class Product

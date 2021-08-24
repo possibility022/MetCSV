@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MET.Data.Models;
 using METCSV.Common.Formatters;
 
 namespace MET.Domain.Logic.Models

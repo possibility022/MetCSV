@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MET.Data.Models;
 using MET.Domain.Logic.Models;
 
 namespace MET.Domain.Logic.GroupsActionExecutors

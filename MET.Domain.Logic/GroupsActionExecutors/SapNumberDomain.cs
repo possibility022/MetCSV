@@ -1,4 +1,6 @@
-﻿namespace MET.Domain.Logic.GroupsActionExecutors
+﻿using MET.Data.Models;
+
+namespace MET.Domain.Logic.GroupsActionExecutors
 {
     public class SapNumberDomain : IFinalProductConstructor
     {

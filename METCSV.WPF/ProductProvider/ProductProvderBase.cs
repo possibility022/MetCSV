@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Proxy;
 using MET.Proxy.Interfaces;

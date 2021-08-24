@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MET.Data.Models;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;

@@ -1,5 +1,6 @@
 ﻿using MET.Domain;
 using System.Collections.Generic;
+using MET.Data.Models;
 
 namespace METCSV.WPF.Models
 {

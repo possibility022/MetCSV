@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using MET.Data.Models;
 
 namespace MET.Domain.Logic.GroupsActionExecutors
 {

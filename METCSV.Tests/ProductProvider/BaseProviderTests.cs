@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using MET.Data.Models;
 using MET.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

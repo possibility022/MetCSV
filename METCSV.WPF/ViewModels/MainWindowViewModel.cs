@@ -17,6 +17,7 @@ using AutoUpdaterDotNET;
 using Notifications.Wpf;
 using MET.Domain.Logic.Models;
 using System.IO;
+using MET.Data.Models;
 
 namespace METCSV.WPF.ViewModels
 {

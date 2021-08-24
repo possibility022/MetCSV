@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Proxy.Configuration;
 using MET.Workflows;

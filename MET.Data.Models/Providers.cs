@@ -1,4 +1,4 @@
-﻿namespace MET.Domain
+﻿namespace MET.Data.Models
 {
     public enum Providers
     {

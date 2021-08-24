@@ -3,6 +3,7 @@ using METCSV.WPF.Interfaces;
 using METCSV.WPF.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MET.Data.Models;
 
 namespace METCSV.WPF.Helpers
 {
