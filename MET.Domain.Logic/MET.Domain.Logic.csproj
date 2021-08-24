@@ -5,6 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MET.Data.Models\MET.Data.Models.csproj" />
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj" />
   </ItemGroup>
   <ItemGroup>

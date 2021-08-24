@@ -12,8 +12,9 @@ namespace MET.Domain.Logic
     {
         public Orchestrator(bool ignoreIdsProblems)
         {
-            groupExecutors = new IActionExecutor[] 
+            groupExecutors = new IActionExecutor[]
             {
+                new NewProductSetter(),
                 new ProductNameDomain(),
                 new IdDomain(ignoreDuplicates: ignoreIdsProblems),
                 new EndOfLiveDomain(),
@@ -45,7 +46,8 @@ namespace MET.Domain.Logic
         private readonly IObjectFormatterConstructor<object> objectFormatter;
         private ICollection<Product>[] lists;
         private ICollection<Product> metProducts;
-        private IReadOnlyCollection<ProductGroup> productGroups;
+        private IReadOnlyCollection<ProductGroup> finalGroups;
+        private IReadOnlyCollection<ProductGroup> internalList;
 
         private readonly IActionExecutor[] groupExecutors;
         private readonly IFinalProductConstructor[] finalProductConstructors;
@@ -67,18 +69,19 @@ namespace MET.Domain.Logic
         {
             var filter = new ProductFilterDomain(objectFormatter);
             await filter.RemoveProductsWithSpecificCode(lists);
-            var groupedProducts = GroupProducts();
+            
+            internalList ??= GroupProducts();
 
-            foreach (var groupedProduct in groupedProducts)
+            foreach (var groupedProduct in internalList)
             {
                 ExecuteActions(groupedProduct);
             }
 
-            var results = Parallel.ForEach(groupedProducts, ExecuteActions);
-            productGroups = groupedProducts;
+            var results = Parallel.ForEach(internalList, ExecuteActions);
+            finalGroups = internalList;
         }
 
-        public IReadOnlyCollection<ProductGroup> GetGeneratedProductGroups() => productGroups;
+        public IReadOnlyCollection<ProductGroup> GetGeneratedProductGroups() => finalGroups;
 
         private void ExecuteActions(ProductGroup productGroup)
         {
