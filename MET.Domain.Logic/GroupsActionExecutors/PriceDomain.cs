@@ -14,6 +14,11 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
 
+        public PriceDomain()
+        {
+            
+        }
+
         private Product SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
         {
             if (products == null)
