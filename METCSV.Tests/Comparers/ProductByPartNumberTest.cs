@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Domain.Logic.Comparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

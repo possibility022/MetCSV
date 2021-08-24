@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Threading;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Proxy.Configuration;
 using METCSV.Common;

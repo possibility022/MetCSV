@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Domain.Logic.GroupsActionExecutors;
 

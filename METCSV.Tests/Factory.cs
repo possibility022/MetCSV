@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using MET.Data.Models;
 
 namespace METCSV.UnitTests
 {

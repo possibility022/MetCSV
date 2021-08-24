@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using MET.Domain;
 using System.Threading;
+using MET.Data.Models;
 using MET.Proxy.Configuration;
 using METCSV.Common;
 

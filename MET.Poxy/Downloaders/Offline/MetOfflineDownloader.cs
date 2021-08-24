@@ -1,4 +1,5 @@
-﻿using MET.Domain;
+﻿using MET.Data.Models;
+using MET.Domain;
 namespace MET.Proxy.Offline
 {
     public class MetOfflineDownloader : DownloaderBase

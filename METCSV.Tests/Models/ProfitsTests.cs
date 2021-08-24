@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using MET.Data.Models;
 using MET.Domain;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;

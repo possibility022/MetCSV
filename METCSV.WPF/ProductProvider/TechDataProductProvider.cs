@@ -3,6 +3,7 @@ using MET.Proxy;
 using MET.Proxy.Offline;
 using MET.Proxy.ProductReaders;
 using System.Threading;
+using MET.Data.Models;
 using MET.Proxy.Interfaces;
 
 namespace METCSV.WPF.ProductProvider

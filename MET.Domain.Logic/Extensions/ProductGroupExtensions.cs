@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MET.Data.Models;
 using MET.Domain.Logic.Models;
 
 namespace MET.Domain.Logic.Extensions

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using MET.Data.Models;
 
 namespace METCSV.WPF.ViewModels
 {

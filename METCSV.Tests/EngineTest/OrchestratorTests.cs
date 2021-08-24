@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Domain.Logic;
 using MET.Proxy.ProductReaders;

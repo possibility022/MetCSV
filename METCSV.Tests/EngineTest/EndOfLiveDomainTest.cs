@@ -1,4 +1,5 @@
-﻿using MET.Domain;
+﻿using MET.Data.Models;
+using MET.Domain;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Extensions;
 using MET.Domain.Logic.Models;

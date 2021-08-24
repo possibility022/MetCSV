@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Proxy;
 using MET.Proxy.Interfaces;

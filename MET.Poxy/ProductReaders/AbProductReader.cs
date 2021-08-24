@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Web;
+using MET.Data.Models;
 using MET.Domain;
 using MET.Proxy.Configuration;
 using MET.Proxy.Enums;

@@ -9,7 +9,7 @@ namespace MET.Data.Models.Profits
 
         public string Category { get; set; }
 
-        public MET.Domain.Providers Provider { get; set; }
+        public Providers Provider { get; set; }
 
         public double Profit { get; set; }
     }

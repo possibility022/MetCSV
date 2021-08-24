@@ -1,4 +1,5 @@
-﻿using MET.Domain;
+﻿using MET.Data.Models;
+using MET.Domain;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;

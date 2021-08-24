@@ -1,4 +1,5 @@
-﻿using MET.Domain;
+﻿using MET.Data.Models;
+using MET.Domain;
 using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MET.Domain.Logic.GroupsActionExecutors;

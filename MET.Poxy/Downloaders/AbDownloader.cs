@@ -10,6 +10,7 @@ using MET.Proxy.Configuration;
 using METCSV.Common;
 using System.IO.Compression;
 using MailKit.Net.Pop3;
+using MET.Data.Models;
 using MimeKit;
 
 namespace MET.Proxy
