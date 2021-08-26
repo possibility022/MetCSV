@@ -1,4 +1,7 @@
-﻿using MET.Data.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MET.Data.Models;
+using MET.Data.Models.Profits;
 using MET.Domain;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
@@ -16,17 +19,20 @@ namespace METCSV.UnitTests.EngineTest
 
         private ProductGroup productGroup;
 
+        private const string PartNumber = "A_Producent";
+
         [TestInitialize]
         public void InitializeData()
         {
             priceDomain = new PriceDomain();
-            productGroup = new ProductGroup(null, _formatter);
+            productGroup = new ProductGroup(PartNumber, _formatter);
 
             productGroup.AddVendorProduct(new Product(Providers.AB)
             {
                 ID = 1,
                 SymbolSAP = "ABC",
                 NazwaProducenta = "Producent",
+                Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 1,
                 CenaZakupuNetto = 10
@@ -36,6 +42,7 @@ namespace METCSV.UnitTests.EngineTest
                 ID = 1,
                 SymbolSAP = "ABC",
                 NazwaProducenta = "Producent",
+                Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 0,
                 CenaZakupuNetto = 4
@@ -45,6 +52,7 @@ namespace METCSV.UnitTests.EngineTest
                 ID = 1,
                 SymbolSAP = "ABC",
                 NazwaProducenta = "Producent",
+                Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 0,
                 CenaZakupuNetto = 5
@@ -54,6 +62,7 @@ namespace METCSV.UnitTests.EngineTest
                 ID = 1,
                 SymbolSAP = "ABC",
                 NazwaProducenta = "Producent",
+                Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 1,
                 CenaZakupuNetto = 6
@@ -155,5 +164,81 @@ namespace METCSV.UnitTests.EngineTest
             // Assert
             Assert.AreEqual(productGroup.VendorProducts[1], productGroup.CheapestProduct);
         }
+
+
+
+        [TestMethod]
+        public void CalculatePrice_UseDefault()
+        {
+            priceDomain.SetDefaultProfit(0.2);
+
+            priceDomain.ExecuteAction(productGroup);
+
+            foreach (var productGroupVendorProduct in productGroup.VendorProducts)
+            {
+                Assert.AreEqual(productGroupVendorProduct.CenaZakupuNetto * 0.2, productGroupVendorProduct.CenaNetto);
+            }
+        }
+
+        [TestMethod]
+        public void CalculatePrice_UseCategory()
+        {
+            priceDomain.SetProfits(
+                new List<CategoryProfit>()
+            {
+                    new CategoryProfit()
+                    {
+                        Category = "Kategoria",
+                        Provider = Providers.AB,
+                        Profit = 0.5,
+                        Id = 1
+                    }
+            },
+            new List<CustomProfit>()
+            {
+                
+            });
+
+            priceDomain.ExecuteAction(productGroup);
+
+            var prod = productGroup.VendorProducts.Where(r => r.Kategoria == "Kategoria");
+
+            foreach (var product in prod)
+            {
+                Assert.AreEqual(product.CenaZakupuNetto * 0.5, product.CenaNetto);
+            }
+        }
+
+        [TestMethod]
+        public void CalculatePrice_CustomProfitHasPriority()
+        {
+            priceDomain.SetProfits(
+                new List<CategoryProfit>()
+                {
+                    new CategoryProfit()
+                    {
+                        Category = "Kategoria",
+                        Provider = Providers.AB,
+                        Profit = 0.5,
+                        Id = 1
+                    }
+                },
+                new List<CustomProfit>()
+                {
+                    new CustomProfit()
+                    {
+                        PartNumber = PartNumber,
+                        Profit = 0.3
+                    }
+                });
+
+            priceDomain.ExecuteAction(productGroup);
+
+            foreach (var product in productGroup.VendorProducts)
+            {
+                Assert.AreEqual(product.CenaZakupuNetto * 0.3, product.CenaNetto);
+            }
+        }
+
     }
 }
