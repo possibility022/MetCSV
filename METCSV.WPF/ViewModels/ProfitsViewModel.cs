@@ -19,6 +19,7 @@ namespace METCSV.WPF.ViewModels
     {
         private ObservableCollection<Profits> _profitsCollection;
         private Profits _selectedProfits;
+        private ObservableCollection<EditableDictionaryKey<string, double>> _customProfits;
         private ObservableCollection<EditableDictionaryKey<string, double>> _values;
         private string _errorText;
         private Visibility _errorTextVisibility = Visibility.Hidden;
@@ -60,6 +61,12 @@ namespace METCSV.WPF.ViewModels
         {
             get => _values;
             set => SetProperty(ref _values, value);
+        }
+        
+        public ObservableCollection<EditableDictionaryKey<string, double>> CustomProfits
+        {
+            get => _customProfits;
+            set => SetProperty(ref _customProfits, value);
         }
 
         public ProfitsViewModel()
