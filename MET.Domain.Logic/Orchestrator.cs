@@ -13,13 +13,15 @@ namespace MET.Domain.Logic
     {
         public Orchestrator(bool ignoreIdsProblems)
         {
+            this.PriceDomain = new PriceDomain();
+
             groupExecutors = new IActionExecutor[]
             {
                 new NewProductSetter(),
                 new ProductNameDomain(),
                 new IdDomain(ignoreDuplicates: ignoreIdsProblems),
                 new EndOfLiveDomain(),
-                new PriceDomain(),
+                PriceDomain,
                 new SourceProductSelector(),
                 new WarehouseStatusDomain(),
                 new ProductStatusDomain(),
@@ -50,6 +52,8 @@ namespace MET.Domain.Logic
         private IReadOnlyCollection<ProductGroup> finalGroups;
         private IReadOnlyCollection<ProductGroup> internalList;
 
+        private PriceDomain PriceDomain { get; }
+
         private readonly IActionExecutor[] groupExecutors;
         private readonly IFinalProductConstructor[] finalProductConstructors;
 
@@ -70,7 +74,7 @@ namespace MET.Domain.Logic
         {
             var filter = new ProductFilterDomain(objectFormatter);
             await filter.RemoveProductsWithSpecificCode(lists);
-            
+
             internalList ??= GroupProducts();
 
             foreach (var groupedProduct in internalList)
