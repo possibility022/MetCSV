@@ -43,13 +43,6 @@
                     </Grid.RowDefinitions>
 
                     <Label
-                        Grid.Row="0"
-                        Background="Red"
-                        Content="{Binding ErrorText}"
-                        FontSize="13"
-                        Visibility="{Binding ErrorTextVisibility}" />
-
-                    <Label
                         Grid.Row="1"
                         Content="{Binding InfoText}"
                         FontSize="22" />

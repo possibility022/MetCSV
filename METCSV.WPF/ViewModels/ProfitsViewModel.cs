@@ -1,35 +1,34 @@
-﻿using MET.Domain;
-using METCSV.WPF.Helpers;
+﻿using METCSV.WPF.Helpers;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
-using METCSV.WPF.Workflows;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using MET.Data.Models;
 
 namespace METCSV.WPF.ViewModels
 {
     internal class ProfitsViewModel : BindableBase
     {
-        private ObservableCollection<Profits> _profitsCollection;
-        private Profits _selectedProfits;
-        private ObservableCollection<EditableDictionaryKey<string, double>> _customProfits;
-        private ObservableCollection<EditableDictionaryKey<string, double>> _values;
-        private string _errorText;
-        private Visibility _errorTextVisibility = Visibility.Hidden;
+        public ProfitsViewModel()
+        {
+            profitsCollection = new ObservableCollection<Profits>();
+            valuesCache = new Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>>();
+        }
 
-        private Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>> _valuesCache;
+        private ObservableCollection<Profits> profitsCollection;
+        private Profits selectedProfits;
+        private Profits customProfits;
+        private ObservableCollection<EditableDictionaryKey<string, double>> customProfitsCollection = new();
+        private ObservableCollection<EditableDictionaryKey<string, double>> values;
+
+        private readonly Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>> valuesCache;
 
         public ObservableCollection<Profits> ProfitsCollections
         {
-            get => _profitsCollection;
-            set => SetProperty(ref _profitsCollection, value);
+            get => profitsCollection;
+            set => SetProperty(ref profitsCollection, value);
         }
 
         public string InfoText
@@ -37,21 +36,17 @@ namespace METCSV.WPF.ViewModels
             get => $"Edytujesz marże dla: {SelectedProfits?.Provider}.";
         }
 
-        public string ErrorText { get => _errorText; private set => SetProperty(ref _errorText, value); }
-
-        public Visibility ErrorTextVisibility { get => _errorTextVisibility; set => SetProperty(ref _errorTextVisibility, value); }
-
         public Profits SelectedProfits
         {
-            get => _selectedProfits;
+            get => selectedProfits;
             set
             {
                 SaveCurrentProfits();
-                SetProperty(ref _selectedProfits, value);
+                SetProperty(ref selectedProfits, value);
                 if (value != null)
                 {
                     CacheValues();
-                    Values = _valuesCache[value];
+                    Values = valuesCache[value];
                 }
                 RaisePropertyChanged(nameof(InfoText));
             }
@@ -59,28 +54,43 @@ namespace METCSV.WPF.ViewModels
 
         public ObservableCollection<EditableDictionaryKey<string, double>> Values
         {
-            get => _values;
-            set => SetProperty(ref _values, value);
+            get => values;
+            set => SetProperty(ref values, value);
         }
         
         public ObservableCollection<EditableDictionaryKey<string, double>> CustomProfits
         {
-            get => _customProfits;
-            set => SetProperty(ref _customProfits, value);
-        }
-
-        public ProfitsViewModel()
-        {
-            _profitsCollection = new ObservableCollection<Profits>();
-            _errorTextVisibility = Visibility.Hidden;
-            _valuesCache = new Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>>();
-            LoadFromFiles();
+            get => customProfitsCollection;
+            set => SetProperty(ref customProfitsCollection, value);
         }
 
         public void AddProfitsCollection(Profits profits)
         {
             ProfitsCollections.Add(profits);
             RaisePropertyChanged(nameof(ProfitsCollections));
+        }
+
+        public void AddCustomProfits(Profits profits)
+        {
+            this.customProfits = profits;
+            foreach (var profitsValue in profits.Values)
+            {
+                CustomProfits.Add(new EditableDictionaryKey<string, double>(profitsValue.Key, profitsValue.Value));
+            }
+
+            SaveCustomProfits();
+        }
+
+        public List<Profits> GetCategoryProfits()
+        {
+            SaveCurrentProfits();
+            return new List<Profits>(profitsCollection);
+        }
+
+        public Profits GetCustomProfits()
+        {
+            SaveCustomProfits();
+            return customProfits;
         }
 
         private Profits GetAlreadyExistingProfits(Providers provider)
@@ -105,12 +115,6 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
-        private void CacheValues()
-        {
-            if (SelectedProfits != null && _valuesCache.ContainsKey(SelectedProfits) == false)
-                _valuesCache.Add(SelectedProfits, CustomConvert.ToObservableCollection(SelectedProfits.Values));
-        }
-
         private void SaveCurrentProfits()
         {
             if (Values != null && SelectedProfits != null)
@@ -119,83 +123,15 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
-        public void SaveAllProfits()
+        private void SaveCustomProfits()
         {
-            SaveCurrentProfits();
-            foreach (var val in _valuesCache)
-            {
-                val.Key.SetNewProfits(val.Value);
-            }
-
-            SaveAllToFile();
+            customProfits.SetNewProfits(customProfitsCollection);
         }
 
-        private bool SaveAllToFile()
+        private void CacheValues()
         {
-            try
-            {
-                foreach (var prof in ProfitsCollections)
-                {
-                    ProfitsIO.SaveToFile(prof);
-                }
-            }
-            catch (IOException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public void LoadFromFiles()
-        {
-            ProfitsCollections.Clear();
-            SelectedProfits = null;
-
-            string message = string.Empty;
-            var loadingDoneWithoutErrors = LoadFromFiles(out message);
-
-            if (loadingDoneWithoutErrors == false)
-            {
-                ErrorText = message;
-                ErrorTextVisibility = Visibility.Visible;
-            }
-            else
-            {
-                ErrorTextVisibility = Visibility.Hidden;
-            }
-        }
-
-        private bool LoadFromFiles(out string message)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (Providers provider in Enum.GetValues(typeof(Providers)))
-            {
-                if (provider == Providers.None || provider == Providers.MET)
-                    continue;
-
-
-                var file = $"{provider}{App.ProfitsFileExtension}";
-
-                if (File.Exists(file))
-                {
-                    ProfitsCollections.Add(ProfitsIO.LoadFromFile(provider));
-                }
-                else
-                {
-                    sb.AppendLine($@"Nie znalazłem pliku z zapisanymi marżami dla dostawcy: {provider}");
-                    sb.AppendLine($@"Oczekuję pliku tutaj: {Path.GetFullPath(file)}");
-                }
-            }
-
-            if (sb.Length > 0)
-            {
-                sb.AppendLine(@"Możesz wprowadzić nowe wartości lub spróbować wkleić plik do odpowiedniego folderu. Jeśli program będzie kontunuował to użyje on domyślnych wartości marży.");
-            }
-
-            message = sb.ToString();
-
-            return sb.Length == 0;
+            if (SelectedProfits != null && valuesCache.ContainsKey(SelectedProfits) == false)
+                valuesCache.Add(SelectedProfits, CustomConvert.ToObservableCollection(SelectedProfits.Values));
         }
 
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using MET.Data.Models;
 using MET.Data.Models.Profits;
+using Microsoft.EntityFrameworkCore;
 
 namespace MET.Data.Storage
 {
@@ -26,6 +28,9 @@ namespace MET.Data.Storage
             {
                 throw new DataException("We should not have two records.");
             }
+
+            if (categoryProfit.Provider == Providers.MET || categoryProfit.Provider == Providers.None)
+                throw new Exception("Cannot set category profits for this provider: " + categoryProfit.Provider);
 
             if (categoryProfits.Count == 1)
             {
@@ -64,6 +69,16 @@ namespace MET.Data.Storage
             }
 
             context.SaveChanges();
+        }
+
+        public IQueryable<CustomProfit> GetCustomProfits()
+        {
+            return context.CustomProfits;
+        }
+
+        public IQueryable<CategoryProfit> GetCategoryProfits()
+        {
+            return context.CategoryProfits;
         }
 
         private void ReleaseUnmanagedResources()
