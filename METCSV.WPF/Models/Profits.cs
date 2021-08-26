@@ -1,23 +1,21 @@
-﻿using MET.Domain;
-using METCSV.WPF.ProductProvider;
+﻿using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Linq;
 using MET.Data.Models;
 
 namespace METCSV.WPF.Models
 {
     public class Profits : BindableBase
     {
-        private double _defaultProfit = 0.1;
-        private HashSet<string> _allProviders;
-        private Dictionary<string, double> _values = new Dictionary<string, double>();
+        private double defaultProfit = 0.1;
+        private Dictionary<string, double> values = new();
 
         public Providers Provider { get; }
 
-        public IReadOnlyDictionary<string, double> Values { get => _values; }
+        public IReadOnlyDictionary<string, double> Values { get => values; }
 
-        public double DefaultProfit { get => _defaultProfit; set => SetProperty(ref _defaultProfit, value); }
-
+        public double DefaultProfit { get => defaultProfit; set => SetProperty(ref defaultProfit, value); }
         public Profits(Providers provider)
         {
             Provider = provider;
@@ -30,24 +28,27 @@ namespace METCSV.WPF.Models
         /// <param name="newValues">The new values.</param>
         public void SetNewProfits(IEnumerable<EditableDictionaryKey<string, double>> newValues)
         {
-            foreach(var newValue in newValues)
-            {
-                if (newValue.Value == _defaultProfit)
-                {
-                    if (_values.ContainsKey(newValue.Key))
-                    {
-                        _values.Remove(newValue.Key);
-                    }
-                }
+            SetProfit(newValues.Select(r => new KeyValuePair<string,double>(r.Key, r.Value)));
+        }
 
-                if (_values.ContainsKey(newValue.Key) == false)
+        public void SetNewProfit(string key, double profitValue)
+        {
+            if (profitValue == defaultProfit)
+            {
+                if (values.ContainsKey(key))
                 {
-                    _values.Add(newValue.Key, newValue.Value);
+                    values.Remove(key);
+                    return;
                 }
-                else
-                {
-                    _values[newValue.Key] = newValue.Value;
-                }
+            }
+
+            if (values.ContainsKey(key) == false)
+            {
+                values.Add(key, profitValue);
+            }
+            else
+            {
+                values[key] = profitValue;
             }
         }
 
@@ -57,19 +58,14 @@ namespace METCSV.WPF.Models
         /// <param name="newValues">The new values.</param>
         public void SetNewProfits(Dictionary<string, double> newValues)
         {
+            SetProfit(newValues.Select(r => new KeyValuePair<string, double>(r.Key, r.Value)));
+        }
+
+        private void SetProfit(IEnumerable<KeyValuePair<string, double>> newValues)
+        {
             foreach (var newValue in newValues)
             {
-                if (newValue.Value == _defaultProfit)
-                    continue;
-
-                if (_values.ContainsKey(newValue.Key) == false)
-                {
-                    _values.Add(newValue.Key, newValue.Value);
-                }
-                else
-                {
-                    _values[newValue.Key] = newValue.Value;
-                }
+                SetNewProfit(newValue.Key, newValue.Value);
             }
         }
 
@@ -79,14 +75,14 @@ namespace METCSV.WPF.Models
         /// <param name="manufacturers">The manufacturers.</param>
         public void AddManufacturers(IEnumerable<string> manufacturers)
         {
-            if (_values == null)
-                _values = new Dictionary<string, double>();
+            if (values == null)
+                values = new Dictionary<string, double>();
 
-            foreach(var manu in manufacturers)
+            foreach (var manu in manufacturers)
             {
-                if (_values.ContainsKey(manu) == false)
+                if (values.ContainsKey(manu) == false)
                 {
-                    _values.Add(manu, DefaultProfit);
+                    values.Add(manu, DefaultProfit);
                 }
             }
         }

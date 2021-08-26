@@ -49,6 +49,7 @@
     <None Include="METCSV.WPF_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MET.Data.Storage\MET.Data.Storage.csproj" />
     <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj" />
     <ProjectReference Include="..\MET.Poxy\MET.Poxy.csproj" />
     <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj" />

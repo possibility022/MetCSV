@@ -17,11 +17,15 @@ using AutoUpdaterDotNET;
 using Notifications.Wpf;
 using MET.Domain.Logic.Models;
 using System.IO;
+using System.Linq;
 using MET.Data.Models;
+using MET.Data.Models.Profits;
+using MET.Data.Storage;
+using METCSV.WPF.Models;
 
 namespace METCSV.WPF.ViewModels
 {
-    class MainWindowViewModel : BindableBase
+    class MainWindowViewModel : BindableBase, IDisposable
     {
         private const string NotificationTitle = "CSV Generator";
         private CancellationTokenSource _cancellationTokenSource;
@@ -134,7 +138,10 @@ namespace METCSV.WPF.ViewModels
         public MainWindowViewModel()
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
+            storage = new StorageService(new StorageContext());
         }
+
+        private StorageService storage;
 
         private void CheckLamaFile()
         {
@@ -168,10 +175,10 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<ProfitsViewModel> PrepareProfitWindow()
         {
-            ProfitsViewModel profitsViewModel;
-
             _profitsView = new ProfitsWindow();
-            profitsViewModel = _profitsView.DataContext as ProfitsViewModel;
+            var profitsViewModel = (ProfitsViewModel)_profitsView.DataContext;
+            LoadCategoryProfits(profitsViewModel);
+            LoadCustomProfits(profitsViewModel);
 
             var lamaProviders = HelpMe.GetProvidersAsync(_lama);
             var techDataProviders = HelpMe.GetProvidersAsync(_techData);
@@ -188,6 +195,77 @@ namespace METCSV.WPF.ViewModels
             return profitsViewModel;
         }
 
+        private void LoadCategoryProfits(ProfitsViewModel profitsViewModel)
+        {
+            var abProfits = new Profits(Providers.AB);
+            var tdProfits = new Profits(Providers.TechData);
+            var lamaProfits = new Profits(Providers.Lama);
+
+            foreach (var profit in storage.GetCategoryProfits())
+            {
+                Profits profits;
+                switch (profit.Provider)
+                {
+                    case Providers.AB:
+                        profits = abProfits;
+                        break;
+                    case Providers.Lama:
+                        profits = lamaProfits;
+                        break;
+
+                    case Providers.TechData:
+                        profits = tdProfits;
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+                
+                profits.SetNewProfit(profit.Category, profit.Profit);
+            }
+
+            profitsViewModel.AddCustomProfits(abProfits);
+            profitsViewModel.AddCustomProfits(tdProfits);
+            profitsViewModel.AddCustomProfits(lamaProfits);
+        }
+
+        private void LoadCustomProfits(ProfitsViewModel profitsViewModel)
+        {
+            var profits = new Profits(Providers.None);
+            foreach (var profit in storage.GetCustomProfits())
+            {
+                profits.SetNewProfit(profit.PartNumber, profit.Profit);
+            }
+
+            profitsViewModel.AddCustomProfits(profits);
+        }
+
+        private void SaveProfits(ProfitsViewModel profitsViewModel)
+        {
+            var customProfits = profitsViewModel.GetCustomProfits();
+            foreach (var (key, value) in customProfits.Values)
+            {
+                storage.SetProfit(new CustomProfit()
+                {
+                    Profit = value,
+                    PartNumber = key
+                });
+            }
+
+            var categoryProfits = profitsViewModel.GetCategoryProfits();
+            foreach (var categoryProfit in categoryProfits)
+            {
+                foreach (var (key, value) in categoryProfit.Values)
+                {
+                    storage.SetProfit(new CategoryProfit()
+                    {
+                        Category = key,
+                        Profit = value,
+                        Provider = categoryProfit.Provider
+                    });
+                }
+            }
+        }
+
         public async Task<bool> StartClickAsync()
         {
             CheckLamaFile();
@@ -196,7 +274,7 @@ namespace METCSV.WPF.ViewModels
                 return false;
             else
                 _generatorProgess = OperationStatus.InProgress;
-            
+
             try
             {
                 var result = await DownloadAndLoadAsync();
@@ -209,7 +287,7 @@ namespace METCSV.WPF.ViewModels
 
                         _profitsView.ShowDialog();
 
-                        profitsViewModel.SaveAllProfits();
+                        SaveProfits(profitsViewModel);
                     }
 
                     await StepTwoAsync();
@@ -235,7 +313,7 @@ namespace METCSV.WPF.ViewModels
             var ab = ProfitsIO.LoadFromFile(Providers.AB);
             var td = ProfitsIO.LoadFromFile(Providers.TechData);
             var lama = ProfitsIO.LoadFromFile(Providers.Lama);
-            
+
             HelpMe.CalculatePrices(_ab.GetProducts(), ab);
             HelpMe.CalculatePrices(_lama.GetProducts(), lama);
             HelpMe.CalculatePrices(_techData.GetProducts(), td);
@@ -401,6 +479,32 @@ namespace METCSV.WPF.ViewModels
         internal void Loaded()
         {
             AutoUpdater.Start(App.Settings.Engine.NewVersionURL, System.Reflection.Assembly.GetExecutingAssembly());
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            // TODO release unmanaged resources here
+        }
+
+        private void Dispose(bool disposing)
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                _cancellationTokenSource?.Dispose();
+                context?.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~MainWindowViewModel()
+        {
+            Dispose(false);
         }
     }
 }
