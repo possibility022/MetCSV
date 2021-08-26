@@ -86,6 +86,41 @@
                 </Grid>
             </TabItem>
 
+            <TabItem>
+
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Specjalne" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid>
+
+                    <DataGrid
+                        Margin="0,20,0,0"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        ItemsSource="{Binding CustomProfits}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="200"
+                                Binding="{Binding Path=Key}"
+                                Header="Part Number"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="100"
+                                Binding="{Binding Path=Value, Converter={StaticResource DoubleToPercentConverter}}"
+                                Header="% Marży"
+                                IsReadOnly="False" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </TabItem>
         </TabControl>
 
         <StackPanel
