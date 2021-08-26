@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MET.Data.Models;
+using MET.Data.Models.Profits;
 using MET.Domain.Logic.Comparers;
 using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
@@ -15,9 +16,40 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         readonly ProductByProductPrice netPriceComparer = new ProductByProductPrice();
 
+        private IReadOnlyDictionary<string, List<CategoryProfit>> categoryProfits;
+        private IReadOnlyDictionary<string, CustomProfit> customProfits;
+
+        private double DefaultProfit = 0.1;
+
         public PriceDomain()
         {
-            
+
+        }
+
+        public void SetProfits(
+            IReadOnlyCollection<CategoryProfit> category,
+            IReadOnlyCollection<CustomProfit> custom)
+        {
+            var profits = new Dictionary<string, List<CategoryProfit>>();
+            foreach (var categoryProfit in category)
+            {
+                if (profits.ContainsKey(categoryProfit.Category))
+                {
+                    profits[categoryProfit.Category].Add(categoryProfit);
+                }
+                else
+                {
+                    profits[categoryProfit.Category] = new List<CategoryProfit>() { categoryProfit };
+                }
+            }
+
+            this.categoryProfits = profits;
+            this.customProfits = custom.ToDictionary(r => r.PartNumber);
+        }
+
+        public void SetDefaultProfit(double value)
+        {
+            DefaultProfit = value;
         }
 
         private Product SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
@@ -30,7 +62,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
             formatter.WriteLine($"Zaczynam porównywać listę produktów dla PartNumberu [{partNumber}]: ");
             formatter.WriteObject(products);
-            
+
 
             var availableProducts = products.Where(r => r.StanMagazynowy > 0).ToList();
             var includeAll = !availableProducts.Any();
@@ -73,6 +105,61 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             return cheapest;
         }
 
+        private void CalculatePrice(string partNumber, IReadOnlyCollection<Product> products)
+        {
+            if (products.Any())
+            {
+                if (customProfits != null)
+                {
+                    var containsKey = customProfits.ContainsKey(partNumber);
+
+                    if (containsKey)
+                    {
+                        var profit = customProfits[partNumber].Profit;
+
+                        foreach (var product in products)
+                        {
+                            product.SetCennaNetto(product.CenaZakupuNetto * profit);
+                        }
+
+                        return;
+                    }
+                }
+
+                if (categoryProfits != null)
+                {
+                    foreach (var product in products)
+                    {
+                        if (categoryProfits.ContainsKey(product.Kategoria))
+                        {
+                            var profits = categoryProfits[product.Kategoria];
+                            var profit = profits.FirstOrDefault(r => r.Provider == product.Provider);
+
+                            if (profit != null)
+                            {
+                                product.SetCennaNetto(product.CenaZakupuNetto * profit.Profit);
+                            }
+                            else
+                            {
+                                product.SetCennaNetto(product.CenaZakupuNetto * DefaultProfit);
+                            }
+                        }
+                        else
+                        {
+                            product.SetCennaNetto(product.CenaZakupuNetto * DefaultProfit);
+                        }
+                    }
+
+                    return;
+                }
+
+                foreach (var product in products)
+                {
+                    product.SetCennaNetto(product.CenaZakupuNetto * DefaultProfit);
+                }
+            }
+        }
+
         private static bool ProductFilter(Product p, bool includeNotAvailable)
         {
             if (includeNotAvailable)
@@ -83,6 +170,8 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         public void ExecuteAction(ProductGroup productGroup)
         {
+            CalculatePrice(productGroup.PartNumber, productGroup.VendorProducts);
+
             var cheapest = SelectOneProduct(productGroup.VendorProducts, productGroup.PartNumber, productGroup.ObjectFormatter);
             if (cheapest == null)
                 return;
