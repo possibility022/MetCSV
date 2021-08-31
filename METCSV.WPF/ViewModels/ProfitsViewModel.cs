@@ -1,4 +1,5 @@
-﻿using METCSV.WPF.Helpers;
+﻿using System;
+using METCSV.WPF.Helpers;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
@@ -64,10 +65,18 @@ namespace METCSV.WPF.ViewModels
             set => SetProperty(ref customProfitsCollection, value);
         }
 
-        public void AddProfitsCollection(Profits profits)
+        public void AddCategoryProfit(Profits profit)
         {
-            ProfitsCollections.Add(profits);
-            RaisePropertyChanged(nameof(ProfitsCollections));
+            var profits = GetAlreadyExistingProfits(profit.Provider);
+
+            if (profits == null)
+            {
+                ProfitsCollections.Add(profit);
+            }
+            else
+            {
+                throw new InvalidOperationException("This profit was already added. " + profit.Provider);
+            }
         }
 
         public void AddCustomProfits(Profits profits)

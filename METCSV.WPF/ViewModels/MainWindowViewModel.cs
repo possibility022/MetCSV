@@ -9,7 +9,6 @@ using METCSV.WPF.Views;
 using METCSV.WPF.Workflows;
 using MET.Domain.Logic;
 using System.Collections.Generic;
-using MET.Domain;
 using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
@@ -17,7 +16,6 @@ using AutoUpdaterDotNET;
 using Notifications.Wpf;
 using MET.Domain.Logic.Models;
 using System.IO;
-using System.Linq;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 using MET.Data.Storage;
@@ -139,9 +137,12 @@ namespace METCSV.WPF.ViewModels
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
             storage = new StorageService(new StorageContext());
+            StorageInitializeTask = storage.MakeSureDbCreatedAsync();
         }
 
         private StorageService storage;
+
+        private Task StorageInitializeTask;
 
         private void CheckLamaFile()
         {
@@ -161,6 +162,7 @@ namespace METCSV.WPF.ViewModels
 
         private async Task<bool> DownloadAndLoadAsync()
         {
+            await StorageInitializeTask;
             Initialize();
 
             var met = ProductProviderBase.DownloadAndLoadAsync(_met);
@@ -223,9 +225,9 @@ namespace METCSV.WPF.ViewModels
                 profits.SetNewProfit(profit.Category, profit.Profit);
             }
 
-            profitsViewModel.AddCustomProfits(abProfits);
-            profitsViewModel.AddCustomProfits(tdProfits);
-            profitsViewModel.AddCustomProfits(lamaProfits);
+            profitsViewModel.AddCategoryProfit(abProfits);
+            profitsViewModel.AddCategoryProfit(tdProfits);
+            profitsViewModel.AddCategoryProfit(lamaProfits);
         }
 
         private void LoadCustomProfits(ProfitsViewModel profitsViewModel)
@@ -256,6 +258,9 @@ namespace METCSV.WPF.ViewModels
             {
                 foreach (var (key, value) in categoryProfit.Values)
                 {
+                    if (value == categoryProfit.DefaultProfit)
+                        continue;
+
                     storage.SetProfit(new CategoryProfit()
                     {
                         Category = key,
@@ -492,7 +497,7 @@ namespace METCSV.WPF.ViewModels
             if (disposing)
             {
                 _cancellationTokenSource?.Dispose();
-                context?.Dispose();
+                storage?.Dispose();
             }
         }
 
