@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,12 @@ namespace MET.Data.Storage
         public StorageService(StorageContext context)
         {
             this.context = context;
+        }
+
+        public async Task MakeSureDbCreatedAsync()
+        {
+            //await context.Database.EnsureCreatedAsync();
+            await context.Database.MigrateAsync();
         }
 
         public void SetProfit(CategoryProfit categoryProfit)
@@ -35,7 +42,7 @@ namespace MET.Data.Storage
             if (categoryProfits.Count == 1)
             {
                 categoryProfits[0].Profit = categoryProfit.Profit;
-                context.Update(categoryProfit);
+                context.Update(categoryProfits[0]);
             }
             else
             {
