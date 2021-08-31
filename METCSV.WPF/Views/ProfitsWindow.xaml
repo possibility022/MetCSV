@@ -87,9 +87,15 @@
 
                 <Grid>
 
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
                     <DataGrid
                         Margin="0,20,0,0"
                         AutoGenerateColumns="False"
+                        Grid.Row="0"
                         CanUserAddRows="False"
                         ItemsSource="{Binding CustomProfits}">
 
@@ -109,6 +115,22 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        Height="60"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
+                        <Button
+                            MinWidth="120"
+                            Margin="10"
+                            Content="Dodaj" />
+                        <Button
+                            MinWidth="120"
+                            Margin="10"
+                            Content="Usun" />
+                    </StackPanel>
 
                 </Grid>
             </TabItem>
