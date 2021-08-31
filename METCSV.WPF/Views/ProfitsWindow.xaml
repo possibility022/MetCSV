@@ -19,7 +19,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
 
@@ -37,24 +37,22 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Content="{Binding InfoText}"
                         FontSize="22" />
 
                     <ComboBox
-                        Grid.Row="2"
+                        Grid.Row="1"
                         DisplayMemberPath="Provider"
                         ItemsSource="{Binding ProfitsCollections}"
                         SelectedItem="{Binding SelectedProfits}" />
 
                     <DataGrid
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Margin="0,20,0,0"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
