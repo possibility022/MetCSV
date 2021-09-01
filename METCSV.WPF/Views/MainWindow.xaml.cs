@@ -26,7 +26,7 @@ namespace METCSV.WPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (task?.IsCompleted == true)
+            if (task == null || task.IsCompleted)
             {
                 task = MainWindowViewModel.StartClickAsync();
             }
