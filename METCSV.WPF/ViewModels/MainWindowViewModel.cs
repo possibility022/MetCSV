@@ -9,6 +9,7 @@ using METCSV.WPF.Views;
 using METCSV.WPF.Workflows;
 using MET.Domain.Logic;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
@@ -286,6 +287,10 @@ namespace METCSV.WPF.ViewModels
 
                 if (result)
                 {
+
+                    ShowProductNumberBrowser();
+                    
+
                     if (SetProfits)
                     {
                         var profitsViewModel = await PrepareProfitWindow();
@@ -311,6 +316,18 @@ namespace METCSV.WPF.ViewModels
             }
 
             return false;
+        }
+
+        private void ShowProductNumberBrowser()
+        {
+            var view = new PartNumberSearchWindow();
+            PartNumberSearchWindowViewModel dataContext = (PartNumberSearchWindowViewModel)view.DataContext;
+
+            dataContext.SetProducts(_lama.GetProducts());
+            //dataContext.Products.AddRange(_techData.GetProducts());
+            //dataContext.Products.AddRange(_ab.GetProducts());
+
+            view.ShowDialog();
         }
 
         public async Task<bool> StepTwoAsync()
