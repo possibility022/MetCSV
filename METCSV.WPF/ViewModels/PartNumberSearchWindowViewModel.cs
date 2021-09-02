@@ -20,13 +20,7 @@ namespace METCSV.WPF.ViewModels
         //private readonly ObservableCollection<Product> products;
         private readonly CollectionViewSource collectionViewSource;
         private ICollectionView collectionView;
-        private ObservableCollection<Product> products;
-
-        public ObservableCollection<Product> ProductsABC
-        {
-            get => products;
-            set => SetProperty(ref products, value);
-        }
+        private readonly ObservableCollection<Product> products;
 
         public ICollectionView CollectionView
         {
@@ -36,6 +30,8 @@ namespace METCSV.WPF.ViewModels
 
         public void SetProducts(IEnumerable<Product> products)
         {
+            this.products.Clear();
+
             foreach (var product in products)
             {
                 this.products.Add(product);
