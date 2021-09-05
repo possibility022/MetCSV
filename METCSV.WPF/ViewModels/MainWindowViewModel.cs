@@ -323,9 +323,11 @@ namespace METCSV.WPF.ViewModels
             var view = new PartNumberSearchWindow();
             PartNumberSearchWindowViewModel dataContext = (PartNumberSearchWindowViewModel)view.DataContext;
 
-            dataContext.SetProducts(_lama.GetProducts());
-            //dataContext.Products.AddRange(_techData.GetProducts());
-            //dataContext.Products.AddRange(_ab.GetProducts());
+            dataContext.ClearProducts();
+            
+            dataContext.AddProducts(_lama.GetProducts());
+            dataContext.AddProducts(_techData.GetProducts());
+            dataContext.AddProducts(_ab.GetProducts());
 
             view.ShowDialog();
         }
