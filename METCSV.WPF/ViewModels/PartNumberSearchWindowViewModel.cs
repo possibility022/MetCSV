@@ -28,10 +28,13 @@ namespace METCSV.WPF.ViewModels
             private set => SetProperty(ref collectionView, value);
         }
 
-        public void SetProducts(IEnumerable<Product> products)
+        public void ClearProducts()
         {
-            this.products.Clear();
+            products.Clear();
+        }
 
+        public void AddProducts(IEnumerable<Product> products)
+        {
             foreach (var product in products)
             {
                 this.products.Add(product);
