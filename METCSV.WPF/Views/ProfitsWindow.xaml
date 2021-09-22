@@ -125,10 +125,12 @@
                         <Button
                             MinWidth="120"
                             Margin="10"
+                            Command="{Binding ShowProductBrowserCommand}"
                             Content="Dodaj" />
                         <Button
                             MinWidth="120"
                             Margin="10"
+                            Command="{Binding RemoveProductFromCustomListCommand}"
                             Content="Usun" />
                     </StackPanel>
 

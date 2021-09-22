@@ -183,6 +183,8 @@ namespace METCSV.WPF.ViewModels
             LoadCategoryProfits(profitsViewModel);
             LoadCustomProfits(profitsViewModel);
 
+            profitsViewModel.AddAllProductsLists(_lama.GetProducts(), _techData.GetProducts(), _ab.GetProducts());
+
             var lamaProviders = HelpMe.GetProvidersAsync(_lama);
             var techDataProviders = HelpMe.GetProvidersAsync(_techData);
             var abProviders = HelpMe.GetProvidersAsync(_ab);
@@ -287,10 +289,6 @@ namespace METCSV.WPF.ViewModels
 
                 if (result)
                 {
-
-                    ShowProductNumberBrowser();
-                    
-
                     if (SetProfits)
                     {
                         var profitsViewModel = await PrepareProfitWindow();
@@ -316,20 +314,6 @@ namespace METCSV.WPF.ViewModels
             }
 
             return false;
-        }
-
-        private void ShowProductNumberBrowser()
-        {
-            var view = new PartNumberSearchWindow();
-            PartNumberSearchWindowViewModel dataContext = (PartNumberSearchWindowViewModel)view.DataContext;
-
-            dataContext.ClearProducts();
-            
-            dataContext.AddProducts(_lama.GetProducts());
-            dataContext.AddProducts(_techData.GetProducts());
-            dataContext.AddProducts(_ab.GetProducts());
-
-            view.ShowDialog();
         }
 
         public async Task<bool> StepTwoAsync()
