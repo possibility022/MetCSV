@@ -29,71 +29,7 @@ namespace METCSV.WPF.ViewModels
     {
         private const string NotificationTitle = "CSV Generator";
         private CancellationTokenSource _cancellationTokenSource;
-
-        private OperationStatus _stepOneStatus;
-
-        public OperationStatus StepOneStatus
-        {
-            get { return _stepOneStatus; }
-            set { SetProperty(ref _stepOneStatus, value); }
-        }
-
-        private OperationStatus _stepTwoStatus;
-        public OperationStatus StepTwoStatus
-        {
-            get { return _stepTwoStatus; }
-            set { SetProperty(ref _stepTwoStatus, value); }
-        }
-
-        private OperationStatus _stepThreeStatus;
-        public OperationStatus StepThreeStatus
-        {
-            get { return _stepThreeStatus; }
-            set { SetProperty(ref _stepThreeStatus, value); }
-        }
-
-        private OperationStatus _stepFourStatus;
-        public OperationStatus StepFourStatus
-        {
-            get { return _stepFourStatus; }
-            set { SetProperty(ref _stepFourStatus, value); }
-        }
-
-        private OperationStatus _stepFiveStatus;
-        public OperationStatus StepFiveStatus
-        {
-            get { return _stepFiveStatus; }
-            set { SetProperty(ref _stepFiveStatus, value); }
-        }
-
-        private OperationStatus _stepSixStatus;
-        public OperationStatus StepSixStatus
-        {
-            get { return _stepSixStatus; }
-            set { SetProperty(ref _stepSixStatus, value); }
-        }
-
-        private OperationStatus _stepSevenStatus;
-        public OperationStatus StepSevenStatus
-        {
-            get { return _stepSevenStatus; }
-            set { SetProperty(ref _stepSevenStatus, value); }
-        }
-
-        private OperationStatus _stepeightStatus;
-        public OperationStatus StepEightStatus
-        {
-            get { return _stepeightStatus; }
-            set { SetProperty(ref _stepeightStatus, value); }
-        }
-
-        private OperationStatus _stepNineStatus;
-        public OperationStatus StepNineStatus
-        {
-            get { return _stepNineStatus; }
-            set { SetProperty(ref _stepNineStatus, value); }
-        }
-
+        
         IProductProvider _met;
         IProductProvider _lama;
         IProductProvider _techData;
@@ -345,12 +281,7 @@ namespace METCSV.WPF.ViewModels
                 LamaProducts = _lama.GetProducts(),
                 LamaProducts_Old = _lama.LoadOldProducts()
             };
-
-            if (_productMerger != null)
-            {
-                _productMerger.StepChanged -= _productMerger_StepChanged;
-            }
-
+            
             _productMerger = new ProductMerger(
                 products,
                 App.Settings.Engine.MaximumPriceErrorDifference,
@@ -360,105 +291,10 @@ namespace METCSV.WPF.ViewModels
                 CategoryProfits = storage.GetCategoryProfits().ToList()
             };
 
-            _productMerger.StepChanged += _productMerger_StepChanged;
-            _productMerger.OnGenerateStateChange += _productMerger_OnGenerateStateChange;
-
             await _productMerger.Generate();
 
             Products = new List<Product>(_productMerger.FinalList);
             return true;
-        }
-
-        private void _productMerger_OnGenerateStateChange(object sender, OperationStatus e)
-        {
-            _generatorProgess = e;
-        }
-
-        private void _productMerger_StepChanged(object sender, int e)
-        {
-            switch (e)
-            {
-                case 1:
-                    StepOneStatus = OperationStatus.InProgress;
-                    break;
-                case 2:
-                    StepOneStatus = OperationStatus.Complete;
-                    StepTwoStatus = OperationStatus.InProgress;
-                    break;
-                case 3:
-                    StepTwoStatus = OperationStatus.Complete;
-                    StepThreeStatus = OperationStatus.InProgress;
-                    break;
-                case 4:
-                    StepThreeStatus = OperationStatus.Complete;
-                    StepFourStatus = OperationStatus.InProgress;
-                    break;
-                case 5:
-                    StepFourStatus = OperationStatus.Complete;
-                    StepFiveStatus = OperationStatus.InProgress;
-                    break;
-                case 6:
-                    StepFiveStatus = OperationStatus.Complete;
-                    StepSixStatus = OperationStatus.InProgress;
-                    break;
-                case 7:
-                    StepSixStatus = OperationStatus.Complete;
-                    StepSevenStatus = OperationStatus.InProgress;
-                    break;
-                case 8:
-                    StepSevenStatus = OperationStatus.Complete;
-                    StepEightStatus = OperationStatus.InProgress;
-                    break;
-                case 9:
-                    StepEightStatus = OperationStatus.Complete;
-                    StepNineStatus = OperationStatus.InProgress;
-                    break;
-                case int.MaxValue:
-                    StepNineStatus = OperationStatus.Complete;
-                    App.NotificationManager.Show(new NotificationContent
-                    {
-                        Message = "Zakończono generowanie powodzeniem.",
-                        Title = NotificationTitle,
-                        Type = NotificationType.Success
-                    });
-                    break;
-                case -1:
-                    SetErrorIconOnWorkingStep(ref _stepOneStatus);
-                    SetErrorIconOnWorkingStep(ref _stepTwoStatus);
-                    SetErrorIconOnWorkingStep(ref _stepThreeStatus);
-                    SetErrorIconOnWorkingStep(ref _stepFourStatus);
-                    SetErrorIconOnWorkingStep(ref _stepFiveStatus);
-                    SetErrorIconOnWorkingStep(ref _stepSixStatus);
-                    SetErrorIconOnWorkingStep(ref _stepSevenStatus);
-                    SetErrorIconOnWorkingStep(ref _stepeightStatus);
-                    SetErrorIconOnWorkingStep(ref _stepNineStatus);
-                    App.NotificationManager.Show(new NotificationContent
-                    {
-                        Message = "Zakończono generowanie niepowodzeniem.",
-                        Title = NotificationTitle,
-                        Type = NotificationType.Error
-                    });
-                    break;
-            }
-        }
-
-        private void SetErrorIconOnWorkingStep(ref OperationStatus field)
-        {
-            if (field == OperationStatus.InProgress)
-            {
-                field = OperationStatus.Faild;
-
-                //todo can we do something with this? RaisePropertyChangge() wont work.
-                RaisePropertyChanged(nameof(StepOneStatus));
-                RaisePropertyChanged(nameof(StepTwoStatus));
-                RaisePropertyChanged(nameof(StepThreeStatus));
-                RaisePropertyChanged(nameof(StepFourStatus));
-                RaisePropertyChanged(nameof(StepFiveStatus));
-                RaisePropertyChanged(nameof(StepSixStatus));
-                RaisePropertyChanged(nameof(StepSevenStatus));
-                RaisePropertyChanged(nameof(StepEightStatus));
-                RaisePropertyChanged(nameof(StepNineStatus));
-            }
         }
 
         public void Export(string path)

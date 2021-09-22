@@ -18,9 +18,6 @@ namespace MET.Domain.Logic
         Products _products;
         private readonly int maxiumumPriceDifference;
 
-        public event EventHandler<int> StepChanged;
-
-        public event EventHandler<OperationStatus> OnGenerateStateChange;
 
         readonly IObjectFormatterConstructor<object> ObjectFormatterSource;
 
@@ -47,14 +44,12 @@ namespace MET.Domain.Logic
                 return false;
             }
 
-            OnGenerateStateChange?.Invoke(this, OperationStatus.InProgress);
 
             _finalList = new List<Product>();
 
             try
             {
                 // STEP 1
-                StepChanged?.Invoke(this, 1);
                 SetWarehouseToZeroIfPriceError();
 
                 Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), ObjectFormatterSource, true);
@@ -70,79 +65,12 @@ namespace MET.Domain.Logic
 
                 finalList.Sort(new ProductSorter());
                 _finalList = finalList;
-
-                // STEP 2
-                StepChanged?.Invoke(this, 2);
-                //_metBag = new ConcurrentBag<Product>(_products.MetProducts);
-                //_lamaProducts = new ConcurrentBag<Product>(_products.LamaProducts);
-                //_techDataProducts = new ConcurrentBag<Product>(_products.TechDataProducts);
-                //_abProducts = new ConcurrentBag<Product>(_products.AbProducts);
-
-
-                // STEP 3
-                StepChanged?.Invoke(this, 3);
-                //RemoveHiddenProducts();
-
-                // STEP 4
-                StepChanged?.Invoke(this, 4);
-
-                //AllPartNumbersDomain allPartNumbers = new AllPartNumbersDomain();
-
-                //allPartNumbers.AddPartNumbers(_metBag, _lamaProducts, _techDataProducts, _abProducts);
-                //_allPartNumbers = allPartNumbers.GetAllPartNumbers();
-
-                //foreach (var partNumber in _allPartNumbers.Keys)
-                //{
-                //    ObjectFormatter.WriteLine(partNumber.ToString());
-                //}
-
-                //ObjectFormatter.Flush();
-
-                // STEP 5
-                StepChanged?.Invoke(this, 5);
-                //var fillList = new FillListDomain(_metBag, ObjectFormatterSource);
-                //_lamaProducts = fillList.FillList(_lamaProducts);
-                //_abProducts = fillList.FillList(_abProducts);
-                //_techDataProducts = fillList.FillList(_techDataProducts);
-
-                // STEP 6
-                StepChanged?.Invoke(this, 6);
-                //var setEndOfLive = new EndOfLiveDomain(_metBag, ObjectFormatterSource, _lamaProducts, _abProducts, _techDataProducts);
-                //setEndOfLive.SetEndOfLife();
-
-                // STEP 7
-                // Combine products into groups
-                StepChanged?.Invoke(this, 7);
-
-                //var groupingEngine = new GroupingDomain();
-                //var combined = groupingEngine.CombineIntoGroups(_lamaProducts, _abProducts, _techDataProducts);
                 
-                //// Compare products
-                //var compare = new PriceDomain(_allPartNumbers, ObjectFormatterSource);
-                //compare.Compare(combined);
-
-                // Set Correct Names
-                // todo
-
-                // STEP 8 //SolveConflicts();
-                StepChanged?.Invoke(this, 8);
-                //_finalList = CombineList();
-
-                // STEP 9
-                StepChanged?.Invoke(this, 9);
-
-                // Complete
-                StepChanged?.Invoke(this, int.MaxValue);
-
-                OnGenerateStateChange?.Invoke(this, OperationStatus.Complete);
-
                 return true;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Generowanie przerwane.");
-                StepChanged?.Invoke(this, -1);
-                OnGenerateStateChange?.Invoke(this, OperationStatus.Faild);
                 return false;
             }
         }
