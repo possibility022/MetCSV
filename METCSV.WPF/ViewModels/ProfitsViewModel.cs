@@ -6,7 +6,11 @@ using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using MET.Data.Models;
+using METCSV.WPF.Commands;
+using METCSV.WPF.Views;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -16,6 +20,8 @@ namespace METCSV.WPF.ViewModels
         {
             profitsCollection = new ObservableCollection<Profits>();
             valuesCache = new Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>>();
+            ShowProductBrowserCommand = new BaseCommand(() => ShowProductNumberBrowser()); // I know I know
+            RemoveProductFromCustomListCommand = new BaseCommand(() => { }); //todo
         }
 
         private ObservableCollection<Profits> profitsCollection;
@@ -23,9 +29,11 @@ namespace METCSV.WPF.ViewModels
         private Profits customProfits;
         private ObservableCollection<EditableDictionaryKey<string, double>> customProfitsCollection = new();
         private ObservableCollection<EditableDictionaryKey<string, double>> values;
+        private IList<Product>[] allProducts;
+        private PartNumberSearchWindow partNumberSearchWindow;
 
         private readonly Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>> valuesCache;
-
+        
         public ObservableCollection<Profits> ProfitsCollections
         {
             get => profitsCollection;
@@ -36,6 +44,9 @@ namespace METCSV.WPF.ViewModels
         {
             get => $"Edytujesz marże dla: {SelectedProfits?.Provider}.";
         }
+
+        public ICommand ShowProductBrowserCommand { get; }
+        public ICommand RemoveProductFromCustomListCommand{ get; }
 
         public Profits SelectedProfits
         {
@@ -124,6 +135,27 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
+        public void AddAllProductsLists(params IList<Product>[] products)
+        {
+            allProducts = products;
+        }
+
+        private async Task ShowProductNumberBrowser()
+        {
+            if (partNumberSearchWindow == null)
+            {
+                partNumberSearchWindow = new PartNumberSearchWindow();
+                PartNumberSearchWindowViewModel dataContext = (PartNumberSearchWindowViewModel)partNumberSearchWindow.DataContext;
+
+                foreach (var products in allProducts)
+                {
+                    await dataContext.AddProducts(products);
+                }
+            }
+
+            partNumberSearchWindow.ShowDialog();
+        }
+
         private void SaveCurrentProfits()
         {
             if (Values != null && SelectedProfits != null)
@@ -142,6 +174,5 @@ namespace METCSV.WPF.ViewModels
             if (SelectedProfits != null && valuesCache.ContainsKey(SelectedProfits) == false)
                 valuesCache.Add(SelectedProfits, CustomConvert.ToObservableCollection(SelectedProfits.Values));
         }
-
     }
 }
