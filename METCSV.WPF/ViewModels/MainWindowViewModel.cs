@@ -40,10 +40,15 @@ namespace METCSV.WPF.ViewModels
         public IProductProvider TechData { get => _techData; set => SetProperty(ref _techData, value); }
         public IProductProvider AB { get => _ab; set => SetProperty(ref _ab, value); }
 
+        public OperationStatus InProgress
+        {
+            get => inProgress;
+            set => SetProperty(ref inProgress, value);
+        }
+
         ProfitsWindow _profitsView;
         private bool _setProfits;
-
-        OperationStatus _generatorProgess = OperationStatus.ReadyToStart;
+        
 
         public bool SetProfits
         {
@@ -81,6 +86,7 @@ namespace METCSV.WPF.ViewModels
         private StorageService storage;
 
         private Task StorageInitializeTask;
+        private OperationStatus inProgress;
 
         private void CheckLamaFile()
         {
@@ -218,10 +224,10 @@ namespace METCSV.WPF.ViewModels
         {
             CheckLamaFile();
 
-            if (_generatorProgess == OperationStatus.InProgress)
+            if (InProgress == OperationStatus.InProgress)
                 return false;
             else
-                _generatorProgess = OperationStatus.InProgress;
+                InProgress = OperationStatus.InProgress;
 
             try
             {
@@ -251,6 +257,7 @@ namespace METCSV.WPF.ViewModels
             {
                 Log.Error(ex, "Main task exception");
                 MessageBox.Show($"Mamy problem :(. {ex.Message}", "Uwaga!");
+                InProgress = OperationStatus.Faild;
             }
 
             return false;
@@ -294,6 +301,7 @@ namespace METCSV.WPF.ViewModels
             await _productMerger.Generate();
 
             Products = new List<Product>(_productMerger.FinalList);
+            InProgress = OperationStatus.Complete;
             return true;
         }
 
