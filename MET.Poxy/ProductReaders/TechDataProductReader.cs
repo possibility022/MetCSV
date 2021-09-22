@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -71,7 +72,7 @@ namespace MET.Proxy.ProductReaders
 
                 prices.Add(new Product(Provider)
                 {
-                    SymbolSAP = ProviderName + fields[(int)TechDataCsvPricesColumns.SapNo],
+                    SymbolSAP = fields[(int)TechDataCsvPricesColumns.SapNo],
                     CenaZakupuNetto = Double.Parse(fields[(int)TechDataCsvPricesColumns.Cena]),
                 });
             }
