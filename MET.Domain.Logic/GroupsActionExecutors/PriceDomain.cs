@@ -115,7 +115,6 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
                     if (containsKey)
                     {
-                        // DR1030_||_BROTHER investigate
                         var profit = customProfits[partNumber].Profit;
 
                         foreach (var product in products)
