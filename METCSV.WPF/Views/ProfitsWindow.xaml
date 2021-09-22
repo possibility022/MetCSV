@@ -97,6 +97,7 @@
                         AutoGenerateColumns="False"
                         Grid.Row="0"
                         CanUserAddRows="False"
+                        SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
                         ItemsSource="{Binding CustomProfits}">
 
                         <DataGrid.Columns>
