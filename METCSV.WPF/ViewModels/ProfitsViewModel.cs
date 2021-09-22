@@ -11,6 +11,7 @@ using System.Windows.Input;
 using MET.Data.Models;
 using METCSV.WPF.Commands;
 using METCSV.WPF.Views;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -20,8 +21,8 @@ namespace METCSV.WPF.ViewModels
         {
             profitsCollection = new ObservableCollection<Profits>();
             valuesCache = new Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>>();
-            ShowProductBrowserCommand = new BaseCommand(() => ShowProductNumberBrowser()); // I know I know
-            RemoveProductFromCustomListCommand = new BaseCommand(() => { }); //todo
+            ShowProductBrowserCommand = new RelayCommand(() => ShowProductNumberBrowser()); // I know I know
+            RemoveProductFromCustomListCommand = new RelayCommand(() => { RemoveSelectedCustomProfit(); }); //todo
         }
 
         private ObservableCollection<Profits> profitsCollection;
@@ -33,11 +34,18 @@ namespace METCSV.WPF.ViewModels
         private PartNumberSearchWindow partNumberSearchWindow;
 
         private readonly Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>> valuesCache;
-        
+        private EditableDictionaryKey<string, double> selectedItem;
+
         public ObservableCollection<Profits> ProfitsCollections
         {
             get => profitsCollection;
             set => SetProperty(ref profitsCollection, value);
+        }
+
+        public EditableDictionaryKey<string, double> SelectedItem
+        {
+            get => selectedItem;
+            set => SetProperty(ref selectedItem, value);
         }
 
         public string InfoText
@@ -46,7 +54,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         public ICommand ShowProductBrowserCommand { get; }
-        public ICommand RemoveProductFromCustomListCommand{ get; }
+        public ICommand RemoveProductFromCustomListCommand { get; }
 
         public Profits SelectedProfits
         {
@@ -69,7 +77,7 @@ namespace METCSV.WPF.ViewModels
             get => values;
             set => SetProperty(ref values, value);
         }
-        
+
         public ObservableCollection<EditableDictionaryKey<string, double>> CustomProfits
         {
             get => customProfitsCollection;
@@ -118,6 +126,14 @@ namespace METCSV.WPF.ViewModels
             return ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
         }
 
+        private void RemoveSelectedCustomProfit()
+        {
+            if (selectedItem != null)
+            {
+                CustomProfits.Remove(selectedItem);
+            }
+        }
+
         public void AddManufacturers(ManufacturersCollection manufacturersCollection)
         {
             var profits = GetAlreadyExistingProfits(manufacturersCollection.Provider);
@@ -140,20 +156,26 @@ namespace METCSV.WPF.ViewModels
             allProducts = products;
         }
 
-        private async Task ShowProductNumberBrowser()
+        private void ShowProductNumberBrowser()
         {
-            if (partNumberSearchWindow == null)
-            {
-                partNumberSearchWindow = new PartNumberSearchWindow();
-                PartNumberSearchWindowViewModel dataContext = (PartNumberSearchWindowViewModel)partNumberSearchWindow.DataContext;
 
-                foreach (var products in allProducts)
-                {
-                    await dataContext.AddProducts(products);
-                }
+            partNumberSearchWindow = new PartNumberSearchWindow();
+            PartNumberSearchWindowViewModel dataContext = (PartNumberSearchWindowViewModel)partNumberSearchWindow.DataContext;
+
+            foreach (var products in allProducts)
+            {
+                dataContext.AddProducts(products);
+            }
+            partNumberSearchWindow.ShowDialog();
+
+            var selectedItem = dataContext.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                CustomProfits.Add(new EditableDictionaryKey<string, double>(selectedItem.PartNumber, 0.1));
             }
 
-            partNumberSearchWindow.ShowDialog();
+            partNumberSearchWindow = null;
         }
 
         private void SaveCurrentProfits()
