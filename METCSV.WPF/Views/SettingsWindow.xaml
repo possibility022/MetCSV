@@ -54,6 +54,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <Label
@@ -73,6 +74,15 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Text="{Binding EngineSettings.MaximumPriceErrorDifference, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Content="Domyślny profit:" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding EngineSettings.DefaultProfit, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </Border>
             </TabItem>
