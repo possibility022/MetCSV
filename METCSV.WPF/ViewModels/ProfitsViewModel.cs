@@ -142,7 +142,7 @@ namespace METCSV.WPF.ViewModels
             }
             else
             {
-                var newProfits = new Profits(manufacturersCollection.Provider);
+                var newProfits = new Profits(manufacturersCollection.Provider, App.Settings.Engine.DefaultProfit);
                 newProfits.AddManufacturers(manufacturersCollection.Manufacturers);
                 ProfitsCollections.Add(newProfits);
                 RaisePropertyChanged(nameof(ProfitsCollections));

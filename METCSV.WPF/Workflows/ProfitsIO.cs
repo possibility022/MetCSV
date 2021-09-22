@@ -24,7 +24,7 @@ namespace METCSV.WPF.Workflows
 
         public static Profits LoadFromFile(string path, Providers provider)
         {
-            Profits profits = new Profits(provider);
+            Profits profits = new Profits(provider, App.Settings.Engine.DefaultProfit);
 
             if (!File.Exists(path))
             {

@@ -16,8 +16,14 @@ namespace METCSV.WPF.Models
         public IReadOnlyDictionary<string, double> Values { get => values; }
 
         public double DefaultProfit { get => defaultProfit; set => SetProperty(ref defaultProfit, value); }
-        public Profits(Providers provider)
+        
+        public Profits(Providers provider) : this(provider, 0.1)
         {
+        }
+
+        public Profits(Providers provider, double defaultProfit)
+        {
+            DefaultProfit = defaultProfit;
             Provider = provider;
             RaisePropertyChanged(nameof(Provider));
         }
