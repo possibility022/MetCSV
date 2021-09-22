@@ -75,15 +75,18 @@ namespace MET.Domain.Logic
             var filter = new ProductFilterDomain(objectFormatter);
             await filter.RemoveProductsWithSpecificCode(lists);
 
-            internalList ??= GroupProducts();
-
-            foreach (var groupedProduct in internalList)
+            await Task.Run(() =>
             {
-                ExecuteActions(groupedProduct);
-            }
+                internalList ??= GroupProducts();
 
-            var results = Parallel.ForEach(internalList, ExecuteActions);
-            finalGroups = internalList;
+                foreach (var groupedProduct in internalList)
+                {
+                    ExecuteActions(groupedProduct);
+                }
+
+                var results = Parallel.ForEach(internalList, ExecuteActions);
+                finalGroups = internalList;
+            });
         }
 
         public IReadOnlyCollection<ProductGroup> GetGeneratedProductGroups() => finalGroups;
