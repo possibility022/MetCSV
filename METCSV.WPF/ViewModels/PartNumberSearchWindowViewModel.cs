@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using MET.Data.Models;
-using METCSV.WPF.Commands;
 using METCSV.WPF.Interfaces;
 using Microsoft.Toolkit.Mvvm.Input;
 using Prism.Mvvm;
@@ -21,7 +20,7 @@ namespace METCSV.WPF.ViewModels
             products = new List<Product>();
             collectionViewSource.Source = products;
             collectionViewSource.Filter += CollectionViewSourceOnFilter;
-            RefreshFilterCommand = new BaseCommand(() => this.collectionView.Refresh());
+            RefreshFilterCommand = new RelayCommand(() => this.collectionView.Refresh());
 
             SelectAndCloseCommand = new RelayCommand<IClosable>((window) =>
             {
