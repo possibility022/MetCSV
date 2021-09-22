@@ -203,9 +203,9 @@ namespace METCSV.WPF.ViewModels
 
         private void LoadCategoryProfits(ProfitsViewModel profitsViewModel)
         {
-            var abProfits = new Profits(Providers.AB);
-            var tdProfits = new Profits(Providers.TechData);
-            var lamaProfits = new Profits(Providers.Lama);
+            var abProfits = new Profits(Providers.AB, App.Settings.Engine.DefaultProfit);
+            var tdProfits = new Profits(Providers.TechData, App.Settings.Engine.DefaultProfit);
+            var lamaProfits = new Profits(Providers.Lama, App.Settings.Engine.DefaultProfit);
 
             foreach (var profit in storage.GetCategoryProfits())
             {
@@ -236,7 +236,7 @@ namespace METCSV.WPF.ViewModels
 
         private void LoadCustomProfits(ProfitsViewModel profitsViewModel)
         {
-            var profits = new Profits(Providers.None);
+            var profits = new Profits(Providers.None, App.Settings.Engine.DefaultProfit);
             foreach (var profit in storage.GetCustomProfits())
             {
                 profits.SetNewProfit(profit.PartNumber, profit.Profit);
