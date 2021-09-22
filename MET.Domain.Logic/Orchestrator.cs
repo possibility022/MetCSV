@@ -52,7 +52,7 @@ namespace MET.Domain.Logic
         private IReadOnlyCollection<ProductGroup> finalGroups;
         private IReadOnlyCollection<ProductGroup> internalList;
 
-        private PriceDomain PriceDomain { get; }
+        public PriceDomain PriceDomain { get; }
 
         private readonly IActionExecutor[] groupExecutors;
         private readonly IFinalProductConstructor[] finalProductConstructors;

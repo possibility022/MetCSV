@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MET.Data.Models;
+using MET.Data.Models.Profits;
 
 namespace MET.Domain.Logic
 {
@@ -24,6 +25,9 @@ namespace MET.Domain.Logic
         readonly IObjectFormatterConstructor<object> ObjectFormatterSource;
 
         private CancellationToken _token;
+
+        public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; set; }
+        public IReadOnlyCollection<CustomProfit> CustomProfits { get; set; }
 
         public IReadOnlyList<Product> FinalList { get { return _finalList; } }
 
@@ -54,6 +58,8 @@ namespace MET.Domain.Logic
                 SetWarehouseToZeroIfPriceError();
 
                 Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), ObjectFormatterSource, true);
+
+                orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits);
 
                 orchestrator.AddMetCollection(_products.MetProducts);
                 orchestrator.SetCollections(_products.AbProducts, _products.LamaProducts, _products.TechDataProducts);

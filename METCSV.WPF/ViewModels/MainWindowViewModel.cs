@@ -17,6 +17,7 @@ using AutoUpdaterDotNET;
 using Notifications.Wpf;
 using MET.Domain.Logic.Models;
 using System.IO;
+using System.Linq;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 using MET.Data.Storage;
@@ -246,6 +247,9 @@ namespace METCSV.WPF.ViewModels
 
         private void SaveProfits(ProfitsViewModel profitsViewModel)
         {
+            storage.RemoveCategoryDefaultProfits(App.Settings.Engine.DefaultProfit);
+            storage.RemoveCustomDefaultProfits(App.Settings.Engine.DefaultProfit);
+
             var customProfits = profitsViewModel.GetCustomProfits();
             foreach (var (key, value) in customProfits.Values)
             {
@@ -350,7 +354,11 @@ namespace METCSV.WPF.ViewModels
             _productMerger = new ProductMerger(
                 products,
                 App.Settings.Engine.MaximumPriceErrorDifference,
-                _cancellationTokenSource.Token);
+                _cancellationTokenSource.Token)
+            {
+                CustomProfits = storage.GetCustomProfits().ToList(),
+                CategoryProfits = storage.GetCategoryProfits().ToList()
+            };
 
             _productMerger.StepChanged += _productMerger_StepChanged;
             _productMerger.OnGenerateStateChange += _productMerger_OnGenerateStateChange;
