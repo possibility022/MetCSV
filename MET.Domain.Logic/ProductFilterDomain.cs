@@ -64,10 +64,13 @@ namespace MET.Domain.Logic
                         if ((product.OryginalnyKodProducenta.Length -1) > (lastIndex))
                         {
                             toRemove.Add(product);
+                            continue;
                         }
                         else
                         {
+                            toRemove.Add(product);
                             Log.Info($"Product has '?' at the end but nothing more. {product}");
+                            continue;
                         }
                     }
 
@@ -84,12 +87,21 @@ namespace MET.Domain.Logic
                         logger.WriteLine("Produkt z oryginalnym kodem producenta: [] posiadał wartość ?TN. Ustawiam Status Produktu, Cene zakupu netto, Cene netto i kategorię. Produkt zostanie również usunięty z listy wejściowej.");
                         logger.WriteLine("Produkt po zmianach:");
                         logger.WriteObject(product);
+                        continue;
                     }
 
                     if (product.Hidden)
                     {
                         toRemove.Add(product);
                         logger.WriteLine("Produkt ukryty.");
+                        continue;
+                    }
+
+                    if (product.CenaZakupuNetto <= 0)
+                    {
+                        toRemove.Add(product);
+                        logger.WriteLine($"Usuwam produkt {product} jako, że ma cene mniejszą lub równą 0.");
+                        continue;
                     }
                 }
 
