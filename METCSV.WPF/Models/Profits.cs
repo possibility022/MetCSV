@@ -38,8 +38,8 @@ namespace METCSV.WPF.Models
                 if (values.ContainsKey(key))
                 {
                     values.Remove(key);
-                    return;
                 }
+                return;
             }
 
             if (values.ContainsKey(key) == false)

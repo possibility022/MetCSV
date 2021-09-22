@@ -68,13 +68,35 @@ namespace MET.Data.Storage
             if (customProfits.Count == 1)
             {
                 customProfits[0].Profit = customProfit.Profit;
-                context.Update(customProfit);
+                context.Update(customProfits[0]);
             }
             else
             {
                 context.Add(customProfit);
             }
 
+            context.SaveChanges();
+        }
+
+        public void RemoveCustomDefaultProfits(double profitDefaultValue)
+        {
+            var customProfits = context
+                .CustomProfits
+                .Where(r => r.Profit == profitDefaultValue)
+                .ToList();
+
+            context.RemoveRange(customProfits);
+            context.SaveChanges();
+        }
+
+        public void RemoveCategoryDefaultProfits(double profitDefaultValue)
+        {
+            var categoryProfits = context
+                .CategoryProfits
+                .Where(r => r.Profit == profitDefaultValue)
+                .ToList();
+
+            context.RemoveRange(categoryProfits);
             context.SaveChanges();
         }
 

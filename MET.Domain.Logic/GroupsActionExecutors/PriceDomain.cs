@@ -19,7 +19,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         private IReadOnlyDictionary<string, List<CategoryProfit>> categoryProfits;
         private IReadOnlyDictionary<string, CustomProfit> customProfits;
 
-        private double DefaultProfit = 0.1;
+        private double defaultProfit = 0.1;
 
         public PriceDomain()
         {
@@ -49,7 +49,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         public void SetDefaultProfit(double value)
         {
-            DefaultProfit = value;
+            defaultProfit = value;
         }
 
         private Product SelectOneProduct(IReadOnlyCollection<Product> products, string partNumber, IObjectFormatter<object> formatter)
@@ -115,11 +115,12 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
                     if (containsKey)
                     {
+                        // DR1030_||_BROTHER investigate
                         var profit = customProfits[partNumber].Profit;
 
                         foreach (var product in products)
                         {
-                            product.SetCennaNetto(product.CenaZakupuNetto * profit);
+                            CalculateProfit(product, profit);
                         }
 
                         return;
@@ -137,16 +138,16 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
                             if (profit != null)
                             {
-                                product.SetCennaNetto(product.CenaZakupuNetto * profit.Profit);
+                                CalculateProfit(product, profit.Profit);
                             }
                             else
                             {
-                                product.SetCennaNetto(product.CenaZakupuNetto * DefaultProfit);
+                                CalculateProfit(product, defaultProfit);
                             }
                         }
                         else
                         {
-                            product.SetCennaNetto(product.CenaZakupuNetto * DefaultProfit);
+                            product.SetCennaNetto(product.CenaZakupuNetto * defaultProfit);
                         }
                     }
 
@@ -155,9 +156,14 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
                 foreach (var product in products)
                 {
-                    product.SetCennaNetto(product.CenaZakupuNetto * DefaultProfit);
+                    product.SetCennaNetto(product.CenaZakupuNetto * defaultProfit);
                 }
             }
+        }
+
+        private static void CalculateProfit(Product product, double profit)
+        {
+            product.SetCennaNetto((product.CenaZakupuNetto * profit) + product.CenaZakupuNetto);
         }
 
         private static bool ProductFilter(Product p, bool includeNotAvailable)
