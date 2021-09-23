@@ -75,6 +75,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         private ProductMerger _productMerger;
+        private List<Product> metCustomProducts;
 
         public MainWindowViewModel()
         {
@@ -102,6 +103,7 @@ namespace METCSV.WPF.ViewModels
             Lama = new LamaProductProvider(_cancellationTokenSource.Token);
             TechData = new TechDataProductProvider(_cancellationTokenSource.Token);
             AB = new ABProductProvider(_cancellationTokenSource.Token);
+            metCustomProducts = null;
         }
 
         private async Task<bool> DownloadAndLoadAsync()
@@ -302,7 +304,23 @@ namespace METCSV.WPF.ViewModels
 
             Products = new List<Product>(_productMerger.FinalList);
             InProgress = OperationStatus.Complete;
+
+
+
+            this.metCustomProducts = metCustomProducts;
+            ShowMetListEditor();
+
             return true;
+        }
+
+        private void ShowMetListEditor()
+        {
+            var window = new MetProductListEditor();
+            var context = (MetProductListEditorViewModel)window.DataContext;
+
+            context.AddProducts(metCustomProducts);
+            
+            window.ShowDialog();
         }
 
         public void Export(string path)

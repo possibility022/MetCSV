@@ -22,12 +22,14 @@ namespace METCSV.WPF.ViewModels
             collectionViewSource.Source = products;
             collectionViewSource.Filter += CollectionViewSourceOnFilter;
             RefreshFilterCommand = new RelayCommand(() => this.collectionView.Refresh());
+            IsGridReadOnly = true;
         }
 
         private readonly CollectionViewSource collectionViewSource;
         private string textFilter;
         private ICollectionView collectionView;
         private readonly List<Product> products;
+        private bool isGridReadOnly;
 
         public ICommand RefreshFilterCommand { get; }
 
@@ -41,6 +43,12 @@ namespace METCSV.WPF.ViewModels
         {
             get => collectionView;
             private set => SetProperty(ref collectionView, value);
+        }
+
+        public bool IsGridReadOnly
+        {
+            get => isGridReadOnly;
+            set => SetProperty(ref isGridReadOnly, value);
         }
 
         public void AddProducts(IEnumerable<Product> products)
