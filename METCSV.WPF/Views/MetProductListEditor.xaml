@@ -34,14 +34,5 @@
 
         <userControls:ProductBrowser Grid.Row="1">
         </userControls:ProductBrowser>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Margin" Value="10"/>
-                    <Setter Property="Padding" Value="3"/>
-                </Style>
-            </StackPanel.Resources>
-        </StackPanel>
     </Grid>
 </Window>
