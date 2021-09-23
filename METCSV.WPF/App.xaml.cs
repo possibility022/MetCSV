@@ -26,7 +26,7 @@ namespace METCSV.WPF
             // Start listening for WPF binding error.
             // After that line, a BindingException will be thrown each time
             // a binding error occurs
-            BindingExceptionThrower.Attach();
+            //BindingExceptionThrower.Attach();
             AutoUpdater.ShowSkipButton = false;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;

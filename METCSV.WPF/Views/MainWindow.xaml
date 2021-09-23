@@ -194,6 +194,10 @@
             <Button Command="{Binding ShowMetProductListEditorCommand}" 
                     Content="Edytuj liste Met" 
                     IsEnabled="{Binding ExportEnabled}" />
+
+            <Button Command="{Binding ShowAllProductsGroupsCommand}" 
+                    Content="Wyświetl wszystkie produkty i źródła" 
+                    IsEnabled="{Binding ExportEnabled}" />
             <Button
                 Click="Export"
                 Content="Exportuj"

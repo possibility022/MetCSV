@@ -34,6 +34,7 @@ namespace METCSV.WPF.ViewModels
             StorageInitializeTask = storage.MakeSureDbCreatedAsync();
 
             ShowMetProductListEditorCommand = new RelayCommand(() => ShowMetListEditor());
+            ShowAllProductsGroupsCommand = new RelayCommand(() => ShowAllProductsWindow());
         }
 
         private const string NotificationTitle = "CSV Generator";
@@ -72,8 +73,8 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _exportEnabled, value); }
         }
 
-        private List<Product> _products;
-        public List<Product> Products
+        private IReadOnlyCollection<Product> _products;
+        public IReadOnlyCollection<Product> Products
         {
             get => _products;
             set
@@ -83,6 +84,7 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
+        private IReadOnlyCollection<ProductGroup> _allProducts;
         private ProductMerger _productMerger;
         private List<Product> metCustomProducts;
 
@@ -92,6 +94,7 @@ namespace METCSV.WPF.ViewModels
         private OperationStatus inProgress;
 
         public ICommand ShowMetProductListEditorCommand { get; }
+        public ICommand ShowAllProductsGroupsCommand { get; }
 
         private void CheckLamaFile()
         {
@@ -306,7 +309,9 @@ namespace METCSV.WPF.ViewModels
 
             await _productMerger.Generate();
 
-            Products = new List<Product>(_productMerger.FinalList);
+            Products = _productMerger.FinalList;
+            _allProducts = _productMerger.AllProducts;
+
             InProgress = OperationStatus.Complete;
             
             this.metCustomProducts = metCustomProducts;
@@ -321,6 +326,16 @@ namespace METCSV.WPF.ViewModels
 
             context.AddProducts(metCustomProducts);
             
+            window.ShowDialog();
+        }
+
+        private void ShowAllProductsWindow()
+        {
+            var window = new BrowseAllProductsGroupsWindow();
+            var context = (BrowseAllProductsGroupsViewModel)window.DataContext;
+
+            context.AddProducts(_allProducts);
+
             window.ShowDialog();
         }
 
