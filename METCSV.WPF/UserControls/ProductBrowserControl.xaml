@@ -11,6 +11,7 @@
         <DataGrid 
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
+                IsReadOnly="{Binding IsGridReadOnly}"
                 ItemsSource="{Binding CollectionView}"
             >
 
@@ -27,36 +28,31 @@
                     Width="Auto"
                     MinWidth="200"
                     Binding="{Binding Path=NazwaProduktu}"
-                    Header="Nazwa Produktu"
-                    IsReadOnly="True" />
+                    Header="Nazwa Produktu" />
 
             <DataGridTextColumn
                 Width="Auto"
                 MinWidth="200"
                 Binding="{Binding Path=NazwaDostawcy}"
-                Header="Nazwa Dostawcy"
-                IsReadOnly="True" />
+                Header="Nazwa Dostawcy" />
 
             <DataGridTextColumn
                 Width="Auto"
                 MinWidth="200"
                 Binding="{Binding Path=UrlZdjecia}"
-                Header="Url Zdjecia"
-                IsReadOnly="True" />
+                Header="Url Zdjecia" />
 
             <DataGridTextColumn
                 Width="Auto"
                 MinWidth="200"
                 Binding="{Binding Path=Kategoria}"
-                Header="Kategoria"
-                IsReadOnly="True" />
+                Header="Kategoria" />
 
             <DataGridTextColumn
                 Width="Auto"
                 MinWidth="200"
                 Binding="{Binding Path=ModelProduktu}"
-                Header="Model Produktu"
-                IsReadOnly="True" />
+                Header="Model Produktu" />
 
 
             <DataGridTextColumn
@@ -64,14 +60,13 @@
                 MinWidth="200"
                 Binding="{Binding Path=OryginalnyKodProducenta}"
                 Header="Oryginalny Kod Producenta"
-                IsReadOnly="True" />
+                IsReadOnly="False" />
 
             <DataGridTextColumn
                     Width="Auto"
                     MinWidth="100"
                     Binding="{Binding Path=CenaZakupuNetto}"
-                    Header="Cena Zakupu Netto"
-                    IsReadOnly="False" />
+                    Header="Cena Zakupu Netto" />
 
             </DataGrid.Columns>
 
