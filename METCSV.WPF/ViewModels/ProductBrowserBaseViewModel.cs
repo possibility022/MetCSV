@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using MET.Data.Models;
@@ -64,65 +61,59 @@ namespace METCSV.WPF.ViewModels
 
         private void CollectionViewSourceOnFilter(object sender, FilterEventArgs e)
         {
-            if (string.IsNullOrEmpty(TextFilter))
-            {
-                e.Accepted = true;
-                return;
-            }
-
-            if (e.Item is Product product)
-            {
-                if (product.PartNumber?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.NazwaProduktu?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.NazwaDostawcy?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.UrlZdjecia?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.Kategoria?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.ModelProduktu?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.OryginalnyKodProducenta?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-
-                if (product.CenaZakupuNetto.ToString()?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
-                {
-                    e.Accepted = true;
-                    return;
-                }
-            }
-
-            e.Accepted = false;
+            e.Accepted = ProductSearchFilter(TextFilter, (Product)e.Item);
         }
 
+        public static bool ProductSearchFilter(string filter, Product product)
+        {
+            if (string.IsNullOrEmpty(filter))
+            {
+                return true;
+            }
+
+
+            if (product.PartNumber?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.NazwaProduktu?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.NazwaDostawcy?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.UrlZdjecia?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.Kategoria?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.ModelProduktu?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.OryginalnyKodProducenta?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            if (product.CenaZakupuNetto.ToString()?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
+
 }

@@ -14,6 +14,7 @@ namespace MET.Domain.Logic
     public class ProductMerger
     {
         List<Product> _finalList;
+        IReadOnlyCollection<ProductGroup> allProducts;
 
         Products _products;
         private readonly int maxiumumPriceDifference;
@@ -25,8 +26,10 @@ namespace MET.Domain.Logic
 
         public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; set; }
         public IReadOnlyCollection<CustomProfit> CustomProfits { get; set; }
+        
 
-        public IReadOnlyList<Product> FinalList { get { return _finalList; } }
+        public IReadOnlyList<Product> FinalList => _finalList;
+        public IReadOnlyCollection<ProductGroup> AllProducts => allProducts;
 
         public ProductMerger(Products products, int maxiumumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
@@ -62,6 +65,8 @@ namespace MET.Domain.Logic
 
                 FinalListCombineDomain finalListCombineDomain = new FinalListCombineDomain();
                 var finalList = finalListCombineDomain.CreateFinalList(orchestrator.GetGeneratedProductGroups());
+                
+                allProducts = orchestrator.GetGeneratedProductGroups();
 
                 finalList.Sort(new ProductSorter());
                 _finalList = finalList;
