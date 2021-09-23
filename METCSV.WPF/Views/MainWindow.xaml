@@ -44,6 +44,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -173,6 +174,7 @@
 
         <StackPanel
             Grid.Row="7"
+            Grid.Column="0"
             Grid.ColumnSpan="5"
             Width="Auto"
             Height="Auto"
@@ -182,11 +184,23 @@
             <Button Click="StopClick" Content="Stop" />
             <Button Click="Button_Click" Content="Rozpocznij" />
             <Button Click="Button_Click_1" Content="Ustawienia" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="8" 
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+        >
+            <Button Command="{Binding ShowMetProductListEditorCommand}" 
+                    Content="Edytuj liste Met" 
+                    IsEnabled="{Binding ExportEnabled}" />
             <Button
                 Click="Export"
                 Content="Exportuj"
                 IsEnabled="{Binding ExportEnabled}" />
         </StackPanel>
+
+
 
     </Grid>
 </Window>

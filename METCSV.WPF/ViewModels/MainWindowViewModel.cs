@@ -9,24 +9,33 @@ using METCSV.WPF.Views;
 using METCSV.WPF.Workflows;
 using MET.Domain.Logic;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
 using AutoUpdaterDotNET;
-using Notifications.Wpf;
 using MET.Domain.Logic.Models;
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 using MET.Data.Storage;
 using METCSV.WPF.Models;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace METCSV.WPF.ViewModels
 {
     class MainWindowViewModel : BindableBase, IDisposable
     {
+        public MainWindowViewModel()
+        {
+            SetProfits = App.Settings?.Engine?.SetProfits ?? true;
+            storage = new StorageService(new StorageContext());
+            StorageInitializeTask = storage.MakeSureDbCreatedAsync();
+
+            ShowMetProductListEditorCommand = new RelayCommand(() => ShowMetListEditor());
+        }
+
         private const string NotificationTitle = "CSV Generator";
         private CancellationTokenSource _cancellationTokenSource;
         
@@ -77,17 +86,12 @@ namespace METCSV.WPF.ViewModels
         private ProductMerger _productMerger;
         private List<Product> metCustomProducts;
 
-        public MainWindowViewModel()
-        {
-            SetProfits = App.Settings?.Engine?.SetProfits ?? true;
-            storage = new StorageService(new StorageContext());
-            StorageInitializeTask = storage.MakeSureDbCreatedAsync();
-        }
-
         private StorageService storage;
 
         private Task StorageInitializeTask;
         private OperationStatus inProgress;
+
+        public ICommand ShowMetProductListEditorCommand { get; }
 
         private void CheckLamaFile()
         {
@@ -304,11 +308,8 @@ namespace METCSV.WPF.ViewModels
 
             Products = new List<Product>(_productMerger.FinalList);
             InProgress = OperationStatus.Complete;
-
-
-
+            
             this.metCustomProducts = metCustomProducts;
-            ShowMetListEditor();
 
             return true;
         }
