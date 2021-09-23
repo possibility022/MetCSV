@@ -72,49 +72,49 @@ namespace METCSV.WPF.ViewModels
 
             if (e.Item is Product product)
             {
-                if (product.PartNumber?.Contains(TextFilter) == true)
+                if (product.PartNumber?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.NazwaProduktu?.Contains(TextFilter) == true)
+                if (product.NazwaProduktu?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.NazwaDostawcy?.Contains(TextFilter) == true)
+                if (product.NazwaDostawcy?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.UrlZdjecia?.Contains(TextFilter) == true)
+                if (product.UrlZdjecia?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.Kategoria?.Contains(TextFilter) == true)
+                if (product.Kategoria?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.ModelProduktu?.Contains(TextFilter) == true)
+                if (product.ModelProduktu?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.OryginalnyKodProducenta?.Contains(TextFilter) == true)
+                if (product.OryginalnyKodProducenta?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
                 }
 
-                if (product.CenaZakupuNetto.ToString()?.Contains(TextFilter) == true)
+                if (product.CenaZakupuNetto.ToString()?.Contains(TextFilter, StringComparison.CurrentCultureIgnoreCase) == true)
                 {
                     e.Accepted = true;
                     return;
