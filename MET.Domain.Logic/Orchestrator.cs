@@ -14,9 +14,11 @@ namespace MET.Domain.Logic
         public Orchestrator(bool ignoreIdsProblems)
         {
             this.PriceDomain = new PriceDomain();
+            this.ManufacturerRenameDomain = new ManufacturerRenameDomain();
 
             groupExecutors = new IActionExecutor[]
             {
+                ManufacturerRenameDomain,
                 new NewProductSetter(),
                 new ProductNameDomain(),
                 new IdDomain(ignoreDuplicates: ignoreIdsProblems),
@@ -53,6 +55,7 @@ namespace MET.Domain.Logic
         private IReadOnlyCollection<ProductGroup> internalList;
 
         public PriceDomain PriceDomain { get; }
+        public ManufacturerRenameDomain ManufacturerRenameDomain { get; }
 
         private readonly IActionExecutor[] groupExecutors;
         private readonly IFinalProductConstructor[] finalProductConstructors;

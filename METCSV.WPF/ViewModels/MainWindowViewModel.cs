@@ -304,7 +304,8 @@ namespace METCSV.WPF.ViewModels
                 _cancellationTokenSource.Token)
             {
                 CustomProfits = storage.GetCustomProfits().ToList(),
-                CategoryProfits = storage.GetCategoryProfits().ToList()
+                CategoryProfits = storage.GetCategoryProfits().ToList(),
+                RenameManufacturerDictionary = storage.GetRenameManufacturerDictionary()
             };
 
             await _productMerger.Generate();

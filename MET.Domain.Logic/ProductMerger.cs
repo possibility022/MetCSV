@@ -26,7 +26,9 @@ namespace MET.Domain.Logic
 
         public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; set; }
         public IReadOnlyCollection<CustomProfit> CustomProfits { get; set; }
-        
+
+        public IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; set; }
+
 
         public IReadOnlyList<Product> FinalList => _finalList;
         public IReadOnlyCollection<ProductGroup> AllProducts => allProducts;
@@ -56,6 +58,8 @@ namespace MET.Domain.Logic
                 SetWarehouseToZeroIfPriceError();
 
                 Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), ObjectFormatterSource, true);
+
+                orchestrator.ManufacturerRenameDomain.SetDictionary(RenameManufacturerDictionary);
 
                 orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits);
 
