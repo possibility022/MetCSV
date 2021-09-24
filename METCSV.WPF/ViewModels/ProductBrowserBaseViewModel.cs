@@ -82,6 +82,11 @@ namespace METCSV.WPF.ViewModels
                 return true;
             }
 
+            if (product.NazwaProducenta?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return true;
+            }
+
             if (product.NazwaDostawcy?.Contains(filter, StringComparison.CurrentCultureIgnoreCase) == true)
             {
                 return true;
