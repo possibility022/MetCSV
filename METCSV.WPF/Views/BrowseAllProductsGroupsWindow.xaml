@@ -78,6 +78,12 @@
                 <DataGridTextColumn
                     Width="Auto"
                     MinWidth="200"
+                    Binding="{Binding Path=FinalProduct.NazwaProducenta}"
+                    Header="Nazwa Producenta" />
+
+                <DataGridTextColumn
+                    Width="Auto"
+                    MinWidth="200"
                     Binding="{Binding Path=FinalProduct.ModelProduktu}"
                     Header="Model Produktu" />
 
@@ -155,6 +161,12 @@
                                         MinWidth="200"
                                         Binding="{Binding Path=Kategoria}"
                                         Header="Kategoria" />
+
+                                    <DataGridTextColumn
+                                        Width="Auto"
+                                        MinWidth="200"
+                                        Binding="{Binding Path=NazwaProducenta}"
+                                        Header="Nazwa Producenta" />
 
                                     <DataGridTextColumn
                                         Width="Auto"
