@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
@@ -109,6 +111,37 @@ namespace MET.Data.Storage
         {
             return context.CategoryProfits;
         }
+        
+        public void SaveRenameManufacturerDictionary(IReadOnlyDictionary<string, string> newDictionary)
+        {
+            var dict = context.RenameManufacturer.ToDictionary(r => r.From);
+
+            foreach (var from in newDictionary.Keys)
+            {
+                if (dict.ContainsKey(from))
+                {
+                    var toUpdate = dict[from];
+                    toUpdate.To = newDictionary[from];
+                    context.Update(toUpdate);
+                }
+                else
+                {
+                    context.RenameManufacturer.Add(new RenameManufacturerModel()
+                    {
+                        From = from,
+                        To = newDictionary[from]
+                    });
+                }
+            }
+
+            context.SaveChanges();
+        }
+
+        public IReadOnlyDictionary<string, string> GetRenameManufacturerDictionary()
+        {
+            var list = context.RenameManufacturer.ToDictionary(r => r.From, v => v.To);
+            return list;
+        }
 
         private void ReleaseUnmanagedResources()
         {
@@ -134,5 +167,6 @@ namespace MET.Data.Storage
         {
             Dispose(false);
         }
+
     }
 }
