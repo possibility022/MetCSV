@@ -16,9 +16,13 @@ namespace MET.Domain.Logic
             this.PriceDomain = new PriceDomain();
             this.ManufacturerRenameDomain = new ManufacturerRenameDomain();
 
+            preGroupping = new IPreGrouppingExecuters[]
+            {
+                ManufacturerRenameDomain
+            };
+
             groupExecutors = new IActionExecutor[]
             {
-                ManufacturerRenameDomain,
                 new NewProductSetter(),
                 new ProductNameDomain(),
                 new IdDomain(ignoreDuplicates: ignoreIdsProblems),
@@ -57,6 +61,7 @@ namespace MET.Domain.Logic
         public PriceDomain PriceDomain { get; }
         public ManufacturerRenameDomain ManufacturerRenameDomain { get; }
 
+        private readonly IPreGrouppingExecuters[] preGroupping;
         private readonly IActionExecutor[] groupExecutors;
         private readonly IFinalProductConstructor[] finalProductConstructors;
 
@@ -92,6 +97,14 @@ namespace MET.Domain.Logic
             });
         }
 
+        private void PreGroupingActions(Product product)
+        {
+            foreach (var executor in preGroupping)
+            {
+                executor.Execute(product);
+            }
+        }
+
         public IReadOnlyCollection<ProductGroup> GetGeneratedProductGroups() => finalGroups;
 
         private void ExecuteActions(ProductGroup productGroup)
@@ -114,6 +127,7 @@ namespace MET.Domain.Logic
             {
                 foreach (var product in list)
                 {
+                    PreGroupingActions(product);
                     groupedProducts.AddProduct(product);
                     allPartNumbersDomain.AddPartNumber(product.PartNumber);
                 }
@@ -121,6 +135,7 @@ namespace MET.Domain.Logic
 
             foreach (var metProduct in metProducts)
             {
+                PreGroupingActions(metProduct);
                 groupedProducts.AddMetProduct(metProduct);
                 allPartNumbersDomain.AddPartNumber(metProduct.PartNumber);
             }
