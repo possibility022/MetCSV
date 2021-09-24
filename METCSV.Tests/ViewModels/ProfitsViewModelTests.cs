@@ -35,84 +35,84 @@ namespace METCSV.UnitTests.ViewModels
             }
         }
 
-        [TestMethod]
-        public void Values_are_changed_when_selecting_other_provider()
-        {
-            // Arrange
-            ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
-            profitsViewModel.AddManufacturers(Factory.GetManufacturers(Providers.Lama));
-            profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[0];
+        //[TestMethod]
+        //public void Values_are_changed_when_selecting_other_provider()
+        //{
+        //    // Arrange
+        //    ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
+        //    profitsViewModel.AddManufacturers(Factory.GetManufacturers(Providers.Lama));
+        //    profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[0];
 
-            // Act
-            var values = profitsViewModel.Values;
-            profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[1];
-            var values2 = profitsViewModel.Values;
+        //    // Act
+        //    var values = profitsViewModel.Values;
+        //    profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[1];
+        //    var values2 = profitsViewModel.Values;
 
-            // Assert
-            Assert.IsFalse(values == values2);
-        }
+        //    // Assert
+        //    Assert.IsFalse(values == values2);
+        //}
 
-        [TestMethod]
-        public void MessageErrorShowWhenOneOfTheFilesDoesNotExists()
-        {
-            // Arrange
-            ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
-            DeleteAllProfits();
+        //[TestMethod]
+        //public void MessageErrorShowWhenOneOfTheFilesDoesNotExists()
+        //{
+        //    // Arrange
+        //    ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
+        //    DeleteAllProfits();
 
-            // Act
-            profitsViewModel.LoadFromFiles();
+        //    // Act
+        //    profitsViewModel.LoadFromFiles();
 
-            // Assert
-            Assert.AreEqual(Visibility.Visible, profitsViewModel.ErrorTextVisibility);
-        }
+        //    // Assert
+        //    Assert.AreEqual(Visibility.Visible, profitsViewModel.ErrorTextVisibility);
+        //}
 
-        [TestMethod]
-        public void MessageDoesNotShowWhenAllFilesExists()
-        {
-            // Arrange
-            ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
-            ProfitsIO.SaveToFile(Factory.GetProfits(Providers.AB));
-            ProfitsIO.SaveToFile(Factory.GetProfits(Providers.Lama));
-            ProfitsIO.SaveToFile(Factory.GetProfits(Providers.TechData));
+        //[TestMethod]
+        //public void MessageDoesNotShowWhenAllFilesExists()
+        //{
+        //    // Arrange
+        //    ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
+        //    ProfitsIO.SaveToFile(Factory.GetProfits(Providers.AB));
+        //    ProfitsIO.SaveToFile(Factory.GetProfits(Providers.Lama));
+        //    ProfitsIO.SaveToFile(Factory.GetProfits(Providers.TechData));
 
-            // Act
-            profitsViewModel.LoadFromFiles();
+        //    // Act
+        //    profitsViewModel.LoadFromFiles();
 
-            // Assert
-            Assert.AreEqual(Visibility.Hidden, profitsViewModel.ErrorTextVisibility);
-        }
+        //    // Assert
+        //    Assert.AreEqual(Visibility.Hidden, profitsViewModel.ErrorTextVisibility);
+        //}
 
-        [TestMethod]
-        public void ChangesAreNotApplyRightAfterEditingValue()
-        {
-            // Arrange
-            ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
-            profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[0];
-            var startingValue = profitsViewModel.ProfitsCollections[0].Values.Values.First();
+        //[TestMethod]
+        //public void ChangesAreNotApplyRightAfterEditingValue()
+        //{
+        //    // Arrange
+        //    ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
+        //    profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[0];
+        //    var startingValue = profitsViewModel.ProfitsCollections[0].Values.Values.First();
 
-            // Act
-            var valueToEdit = profitsViewModel.Values.First();
-            valueToEdit.Value = 100;
+        //    // Act
+        //    var valueToEdit = profitsViewModel.Values.First();
+        //    valueToEdit.Value = 100;
 
-            // Assert
-            Assert.AreNotEqual(100, startingValue);
-        }
+        //    // Assert
+        //    Assert.AreNotEqual(100, startingValue);
+        //}
 
-        [TestMethod]
-        public void ChangesAreApplyAfterSave()
-        {
-            // Arrange
-            ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
-            profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[0];
+        //[TestMethod]
+        //public void ChangesAreApplyAfterSave()
+        //{
+        //    // Arrange
+        //    ProfitsViewModel profitsViewModel = Factory.GetProfitsViewModel();
+        //    profitsViewModel.SelectedProfits = profitsViewModel.ProfitsCollections[0];
 
-            // Act
-            var valueToEdit = profitsViewModel.Values.First();
-            valueToEdit.Value = 100;
-            profitsViewModel.SaveAllProfits();
+        //    // Act
+        //    var valueToEdit = profitsViewModel.Values.First();
+        //    valueToEdit.Value = 100;
+        //    profitsViewModel.SaveAllProfits();
 
-            // Assert
-            Assert.AreEqual(100, profitsViewModel.ProfitsCollections[0].Values.Values.First());
-        }
+        //    // Assert
+        //    Assert.AreEqual(100, profitsViewModel.ProfitsCollections[0].Values.Values.First());
+        //}
 
 
     }

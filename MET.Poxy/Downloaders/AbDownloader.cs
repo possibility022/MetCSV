@@ -28,10 +28,9 @@ namespace MET.Proxy
         readonly string FolderToExtract;
 
         readonly bool DeleteOld;
+        
 
-        readonly string DateTimeRegexPattern;
-        readonly string DateTimeFormat1;
-        readonly string DateTimeFormat2;
+        private DateTimeParser dateTimeParser;
 
         public AbDownloader(AbDownloaderSettings settings, CancellationToken cancellationToken)
         {
@@ -48,9 +47,8 @@ namespace MET.Proxy
             FolderToExtract = settings.FolderToExtract;
             DeleteOld = settings.DeleteOldMessages;
 
-            DateTimeRegexPattern = settings.DateTimeRegexPattern;
-            DateTimeFormat1 = settings.DateTimeFormat1;
-            DateTimeFormat2 = settings.DateTimeFormat2;
+            dateTimeParser = new DateTimeParser(settings.DateTimeRegexPattern, settings.DateTimeFormat1,
+                settings.DateTimeFormat2);
         }
 
         Pop3Client _client;
@@ -130,7 +128,7 @@ namespace MET.Proxy
         {
             int newerMessage = -1;
             DateTime date = new DateTime(1, 1, 1);
-
+            
             var headers = client.GetMessageHeaders(0, client.Count, CancellationToken);
 
             for (int i = 0; i < headers.Count; i++)
@@ -141,7 +139,7 @@ namespace MET.Proxy
                 if (header.Contains(HeaderId.Date))
                 {
                     var headerValue = header[header.IndexOf(HeaderId.Date)].Value;
-                    var emailDate = ParseDate(headerValue);
+                    var emailDate = dateTimeParser.ParseDateTime(headerValue);
                     if (emailDate > date)
                     {
                         date = emailDate;
@@ -149,32 +147,8 @@ namespace MET.Proxy
                     }
                 }
             }
-
-            return newerMessage;
-        }
-
-        private DateTime ParseDate(string input)
-        {
-            Regex rgx = new Regex(DateTimeRegexPattern, RegexOptions.IgnoreCase);
-            MatchCollection matches = rgx.Matches(input);
-
-            //20 Feb 2017 08:28
-
-            CultureInfo provider = CultureInfo.GetCultures(CultureTypes.FrameworkCultures)[0];
-
-            DateTime dateTime;
-
-            try
-            {
-                dateTime = DateTime.ParseExact(matches[0].Value, DateTimeFormat1, provider);
-                return dateTime;
-            }
-            catch (FormatException)
-            { //to moglo sie zdazyc
-            }
             
-            dateTime = DateTime.ParseExact(matches[0].Value, DateTimeFormat2, provider);
-            return dateTime;
+            return newerMessage;
         }
     }
 }
