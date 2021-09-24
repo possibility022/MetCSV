@@ -97,6 +97,11 @@ namespace MET.Proxy.ProductReaders
                     continue;
                 }
 
+                if (fields[(int)TechDataCsvProductsColumns.SapNo].Contains("WD101PURP"))
+                {
+                    var s = 0;
+                }
+
                 products.Add(new Product(Provider)
                 {
                     ID = null,
