@@ -2,51 +2,40 @@
 using System.Net;
 using System.Threading;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Proxy.Configuration;
-using MET.Proxy.Downloaders;
-using METCSV.Common;
 
-namespace MET.Proxy
+namespace MET.Proxy.Downloaders
 {
     public class MetDownloader : DownloaderBase
     {
         public override Providers Provider => Providers.MET;
 
-        private readonly string FileName;
+        private readonly string fileName;
 
-        readonly string Url;
+        private readonly string url;
 
         public MetDownloader(MetDownloaderSettings settings, CancellationToken token)
         {
-            FileName = settings.CsvFile;
-            Url = settings.Url;
-            SetCancellationToken(token);
+            fileName = settings.CsvFile;
+            url = settings.Url;
         }
 
-        protected override void Download()
+        protected override bool Download()
         {
-            Status = OperationStatus.InProgress;
             DownloadedFiles = new[] { string.Empty };
 
             using (var client = new WebClient())
-            using (var webStream = client.OpenRead(Url))
-            using (var fileStream = new StreamWriter(FileName))
+            using (var webStream = client.OpenRead(url))
+            using (var fileStream = new StreamWriter(fileName))
             {
-
-                byte[] buffer = new byte[2048];
-
-                int readed = 0;
-
-                while((readed = webStream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ThrowIfCanceled();
-                    fileStream.BaseStream.Write(buffer, 0, readed);
-                }
+                if (webStream != null)
+                    webStream.CopyTo(fileStream.BaseStream);
+                else
+                    return false;
             }
 
-            DownloadedFiles[0] = FileName;
-            Status = OperationStatus.Complete;
+            DownloadedFiles[0] = fileName;
+            return true;
         }
     }
 }
