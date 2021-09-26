@@ -33,10 +33,11 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
                 if (productGroup.MetProducts.Count > 1)
                 {
-                    objectFormatter.WriteLine("Mamy więcej niż jeden produkt dla tego part numberu na liście CSV z MET. Używam pierwszego na liście");
+                    objectFormatter.WriteLine("Mamy więcej niż jeden produkt dla tego part numberu na liście CSV z MET. Używam tego z dłuższą nazwą.");
                 }
 
-                name = productGroup.MetProducts.First().NazwaProduktu;
+                var longestName = GetProductWithLongestName(productGroup.MetProducts);
+                name = longestName.NazwaProduktu;
             }
             else
             {
@@ -44,6 +45,22 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             }
 
             return name;
+        }
+
+        private Product GetProductWithLongestName(IEnumerable<Product> products)
+        {
+            var enumerator = products.GetEnumerator();
+            var selected = enumerator.Current;
+
+            while (enumerator.MoveNext())
+            {
+                if (selected.NazwaProduktu.Length < enumerator.Current.NazwaProduktu.Length)
+                {
+                    selected = enumerator.Current;
+                }
+            }
+
+            return selected;
         }
 
         private static IReadOnlyDictionary<Providers, int> Priorieties = new Dictionary<Providers, int>
