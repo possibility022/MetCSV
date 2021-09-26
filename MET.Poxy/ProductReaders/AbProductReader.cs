@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Proxy.Configuration;
 using MET.Proxy.Enums;
 using MET.Workflows;
@@ -17,14 +16,14 @@ namespace MET.Proxy.ProductReaders
     {
         public override Providers Provider => Providers.AB;
 
-        private readonly string CsvFileEncoding;
-        private readonly string CsvDelimiter;
+        private readonly string csvFileEncoding;
+        private readonly string csvDelimiter;
 
-        public AbProductReader(AbDownloaderSettings settings, CancellationToken token) : base(token)
+        public AbProductReader(IAbReaderSettings settings, CancellationToken token) : base(token)
         {
             ProviderName = "AB";
-            CsvFileEncoding = settings.CsvFileEncoding;
-            CsvDelimiter = settings.CsvDelimiter;
+            csvFileEncoding = settings.CsvFileEncoding;
+            csvDelimiter = settings.CsvDelimiter;
         }
 
         public override IList<Product> GetProducts(string filename, string filename2) =>
@@ -38,7 +37,7 @@ namespace MET.Proxy.ProductReaders
 
             if (encoding == null)
             {
-                encoding = Encoding.GetEncoding(CsvFileEncoding);
+                encoding = Encoding.GetEncoding(csvFileEncoding);
             }
 
             IList<Product> products = new List<Product>();
@@ -68,7 +67,7 @@ namespace MET.Proxy.ProductReaders
         private IList<Product> ReadProductsFromCsvFile(string filePath, Encoding encoding, int passLinesCount = 2)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = CsvDelimiter };
+            CsvReader reader = new CsvReader() { Delimiter = csvDelimiter };
 
             IEnumerable<string[]> producents = reader.ReadCsv(filePath, encoding);
             

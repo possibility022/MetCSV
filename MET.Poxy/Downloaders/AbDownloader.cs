@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
-using MET.Domain;
 using MET.Proxy.Configuration;
 using METCSV.Common;
 using System.IO.Compression;
@@ -32,7 +29,7 @@ namespace MET.Proxy
 
         private DateTimeParser dateTimeParser;
 
-        public AbDownloader(AbDownloaderSettings settings, CancellationToken cancellationToken)
+        public AbDownloader(IAbSettings settings, CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
 

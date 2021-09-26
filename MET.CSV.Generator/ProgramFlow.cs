@@ -20,6 +20,7 @@ namespace MET.CSV.Generator
         List<Product> finalList;
         IReadOnlyCollection<ProductGroup> allProducts;
 
+        private readonly ISettings settings;
         readonly Products products;
         private readonly int maximumPriceDifference;
 
@@ -39,6 +40,7 @@ namespace MET.CSV.Generator
 
         public ProgramFlow(ISettings settings, Products products, int maximumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
+            this.settings = settings;
             this.products = products;
             this.maximumPriceDifference = maximumPriceDifference;
             this.token = token;
@@ -82,9 +84,24 @@ namespace MET.CSV.Generator
 
         private void CheckLamaFile()
         {
-            var fi = new FileInfo(App.Settings.LamaDownloader.CsvFile);
+            var fi = new FileInfo(settings.LamaSettings.CsvFile);
             if ((DateTime.Now - fi.LastWriteTime).Days > 50)
-                MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}");
+                MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}"); //todo remove it from here.
+        }
+
+        private async Task<bool> DownloadAndLoadAsync()
+        {
+            await StorageInitializeTask;
+            Initialize();
+
+            var met = ProductProviderBase.DownloadAndLoadAsync(_met);
+            var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
+            var techData = ProductProviderBase.DownloadAndLoadAsync(_techData);
+            var ab = ProductProviderBase.DownloadAndLoadAsync(_ab);
+
+            await Task.WhenAll(met, lama, techData, ab);
+
+            return met.Result && lama.Result && techData.Result && ab.Result;
         }
 
         private void SetWarehouseToZeroIfPriceError()
