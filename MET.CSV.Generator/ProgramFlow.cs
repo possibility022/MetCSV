@@ -1,8 +1,4 @@
-﻿using MET.Domain.Logic.Comparers;
-using MET.Domain.Logic.Models;
-using METCSV.Common;
-using METCSV.Common.Formatters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -10,9 +6,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
+using MET.Domain.Logic;
+using MET.Domain.Logic.Comparers;
+using MET.Domain.Logic.Models;
 using MET.Proxy.Configuration;
+using METCSV.Common;
+using METCSV.Common.Formatters;
 
-namespace MET.Domain.Logic
+namespace MET.CSV.Generator
 {
     public class ProgramFlow
     {
