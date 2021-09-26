@@ -3,6 +3,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AnalysisMode>AllDisabledByDefault</AnalysisMode>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MET.Data.Models\MET.Data.Models.csproj" />
