@@ -4,50 +4,49 @@ namespace METCSV.WPF.Configuration
 {
     public class Settings : ISettings
     {
-        private AbDownloaderSettings _aBDownloader = new AbDownloaderSettings();
-        private LamaDownloaderSettings _lamaDownloader = new LamaDownloaderSettings();
-        private MetDownloaderSettings _metDownlaoder = new MetDownloaderSettings();
-        private TechDataDownloaderSettings _tDDownloader = new TechDataDownloaderSettings();
-        private EngineSettings _engine = new EngineSettings();
+        private AbDownloaderSettings aBDownloader = new();
+        private LamaDownloaderSettings lamaDownloader = new();
+        private MetDownloaderSettings metDownlaoder = new();
+        private TechDataDownloaderSettings tDDownloader = new();
+        private EngineSettings engine = new();
 
         public EngineSettings Engine
         {
-            get { return _engine; }
-            set { _engine = value ?? new EngineSettings(); }
+            get => engine;
+            set => engine = value ?? new EngineSettings();
         }
 
 
-        public AbDownloaderSettings ABDownloader
+        public AbDownloaderSettings AbDownloader
         {
-            get { return _aBDownloader; }
-            set { _aBDownloader = value ?? new AbDownloaderSettings(); }
+            get => aBDownloader;
+            set => aBDownloader = value ?? new AbDownloaderSettings();
         }
 
 
         public LamaDownloaderSettings LamaDownloader
         {
-            get { return _lamaDownloader; }
-            set { _lamaDownloader = value ?? new LamaDownloaderSettings(); }
+            get => lamaDownloader;
+            set => lamaDownloader = value ?? new LamaDownloaderSettings();
         }
 
 
         public MetDownloaderSettings MetDownlaoder
         {
-            get { return _metDownlaoder; }
-            set { _metDownlaoder = value ?? new MetDownloaderSettings(); }
+            get => metDownlaoder;
+            set => metDownlaoder = value ?? new MetDownloaderSettings();
         }
 
 
-        public TechDataDownloaderSettings TDDownloader
+        public TechDataDownloaderSettings TdDownloader
         {
-            get { return _tDDownloader; }
-            set { _tDDownloader = value ?? new TechDataDownloaderSettings(); }
+            get => tDDownloader;
+            set => tDDownloader = value ?? new TechDataDownloaderSettings();
         }
 
-    }
-
-    public interface ISettings
-    {
-
+        public ITechDataSettings TechDataSettings => TdDownloader;
+        public ILamaSettings LamaSettings => LamaDownloader;
+        public IAbSettings AbSettings => AbDownloader;
+        public IMetSettings MetSettings => MetDownlaoder;
     }
 }

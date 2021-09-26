@@ -21,7 +21,7 @@ namespace METCSV.WPF.ProductProvider
 
         private IProductReader GetProductReader()
         {
-            return new TechDataProductReader(App.Settings.TDDownloader, _token);
+            return new TechDataProductReader(App.Settings.TdDownloader, _token);
         }
 
         private IDownloader GetDownloader()
@@ -32,7 +32,7 @@ namespace METCSV.WPF.ProductProvider
             }
             else
             {
-                return new TechDataDownloader(App.Settings.TDDownloader, _token);
+                return new TechDataDownloader(App.Settings.TdDownloader, _token);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace METCSV.WPF.ProductProvider
 
         private IProductReader GetProductReader()
         {
-            return new AbProductReader(App.Settings.ABDownloader, _token);
+            return new AbProductReader(App.Settings.AbDownloader, _token);
         }
 
         private IDownloader GetDownloader()
@@ -33,7 +33,7 @@ namespace METCSV.WPF.ProductProvider
             }
             else
             {
-                return new AbDownloader(App.Settings.ABDownloader, _token);
+                return new AbDownloader(App.Settings.AbDownloader, _token);
             }
         }
     }
