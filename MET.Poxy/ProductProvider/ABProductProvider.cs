@@ -5,35 +5,38 @@ using METCSV.WPF.Interfaces;
 using MET.Proxy.ProductReaders;
 using System.Threading;
 using MET.Data.Models;
+using MET.Proxy.Configuration;
 using MET.Proxy.Interfaces;
 
 namespace METCSV.WPF.ProductProvider
 {
-    class ABProductProvider : ProductProviderBase
+    public class ABProductProvider : ProductProviderBase
     {
+        private readonly IAbSettings settings;
         protected override string ArchiveFileNamePrefix => "AB";
 
-        public ABProductProvider(CancellationToken token) : base(token)
+        public ABProductProvider(IAbSettings settings, bool offlineMode, CancellationToken token) : base(token)
         {
-            SetProductDownloader(GetDownloader());
+            this.settings = settings;
+            SetProductDownloader(GetDownloader(offlineMode));
             SetProductReader(GetProductReader());
             Provider = Providers.AB;
         }
 
         private IProductReader GetProductReader()
         {
-            return new AbProductReader(App.Settings.AbDownloader, _token);
+            return new AbProductReader(settings, _token);
         }
 
-        private IDownloader GetDownloader()
+        private IDownloader GetDownloader(bool offlineMode)
         {
-            if (App.Settings.Engine.OfflineMode)
+            if (offlineMode)
             {
                 return new ABOfflineDownloader();
             }
             else
             {
-                return new AbDownloader(App.Settings.AbDownloader, _token);
+                return new AbDownloader(settings, _token);
             }
         }
     }
