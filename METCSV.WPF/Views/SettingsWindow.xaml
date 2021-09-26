@@ -548,6 +548,62 @@
                 </Border>
             </TabItem>
 
+            <TabItem IsSelected="{Binding RenameSettingsIsActive}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Nazwa Producenta - Mapper" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Border
+                    Margin="10"
+                    BorderBrush="Black"
+                    BorderThickness="1">
+
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <DataGrid
+                            Grid.Row="0"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            IsReadOnly="False"
+                            ItemsSource="{Binding RenameMappings}"
+                            SelectedItem="{Binding RenameRowSelectedItem}">
+
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn
+                                    Width="Auto"
+                                    MinWidth="200"
+                                    Binding="{Binding Key, UpdateSourceTrigger=PropertyChanged}"
+                                    Header="Wartość wejściowa" />
+
+                                <DataGridTextColumn
+                                    Width="Auto"
+                                    MinWidth="200"
+                                    Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                    Header="Zmień na" />
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel
+                            Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button Command="{Binding AddNewRenameRow}" Content="Dodaj" />
+                            <Button Command="{Binding RemoveSelectedRenameRow, UpdateSourceTrigger=Default}" Content="Usuń" />
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+            </TabItem>
+
         </TabControl>
 
         <StackPanel

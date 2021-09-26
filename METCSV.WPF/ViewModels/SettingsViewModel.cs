@@ -1,10 +1,19 @@
-﻿using MET.Proxy.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using MET.Proxy.Configuration;
 using METCSV.Common;
 using METCSV.WPF.Configuration;
 using Prism.Mvvm;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using MET.Data.Storage;
+using METCSV.WPF.ProductProvider;
+using Microsoft.Toolkit.Mvvm.Input;
+using Org.BouncyCastle.Utilities.Collections;
 
 namespace METCSV.WPF.ViewModels
 {
@@ -17,6 +26,13 @@ namespace METCSV.WPF.ViewModels
         {
             get { return _savedInfo; }
             set { SetProperty(ref _savedInfo, value); }
+        }
+
+        private bool renameSettingsIsActive;
+        public bool RenameSettingsIsActive
+        {
+            get { return renameSettingsIsActive; }
+            set { SetProperty(ref renameSettingsIsActive, value); }
         }
 
         private bool _generalTabIsActive;
@@ -83,6 +99,8 @@ namespace METCSV.WPF.ViewModels
         }
 
         private AbDownloaderSettings _abSettings;
+        private object renameRowSelectedItem;
+
         public AbDownloaderSettings AbSettings
         {
             get { return _abSettings; }
@@ -92,9 +110,83 @@ namespace METCSV.WPF.ViewModels
 
         public SettingsViewModel()
         {
+            RemoveSelectedRenameRow =
+                new RelayCommand(() => RemoveSelectedRenameRowAction());
+            AddNewRenameRow
+                = new RelayCommand(() => AddNewRenameRowAction());
+
+            LoadRenameTable();
             CopyFromSettings();
             _hiddingTask = new Task(HideInfoAfter);
         }
+
+
+        public object RenameRowSelectedItem
+        {
+            get => renameRowSelectedItem;
+            set
+            {
+                SetProperty(ref renameRowSelectedItem, value);
+                RaisePropertyChanged(nameof(RemoveSelectedRenameRow));
+
+            }
+        }
+
+        public ICommand RemoveSelectedRenameRow { get; }
+        public ICommand AddNewRenameRow { get; }
+
+        public ObservableCollection<EditableDictionaryKey<string, string>> RenameMappings { get; set; } =
+            new ObservableCollection<EditableDictionaryKey<string, string>>();
+
+        private void RemoveSelectedRenameRowAction()
+        {
+            if (RenameRowSelectedItem != null)
+                RenameMappings.Remove((EditableDictionaryKey<string, string>)RenameRowSelectedItem);
+        }
+
+        private void AddNewRenameRowAction()
+        {
+            RenameMappings.Add(new EditableDictionaryKey<string, string>("Uzupełnij", "Uzupełnij"));
+        }
+
+        private void LoadRenameTable()
+        {
+            using var context = new StorageContext();
+            var storageService = new StorageService(context);
+
+            var renameMappings = storageService.GetRenameManufacturerDictionary();
+
+            foreach (var renameMapping in renameMappings)
+            {
+                RenameMappings.Add(new EditableDictionaryKey<string, string>(renameMapping.Key, renameMapping.Value));
+            }
+        }
+
+        private void SaveRenameTable()
+        {
+            using var context = new StorageContext();
+            var storageService = new StorageService(context);
+
+            var newMappings = RenameMappings.ToDictionary(r => r.Key, rr => rr.Value);
+
+            storageService.OverrideRenameManufacturerDictionary(newMappings);
+        }
+
+        private bool CanSaveRenameTable()
+        {
+            var s = new HashSet<string>();
+
+            foreach (var editableDictionaryKey in RenameMappings)
+            {
+                if (!s.Add(editableDictionaryKey.Key))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
 
         private void CopyFromSettings()
         {
@@ -103,7 +195,7 @@ namespace METCSV.WPF.ViewModels
             TdSettings = new TechDataDownloaderSettings();
             AbSettings = new AbDownloaderSettings();
             EngineSettings = new EngineSettings();
-            
+
 
             PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
             PropertyCopy.CopyValues(App.Settings.ABDownloader, AbSettings);
@@ -134,6 +226,19 @@ namespace METCSV.WPF.ViewModels
 
             else if (GeneralTabIsActive)
                 PropertyCopy.CopyValues(EngineSettings, App.Settings.Engine);
+
+            else if (RenameSettingsIsActive)
+            {
+                if (CanSaveRenameTable())
+                {
+                    SaveRenameTable();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Nie można zapisać. Któraś wartość w pierwszej tabeli wystepuje więcej niż jeden raz.");
+                }
+            }
 
             SavedInfo = Visibility.Visible;
 

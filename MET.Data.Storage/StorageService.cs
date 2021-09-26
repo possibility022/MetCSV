@@ -112,7 +112,7 @@ namespace MET.Data.Storage
             return context.CategoryProfits;
         }
         
-        public void SaveRenameManufacturerDictionary(IReadOnlyDictionary<string, string> newDictionary)
+        public void OverrideRenameManufacturerDictionary(IReadOnlyDictionary<string, string> newDictionary)
         {
             var dict = context.RenameManufacturer.ToDictionary(r => r.From);
 
@@ -132,6 +132,12 @@ namespace MET.Data.Storage
                         To = newDictionary[from]
                     });
                 }
+            }
+
+            foreach (var oldMapping in dict.Keys)
+            {
+                if (!newDictionary.ContainsKey(oldMapping))
+                    context.Remove(dict[oldMapping]);
             }
 
             context.SaveChanges();
