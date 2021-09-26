@@ -11,7 +11,7 @@ using MET.Data.Models.Profits;
 
 namespace MET.Domain.Logic
 {
-    public class ProductMerger
+    public class ProgramLogic
     {
         List<Product> _finalList;
         IReadOnlyCollection<ProductGroup> allProducts;
@@ -33,7 +33,7 @@ namespace MET.Domain.Logic
         public IReadOnlyList<Product> FinalList => _finalList;
         public IReadOnlyCollection<ProductGroup> AllProducts => allProducts;
 
-        public ProductMerger(Products products, int maxiumumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
+        public ProgramLogic(Products products, int maxiumumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
             _products = products;
             this.maxiumumPriceDifference = maxiumumPriceDifference;
