@@ -18,7 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MET.Data.Models\MET.Data.Models.csproj" />
     <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj" />
-    <ProjectReference Include="..\MET.Poxy\MET.Poxy.csproj" />
+    <ProjectReference Include="..\MET.Poxy\MET.Proxy.csproj" />
     <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj" />
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj" />
     <ProjectReference Include="..\METCSV.WPF\METCSV.WPF.csproj" />

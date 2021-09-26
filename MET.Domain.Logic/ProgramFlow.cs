@@ -4,8 +4,10 @@ using METCSV.Common;
 using METCSV.Common.Formatters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 
@@ -74,6 +76,13 @@ namespace MET.Domain.Logic
                 Log.Error(ex, "Generowanie przerwane.");
                 return false;
             }
+        }
+
+        private void CheckLamaFile()
+        {
+            var fi = new FileInfo(App.Settings.LamaDownloader.CsvFile);
+            if ((DateTime.Now - fi.LastWriteTime).Days > 50)
+                MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}");
         }
 
         private void SetWarehouseToZeroIfPriceError()

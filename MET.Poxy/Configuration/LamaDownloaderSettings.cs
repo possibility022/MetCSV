@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public class LamaDownloaderSettings
+    public class LamaDownloaderSettings : ILamaSettings
     {
         public string XmlFile { get; set; } = "LamaDownloadedFile.xml";
 
