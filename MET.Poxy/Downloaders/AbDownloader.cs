@@ -1,124 +1,115 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading;
-using MET.Proxy.Configuration;
-using METCSV.Common;
-using System.IO.Compression;
 using MailKit.Net.Pop3;
 using MET.Data.Models;
+using MET.Proxy.Configuration;
+using METCSV.Common;
 using MimeKit;
 
-namespace MET.Proxy
+namespace MET.Proxy.Downloaders
 {
     public class AbDownloader : DownloaderBase
     {
-        readonly string EmailServerAddress;
-        readonly int EmailServerPort;
-        readonly bool UseSSL;
+        private readonly string emailServerAddress;
+        private readonly int emailServerPort;
+        private readonly bool useSsl;
 
-        readonly string EmailLogin;
-        readonly string EmailPassword;
+        private readonly string emailLogin;
+        private readonly string emailPassword;
 
-        readonly string ZippedFile;
-        readonly string FolderToExtract;
+        private readonly string zippedFile;
+        private readonly string folderToExtract;
 
-        readonly bool DeleteOld;
+        private readonly bool deleteOld;
         
 
-        private DateTimeParser dateTimeParser;
+        private readonly DateTimeParser dateTimeParser;
+
+        private Pop3Client client;
+        public override Providers Provider => Providers.AB;
+
 
         public AbDownloader(IAbSettings settings, CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
 
-            EmailServerAddress = settings.EmailServerAddress;
-            EmailServerPort = settings.EmailServerPort;
-            UseSSL = settings.EmailServerUseSSL;
+            emailServerAddress = settings.EmailServerAddress;
+            emailServerPort = settings.EmailServerPort;
+            useSsl = settings.EmailServerUseSSL;
 
-            EmailLogin = settings.EmailLogin;
-            EmailPassword = settings.EmailPassword;
+            emailLogin = settings.EmailLogin;
+            emailPassword = settings.EmailPassword;
 
-            ZippedFile = settings.ZippedFile;
-            FolderToExtract = settings.FolderToExtract;
-            DeleteOld = settings.DeleteOldMessages;
+            zippedFile = settings.ZippedFile;
+            folderToExtract = settings.FolderToExtract;
+            deleteOld = settings.DeleteOldMessages;
 
             dateTimeParser = new DateTimeParser(settings.DateTimeRegexPattern, settings.DateTimeFormat1,
                 settings.DateTimeFormat2);
         }
-
-        Pop3Client _client;
-
-        public override Providers Provider => Providers.AB;
-
-        public ICollection<Product> GetResults { get; private set; }
-
-        public EventHandler OnDownloadingFinish { get; private set; }
-
-        protected override void Download()
+        
+        protected override bool Download()
         {
-            Status = OperationStatus.InProgress;
-
             DownloadedFiles = new[] { string.Empty };
 
-            using (_client = new Pop3Client())
+            using (client = new Pop3Client())
             {
-                _client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
-                _client.Connect(
-                    EmailServerAddress,
-                    EmailServerPort,
-                    UseSSL,
+                client.Connect(
+                    emailServerAddress,
+                    emailServerPort,
+                    useSsl,
                     CancellationToken);
                 
-                _client.Authenticate(EmailLogin, EmailPassword, CancellationToken);
+                client.Authenticate(emailLogin, emailPassword, CancellationToken);
 
-                if (DeleteOld)
+                if (deleteOld)
                 {
                     LogInfo("This is not implemented yet");
                     //deleteOldMessages(client); //todo implement and allow to manage from config.
                 }
 
-                int theLatestMessage = GetNewestMessageIndex(_client);
+                int theLatestMessage = GetNewestMessageIndex(client);
 
                 if (theLatestMessage < 0)
                 {
-                    Status = OperationStatus.Faild;
                     LogInfo("Nie znaleziono najnowszej wiadomości.");
-                    return;
+                    return false;
                 }
 
-                var message = _client.GetMessage(theLatestMessage, CancellationToken);
+                var message = client.GetMessage(theLatestMessage, CancellationToken);
 
                 var attachment = message.Attachments.First() as MimePart;
 
                 if (attachment == null)
                 {
-                    Status = OperationStatus.Faild;
                     LogError("Problem z załącznikiem w mailu. Sprawdz czy załącznik istnieje");
+                    return false;
                 }
 
-                ExportAttachmentToFile(ZippedFile, attachment);
+                ExportAttachmentToFile(zippedFile, attachment);
 
-                if (Directory.Exists(FolderToExtract))
-                    Directory.Delete(FolderToExtract, true);
+                if (Directory.Exists(folderToExtract))
+                    Directory.Delete(folderToExtract, true);
 
-                ZipFile.ExtractToDirectory(ZippedFile, FolderToExtract);
-                DirectoryInfo dir = new DirectoryInfo(FolderToExtract);
+                ZipFile.ExtractToDirectory(zippedFile, folderToExtract);
+                DirectoryInfo dir = new DirectoryInfo(folderToExtract);
                 DownloadedFiles[0] = dir.GetFiles().First().FullName;
-                _client.Disconnect(true);
+                client.Disconnect(true);
             }
 
             ThrowIfCanceled();
+            return true;
         }
 
         private void ExportAttachmentToFile(string zippedFile, MimePart attachment)
         {
-            using (var stream = new StreamWriter(zippedFile))
-            {
-                attachment.Content.DecodeTo(stream.BaseStream, CancellationToken);
-            }
+            using var stream = new StreamWriter(zippedFile);
+            attachment.Content.DecodeTo(stream.BaseStream, CancellationToken);
         }
 
         private int GetNewestMessageIndex(Pop3Client client)

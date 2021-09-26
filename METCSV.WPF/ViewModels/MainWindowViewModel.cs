@@ -20,6 +20,7 @@ using System.Windows.Input;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 using MET.Data.Storage;
+using MET.Proxy.ProductProvider;
 using METCSV.WPF.Models;
 using Microsoft.Toolkit.Mvvm.Input;
 

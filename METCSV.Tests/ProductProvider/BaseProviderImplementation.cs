@@ -1,5 +1,6 @@
 ﻿using METCSV.WPF.ProductProvider;
 using System.Threading;
+using MET.Proxy.ProductProvider;
 
 namespace METCSV.UnitTests.ProductProvider
 {

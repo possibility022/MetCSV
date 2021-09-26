@@ -1,5 +1,7 @@
 ﻿using MET.Data.Models;
 using MET.Domain;
+using MET.Proxy.Downloaders;
+
 namespace MET.Proxy.Offline
 {
     public class LamaOfflineDownloader : DownloaderBase

@@ -1,19 +1,11 @@
-﻿using System;
-using System.Threading;
-using METCSV.Common;
+﻿using System.Threading;
 
 namespace MET.Proxy
 {
     public interface IDownloader
     {
-        void StartDownloading();
-
-        EventHandler<OperationStatus> OnDownloadingStatusChanged { get; set; }
-
-        OperationStatus Status { get; }
+        bool StartDownloading(CancellationToken toknen);
 
         string[] DownloadedFiles { get; }
-
-        void SetCancellationToken(CancellationToken token);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MET.Domain;
 using System.IO;
 using MET.Data.Models;
+using MET.Proxy.Downloaders;
 
 namespace MET.Proxy.Offline
 {

@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using MET.Data.Models;
-using MET.Domain;
-using MET.Proxy;
 using MET.Proxy.Interfaces;
-using METCSV.Common;
 
-namespace METCSV.WPF.Interfaces
+namespace MET.Proxy.ProductProvider
 {
-    public interface IProductProvider : INotifyPropertyChanged
+    public interface IProductProvider
     {
         IList<Product> GetProducts();
 
@@ -17,10 +13,6 @@ namespace METCSV.WPF.Interfaces
         void SetProductDownloader(IDownloader downloader);
 
         void SetProductReader(IProductReader reader);
-
-        OperationStatus DownloaderStatus { get; }
-
-        OperationStatus ReaderStatus { get; }
 
         Providers Provider { get; }
 
