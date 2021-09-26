@@ -14,7 +14,7 @@ namespace METCSV.UnitTests.EngineTest
     [TestClass]
     public class ProductMergerTest
     {
-        static ProgramLogic _productMerger;
+        static ProgramFlow _productMerger;
 
         List<Product> _workOnList;
 
@@ -42,7 +42,7 @@ namespace METCSV.UnitTests.EngineTest
                 AbProducts_Old = ab_old
             };
 
-            _productMerger = new ProgramLogic(
+            _productMerger = new ProgramFlow(
                 products,
                 20,
                 new CancellationTokenSource().Token, ZeroOutputFormatter.Instance);

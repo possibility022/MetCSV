@@ -85,7 +85,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         private IReadOnlyCollection<ProductGroup> _allProducts;
-        private ProgramLogic _productMerger;
+        private ProgramFlow _productMerger;
         private List<Product> metCustomProducts;
 
         private StorageService storage;
@@ -298,7 +298,7 @@ namespace METCSV.WPF.ViewModels
                 LamaProducts_Old = _lama.LoadOldProducts()
             };
             
-            _productMerger = new ProgramLogic(
+            _productMerger = new ProgramFlow(
                 products,
                 App.Settings.Engine.MaximumPriceErrorDifference,
                 _cancellationTokenSource.Token)
