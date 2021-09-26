@@ -308,7 +308,7 @@ namespace METCSV.WPF.ViewModels
                 RenameManufacturerDictionary = storage.GetRenameManufacturerDictionary()
             };
 
-            await _productMerger.Generate();
+            await _productMerger.StartFlow();
 
             Products = _productMerger.FinalList;
             _allProducts = _productMerger.AllProducts;

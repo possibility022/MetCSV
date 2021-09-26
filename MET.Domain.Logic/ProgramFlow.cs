@@ -41,15 +41,8 @@ namespace MET.Domain.Logic
             objectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
         }
 
-        public async Task<bool> Generate()
+        public async Task<bool> StartFlow()
         {
-            if (token.IsCancellationRequested)
-            {
-                Log.Info("Generowanie anulowane przez użytkownika.");
-                return false;
-            }
-
-
             finalList = new List<Product>();
 
             try
