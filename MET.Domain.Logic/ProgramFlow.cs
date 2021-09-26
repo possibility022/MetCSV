@@ -13,16 +13,16 @@ namespace MET.Domain.Logic
 {
     public class ProgramFlow
     {
-        List<Product> _finalList;
+        List<Product> finalList;
         IReadOnlyCollection<ProductGroup> allProducts;
 
-        Products _products;
-        private readonly int maxiumumPriceDifference;
+        readonly Products products;
+        private readonly int maximumPriceDifference;
 
 
-        readonly IObjectFormatterConstructor<object> ObjectFormatterSource;
+        readonly IObjectFormatterConstructor<object> objectFormatterSource;
 
-        private CancellationToken _token;
+        private readonly CancellationToken token;
 
         public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; set; }
         public IReadOnlyCollection<CustomProfit> CustomProfits { get; set; }
@@ -30,41 +30,40 @@ namespace MET.Domain.Logic
         public IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; set; }
 
 
-        public IReadOnlyList<Product> FinalList => _finalList;
+        public IReadOnlyList<Product> FinalList => finalList;
         public IReadOnlyCollection<ProductGroup> AllProducts => allProducts;
 
-        public ProgramFlow(Products products, int maxiumumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
+        public ProgramFlow(Products products, int maximumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
-            _products = products;
-            this.maxiumumPriceDifference = maxiumumPriceDifference;
-            _token = token;
-            ObjectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
+            this.products = products;
+            this.maximumPriceDifference = maximumPriceDifference;
+            this.token = token;
+            objectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
         }
 
         public async Task<bool> Generate()
         {
-            if (_token.IsCancellationRequested)
+            if (token.IsCancellationRequested)
             {
                 Log.Info("Generowanie anulowane przez użytkownika.");
                 return false;
             }
 
 
-            _finalList = new List<Product>();
+            finalList = new List<Product>();
 
             try
             {
-                // STEP 1
                 SetWarehouseToZeroIfPriceError();
 
-                Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), ObjectFormatterSource, true);
+                Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), objectFormatterSource, true);
 
                 orchestrator.ManufacturerRenameDomain.SetDictionary(RenameManufacturerDictionary);
 
                 orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits);
 
-                orchestrator.AddMetCollection(_products.MetProducts);
-                orchestrator.SetCollections(_products.AbProducts, _products.LamaProducts, _products.TechDataProducts);
+                orchestrator.AddMetCollection(products.MetProducts);
+                orchestrator.SetCollections(products.AbProducts, products.LamaProducts, products.TechDataProducts);
                 await orchestrator.Orchestrate();
 
                 FinalListCombineDomain finalListCombineDomain = new FinalListCombineDomain();
@@ -73,7 +72,7 @@ namespace MET.Domain.Logic
                 allProducts = orchestrator.GetGeneratedProductGroups();
 
                 finalList.Sort(new ProductSorter());
-                _finalList = finalList;
+                this.finalList = finalList;
                 
                 return true;
             }
@@ -88,38 +87,23 @@ namespace MET.Domain.Logic
         {
             PriceErrorDomain priceError;
 
-            if (_products.AbProducts_Old != null)
+            if (products.AbProducts_Old != null)
             {
-                priceError = new PriceErrorDomain(_products.AbProducts_Old, _products.AbProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
+                priceError = new PriceErrorDomain(products.AbProducts_Old, products.AbProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
 
-            if (_products.LamaProducts_Old != null)
+            if (products.LamaProducts_Old != null)
             {
-                priceError = new PriceErrorDomain(_products.LamaProducts_Old, _products.LamaProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
+                priceError = new PriceErrorDomain(products.LamaProducts_Old, products.LamaProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
 
-            if (_products.TechDataProducts_Old != null)
+            if (products.TechDataProducts_Old != null)
             {
-                priceError = new PriceErrorDomain(_products.TechDataProducts_Old, _products.TechDataProducts, maxiumumPriceDifference, ObjectFormatterSource.GetNewInstance());
+                priceError = new PriceErrorDomain(products.TechDataProducts_Old, products.TechDataProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
         }
-
-        //private List<Product> CombineList()
-        //{
-        //    var combinedList = new List<Product>();
-        //    combinedList.AddRange(_lamaProducts);
-        //    combinedList.AddRange(_techDataProducts);
-        //    combinedList.AddRange(_abProducts);
-
-        //    var endOfLife = _metBag.Where(p => p.Kategoria == EndOfLiveDomain.EndOfLifeCategory);
-        //    combinedList.AddRange(endOfLife);
-
-        //    combinedList.Sort(new ProductSorter());
-
-        //    return combinedList;
-        //}
     }
 }
