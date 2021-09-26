@@ -1,19 +1,17 @@
 ﻿using MET.Data.Models;
-using MET.Domain;
-using MET.Proxy.Downloaders;
 
-namespace MET.Proxy.Offline
+namespace MET.Proxy.Downloaders.Offline
 {
     public class MetOfflineDownloader : DownloaderBase
     {
-
         public override Providers Provider => Providers.MET;
 
-        private string _fileName = "met.csv"; //todo move to config
+        private const string FileName = "met.csv"; //todo move to config
 
-        protected override void Download()
+        protected override bool Download()
         {
-            DownloadedFiles = new[] { _fileName };
+            DownloadedFiles = new[] { FileName };
+            return true;
         }
     }
 }
