@@ -1,71 +1,63 @@
-﻿using MET.Domain;
-using MET.Proxy.Configuration;
-using METCSV.Common;
-using METCSV.Common.Exceptions;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using MET.Data.Models;
-using MET.Proxy.Downloaders;
+using MET.Proxy.Configuration;
 
-namespace MET.Proxy
+namespace MET.Proxy.Downloaders
 {
     public class TechDataDownloader : DownloaderBase
     {
 
         public override Providers Provider => Providers.TechData;
 
-        readonly string User;
-        readonly string Password;
+        private readonly string user;
+        private readonly string password;
 
-        readonly string Pattern;
+        private readonly string pattern;
 
-        readonly string FtpAddres;
+        private readonly string ftpAddress;
 
-        readonly string FolderToExtract;
+        private readonly string folderToExtract;
 
-        readonly string CsvMaterials;
+        private readonly string csvMaterials;
 
-        readonly string CsvPrices;
+        private readonly string csvPrices;
 
-        public TechDataDownloader(TechDataDownloaderSettings settings, CancellationToken token)
+        public TechDataDownloader(TechDataDownloaderSettings settings)
         {
-            SetCancellationToken(token);
-
-            User = settings.Login;
-            Password = settings.Password;
-            Pattern = settings.Pattern;
-            FtpAddres = settings.FtpAddress;
-            FolderToExtract = settings.FolderToExtract;
-            CsvMaterials = settings.CsvMaterials;
-            CsvPrices = settings.CsvPrices;
+            user = settings.Login;
+            password = settings.Password;
+            pattern = settings.Pattern;
+            ftpAddress = settings.FtpAddress;
+            folderToExtract = settings.FolderToExtract;
+            csvMaterials = settings.CsvMaterials;
+            csvPrices = settings.CsvPrices;
         }
 
-        protected override void Download()
+        protected override bool Download()
         {
-            Status = OperationStatus.InProgress;
-            string[] files = GetFileList();
-            string file = GetTheNewestFile(files);
+            var files = GetFileList();
+            var file = GetTheNewestFile(files);
             DownloadFileByFtp(file);
-            if (Directory.Exists(FolderToExtract))
-                Directory.Delete(FolderToExtract, true);
-            System.IO.Compression.ZipFile.ExtractToDirectory(file, FolderToExtract);
-            DirectoryInfo dir = new DirectoryInfo(FolderToExtract);
+            if (Directory.Exists(folderToExtract))
+                Directory.Delete(folderToExtract, true);
+            System.IO.Compression.ZipFile.ExtractToDirectory(file, folderToExtract);
+            var dir = new DirectoryInfo(folderToExtract);
 
-            string materials = FindFile(dir, CsvMaterials);
-            string prices = FindFile(dir, CsvPrices);
+            var materials = FindFile(dir, csvMaterials);
+            var prices = FindFile(dir, csvPrices);
 
             DownloadedFiles = new[] { materials, prices };
 
-            Status = OperationStatus.Complete;
+            return true;
         }
 
         private string FindFile(DirectoryInfo folder, string file)
         {
-            foreach (FileInfo f in folder.GetFiles())
+            foreach (var f in folder.GetFiles())
             {
                 if (f.Name == file)
                     return f.FullName;
@@ -76,18 +68,16 @@ namespace MET.Proxy
 
         private string GetTheNewestFile(string[] files)
         {
-            DateTime dateTime;
+            var regex = new Regex(pattern);
+            var match = regex.Match(files[0]);
 
-            Regex regex = new Regex(Pattern);
-            Match match = regex.Match(files[0]);
+            var dateTime = GetDate(match.Value);
 
-            dateTime = GetDate(match.Value);
+            var file = files[0];
 
-            string file = files[0];
-
-            foreach (string date in files)
+            foreach (var date in files)
             {
-                DateTime newDateTime = GetDate(regex.Match(date).Value);
+                var newDateTime = GetDate(regex.Match(date).Value);
 
 
                 ThrowIfCanceled();
@@ -102,71 +92,69 @@ namespace MET.Proxy
             return file;
         }
 
-        private DateTime GetDate(string date)
+        private DateTime GetDate(string input)
         {
-            DateTime d;
-            string[] parts = date.Split('-');
-            d = new DateTime(
+            var parts = input.Split('-');
+            var date = new DateTime(
                 int.Parse(parts[0]),
                 int.Parse(parts[1]),
                 int.Parse(parts[2]));
 
-            return d;
+            return date;
         }
 
         private void DownloadFileByFtp(string file)
         {
-            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{FtpAddres}/{file}"));
-            reqFtp.Credentials = new NetworkCredential(User, Password);
+            var reqFtp = (FtpWebRequest)FtpWebRequest.Create(new Uri($"ftp://{ftpAddress}/{file}"));
+            reqFtp.Credentials = new NetworkCredential(user, password);
             reqFtp.KeepAlive = false;
             reqFtp.Method = WebRequestMethods.Ftp.DownloadFile;
             reqFtp.UseBinary = true;
             reqFtp.Proxy = null;
             reqFtp.UsePassive = false;
 
-            using (FtpWebResponse response = (FtpWebResponse)reqFtp.GetResponse())
-            using (Stream responseStream = response.GetResponseStream())
-            using (FileStream writeStream = new FileStream(file, FileMode.Create))
+            using var response = (FtpWebResponse)reqFtp.GetResponse();
+            using var responseStream = response.GetResponseStream();
+            using var writeStream = new FileStream(file, FileMode.Create);
+            
+            const int length = 2048;
+            var buffer = new byte[length];
+
+            if (responseStream == null)
             {
-                int length = 2048;
-                Byte[] buffer = new Byte[length];
+                throw new InvalidOperationException("Nie otrzymano strumienia odpowiedzi. (Probowano pobrac plik (krok 2))");
+            }
 
-                if (responseStream == null)
-                {
-                    throw new InvalidOperationException("Nie otrzymano strumienia odpowiedzi. (Probowano pobrac plik (krok 2))");
-                }
+            var bytesRead = responseStream.Read(buffer, 0, length);
+            while (bytesRead > 0)
+            {
 
-                int bytesRead = responseStream.Read(buffer, 0, length);
-                while (bytesRead > 0)
-                {
+                ThrowIfCanceled();
 
-                    ThrowIfCanceled();
-
-                    writeStream.Write(buffer, 0, bytesRead);
-                    bytesRead = responseStream.Read(buffer, 0, length);
-                }
+                writeStream.Write(buffer, 0, bytesRead);
+                bytesRead = responseStream.Read(buffer, 0, length);
             }
         }
 
         public string[] GetFileList()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            var reqFtp = (FtpWebRequest)WebRequest.Create(new Uri($"ftp://{FtpAddres}/"));
+            var reqFtp = (FtpWebRequest)WebRequest.Create(new Uri($"ftp://{ftpAddress}/"));
 
             reqFtp.UseBinary = true;
-            reqFtp.Credentials = new NetworkCredential(User, Password);
+            reqFtp.Credentials = new NetworkCredential(user, password);
             reqFtp.Method = WebRequestMethods.Ftp.ListDirectory;
             reqFtp.Proxy = null;
             reqFtp.KeepAlive = false;
             reqFtp.UsePassive = false;
             var response = reqFtp.GetResponse();
 
-            using (StreamReader reader
+            using (var reader
                 = new StreamReader(response.GetResponseStream()
                 ?? throw new InvalidOperationException("Nie otrzymano strumienia odpowiedzi. (Probowano pobrac plik (krok 1))")))
             {
-                string line = reader.ReadLine();
+                var line = reader.ReadLine();
                 while (line != null)
                 {
                     ThrowIfCanceled();
