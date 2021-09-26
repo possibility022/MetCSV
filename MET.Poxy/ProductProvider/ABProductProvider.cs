@@ -1,12 +1,13 @@
 ﻿using MET.Domain;
 using MET.Proxy;
 using MET.Proxy.Offline;
-using METCSV.WPF.Interfaces;
 using MET.Proxy.ProductReaders;
 using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
+using MET.Proxy.Downloaders;
 using MET.Proxy.Interfaces;
+using MET.Proxy.ProductProvider;
 
 namespace METCSV.WPF.ProductProvider
 {

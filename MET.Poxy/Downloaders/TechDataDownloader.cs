@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using MET.Data.Models;
+using MET.Proxy.Downloaders;
 
 namespace MET.Proxy
 {

@@ -6,6 +6,7 @@ using MET.Domain;
 using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
+using MET.Proxy.Downloaders;
 using METCSV.Common;
 
 namespace MET.Proxy

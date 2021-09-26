@@ -1,71 +1,43 @@
 ﻿using System;
 using System.Threading;
 using MET.Data.Models;
-using MET.Domain;
 using METCSV.Common;
 using METCSV.Common.Exceptions;
 
-namespace MET.Proxy
+namespace MET.Proxy.Downloaders
 {
     public abstract class DownloaderBase : IDownloader
     {
-        public void StartDownloading()
+        public bool StartDownloading(CancellationToken token)
         {
             try
             {
+                this.CancellationToken = token;
                 LogInfo("Rozpoczynam pobieranie.");
-                Download();
+                var results = Download();
                 LogInfo("Pobieranie ukończone.");
+                return results;
             }
             catch (CancelledException)
             {
                 LogInfo("Anulowano przez użytkownika.");
-                Status = OperationStatus.Faild;
+                return false;
             }
             catch (Exception ex)
             {
                 LogError(ex, "Pobieranie nie powiodło się.");
-                Status = OperationStatus.Faild;
-            }
-            finally
-            {
-                if (Status != OperationStatus.Faild)
-                {
-                    Status = OperationStatus.Complete;
-                }
+                return false;
             }
         }
 
         public abstract Providers Provider { get; }
 
-        protected abstract void Download();
+        protected abstract bool Download();
 
         public CancellationToken CancellationToken { get; protected set; }
         
-        public EventHandler<OperationStatus> OnDownloadingStatusChanged { get; set; }
-
-        public OperationStatus Status
-        {
-            get => _status;
-            protected set
-            {
-                if (_status != value)
-                {
-                    _status = value;
-                    OnDownloadingStatusChanged?.Invoke(this, _status);
-                }
-            }
-        }
-
-        private OperationStatus _status;
-
         public string[] DownloadedFiles { get; protected set; }
-
-        public void SetCancellationToken(CancellationToken token)
-        {
-            CancellationToken = token;
-        }
-
+        
         protected void LogError(Exception ex, string message)
         {
             Log.Error(ex, FormatMessage(message));

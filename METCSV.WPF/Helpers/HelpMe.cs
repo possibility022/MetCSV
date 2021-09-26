@@ -1,9 +1,8 @@
-﻿using MET.Domain;
-using METCSV.WPF.Interfaces;
-using METCSV.WPF.Models;
+﻿using METCSV.WPF.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MET.Data.Models;
+using MET.Proxy.ProductProvider;
 
 namespace METCSV.WPF.Helpers
 {

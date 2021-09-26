@@ -10,8 +10,10 @@ using MET.Domain.Logic;
 using MET.Domain.Logic.Comparers;
 using MET.Domain.Logic.Models;
 using MET.Proxy.Configuration;
+using MET.Proxy.ProductProvider;
 using METCSV.Common;
 using METCSV.Common.Formatters;
+using METCSV.WPF.ProductProvider;
 
 namespace MET.CSV.Generator
 {

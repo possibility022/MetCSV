@@ -3,21 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MET.Data.Models;
-using MET.Domain;
-using MET.Proxy;
 using MET.Proxy.Interfaces;
-using MET.Workflows;
 using METCSV.Common;
-using METCSV.WPF.Interfaces;
-using Prism.Mvvm;
 
-namespace METCSV.WPF.ProductProvider
+namespace MET.Proxy.ProductProvider
 {
-    abstract public class ProductProviderBase : BindableBase, IProductProvider
+    abstract public class ProductProviderBase : IProductProvider
     {
 
         protected const string ArchiveFolder = "Archive";
@@ -65,31 +59,13 @@ namespace METCSV.WPF.ProductProvider
             _productReader = reader;
         }
 
-        public OperationStatus DownloaderStatus
-        {
-            get => _downloaderStatus;
-            private set => SetProperty(ref _downloaderStatus, value);
-        }
-
-        public OperationStatus ReaderStatus
-        {
-            get => _readerStatus;
-            private set => SetProperty(ref _readerStatus, value);
-        }
-
         private void DownloadData()
         {
-            _downloader.OnDownloadingStatusChanged += OnDownloadingStatusChanged;
-            _downloader.StartDownloading();
-
-            // ReSharper disable once DelegateSubtraction
-            _downloader.OnDownloadingStatusChanged -= OnDownloadingStatusChanged;
+            _downloader.Download();
         }
 
         private IList<Product> ReadFile(IProductReader productReader, IDownloader downloader)
         {
-            productReader.OnStatusChanged += OnProductReaderStatusChanged;
-
             if (downloader.Status != OperationStatus.Complete)
             {
                 ReaderStatus = OperationStatus.Faild;
@@ -103,21 +79,9 @@ namespace METCSV.WPF.ProductProvider
                     : string.Empty;
 
             var producets = productReader.GetProducts(downloader.DownloadedFiles[0], filename2);
-
-            // ReSharper disable once DelegateSubtraction
-            productReader.OnStatusChanged -= OnProductReaderStatusChanged;
+            
 
             return producets;
-        }
-
-        private void OnProductReaderStatusChanged(object sender, OperationStatus e)
-        {
-            ReaderStatus = e;
-        }
-
-        private void OnDownloadingStatusChanged(object sender, OperationStatus e)
-        {
-            DownloaderStatus = e;
         }
 
         static public Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
