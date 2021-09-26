@@ -2,14 +2,11 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using MET.Domain;
 using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
-using MET.Proxy.Downloaders;
-using METCSV.Common;
 
-namespace MET.Proxy
+namespace MET.Proxy.Downloaders
 {
     public class LamaDownloader : DownloaderBase
     {
@@ -17,39 +14,34 @@ namespace MET.Proxy
 
         public string UrlConnection { get; }
 
-        readonly string FileName;
+        private readonly string fileName;
 
-        readonly string CsvFileName;
+        private readonly string login;
 
-        readonly string Login;
+        private readonly string password;
 
-        readonly string Password;
-
-        readonly string Request;
+        private readonly string request;
 
         public LamaDownloader(LamaDownloaderSettings settings, CancellationToken token)
         {
-            SetCancellationToken(token);
-
             UrlConnection = settings.Url;
-            FileName = settings.XmlFile;
-            CsvFileName = settings.CsvFile;
-            Login = settings.Login;
-            Password = settings.Password;
-            Request = settings.Request;
+            fileName = settings.XmlFile;
+            var csvFileName = settings.CsvFile;
+            login = settings.Login;
+            password = settings.Password;
+            request = settings.Request;
 
-            DownloadedFiles = new[] { string.Empty, CsvFileName };
+            DownloadedFiles = new[] { string.Empty, csvFileName };
         }
 
-        protected override void Download()
+        protected override bool Download()
         {
-            Status = OperationStatus.InProgress;
             var request = (HttpWebRequest)WebRequest.Create(UrlConnection);
 
-            var postData = "user=" + Login;
+            var postData = "user=" + login;
 
-            postData += $"&pass={Password}";
-            postData += $"&request={Request}";
+            postData += $"&pass={password}";
+            postData += $"&request={this.request}";
 
             var data = Encoding.ASCII.GetBytes(postData);
 
@@ -71,22 +63,14 @@ namespace MET.Proxy
             }
             catch (WebException ex)
             {
-                Status = OperationStatus.Faild;
                 string message = $"Generwoanie licznika miedzy 14:00-16:00 jest niedostępne";
                 LogError(ex, message);
-                return;
+                return false;
             }
 
             using (Stream responseStream = response.GetResponseStream())
-            using (var streamWriter = new FileStream(FileName, FileMode.Create))
+            using (var streamWriter = new FileStream(fileName, FileMode.Create))
             {
-                if (responseStream == null)
-                {
-                    Log.Error("Strumień odpowiedzi jest pusty.");
-                    Status = OperationStatus.Faild;
-                    return;
-                }
-
                 byte[] buffer = new Byte[2048];
                 int bytesRead = responseStream.Read(buffer, 0, buffer.Length);
                 while (bytesRead > 0)
@@ -99,8 +83,8 @@ namespace MET.Proxy
                 responseStream.Close();
             }
 
-            DownloadedFiles[0] = FileName;
-            Status = OperationStatus.Complete;
+            DownloadedFiles[0] = fileName;
+            return true;
         }
     }
 }
