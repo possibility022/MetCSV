@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MET.Data.Models", "MET.Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MET.Data.Storage", "MET.Data.Storage\MET.Data.Storage.csproj", "{7AA73844-FC54-44FB-92C3-43BA38CD8AF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MET.CSV.Generator", "MET.CSV.Generator\MET.CSV.Generator.csproj", "{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,16 @@ Global
 		{7AA73844-FC54-44FB-92C3-43BA38CD8AF7}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
 		{7AA73844-FC54-44FB-92C3-43BA38CD8AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AA73844-FC54-44FB-92C3-43BA38CD8AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release 4.0|Any CPU.ActiveCfg = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release 4.0|Any CPU.Build.0 = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release 4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release 4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3656EEFF-0EBD-4B4D-8471-E13AA533B43D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

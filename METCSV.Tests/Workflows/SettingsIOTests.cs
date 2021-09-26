@@ -42,7 +42,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.ABDownloader = new AbDownloaderSettings()
+            settings.AbDownloader = new AbDownloaderSettings()
             {
                 DeleteOldMessages = true,
                 EmailLogin = "EmailLogin",
@@ -61,7 +61,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
 
             // Assert
-            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.ABDownloader, settings.ABDownloader));
+            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.AbDownloader, settings.AbDownloader));
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.TDDownloader = new TechDataDownloaderSettings()
+            settings.TdDownloader = new TechDataDownloaderSettings()
             {
                 CsvMaterials = "Materials",
                 CsvPrices = "Prices",
@@ -109,7 +109,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
 
             // Assert
-            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.TDDownloader, settings.TDDownloader));
+            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.TdDownloader, settings.TdDownloader));
         }
 
 

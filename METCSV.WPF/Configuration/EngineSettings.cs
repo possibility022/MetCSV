@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace METCSV.WPF.Configuration
+﻿namespace METCSV.WPF.Configuration
 {
     public class EngineSettings
     {

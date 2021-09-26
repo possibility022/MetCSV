@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AnalysisMode>AllDisabledByDefault</AnalysisMode>
+    <TargetFramework>net5.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MET.Data.Models\MET.Data.Models.csproj" />
+    <ProjectReference Include="..\MET.Data.Storage\MET.Data.Storage.csproj" />
+    <ProjectReference Include="..\MET.Domain.Logic\MET.Domain.Logic.csproj" />
+    <ProjectReference Include="..\MET.Poxy\MET.Proxy.csproj" />
+    <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj" />
+    <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj" />
+  </ItemGroup>
+
+</Project>

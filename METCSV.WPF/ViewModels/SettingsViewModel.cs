@@ -198,8 +198,8 @@ namespace METCSV.WPF.ViewModels
 
 
             PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
-            PropertyCopy.CopyValues(App.Settings.ABDownloader, AbSettings);
-            PropertyCopy.CopyValues(App.Settings.TDDownloader, TdSettings);
+            PropertyCopy.CopyValues(App.Settings.AbDownloader, AbSettings);
+            PropertyCopy.CopyValues(App.Settings.TdDownloader, TdSettings);
             PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
             PropertyCopy.CopyValues(App.Settings.Engine, EngineSettings);
         }
@@ -216,10 +216,10 @@ namespace METCSV.WPF.ViewModels
                 PropertyCopy.CopyValues(MetSettings, App.Settings.MetDownlaoder);
 
             else if (AbTabIsActive)
-                PropertyCopy.CopyValues(AbSettings, App.Settings.ABDownloader);
+                PropertyCopy.CopyValues(AbSettings, App.Settings.AbDownloader);
 
             else if (TdTabIsActive)
-                PropertyCopy.CopyValues(TdSettings, App.Settings.TDDownloader);
+                PropertyCopy.CopyValues(TdSettings, App.Settings.TdDownloader);
 
             else if (LamaTabIsActive)
                 PropertyCopy.CopyValues(LamaSettings, App.Settings.LamaDownloader);
@@ -253,10 +253,10 @@ namespace METCSV.WPF.ViewModels
                 PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
 
             else if (AbTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.ABDownloader, AbSettings);
+                PropertyCopy.CopyValues(App.Settings.AbDownloader, AbSettings);
 
             else if (TdTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.TDDownloader, TdSettings);
+                PropertyCopy.CopyValues(App.Settings.TdDownloader, TdSettings);
 
             else if (LamaTabIsActive)
                 PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
@@ -271,10 +271,10 @@ namespace METCSV.WPF.ViewModels
             if (PropertyCopy.AnyChanges(MetSettings, App.Settings.MetDownlaoder))
                 return false;
 
-            if (PropertyCopy.AnyChanges(AbSettings, App.Settings.ABDownloader))
+            if (PropertyCopy.AnyChanges(AbSettings, App.Settings.AbDownloader))
                 return false;
 
-            if (PropertyCopy.AnyChanges(TdSettings, App.Settings.TDDownloader))
+            if (PropertyCopy.AnyChanges(TdSettings, App.Settings.TdDownloader))
                 return false;
 
             if (PropertyCopy.AnyChanges(LamaSettings, App.Settings.LamaDownloader))

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
+using MET.Proxy.Configuration;
 
 namespace MET.Domain.Logic
 {
@@ -35,7 +36,7 @@ namespace MET.Domain.Logic
         public IReadOnlyList<Product> FinalList => finalList;
         public IReadOnlyCollection<ProductGroup> AllProducts => allProducts;
 
-        public ProgramFlow(Products products, int maximumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
+        public ProgramFlow(ISettings settings, Products products, int maximumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
         {
             this.products = products;
             this.maximumPriceDifference = maximumPriceDifference;
