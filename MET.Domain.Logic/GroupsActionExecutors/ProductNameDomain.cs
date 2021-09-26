@@ -50,6 +50,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         private Product GetProductWithLongestName(IEnumerable<Product> products)
         {
             var enumerator = products.GetEnumerator();
+            enumerator.MoveNext();
             var selected = enumerator.Current;
 
             while (enumerator.MoveNext())
