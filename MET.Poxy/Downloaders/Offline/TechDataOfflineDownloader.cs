@@ -1,22 +1,21 @@
-﻿using MET.Domain;
-using System.IO;
+﻿using System.IO;
 using MET.Data.Models;
-using MET.Proxy.Downloaders;
 
-namespace MET.Proxy.Offline
+namespace MET.Proxy.Downloaders.Offline
 {
     public class TechDataOfflineDownloader : DownloaderBase
     {
 
         public override Providers Provider => Providers.TechData;
 
-        protected override void Download()
+        protected override bool Download()
         {
-            string folderToExtrac = "ExtractedFiles"; //todo move to config
+            const string folderToExtrac = "ExtractedFiles"; //todo move to config
             DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
             string materials = FindFile(dir, "TD_Material.csv"); //todo move to config
             string prices = FindFile(dir, "TD_Prices.csv"); //todo move to config
             DownloadedFiles = new[] { materials, prices };
+            return true;
         }
 
         private string FindFile(DirectoryInfo folder, string file)

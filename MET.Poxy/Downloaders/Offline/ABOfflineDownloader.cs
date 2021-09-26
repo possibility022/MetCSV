@@ -1,20 +1,19 @@
-﻿using MET.Domain;
-using System.IO;
+﻿using System.IO;
 using MET.Data.Models;
-using MET.Proxy.Downloaders;
 
-namespace MET.Proxy.Offline
+namespace MET.Proxy.Downloaders.Offline
 {
     public class ABOfflineDownloader : DownloaderBase
     {
         public override Providers Provider => Providers.AB;
 
-        string folderToExtrac = "ExtractedFiles_AB";//todo move it to config
+        string folderToExtract = "ExtractedFiles_AB";//todo move it to config
 
-        protected override void Download()
+        protected override bool Download()
         {
-            DirectoryInfo dir = new DirectoryInfo(folderToExtrac);
+            DirectoryInfo dir = new DirectoryInfo(folderToExtract);
             DownloadedFiles = new[] { dir.GetFiles()[0].FullName };
+            return true;
         }
     }
 }

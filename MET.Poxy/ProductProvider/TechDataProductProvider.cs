@@ -1,10 +1,10 @@
 ﻿using MET.Domain;
 using MET.Proxy;
-using MET.Proxy.Offline;
 using MET.Proxy.ProductReaders;
 using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Downloaders;
+using MET.Proxy.Downloaders.Offline;
 using MET.Proxy.Interfaces;
 using MET.Proxy.ProductProvider;
 
