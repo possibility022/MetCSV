@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public class AbDownloaderSettings
+    public class AbDownloaderSettings : IAbSettings
     {
 
         public string ZippedFile { get; set; } = "ab.zip";

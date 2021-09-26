@@ -96,13 +96,6 @@ namespace METCSV.WPF.ViewModels
         public ICommand ShowMetProductListEditorCommand { get; }
         public ICommand ShowAllProductsGroupsCommand { get; }
 
-        private void CheckLamaFile()
-        {
-            var fi = new FileInfo(App.Settings.LamaDownloader.CsvFile);
-            if ((DateTime.Now - fi.LastWriteTime).Days > 50)
-                MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}");
-        }
-
         private void Initialize()
         {
             _cancellationTokenSource = new CancellationTokenSource();

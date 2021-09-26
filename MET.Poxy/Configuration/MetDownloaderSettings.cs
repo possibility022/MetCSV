@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public class MetDownloaderSettings
+    public class MetDownloaderSettings : IMetSettings
     {
         public string CsvFile { get; set; } = "met.csv";
 

@@ -2,7 +2,7 @@
 
 namespace METCSV.WPF.Configuration
 {
-    public class Settings
+    public class Settings : ISettings
     {
         private AbDownloaderSettings _aBDownloader = new AbDownloaderSettings();
         private LamaDownloaderSettings _lamaDownloader = new LamaDownloaderSettings();
@@ -43,6 +43,11 @@ namespace METCSV.WPF.Configuration
             get { return _tDDownloader; }
             set { _tDDownloader = value ?? new TechDataDownloaderSettings(); }
         }
+
+    }
+
+    public interface ISettings
+    {
 
     }
 }
