@@ -77,8 +77,8 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _engineSettings, value); }
         }
 
-        private MetDownloaderSettings _metSettings;
-        public MetDownloaderSettings MetSettings
+        private MetSettings _metSettings;
+        public MetSettings MetSettings
         {
             get { return _metSettings; }
             set { SetProperty(ref _metSettings, value); }
@@ -190,7 +190,7 @@ namespace METCSV.WPF.ViewModels
 
         private void CopyFromSettings()
         {
-            MetSettings = new MetDownloaderSettings();
+            MetSettings = new MetSettings();
             LamaSettings = new LamaDownloaderSettings();
             TdSettings = new TechDataDownloaderSettings();
             AbDownloaderSettings = new AbDownloaderDownloaderSettings();
