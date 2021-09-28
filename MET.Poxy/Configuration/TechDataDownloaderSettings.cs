@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public class TechDataDownloaderSettings : ITechDataSettings
+    public class TechDataDownloaderSettings : ITechDataSettings, ITechDataReaderSettings
     {
         public string Login { get; set; } = string.Empty;
 

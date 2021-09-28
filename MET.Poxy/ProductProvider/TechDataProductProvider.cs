@@ -1,21 +1,25 @@
-﻿using MET.Domain;
-using MET.Proxy;
-using MET.Proxy.ProductReaders;
-using System.Threading;
+﻿using System.Threading;
 using MET.Data.Models;
+using MET.Proxy.Configuration;
 using MET.Proxy.Downloaders;
 using MET.Proxy.Downloaders.Offline;
 using MET.Proxy.Interfaces;
-using MET.Proxy.ProductProvider;
+using MET.Proxy.ProductReaders;
 
-namespace METCSV.WPF.ProductProvider
+namespace MET.Proxy.ProductProvider
 {
     class TechDataProductProvider : ProductProviderBase
     {
+        private readonly ITechDataReaderSettings readerSettings;
+        private readonly ITechDataSettings settings;
+        private readonly bool offlineMode;
         protected override string ArchiveFileNamePrefix => "TechData";
 
-        public TechDataProductProvider(CancellationToken token) : base(token)
+        public TechDataProductProvider(ITechDataReaderSettings readerSettings, ITechDataSettings settings, bool offlineMode, CancellationToken token) : base(token)
         {
+            this.readerSettings = readerSettings;
+            this.settings = settings;
+            this.offlineMode = offlineMode;
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
             Provider = Providers.TechData;
@@ -23,18 +27,18 @@ namespace METCSV.WPF.ProductProvider
 
         private IProductReader GetProductReader()
         {
-            return new TechDataProductReader(App.Settings.TdDownloader, _token);
+            return new TechDataProductReader(readerSettings, Token);
         }
 
         private IDownloader GetDownloader()
         {
-            if (App.Settings.Engine.OfflineMode)
+            if (offlineMode)
             {
                 return new TechDataOfflineDownloader();
             }
             else
             {
-                return new TechDataDownloader(App.Settings.TdDownloader, _token);
+                return new TechDataDownloader(settings);
             }
         }
     }
