@@ -2,9 +2,15 @@
 {
     public interface ISettings
     {
-        ITechDataSettings TechDataSettings { get; }
-        ILamaSettings LamaSettings { get; }
+        ITechDataDownloaderSettings TechDataDownloaderSettings { get; }
+        ILamaDownloaderSettings LamaDownloaderSettings { get; }
         IAbDownloaderSettings AbDownloaderSettings { get; }
-        IMetSettings MetSettings { get; }
+        IMetDownloaderSettings MetDownloaderSettings { get; }
+
+        ITechDataReaderSettings TechDataReaderSettings { get; }
+
+        ILamaReaderSettings LamaReaderSettings { get; }
+
+        IAbReaderSettings AbReaderSettings { get; }
     }
 }

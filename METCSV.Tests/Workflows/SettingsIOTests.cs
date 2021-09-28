@@ -69,7 +69,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.MetDownlaoder = new MetSettings()
+            settings.MetDownlaoder = new MetDownloaderSettings()
             {
                 CsvFile = "CSV File",
                 Url = "URL!"
@@ -91,7 +91,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.TdDownloader = new TechDataDownloaderSettings()
+            settings.Td = new TechDataSettings()
             {
                 CsvMaterials = "Materials",
                 CsvPrices = "Prices",
@@ -109,7 +109,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
 
             // Assert
-            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.TdDownloader, settings.TdDownloader));
+            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.Td, settings.Td));
         }
 
 
@@ -118,7 +118,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.LamaDownloader = new LamaDownloaderSettings()
+            settings.LamaSettings = new LamaSettings()
             {
                 CsvFile = "CSV",
                 Login = "Login",
@@ -135,7 +135,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
 
             // Assert
-            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.LamaDownloader, settings.LamaDownloader));
+            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.LamaSettings, settings.LamaSettings));
         }
 
         [TestMethod]

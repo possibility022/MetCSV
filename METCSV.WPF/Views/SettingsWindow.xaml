@@ -119,7 +119,7 @@
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            Text="{Binding MetSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding MetDownloaderSettings.CsvFile, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label
                             Grid.Row="1"
@@ -128,7 +128,7 @@
                         <TextBox
                             Grid.Row="1"
                             Grid.Column="1"
-                            Text="{Binding MetSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding MetDownloaderSettings.Url, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </Border>
@@ -301,7 +301,7 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.Login, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="1"
@@ -311,7 +311,7 @@
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 ff:PasswordBoxAssistant.BindPassword="true"
-                                ff:PasswordBoxAssistant.BoundPassword="{Binding TdSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                ff:PasswordBoxAssistant.BoundPassword="{Binding TdDownloaderSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="2"
@@ -320,7 +320,7 @@
                             <TextBox
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.FtpAddress, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.FtpAddress, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="3"
@@ -329,7 +329,7 @@
                             <TextBox
                                 Grid.Row="3"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.Pattern, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.Pattern, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="4"
@@ -338,7 +338,7 @@
                             <TextBox
                                 Grid.Row="4"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.FolderToExtract, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.FolderToExtract, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="5"
@@ -347,7 +347,7 @@
                             <TextBox
                                 Grid.Row="5"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.CsvMaterials, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.CsvMaterials, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="6"
@@ -356,7 +356,7 @@
                             <TextBox
                                 Grid.Row="6"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.CsvPrices, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.CsvPrices, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Separator Grid.Row="7" Grid.ColumnSpan="2" />
 
@@ -368,7 +368,7 @@
                             <TextBox
                                 Grid.Row="8"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.SAPPrefix, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.SAPPrefix, UpdateSourceTrigger=PropertyChanged}" />
 
 
                             <Label
@@ -378,7 +378,7 @@
                             <TextBox
                                 Grid.Row="9"
                                 Grid.Column="1"
-                                Text="{Binding TdSettings.CsvDelimiter, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding TdDownloaderSettings.CsvDelimiter, UpdateSourceTrigger=PropertyChanged}" />
 
                         </Grid>
                     </ScrollViewer>

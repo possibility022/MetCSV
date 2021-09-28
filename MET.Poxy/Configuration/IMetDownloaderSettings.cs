@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public interface IMetSettings
+    public interface IMetDownloaderSettings
     {
         public string CsvFile { get; }
 

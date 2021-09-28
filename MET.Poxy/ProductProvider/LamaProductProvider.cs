@@ -10,13 +10,13 @@ namespace MET.Proxy.ProductProvider
 {
     class LamaProductProvider : ProductProviderBase
     {
-        private readonly ILamaSettings lamaSettings;
+        private readonly ILamaDownloaderSettings lamaDownloaderSettings;
         private readonly ILamaReaderSettings lamaReaderSettings;
         protected override string ArchiveFileNamePrefix => "LAMA";
 
-        public LamaProductProvider(ILamaSettings lamaSettings, ILamaReaderSettings lamaReaderSettings, bool offlineMode, CancellationToken token) : base (token)
+        public LamaProductProvider(ILamaDownloaderSettings lamaDownloaderSettings, ILamaReaderSettings lamaReaderSettings, bool offlineMode, CancellationToken token) : base (token)
         {
-            this.lamaSettings = lamaSettings;
+            this.lamaDownloaderSettings = lamaDownloaderSettings;
             this.lamaReaderSettings = lamaReaderSettings;
             
             SetProductDownloader(GetDownloader(offlineMode));
@@ -37,7 +37,7 @@ namespace MET.Proxy.ProductProvider
             }
             else
             {
-                return new LamaDownloader(lamaSettings);
+                return new LamaDownloader(lamaDownloaderSettings);
             }
         }
     }

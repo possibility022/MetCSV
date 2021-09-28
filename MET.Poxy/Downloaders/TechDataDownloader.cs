@@ -26,15 +26,15 @@ namespace MET.Proxy.Downloaders
 
         private readonly string csvPrices;
 
-        public TechDataDownloader(ITechDataSettings settings)
+        public TechDataDownloader(ITechDataDownloaderSettings downloaderSettings)
         {
-            user = settings.Login;
-            password = settings.Password;
-            pattern = settings.Pattern;
-            ftpAddress = settings.FtpAddress;
-            folderToExtract = settings.FolderToExtract;
-            csvMaterials = settings.CsvMaterials;
-            csvPrices = settings.CsvPrices;
+            user = downloaderSettings.Login;
+            password = downloaderSettings.Password;
+            pattern = downloaderSettings.Pattern;
+            ftpAddress = downloaderSettings.FtpAddress;
+            folderToExtract = downloaderSettings.FolderToExtract;
+            csvMaterials = downloaderSettings.CsvMaterials;
+            csvPrices = downloaderSettings.CsvPrices;
         }
 
         protected override bool Download()

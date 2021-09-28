@@ -4,10 +4,10 @@ namespace METCSV.WPF.Configuration
 {
     public class Settings : ISettings
     {
-        private AbSettings aB = new();
-        private LamaDownloaderSettings lamaDownloader = new();
-        private MetSettings metSettings = new();
-        private TechDataDownloaderSettings tDDownloader = new();
+        private AbSettings abSettings = new();
+        private LamaSettings lamaSettings = new();
+        private MetDownloaderSettings metDownloaderSettings = new();
+        private TechDataSettings techDataSettings = new();
         private EngineSettings engine = new();
 
         public EngineSettings Engine
@@ -15,39 +15,41 @@ namespace METCSV.WPF.Configuration
             get => engine;
             set => engine = value ?? new EngineSettings();
         }
-
-
+        
         public AbSettings AbSettings
         {
-            get => aB;
-            set => aB = value ?? new AbSettings();
+            get => abSettings;
+            set => abSettings = value ?? new AbSettings();
         }
-
-
-        public LamaDownloaderSettings LamaDownloader
+        
+        public LamaSettings LamaSettings
         {
-            get => lamaDownloader;
-            set => lamaDownloader = value ?? new LamaDownloaderSettings();
+            get => lamaSettings;
+            set => lamaSettings = value ?? new LamaSettings();
         }
-
-
-        public MetSettings MetSettings
+        
+        public MetDownloaderSettings MetDownloaderSettings
         {
-            get => metSettings;
-            set => metSettings = value ?? new MetSettings();
+            get => metDownloaderSettings;
+            set => metDownloaderSettings = value ?? new MetDownloaderSettings();
         }
 
-
-        public TechDataDownloaderSettings TdDownloader
+        public TechDataSettings Td
         {
-            get => tDDownloader;
-            set => tDDownloader = value ?? new TechDataDownloaderSettings();
+            get => techDataSettings;
+            set => techDataSettings = value ?? new TechDataSettings();
         }
 
-        public ITechDataSettings TechDataSettings => TdDownloader;
-        public ILamaSettings LamaSettings => LamaDownloader;
-        public IAbDownloaderSettings AbDownloaderSettings => AbSettings;
+        ITechDataReaderSettings ISettings.TechDataReaderSettings => techDataSettings;
 
-        IMetSettings ISettings.MetSettings => this.MetSettings;
+        ILamaReaderSettings ISettings.LamaReaderSettings => lamaSettings;
+
+        IAbReaderSettings ISettings.AbReaderSettings => abSettings;
+        
+        ITechDataDownloaderSettings ISettings.TechDataDownloaderSettings => Td;
+        ILamaDownloaderSettings ISettings.LamaDownloaderSettings => LamaSettings;
+        IAbDownloaderSettings ISettings.AbDownloaderSettings => AbSettings;
+
+        IMetDownloaderSettings ISettings.MetDownloaderSettings => MetDownloaderSettings;
     }
 }

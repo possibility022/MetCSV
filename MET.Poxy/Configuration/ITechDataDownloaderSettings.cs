@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public interface ITechDataSettings
+    public interface ITechDataDownloaderSettings
     {
         public string Login { get; }
 

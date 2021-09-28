@@ -21,14 +21,14 @@ namespace MET.Proxy.Downloaders
 
         private readonly string request;
 
-        public LamaDownloader(ILamaSettings settings)
+        public LamaDownloader(ILamaDownloaderSettings downloaderSettings)
         {
-            UrlConnection = settings.Url;
-            fileName = settings.XmlFile;
-            var csvFileName = settings.CsvFile;
-            login = settings.Login;
-            password = settings.Password;
-            request = settings.Request;
+            UrlConnection = downloaderSettings.Url;
+            fileName = downloaderSettings.XmlFile;
+            var csvFileName = downloaderSettings.CsvFile;
+            login = downloaderSettings.Login;
+            password = downloaderSettings.Password;
+            request = downloaderSettings.Request;
 
             DownloadedFiles = new[] { string.Empty, csvFileName };
         }

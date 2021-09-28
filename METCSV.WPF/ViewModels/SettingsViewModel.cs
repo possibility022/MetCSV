@@ -77,25 +77,25 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _engineSettings, value); }
         }
 
-        private MetSettings _metSettings;
-        public MetSettings MetSettings
+        private MetDownloaderSettings metDownloaderSettings;
+        public MetDownloaderSettings MetDownloaderSettings
         {
-            get { return _metSettings; }
-            set { SetProperty(ref _metSettings, value); }
+            get { return metDownloaderSettings; }
+            set { SetProperty(ref metDownloaderSettings, value); }
         }
 
-        private LamaDownloaderSettings _lamaSettings;
-        public LamaDownloaderSettings LamaSettings
+        private LamaSettings lamaSettings;
+        public LamaSettings LamaSettings
         {
-            get { return _lamaSettings; }
-            set { SetProperty(ref _lamaSettings, value); }
+            get { return lamaSettings; }
+            set { SetProperty(ref lamaSettings, value); }
         }
 
-        private TechDataDownloaderSettings _tdSettings;
-        public TechDataDownloaderSettings TdSettings
+        private TechDataSettings tdDownloaderSettings;
+        public TechDataSettings TdDownloaderSettings
         {
-            get { return _tdSettings; }
-            set { SetProperty(ref _tdSettings, value); }
+            get { return tdDownloaderSettings; }
+            set { SetProperty(ref tdDownloaderSettings, value); }
         }
 
         private AbSettings abSettings;
@@ -190,17 +190,17 @@ namespace METCSV.WPF.ViewModels
 
         private void CopyFromSettings()
         {
-            MetSettings = new MetSettings();
-            LamaSettings = new LamaDownloaderSettings();
-            TdSettings = new TechDataDownloaderSettings();
+            MetDownloaderSettings = new MetDownloaderSettings();
+            LamaSettings = new LamaSettings();
+            TdDownloaderSettings = new TechDataSettings();
             AbSettings = new AbSettings();
             EngineSettings = new EngineSettings();
 
 
-            PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
+            PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetDownloaderSettings);
             PropertyCopy.CopyValues(App.Settings.AbSettings, AbSettings);
-            PropertyCopy.CopyValues(App.Settings.TdDownloader, TdSettings);
-            PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
+            PropertyCopy.CopyValues(App.Settings.Td, TdDownloaderSettings);
+            PropertyCopy.CopyValues(App.Settings.LamaSettings, LamaSettings);
             PropertyCopy.CopyValues(App.Settings.Engine, EngineSettings);
         }
 
@@ -213,16 +213,16 @@ namespace METCSV.WPF.ViewModels
         public void Save()
         {
             if (MetTabIsActive)
-                PropertyCopy.CopyValues(MetSettings, App.Settings.MetDownlaoder);
+                PropertyCopy.CopyValues(MetDownloaderSettings, App.Settings.MetDownlaoder);
 
             else if (AbTabIsActive)
                 PropertyCopy.CopyValues(AbSettings, App.Settings.AbSettings);
 
             else if (TdTabIsActive)
-                PropertyCopy.CopyValues(TdSettings, App.Settings.TdDownloader);
+                PropertyCopy.CopyValues(TdDownloaderSettings, App.Settings.Td);
 
             else if (LamaTabIsActive)
-                PropertyCopy.CopyValues(LamaSettings, App.Settings.LamaDownloader);
+                PropertyCopy.CopyValues(LamaSettings, App.Settings.LamaSettings);
 
             else if (GeneralTabIsActive)
                 PropertyCopy.CopyValues(EngineSettings, App.Settings.Engine);
@@ -250,16 +250,16 @@ namespace METCSV.WPF.ViewModels
         public void RestoreChanges()
         {
             if (MetTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
+                PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetDownloaderSettings);
 
             else if (AbTabIsActive)
                 PropertyCopy.CopyValues(App.Settings.AbSettings, AbSettings);
 
             else if (TdTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.TdDownloader, TdSettings);
+                PropertyCopy.CopyValues(App.Settings.Td, TdDownloaderSettings);
 
             else if (LamaTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
+                PropertyCopy.CopyValues(App.Settings.LamaSettings, LamaSettings);
 
             else if (GeneralTabIsActive)
                 PropertyCopy.CopyValues(App.Settings.Engine, EngineSettings);
@@ -268,16 +268,16 @@ namespace METCSV.WPF.ViewModels
         public bool AllSaved()
         {
 
-            if (PropertyCopy.AnyChanges(MetSettings, App.Settings.MetDownlaoder))
+            if (PropertyCopy.AnyChanges(MetDownloaderSettings, App.Settings.MetDownlaoder))
                 return false;
 
             if (PropertyCopy.AnyChanges(AbSettings, App.Settings.AbSettings))
                 return false;
 
-            if (PropertyCopy.AnyChanges(TdSettings, App.Settings.TdDownloader))
+            if (PropertyCopy.AnyChanges(TdDownloaderSettings, App.Settings.Td))
                 return false;
 
-            if (PropertyCopy.AnyChanges(LamaSettings, App.Settings.LamaDownloader))
+            if (PropertyCopy.AnyChanges(LamaSettings, App.Settings.LamaSettings))
                 return false;
 
             if (PropertyCopy.AnyChanges(EngineSettings, App.Settings.Engine))

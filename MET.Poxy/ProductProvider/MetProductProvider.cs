@@ -10,13 +10,13 @@ namespace MET.Proxy.ProductProvider
 {
     class MetProductProvider : ProductProviderBase
     {
-        private readonly IMetSettings settings;
+        private readonly IMetDownloaderSettings downloaderSettings;
         private readonly bool offlineMode;
         protected override string ArchiveFileNamePrefix => "MET";
 
-        public MetProductProvider(IMetSettings settings, bool offlineMode ,CancellationToken token) : base(token)
+        public MetProductProvider(IMetDownloaderSettings downloaderSettings, bool offlineMode ,CancellationToken token) : base(token)
         {
-            this.settings = settings;
+            this.downloaderSettings = downloaderSettings;
             this.offlineMode = offlineMode;
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
@@ -36,7 +36,7 @@ namespace MET.Proxy.ProductProvider
             }
             else
             {
-                return new MetDownloader(settings);
+                return new MetDownloader(downloaderSettings);
             }
         }
     }

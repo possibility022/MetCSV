@@ -13,10 +13,10 @@ namespace MET.Proxy.Downloaders
 
         private readonly string url;
 
-        public MetDownloader(IMetSettings settings)
+        public MetDownloader(IMetDownloaderSettings downloaderSettings)
         {
-            fileName = settings.CsvFile;
-            url = settings.Url;
+            fileName = downloaderSettings.CsvFile;
+            url = downloaderSettings.Url;
         }
 
         protected override bool Download()
