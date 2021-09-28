@@ -26,7 +26,7 @@ namespace MET.Proxy.Downloaders
 
         private readonly string csvPrices;
 
-        public TechDataDownloader(TechDataDownloaderSettings settings)
+        public TechDataDownloader(ITechDataSettings settings)
         {
             user = settings.Login;
             password = settings.Password;
