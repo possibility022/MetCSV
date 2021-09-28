@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
-using System.Threading.Tasks;
 using MET.Data.Models;
 using MET.Proxy.Interfaces;
 using METCSV.Common;
@@ -55,13 +54,6 @@ namespace MET.Proxy.ProductProvider
                     : string.Empty;
 
             return productReader.GetProducts(downloader.DownloadedFiles[0], filename2);
-        }
-
-        public static Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
-        {
-            Task<bool> task = new Task<bool>(productProvider.DownloadAndLoad);
-            task.Start();
-            return task;
         }
 
         public bool DownloadAndLoad()

@@ -1,66 +1,130 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
+using MET.Data.Storage;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Comparers;
 using MET.Domain.Logic.Models;
 using MET.Proxy.Configuration;
+using MET.Proxy.Extensions;
 using MET.Proxy.ProductProvider;
 using METCSV.Common;
 using METCSV.Common.Formatters;
-using METCSV.WPF.ProductProvider;
 
 namespace MET.CSV.Generator
 {
-    public class ProgramFlow
+    public class ProgramFlow : IDisposable
     {
         List<Product> finalList;
-        IReadOnlyCollection<ProductGroup> allProducts;
 
+        private readonly StorageService storageService;
         private readonly ISettings settings;
-        readonly Products products;
+        private readonly bool offlineMode;
         private readonly int maximumPriceDifference;
+
+        private Products products;
+
+        public IProductProvider Met;
+        public IProductProvider Lama;
+        public IProductProvider TechData;
+        public IProductProvider AB;
 
 
         readonly IObjectFormatterConstructor<object> objectFormatterSource;
 
         private readonly CancellationToken token;
 
-        public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; set; }
-        public IReadOnlyCollection<CustomProfit> CustomProfits { get; set; }
+        public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; private set; }
+        public IReadOnlyCollection<CustomProfit> CustomProfits { get; private set; }
 
-        public IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; set; }
+        public List<Product> MetCustomProducts { get; private set; }
 
+        public IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; private set; }
 
         public IReadOnlyList<Product> FinalList => finalList;
-        public IReadOnlyCollection<ProductGroup> AllProducts => allProducts;
+        public IReadOnlyCollection<ProductGroup> AllProducts { get; private set; }
 
-        public ProgramFlow(ISettings settings, Products products, int maximumPriceDifference, CancellationToken token, IObjectFormatterConstructor<object> objectFormatter = null)
+        private bool inProgress = false;
+
+        public ProgramFlow(
+            StorageService storageService, 
+            ISettings settings, 
+            bool offlineMode, 
+            int maximumPriceDifference, 
+            CancellationToken token, 
+            IObjectFormatterConstructor<object> objectFormatter)
         {
-            this.settings = settings;
-            this.products = products;
+            this.storageService = storageService ?? throw new ArgumentNullException(nameof(storageService));
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            this.offlineMode = offlineMode;
             this.maximumPriceDifference = maximumPriceDifference;
             this.token = token;
-            objectFormatterSource = objectFormatter ?? new BasicJsonFormatter<object>();
+            objectFormatterSource = objectFormatter ?? throw new ArgumentNullException(nameof(objectFormatter));
         }
 
-        public async Task<bool> StartFlow()
+        public Task<bool> FirstStep()
+        {
+            if (inProgress)
+                throw new InvalidOperationException("Can not start again as flow is in progress.");
+
+            inProgress = true;
+            CheckLamaFile();
+            storageService.MakeSureDbCreated();
+            Initialize();
+            return DownloadAndLoadAsync();
+        }
+
+        public async Task<bool> StepTwo()
+        {
+            //todo load from storage
+            //var ab = ProfitsIO.LoadFromFile(Providers.AB);
+            //var td = ProfitsIO.LoadFromFile(Providers.TechData);
+            //var lama = ProfitsIO.LoadFromFile(Providers.Lama);
+
+            var metProducts = Met.GetProducts();
+            var metProd = new MetCustomProductsDomain();
+            var metCustomProducts = metProd.ModifyList(metProducts);
+
+            products = new Products()
+            {
+                AbProducts = AB.GetProducts(),
+                AbProducts_Old = AB.LoadOldProducts(),
+                MetProducts = metProducts,
+                MetCustomProducts = metCustomProducts,
+                TechDataProducts = TechData.GetProducts(),
+                TechDataProducts_Old = TechData.LoadOldProducts(),
+                LamaProducts = Lama.GetProducts(),
+                LamaProducts_Old = Lama.LoadOldProducts()
+            };
+
+            CustomProfits = storageService.GetCustomProfits().ToList();
+            CategoryProfits = storageService.GetCategoryProfits().ToList();
+            RenameManufacturerDictionary = storageService.GetRenameManufacturerDictionary();
+
+            var success = await StartFlow();
+            if (!success)
+                return false;
+
+            MetCustomProducts = metCustomProducts;
+            return true;
+        }
+
+        private async Task<bool> StartFlow()
         {
             finalList = new List<Product>();
 
             try
             {
                 SetWarehouseToZeroIfPriceError();
-
                 Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), objectFormatterSource, true);
 
                 orchestrator.ManufacturerRenameDomain.SetDictionary(RenameManufacturerDictionary);
-
                 orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits);
 
                 orchestrator.AddMetCollection(products.MetProducts);
@@ -68,13 +132,14 @@ namespace MET.CSV.Generator
                 await orchestrator.Orchestrate();
 
                 FinalListCombineDomain finalListCombineDomain = new FinalListCombineDomain();
-                var finalList = finalListCombineDomain.CreateFinalList(orchestrator.GetGeneratedProductGroups());
-                
-                allProducts = orchestrator.GetGeneratedProductGroups();
+                var producedList = finalListCombineDomain.CreateFinalList(orchestrator.GetGeneratedProductGroups());
 
-                finalList.Sort(new ProductSorter());
-                this.finalList = finalList;
-                
+                producedList.Sort(new ProductSorter());
+                AllProducts = orchestrator.GetGeneratedProductGroups();
+                this.finalList = producedList;
+
+                inProgress = false;
+
                 return true;
             }
             catch (Exception ex)
@@ -91,15 +156,38 @@ namespace MET.CSV.Generator
                 MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}"); //todo remove it from here.
         }
 
+        private void Initialize()
+        {
+            Met = new MetProductProvider(
+                settings.MetDownloaderSettings,
+                offlineMode,
+                token);
+
+            Lama = new LamaProductProvider(
+                settings.LamaDownloaderSettings,
+                settings.LamaReaderSettings,
+                offlineMode,
+                token);
+
+            TechData = new TechDataProductProvider(
+                settings.TechDataReaderSettings,
+                settings.TechDataDownloaderSettings,
+                offlineMode,
+                token);
+
+            AB = new ABProductProvider(
+                settings.AbReaderSettings,
+                settings.AbDownloaderSettings,
+                offlineMode,
+                token);
+        }
+
         private async Task<bool> DownloadAndLoadAsync()
         {
-            await StorageInitializeTask;
-            Initialize();
-
-            var met = ProductProviderBase.DownloadAndLoadAsync(_met);
-            var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
-            var techData = ProductProviderBase.DownloadAndLoadAsync(_techData);
-            var ab = ProductProviderBase.DownloadAndLoadAsync(_ab);
+            var met = Met.DownloadAndLoadAsync();
+            var lama = Lama.DownloadAndLoadAsync();
+            var techData = TechData.DownloadAndLoadAsync();
+            var ab = AB.DownloadAndLoadAsync();
 
             await Task.WhenAll(met, lama, techData, ab);
 
@@ -127,6 +215,11 @@ namespace MET.CSV.Generator
                 priceError = new PriceErrorDomain(products.TechDataProducts_Old, products.TechDataProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
+        }
+
+        public void Dispose()
+        {
+            storageService?.Dispose();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
@@ -21,8 +20,12 @@ namespace MET.Data.Storage
 
         public async Task MakeSureDbCreatedAsync()
         {
-            //await context.Database.EnsureCreatedAsync();
             await context.Database.MigrateAsync();
+        }
+
+        public void MakeSureDbCreated()
+        {
+            context.Database.Migrate();
         }
 
         public void SetProfit(CategoryProfit categoryProfit)
