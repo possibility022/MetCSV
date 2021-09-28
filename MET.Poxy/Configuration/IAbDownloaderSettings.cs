@@ -1,6 +1,6 @@
 ﻿namespace MET.Proxy.Configuration
 {
-    public interface IAbSettings
+    public interface IAbDownloaderSettings
     {
         public string ZippedFile { get; }
 

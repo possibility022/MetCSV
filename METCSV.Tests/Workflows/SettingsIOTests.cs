@@ -42,7 +42,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.AbDownloader = new AbDownloaderSettings()
+            settings.AbDownloaderDownloader = new AbDownloaderDownloaderSettings()
             {
                 DeleteOldMessages = true,
                 EmailLogin = "EmailLogin",
@@ -61,7 +61,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
 
             // Assert
-            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.AbDownloader, settings.AbDownloader));
+            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.AbDownloaderDownloader, settings.AbDownloaderDownloader));
         }
 
         [TestMethod]

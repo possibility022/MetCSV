@@ -1,24 +1,23 @@
-﻿using MET.Domain;
-using MET.Proxy;
-using MET.Proxy.ProductReaders;
-using System.Threading;
+﻿using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
 using MET.Proxy.Downloaders;
 using MET.Proxy.Downloaders.Offline;
 using MET.Proxy.Interfaces;
-using MET.Proxy.ProductProvider;
+using MET.Proxy.ProductReaders;
 
-namespace METCSV.WPF.ProductProvider
+namespace MET.Proxy.ProductProvider
 {
     public class ABProductProvider : ProductProviderBase
     {
-        private readonly IAbSettings settings;
+        private readonly IAbReaderSettings readerSettings;
+        private readonly IAbDownloaderSettings downloaderDownloaderSettings;
         protected override string ArchiveFileNamePrefix => "AB";
 
-        public ABProductProvider(IAbSettings settings, bool offlineMode, CancellationToken token) : base(token)
+        public ABProductProvider(IAbReaderSettings readerSettings, IAbDownloaderSettings downloaderDownloaderSettings, bool offlineMode, CancellationToken token) : base(token)
         {
-            this.settings = settings;
+            this.readerSettings = readerSettings;
+            this.downloaderDownloaderSettings = downloaderDownloaderSettings;
             SetProductDownloader(GetDownloader(offlineMode));
             SetProductReader(GetProductReader());
             Provider = Providers.AB;
@@ -26,7 +25,7 @@ namespace METCSV.WPF.ProductProvider
 
         private IProductReader GetProductReader()
         {
-            return new AbProductReader(settings, _token);
+            return new AbProductReader(readerSettings, Token);
         }
 
         private IDownloader GetDownloader(bool offlineMode)
@@ -37,7 +36,7 @@ namespace METCSV.WPF.ProductProvider
             }
             else
             {
-                return new AbDownloader(settings, _token);
+                return new AbDownloader(downloaderDownloaderSettings, Token);
             }
         }
     }

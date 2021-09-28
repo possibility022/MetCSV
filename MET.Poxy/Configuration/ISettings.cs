@@ -4,7 +4,7 @@
     {
         ITechDataSettings TechDataSettings { get; }
         ILamaSettings LamaSettings { get; }
-        IAbSettings AbSettings { get; }
+        IAbDownloaderSettings AbDownloaderSettings { get; }
         IMetSettings MetSettings { get; }
     }
 }
