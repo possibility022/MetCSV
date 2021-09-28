@@ -1,8 +1,8 @@
-﻿using MET.Domain;
-using MET.Proxy;
+﻿using MET.Proxy;
 using MET.Proxy.ProductReaders;
 using System.Threading;
 using MET.Data.Models;
+using MET.Proxy.Configuration;
 using MET.Proxy.Downloaders;
 using MET.Proxy.Downloaders.Offline;
 using MET.Proxy.Interfaces;
@@ -12,29 +12,34 @@ namespace METCSV.WPF.ProductProvider
 {
     class LamaProductProvider : ProductProviderBase
     {
+        private readonly ILamaSettings lamaSettings;
+        private readonly ILamaReaderSettings lamaReaderSettings;
         protected override string ArchiveFileNamePrefix => "LAMA";
 
-        public LamaProductProvider(CancellationToken token) : base (token)
+        public LamaProductProvider(ILamaSettings lamaSettings, ILamaReaderSettings lamaReaderSettings, bool offlineMode, CancellationToken token) : base (token)
         {
-            SetProductDownloader(GetDownloader());
+            this.lamaSettings = lamaSettings;
+            this.lamaReaderSettings = lamaReaderSettings;
+            
+            SetProductDownloader(GetDownloader(offlineMode));
             SetProductReader(GetProductReader());
             Provider = Providers.Lama;
         }
 
         private IProductReader GetProductReader()
         {
-            return new LamaProductReader(App.Settings.LamaDownloader, _token);
+            return new LamaProductReader(lamaReaderSettings, Token);
         }
 
-        private IDownloader GetDownloader()
+        private IDownloader GetDownloader(bool offlineMode)
         {
-            if (App.Settings.Engine.OfflineMode)
+            if (offlineMode)
             {
                 return new LamaOfflineDownloader();
             }
             else
             {
-                return new LamaDownloader(App.Settings.LamaDownloader, _token);
+                return new LamaDownloader(lamaSettings);
             }
         }
     }
