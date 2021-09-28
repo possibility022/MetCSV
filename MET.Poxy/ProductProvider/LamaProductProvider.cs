@@ -8,7 +8,7 @@ using MET.Proxy.ProductReaders;
 
 namespace MET.Proxy.ProductProvider
 {
-    class LamaProductProvider : ProductProviderBase
+    public class LamaProductProvider : ProductProviderBase
     {
         private readonly ILamaDownloaderSettings lamaDownloaderSettings;
         private readonly ILamaReaderSettings lamaReaderSettings;

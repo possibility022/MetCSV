@@ -8,7 +8,7 @@ using MET.Proxy.ProductReaders;
 
 namespace MET.Proxy.ProductProvider
 {
-    class MetProductProvider : ProductProviderBase
+    public class MetProductProvider : ProductProviderBase
     {
         private readonly IMetDownloaderSettings downloaderSettings;
         private readonly bool offlineMode;

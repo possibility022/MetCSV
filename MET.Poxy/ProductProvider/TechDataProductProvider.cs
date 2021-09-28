@@ -8,7 +8,7 @@ using MET.Proxy.ProductReaders;
 
 namespace MET.Proxy.ProductProvider
 {
-    class TechDataProductProvider : ProductProviderBase
+    public class TechDataProductProvider : ProductProviderBase
     {
         private readonly ITechDataReaderSettings readerSettings;
         private readonly ITechDataDownloaderSettings downloaderSettings;
