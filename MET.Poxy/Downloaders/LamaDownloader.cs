@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
 
@@ -22,7 +21,7 @@ namespace MET.Proxy.Downloaders
 
         private readonly string request;
 
-        public LamaDownloader(LamaDownloaderSettings settings, CancellationToken token)
+        public LamaDownloader(ILamaSettings settings)
         {
             UrlConnection = settings.Url;
             fileName = settings.XmlFile;
@@ -36,7 +35,7 @@ namespace MET.Proxy.Downloaders
 
         protected override bool Download()
         {
-            var request = (HttpWebRequest)WebRequest.Create(UrlConnection);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(UrlConnection);
 
             var postData = "user=" + login;
 
@@ -45,12 +44,12 @@ namespace MET.Proxy.Downloaders
 
             var data = Encoding.ASCII.GetBytes(postData);
 
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
+            httpWebRequest.Method = "POST";
+            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
 
-            request.ContentLength = data.Length;
+            httpWebRequest.ContentLength = data.Length;
 
-            using (var stream = request.GetRequestStream())
+            using (var stream = httpWebRequest.GetRequestStream())
             {
                 stream.Write(data, 0, data.Length);
             }
@@ -59,7 +58,7 @@ namespace MET.Proxy.Downloaders
 
             try
             {
-                response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse)httpWebRequest.GetResponse();
             }
             catch (WebException ex)
             {
