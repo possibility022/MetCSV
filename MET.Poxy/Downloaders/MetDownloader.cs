@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Net;
-using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
 
@@ -14,7 +13,7 @@ namespace MET.Proxy.Downloaders
 
         private readonly string url;
 
-        public MetDownloader(MetDownloaderSettings settings, CancellationToken token)
+        public MetDownloader(IMetSettings settings)
         {
             fileName = settings.CsvFile;
             url = settings.Url;
@@ -28,6 +27,7 @@ namespace MET.Proxy.Downloaders
             using (var webStream = client.OpenRead(url))
             using (var fileStream = new StreamWriter(fileName))
             {
+                ThrowIfCanceled();
                 if (webStream != null)
                     webStream.CopyTo(fileStream.BaseStream);
                 else

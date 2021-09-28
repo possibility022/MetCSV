@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Proxy.Enums;
 using MET.Workflows;
 using METCSV.Common;
@@ -16,7 +15,7 @@ namespace MET.Proxy.ProductReaders
     {
         public override Providers Provider => Providers.MET;
 
-        private static bool EncodingInitialized = false;
+        private static bool _encodingInitialized;
 
         public MetProductReader(CancellationToken token) : base(token)
         {
@@ -26,10 +25,10 @@ namespace MET.Proxy.ProductReaders
 
         private static void InitializeEncoding()
         {
-            if (!EncodingInitialized)
+            if (!_encodingInitialized)
             {
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                EncodingInitialized = true;
+                _encodingInitialized = true;
             }
         }
 
