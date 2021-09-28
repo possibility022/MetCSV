@@ -69,7 +69,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.MetDownlaoder = new MetDownloaderSettings()
+            settings.MetDownlaoder = new MetSettings()
             {
                 CsvFile = "CSV File",
                 Url = "URL!"
