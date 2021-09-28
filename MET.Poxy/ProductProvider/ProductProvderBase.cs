@@ -11,80 +11,53 @@ using METCSV.Common;
 
 namespace MET.Proxy.ProductProvider
 {
-    abstract public class ProductProviderBase : IProductProvider
+    public abstract class ProductProviderBase : IProductProvider
     {
-
         protected const string ArchiveFolder = "Archive";
-
         protected abstract string ArchiveFileNamePrefix { get; }
 
-        private IDownloader _downloader;
-        private IProductReader _productReader;
-        private OperationStatus _downloaderStatus;
-        private OperationStatus _readerStatus;
+        private IDownloader downloader;
+        private IProductReader productReader;
 
         public Providers Provider { get; protected set; }
 
-        protected CancellationToken _token;
+        protected CancellationToken Token;
 
-        IList<Product> _products;
-        IList<Product> _oldProducts;
+        private IList<Product> products;
 
         public ProductProviderBase(CancellationToken cancellationToken)
         {
-            _token = cancellationToken;
+            Token = cancellationToken;
         }
 
-        public IList<Product> GetProducts() => _products;
-
-        public IList<Product> GetOldProducts() => _oldProducts;
+        public IList<Product> GetProducts() => products;
 
         public void SetProductDownloader(IDownloader downloader)
         {
-            if (_downloader?.Status == OperationStatus.InProgress)
-            {
-                throw new InvalidOperationException("Cannot set downloader when the old one is in progress state.");
-            }
-
-            _downloader = downloader;
+            this.downloader = downloader;
         }
 
         public void SetProductReader(IProductReader reader)
         {
-            if (_productReader?.Status == OperationStatus.InProgress)
+            if (productReader?.Status == OperationStatus.InProgress)
             {
                 throw new InvalidOperationException("Cannot set reader when the old one is in progress state.");
             }
 
-            _productReader = reader;
+            productReader = reader;
         }
 
-        private void DownloadData()
+        private IList<Product> ReadFile()
         {
-            _downloader.Download();
-        }
-
-        private IList<Product> ReadFile(IProductReader productReader, IDownloader downloader)
-        {
-            if (downloader.Status != OperationStatus.Complete)
-            {
-                ReaderStatus = OperationStatus.Faild;
-                Log.Info("Wczytywanie przerwane ze względu na nieukończone pobieranie.");
-                return new List<Product>();
-            }
-
             string filename2 =
                 downloader.DownloadedFiles.Length >= 2 ?
                     downloader.DownloadedFiles[1]
                     : string.Empty;
 
-            var producets = productReader.GetProducts(downloader.DownloadedFiles[0], filename2);
-            
-
-            return producets;
+            return productReader.GetProducts(downloader.DownloadedFiles[0], filename2);
         }
 
-        static public Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
+        public static Task<bool> DownloadAndLoadAsync(IProductProvider productProvider)
         {
             Task<bool> task = new Task<bool>(productProvider.DownloadAndLoad);
             task.Start();
@@ -93,12 +66,19 @@ namespace MET.Proxy.ProductProvider
 
         public bool DownloadAndLoad()
         {
-            DownloadData();
-            _products = ReadFile(_productReader, _downloader);
-            return _productReader.Status == OperationStatus.Complete && _downloader.Status == OperationStatus.Complete;
+            var downloaderStatus = downloader.StartDownloading(Token);
+
+            if (!downloaderStatus)
+            {
+                Log.Info("Wczytywanie przerwane ze względu na nieukończone pobieranie.");
+                return false;
+            }
+
+            products = ReadFile();
+            return true;
         }
 
-        private const string fileExtension = ".bin";
+        private const string FileExtension = ".bin";
 
         public ICollection<Product> LoadOldProducts()
         {
@@ -109,7 +89,7 @@ namespace MET.Proxy.ProductProvider
                 file = Directory
                 .GetFiles(ArchiveFolder)
                 .Select(f => new FileInfo(f))
-                .Where(r => r.Name.StartsWith(ArchiveFileNamePrefix) && r.Name.EndsWith(fileExtension) && r.LastWriteTime.Date != DateTime.Today.Date)
+                .Where(r => r.Name.StartsWith(ArchiveFileNamePrefix) && r.Name.EndsWith(FileExtension) && r.LastWriteTime.Date != DateTime.Today.Date)
                 //.Where(r => r.Name.EndsWith(fileExtension))
                 .OrderByDescending(fi => fi.CreationTime)
                 .FirstOrDefault();
@@ -126,7 +106,7 @@ namespace MET.Proxy.ProductProvider
         }
 
         private string GenerateFileName()
-            => $"{ArchiveFileNamePrefix}_{DateTime.Now.Date.ToString("d")}{fileExtension}";
+            => $"{ArchiveFileNamePrefix}_{DateTime.Now.Date.ToString("d")}{FileExtension}";
 
         public void SaveAsOldProducts(ICollection<Product> products)
         {
