@@ -1,6 +1,6 @@
 ﻿namespace METCSV.WPF.Configuration
 {
-    public class EngineSettings
+    public class EngineSettings : IEngineSettings
     {
         public bool OfflineMode { get; set; } = true;
 
