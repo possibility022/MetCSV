@@ -11,14 +11,14 @@ namespace MET.Proxy.ProductProvider
     class TechDataProductProvider : ProductProviderBase
     {
         private readonly ITechDataReaderSettings readerSettings;
-        private readonly ITechDataSettings settings;
+        private readonly ITechDataDownloaderSettings downloaderSettings;
         private readonly bool offlineMode;
         protected override string ArchiveFileNamePrefix => "TechData";
 
-        public TechDataProductProvider(ITechDataReaderSettings readerSettings, ITechDataSettings settings, bool offlineMode, CancellationToken token) : base(token)
+        public TechDataProductProvider(ITechDataReaderSettings readerSettings, ITechDataDownloaderSettings downloaderSettings, bool offlineMode, CancellationToken token) : base(token)
         {
             this.readerSettings = readerSettings;
-            this.settings = settings;
+            this.downloaderSettings = downloaderSettings;
             this.offlineMode = offlineMode;
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
@@ -38,7 +38,7 @@ namespace MET.Proxy.ProductProvider
             }
             else
             {
-                return new TechDataDownloader(settings);
+                return new TechDataDownloader(downloaderSettings);
             }
         }
     }
