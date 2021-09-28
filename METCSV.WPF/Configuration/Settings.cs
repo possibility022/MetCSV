@@ -6,7 +6,7 @@ namespace METCSV.WPF.Configuration
     {
         private AbDownloaderDownloaderSettings aBDownloaderDownloader = new();
         private LamaDownloaderSettings lamaDownloader = new();
-        private MetSettings metDownlaoder = new();
+        private MetSettings metSettings = new();
         private TechDataDownloaderSettings tDDownloader = new();
         private EngineSettings engine = new();
 
@@ -31,10 +31,10 @@ namespace METCSV.WPF.Configuration
         }
 
 
-        public MetSettings MetDownlaoder
+        public MetSettings MetSettings
         {
-            get => metDownlaoder;
-            set => metDownlaoder = value ?? new MetSettings();
+            get => metSettings;
+            set => metSettings = value ?? new MetSettings();
         }
 
 
@@ -47,6 +47,7 @@ namespace METCSV.WPF.Configuration
         public ITechDataSettings TechDataSettings => TdDownloader;
         public ILamaSettings LamaSettings => LamaDownloader;
         public IAbDownloaderSettings AbDownloaderSettings => AbDownloaderDownloader;
-        public IMetSettings MetSettings => MetDownlaoder;
+
+        IMetSettings ISettings.MetSettings => this.MetSettings;
     }
 }
