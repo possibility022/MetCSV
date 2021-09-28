@@ -1,14 +1,12 @@
-﻿using MET.Proxy;
-using MET.Proxy.ProductReaders;
-using System.Threading;
+﻿using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
 using MET.Proxy.Downloaders;
 using MET.Proxy.Downloaders.Offline;
 using MET.Proxy.Interfaces;
-using MET.Proxy.ProductProvider;
+using MET.Proxy.ProductReaders;
 
-namespace METCSV.WPF.ProductProvider
+namespace MET.Proxy.ProductProvider
 {
     class LamaProductProvider : ProductProviderBase
     {
