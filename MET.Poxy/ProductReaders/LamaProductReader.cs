@@ -7,7 +7,6 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Proxy.Configuration;
 using MET.Workflows;
 using METCSV.Common;
@@ -18,15 +17,15 @@ namespace MET.Proxy.ProductReaders
     {
         public override Providers Provider => Providers.Lama;
 
-        private readonly string FileEncoding;
+        private readonly string fileEncoding;
 
-        private readonly string CsvDelimiter;
+        private readonly string csvDelimiter;
 
-        public LamaProductReader(LamaDownloaderSettings settings, CancellationToken token) : base(token)
+        public LamaProductReader(ILamaReaderSettings settings, CancellationToken token) : base(token)
         {
             ProviderName = "Lama";
-            CsvDelimiter = settings.CsvDelimiter;
-            FileEncoding = settings.CsvFileEncoding;
+            csvDelimiter = settings.CsvDelimiter;
+            fileEncoding = settings.CsvFileEncoding;
         }
 
         public override IList<Product> GetProducts(string filename, string filename2) => LoadProducts(filename, filename2);
@@ -62,7 +61,7 @@ namespace MET.Proxy.ProductReaders
         private List<Product> ReadProducents(string pathCsv, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = CsvDelimiter };
+            CsvReader reader = new CsvReader() { Delimiter = csvDelimiter };
 
             IEnumerable<string[]> producents = reader.ReadCsv(pathCsv, encoding);
 
@@ -146,7 +145,7 @@ namespace MET.Proxy.ProductReaders
         /// <returns> Liste produktów</returns>
         private List<Product> ReadLama(string path)
         {
-            StreamReader streamReader = new StreamReader(path, Encoding.GetEncoding(FileEncoding));
+            StreamReader streamReader = new StreamReader(path, Encoding.GetEncoding(fileEncoding));
             var xmlReader = XmlReader.Create(streamReader);
 
             XDocument.Load(xmlReader);
@@ -197,9 +196,9 @@ namespace MET.Proxy.ProductReaders
 
             if (product.Element("SNIMEK") != null) // sprawdz czy isnieje url, jeśli tak to zapisz wszystkie Url-e w liście i zwróć 
             {
-                var rootURL = product.Elements("SNIMEK");
+                var rootUrl = product.Elements("SNIMEK");
 
-                foreach (var url in rootURL)
+                foreach (var url in rootUrl)
                 {
                     listUrls.Add(url.Element("URL").Value);
                 }
