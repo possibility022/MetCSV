@@ -430,7 +430,7 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.EmailLogin, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="1"
@@ -440,7 +440,7 @@
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 ff:PasswordBoxAssistant.BindPassword="true"
-                                ff:PasswordBoxAssistant.BoundPassword="{Binding AbDownloaderSettings.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                ff:PasswordBoxAssistant.BoundPassword="{Binding AbSettings.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="2"
@@ -449,7 +449,7 @@
                             <TextBox
                                 Grid.Row="2"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.EmailServerAddress, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="3"
@@ -458,7 +458,7 @@
                             <TextBox
                                 Grid.Row="3"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
+                                Text="{Binding AbSettings.EmailServerPort, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
 
                             <Label
                                 Grid.Row="4"
@@ -468,7 +468,7 @@
                                 Grid.Row="4"
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
-                                IsChecked="{Binding AbDownloaderSettings.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
+                                IsChecked="{Binding AbSettings.EmailServerUseSSL, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="6"
@@ -477,7 +477,7 @@
                             <CheckBox
                                 Grid.Row="6"
                                 Grid.Column="1"
-                                IsChecked="{Binding AbDownloaderSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}"
+                                IsChecked="{Binding AbSettings.DeleteOldMessages, UpdateSourceTrigger=PropertyChanged}"
                                 IsEnabled="False" />
 
                             <Separator Grid.Row="7" Grid.ColumnSpan="2" />
@@ -490,7 +490,7 @@
                             <TextBox
                                 Grid.Row="8"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.CsvFileEncoding, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.CsvFileEncoding, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="9"
@@ -500,7 +500,7 @@
                             <TextBox
                                 Grid.Row="9"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.CsvDelimiter, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.CsvDelimiter, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="10"
@@ -510,7 +510,7 @@
                             <TextBox
                                 Grid.Row="10"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.SAPPrefix, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.SAPPrefix, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="11"
@@ -520,7 +520,7 @@
                             <TextBox
                                 Grid.Row="11"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.DateTimeRegexPattern, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.DateTimeRegexPattern, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label
                                 Grid.Row="12"
@@ -530,7 +530,7 @@
                             <TextBox
                                 Grid.Row="12"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.DateTimeFormat1, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.DateTimeFormat1, UpdateSourceTrigger=PropertyChanged}" />
 
 
                             <Label
@@ -541,7 +541,7 @@
                             <TextBox
                                 Grid.Row="13"
                                 Grid.Column="1"
-                                Text="{Binding AbDownloaderSettings.DateTimeFormat2, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AbSettings.DateTimeFormat2, UpdateSourceTrigger=PropertyChanged}" />
 
                         </Grid>
                     </ScrollViewer>

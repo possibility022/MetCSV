@@ -4,7 +4,7 @@ namespace METCSV.WPF.Configuration
 {
     public class Settings : ISettings
     {
-        private AbDownloaderDownloaderSettings aBDownloaderDownloader = new();
+        private AbSettings aB = new();
         private LamaDownloaderSettings lamaDownloader = new();
         private MetSettings metSettings = new();
         private TechDataDownloaderSettings tDDownloader = new();
@@ -17,10 +17,10 @@ namespace METCSV.WPF.Configuration
         }
 
 
-        public AbDownloaderDownloaderSettings AbDownloaderDownloader
+        public AbSettings AbSettings
         {
-            get => aBDownloaderDownloader;
-            set => aBDownloaderDownloader = value ?? new AbDownloaderDownloaderSettings();
+            get => aB;
+            set => aB = value ?? new AbSettings();
         }
 
 
@@ -46,7 +46,7 @@ namespace METCSV.WPF.Configuration
 
         public ITechDataSettings TechDataSettings => TdDownloader;
         public ILamaSettings LamaSettings => LamaDownloader;
-        public IAbDownloaderSettings AbDownloaderSettings => AbDownloaderDownloader;
+        public IAbDownloaderSettings AbDownloaderSettings => AbSettings;
 
         IMetSettings ISettings.MetSettings => this.MetSettings;
     }
