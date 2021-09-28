@@ -98,13 +98,13 @@ namespace METCSV.WPF.ViewModels
             set { SetProperty(ref _tdSettings, value); }
         }
 
-        private AbDownloaderSettings _abSettings;
+        private AbDownloaderDownloaderSettings abDownloaderSettings;
         private object renameRowSelectedItem;
 
-        public AbDownloaderSettings AbSettings
+        public AbDownloaderDownloaderSettings AbDownloaderSettings
         {
-            get { return _abSettings; }
-            set { SetProperty(ref _abSettings, value); }
+            get { return abDownloaderSettings; }
+            set { SetProperty(ref abDownloaderSettings, value); }
         }
 
 
@@ -193,12 +193,12 @@ namespace METCSV.WPF.ViewModels
             MetSettings = new MetDownloaderSettings();
             LamaSettings = new LamaDownloaderSettings();
             TdSettings = new TechDataDownloaderSettings();
-            AbSettings = new AbDownloaderSettings();
+            AbDownloaderSettings = new AbDownloaderDownloaderSettings();
             EngineSettings = new EngineSettings();
 
 
             PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
-            PropertyCopy.CopyValues(App.Settings.AbDownloader, AbSettings);
+            PropertyCopy.CopyValues(App.Settings.AbDownloaderDownloader, AbDownloaderSettings);
             PropertyCopy.CopyValues(App.Settings.TdDownloader, TdSettings);
             PropertyCopy.CopyValues(App.Settings.LamaDownloader, LamaSettings);
             PropertyCopy.CopyValues(App.Settings.Engine, EngineSettings);
@@ -216,7 +216,7 @@ namespace METCSV.WPF.ViewModels
                 PropertyCopy.CopyValues(MetSettings, App.Settings.MetDownlaoder);
 
             else if (AbTabIsActive)
-                PropertyCopy.CopyValues(AbSettings, App.Settings.AbDownloader);
+                PropertyCopy.CopyValues(AbDownloaderSettings, App.Settings.AbDownloaderDownloader);
 
             else if (TdTabIsActive)
                 PropertyCopy.CopyValues(TdSettings, App.Settings.TdDownloader);
@@ -253,7 +253,7 @@ namespace METCSV.WPF.ViewModels
                 PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetSettings);
 
             else if (AbTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.AbDownloader, AbSettings);
+                PropertyCopy.CopyValues(App.Settings.AbDownloaderDownloader, AbDownloaderSettings);
 
             else if (TdTabIsActive)
                 PropertyCopy.CopyValues(App.Settings.TdDownloader, TdSettings);
@@ -271,7 +271,7 @@ namespace METCSV.WPF.ViewModels
             if (PropertyCopy.AnyChanges(MetSettings, App.Settings.MetDownlaoder))
                 return false;
 
-            if (PropertyCopy.AnyChanges(AbSettings, App.Settings.AbDownloader))
+            if (PropertyCopy.AnyChanges(AbDownloaderSettings, App.Settings.AbDownloaderDownloader))
                 return false;
 
             if (PropertyCopy.AnyChanges(TdSettings, App.Settings.TdDownloader))

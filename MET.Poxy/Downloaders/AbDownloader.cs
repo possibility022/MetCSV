@@ -32,23 +32,23 @@ namespace MET.Proxy.Downloaders
         public override Providers Provider => Providers.AB;
 
 
-        public AbDownloader(IAbSettings settings, CancellationToken cancellationToken)
+        public AbDownloader(IAbDownloaderSettings downloaderSettings, CancellationToken cancellationToken)
         {
             CancellationToken = cancellationToken;
 
-            emailServerAddress = settings.EmailServerAddress;
-            emailServerPort = settings.EmailServerPort;
-            useSsl = settings.EmailServerUseSSL;
+            emailServerAddress = downloaderSettings.EmailServerAddress;
+            emailServerPort = downloaderSettings.EmailServerPort;
+            useSsl = downloaderSettings.EmailServerUseSSL;
 
-            emailLogin = settings.EmailLogin;
-            emailPassword = settings.EmailPassword;
+            emailLogin = downloaderSettings.EmailLogin;
+            emailPassword = downloaderSettings.EmailPassword;
 
-            zippedFile = settings.ZippedFile;
-            folderToExtract = settings.FolderToExtract;
-            deleteOld = settings.DeleteOldMessages;
+            zippedFile = downloaderSettings.ZippedFile;
+            folderToExtract = downloaderSettings.FolderToExtract;
+            deleteOld = downloaderSettings.DeleteOldMessages;
 
-            dateTimeParser = new DateTimeParser(settings.DateTimeRegexPattern, settings.DateTimeFormat1,
-                settings.DateTimeFormat2);
+            dateTimeParser = new DateTimeParser(downloaderSettings.DateTimeRegexPattern, downloaderSettings.DateTimeFormat1,
+                downloaderSettings.DateTimeFormat2);
         }
         
         protected override bool Download()
