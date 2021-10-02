@@ -75,6 +75,12 @@
                     Binding="{Binding Path=CenaZakupuNetto}"
                     Header="Cena Zakupu Netto" />
 
+                <DataGridTextColumn
+                    Width="Auto"
+                    MinWidth="100"
+                    Binding="{Binding Path=CenaNetto}"
+                    Header="Cena Netto" />
+
             </DataGrid.Columns>
 
         </DataGrid>

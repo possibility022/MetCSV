@@ -28,6 +28,7 @@ namespace MET.Domain.Logic
                 new IdDomain(ignoreDuplicates: ignoreIdsProblems),
                 new EndOfLiveDomain(),
                 PriceDomain,
+                new FindCheapestProductDomain(),
                 new SourceProductSelector(),
                 new WarehouseStatusDomain(),
                 new ProductStatusDomain(),

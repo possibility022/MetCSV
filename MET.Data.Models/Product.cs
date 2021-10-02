@@ -3,7 +3,7 @@
 namespace MET.Data.Models
 {
     [Serializable]
-    public class Product
+    public class Product : IProductPrice, ICheapestProductDomain
     {
         public Product(Providers provider)
         {
@@ -120,5 +120,18 @@ namespace MET.Data.Models
         {
             return $"{Provider} {OryginalnyKodProducenta} {SymbolSAP}";
         }
+    }
+
+    public interface ICheapestProductDomain
+    {
+        double CenaNetto { get; }
+
+        int StanMagazynowy { get; set; }
+    }
+
+    public interface IProductPrice
+    {
+        double CenaZakupuNetto { get; }
+        public void SetCennaNetto(double value);
     }
 }

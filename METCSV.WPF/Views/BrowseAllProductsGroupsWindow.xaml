@@ -101,6 +101,12 @@
                     Binding="{Binding Path=FinalProduct.CenaZakupuNetto}"
                     Header="Cena Zakupu Netto" />
 
+                <DataGridTextColumn
+                    Width="Auto"
+                    MinWidth="100"
+                    Binding="{Binding Path=FinalProduct.CenaNetto}"
+                    Header="Cena Netto" />
+
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
@@ -188,6 +194,12 @@
                                         Binding="{Binding Path=CenaZakupuNetto}"
                                         Header="Cena Zakupu Netto" />
 
+                                    <DataGridTextColumn
+                                        Width="Auto"
+                                        MinWidth="100"
+                                        Binding="{Binding Path=CenaNetto}"
+                                        Header="Cena Netto" />
+
                                 </DataGrid.Columns>
                             </DataGrid>
 
@@ -252,6 +264,12 @@
                                         MinWidth="100"
                                         Binding="{Binding Path=CenaZakupuNetto}"
                                         Header="Cena Zakupu Netto" />
+
+                                    <DataGridTextColumn
+                                        Width="Auto"
+                                        MinWidth="100"
+                                        Binding="{Binding Path=CenaNetto}"
+                                        Header="Cena Netto" />
 
                                 </DataGrid.Columns>
                             </DataGrid>
