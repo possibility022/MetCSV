@@ -39,15 +39,6 @@ namespace METCSV.WPF.Models
 
         public void SetNewProfit(string key, double profitValue)
         {
-            if (profitValue == defaultProfit)
-            {
-                if (values.ContainsKey(key))
-                {
-                    values.Remove(key);
-                }
-                return;
-            }
-
             if (values.ContainsKey(key) == false)
             {
                 values.Add(key, profitValue);

@@ -27,6 +27,27 @@ namespace METCSV.WPF.Helpers
             return new ManufacturersCollection(productProvider.Provider, providers);
         }
 
+        public static Task<CategoryCollection> GetCategoriesCollectionAsync(IProductProvider productProvider)
+        {
+            Task<CategoryCollection>
+                task = new Task<CategoryCollection>(() => GetCategoriesCollection(productProvider));
+            task.Start();
+
+            return task;
+        }
+
+        public static CategoryCollection GetCategoriesCollection(IProductProvider productProvider)
+        {
+            var categories = new HashSet<string>();
+            foreach (var product in productProvider.GetProducts())
+            {
+                if (!string.IsNullOrEmpty(product.Kategoria))
+                    categories.Add(product.Kategoria);
+            }
+
+            return new CategoryCollection(productProvider.Provider, categories);
+        }
+
         public static void CalculatePrices(IEnumerable<Product> products, Profits profits)
         {
             foreach (var p in products)
