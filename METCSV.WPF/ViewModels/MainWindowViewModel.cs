@@ -34,7 +34,11 @@ namespace METCSV.WPF.ViewModels
         public OperationStatus InProgress
         {
             get => inProgress;
-            set => SetProperty(ref inProgress, value);
+            set
+            {
+                SetProperty(ref inProgress, value);
+                ExportEnabled = value == OperationStatus.Complete;
+            }
         }
 
         ProfitsWindow profitsView;
@@ -51,7 +55,7 @@ namespace METCSV.WPF.ViewModels
         public bool ExportEnabled
         {
             get => exportEnabled;
-            set => SetProperty(ref exportEnabled, value);
+            private set => SetProperty(ref exportEnabled, value);
         }
         
         private ProgramFlow programFlow;
