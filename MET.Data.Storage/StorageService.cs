@@ -48,6 +48,7 @@ namespace MET.Data.Storage
 
         {
             var customProfits = dbSet
+                .AsEnumerable() // I know!
                 .Where(r => where(profit, r))
                 .Take(2)
                 .ToList();

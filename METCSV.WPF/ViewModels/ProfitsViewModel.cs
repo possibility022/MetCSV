@@ -1,5 +1,4 @@
 ﻿using System;
-using METCSV.WPF.Helpers;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
 using Prism.Mvvm;
@@ -18,64 +17,30 @@ namespace METCSV.WPF.ViewModels
     {
         public ProfitsViewModel()
         {
-            profitsCollection = new ObservableCollection<Profits>();
-            valuesCache = new Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>>();
             ShowProductBrowserCommand = new RelayCommand(() => ShowProductNumberBrowser()); // I know I know
             RemoveProductFromCustomListCommand = new RelayCommand(() => { RemoveSelectedCustomProfit(); }); //todo
         }
 
-        private ObservableCollection<Profits> profitsCollection;
-        private Profits selectedProfits;
+        public ProfitsTabInnerViewModel CategoryProfits { get; } = new ProfitsTabInnerViewModel();
         private Profits customProfits;
         private ObservableCollection<EditableDictionaryKey<string, double>> customProfitsCollection = new();
-        private ObservableCollection<EditableDictionaryKey<string, double>> values;
         private IList<Product>[] allProducts;
         private PartNumberSearchWindow partNumberSearchWindow;
 
-        private readonly Dictionary<Profits, ObservableCollection<EditableDictionaryKey<string, double>>> valuesCache;
-        private EditableDictionaryKey<string, double> selectedItem;
-
-        public ObservableCollection<Profits> ProfitsCollections
+        private EditableDictionaryKey<string, double> selectedCustomProfitCustomProfitItem;
+        
+        public EditableDictionaryKey<string, double> SelectedCustomProfitItem
         {
-            get => profitsCollection;
-            set => SetProperty(ref profitsCollection, value);
+            get => selectedCustomProfitCustomProfitItem;
+            set => SetProperty(ref selectedCustomProfitCustomProfitItem, value);
         }
 
-        public EditableDictionaryKey<string, double> SelectedItem
-        {
-            get => selectedItem;
-            set => SetProperty(ref selectedItem, value);
-        }
 
-        public string InfoText
-        {
-            get => $"Edytujesz marże dla: {SelectedProfits?.Provider}.";
-        }
 
         public ICommand ShowProductBrowserCommand { get; }
         public ICommand RemoveProductFromCustomListCommand { get; }
 
-        public Profits SelectedProfits
-        {
-            get => selectedProfits;
-            set
-            {
-                SaveCurrentProfits();
-                SetProperty(ref selectedProfits, value);
-                if (value != null)
-                {
-                    CacheValues();
-                    Values = valuesCache[value];
-                }
-                RaisePropertyChanged(nameof(InfoText));
-            }
-        }
 
-        public ObservableCollection<EditableDictionaryKey<string, double>> Values
-        {
-            get => values;
-            set => SetProperty(ref values, value);
-        }
 
         public ObservableCollection<EditableDictionaryKey<string, double>> CustomProfits
         {
@@ -85,11 +50,11 @@ namespace METCSV.WPF.ViewModels
 
         public void AddCategoryProfit(Profits profit)
         {
-            var profits = GetAlreadyExistingProfits(profit.Provider);
+            var profits = GetAlreadyExistingCategoryProfits(profit.Provider);
 
             if (profits == null)
             {
-                ProfitsCollections.Add(profit);
+                CategoryProfits.ProfitsCollections.Add(profit);
             }
             else
             {
@@ -110,8 +75,8 @@ namespace METCSV.WPF.ViewModels
 
         public List<Profits> GetCategoryProfits()
         {
-            SaveCurrentProfits();
-            return new List<Profits>(profitsCollection);
+            CategoryProfits.SaveCurrentProfits();
+            return new List<Profits>(CategoryProfits.ProfitsCollections);
         }
 
         public Profits GetCustomProfits()
@@ -120,22 +85,22 @@ namespace METCSV.WPF.ViewModels
             return customProfits;
         }
 
-        private Profits GetAlreadyExistingProfits(Providers provider)
+        private Profits GetAlreadyExistingCategoryProfits(Providers provider)
         {
-            return ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
+            return CategoryProfits.ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
         }
 
         private void RemoveSelectedCustomProfit()
         {
-            if (selectedItem != null)
+            if (selectedCustomProfitCustomProfitItem != null)
             {
-                CustomProfits.Remove(selectedItem);
+                CustomProfits.Remove(selectedCustomProfitCustomProfitItem);
             }
         }
 
         public void AddCategories(CategoryCollection categoryCollection)
         {
-            var profits = GetAlreadyExistingProfits(categoryCollection.Provider);
+            var profits = GetAlreadyExistingCategoryProfits(categoryCollection.Provider);
 
             if (profits != null)
             {
@@ -145,8 +110,8 @@ namespace METCSV.WPF.ViewModels
             {
                 var newProfits = new Profits(categoryCollection.Provider, App.Settings.Engine.DefaultProfit);
                 newProfits.AddManufacturers(categoryCollection.Categories);
-                ProfitsCollections.Add(newProfits);
-                RaisePropertyChanged(nameof(ProfitsCollections));
+                CategoryProfits.ProfitsCollections.Add(newProfits);
+                RaisePropertyChanged(nameof(CategoryProfits.ProfitsCollections));
             }
         }
 
@@ -177,23 +142,13 @@ namespace METCSV.WPF.ViewModels
             partNumberSearchWindow = null;
         }
 
-        private void SaveCurrentProfits()
-        {
-            if (Values != null && SelectedProfits != null)
-            {
-                SelectedProfits.SetNewProfits(Values);
-            }
-        }
+
 
         private void SaveCustomProfits()
         {
             customProfits.SetNewProfits(customProfitsCollection);
         }
 
-        private void CacheValues()
-        {
-            if (SelectedProfits != null && valuesCache.ContainsKey(SelectedProfits) == false)
-                valuesCache.Add(SelectedProfits, CustomConvert.ToObservableCollection(SelectedProfits.Values));
-        }
+
     }
 }
