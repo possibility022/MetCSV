@@ -19,7 +19,7 @@ using METCSV.Common.Formatters;
 
 namespace MET.CSV.Generator
 {
-    public class ProgramFlow : IDisposable
+    public class ProgramFlow
     {
         List<Product> finalList;
 
@@ -50,7 +50,7 @@ namespace MET.CSV.Generator
         public IReadOnlyList<Product> FinalList => finalList;
         public IReadOnlyCollection<ProductGroup> AllProducts { get; private set; }
 
-        private bool inProgress = false;
+        private bool InProgress { get; set; }
 
         public ProgramFlow(
             StorageService storageService, 
@@ -70,10 +70,10 @@ namespace MET.CSV.Generator
 
         public Task<bool> FirstStep()
         {
-            if (inProgress)
+            if (InProgress)
                 throw new InvalidOperationException("Can not start again as flow is in progress.");
 
-            inProgress = true;
+            InProgress = true;
             CheckLamaFile();
             storageService.MakeSureDbCreated();
             Initialize();
@@ -136,9 +136,9 @@ namespace MET.CSV.Generator
 
                 producedList.Sort(new ProductSorter());
                 AllProducts = orchestrator.GetGeneratedProductGroups();
-                this.finalList = producedList;
+                finalList = producedList;
 
-                inProgress = false;
+                InProgress = false;
 
                 return true;
             }
@@ -215,11 +215,6 @@ namespace MET.CSV.Generator
                 priceError = new PriceErrorDomain(products.TechDataProducts_Old, products.TechDataProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
-        }
-
-        public void Dispose()
-        {
-            storageService?.Dispose();
         }
     }
 }
