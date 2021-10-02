@@ -77,17 +77,17 @@ namespace METCSV.WPF.ViewModels
             
             profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.AB.GetProducts());
 
-            var lamaProviders = HelpMe.GetProvidersAsync(programFlow.Lama);
-            var techDataProviders = HelpMe.GetProvidersAsync(programFlow.TechData);
-            var abProviders = HelpMe.GetProvidersAsync(programFlow.AB);
+            var lamaProviders = HelpMe.GetCategoriesCollectionAsync(programFlow.Lama);
+            var techDataProviders = HelpMe.GetCategoriesCollectionAsync(programFlow.TechData);
+            var abProviders = HelpMe.GetCategoriesCollectionAsync(programFlow.AB);
 
             await Task.WhenAll(lamaProviders, techDataProviders, abProviders);
 
             var dataContext = profitsViewModel;
 
-            dataContext.AddManufacturers(lamaProviders.Result);
-            dataContext.AddManufacturers(techDataProviders.Result);
-            dataContext.AddManufacturers(abProviders.Result);
+            dataContext.AddCategories(lamaProviders.Result);
+            dataContext.AddCategories(techDataProviders.Result);
+            dataContext.AddCategories(abProviders.Result);
 
             return profitsViewModel;
         }
@@ -138,9 +138,6 @@ namespace METCSV.WPF.ViewModels
 
         private void SaveProfits(ProfitsViewModel profitsViewModel)
         {
-            storage.RemoveCategoryDefaultProfits(App.Settings.Engine.DefaultProfit);
-            storage.RemoveCustomDefaultProfits(App.Settings.Engine.DefaultProfit);
-
             var customProfits = profitsViewModel.GetCustomProfits();
             foreach (var (key, value) in customProfits.Values)
             {
@@ -156,9 +153,6 @@ namespace METCSV.WPF.ViewModels
             {
                 foreach (var (key, value) in categoryProfit.Values)
                 {
-                    if (value == categoryProfit.DefaultProfit)
-                        continue;
-
                     storage.SetProfit(new CategoryProfit()
                     {
                         Category = key,
@@ -167,6 +161,9 @@ namespace METCSV.WPF.ViewModels
                     });
                 }
             }
+
+            storage.RemoveCategoryDefaultProfits(App.Settings.Engine.DefaultProfit);
+            storage.RemoveCustomDefaultProfits(App.Settings.Engine.DefaultProfit);
         }
 
         public async Task<bool> StartClickAsync()

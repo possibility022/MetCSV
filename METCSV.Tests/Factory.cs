@@ -49,7 +49,7 @@ namespace METCSV.UnitTests
         public static ProfitsViewModel GetProfitsViewModel()
         {
             var model = new ProfitsViewModel();
-            model.AddManufacturers(GetManufacturers());
+            model.AddCategories(GetManufacturers());
             return model;
         }
 

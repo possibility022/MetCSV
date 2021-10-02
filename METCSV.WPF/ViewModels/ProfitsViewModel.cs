@@ -132,18 +132,18 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
-        public void AddManufacturers(ManufacturersCollection manufacturersCollection)
+        public void AddCategories(CategoryCollection categoryCollection)
         {
-            var profits = GetAlreadyExistingProfits(manufacturersCollection.Provider);
+            var profits = GetAlreadyExistingProfits(categoryCollection.Provider);
 
             if (profits != null)
             {
-                profits.AddManufacturers(manufacturersCollection.Manufacturers);
+                profits.AddManufacturers(categoryCollection.Categories);
             }
             else
             {
-                var newProfits = new Profits(manufacturersCollection.Provider, App.Settings.Engine.DefaultProfit);
-                newProfits.AddManufacturers(manufacturersCollection.Manufacturers);
+                var newProfits = new Profits(categoryCollection.Provider, App.Settings.Engine.DefaultProfit);
+                newProfits.AddManufacturers(categoryCollection.Categories);
                 ProfitsCollections.Add(newProfits);
                 RaisePropertyChanged(nameof(ProfitsCollections));
             }
