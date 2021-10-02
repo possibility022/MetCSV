@@ -197,7 +197,7 @@ namespace METCSV.WPF.ViewModels
             EngineSettings = new EngineSettings();
 
 
-            PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetDownloaderSettings);
+            PropertyCopy.CopyValues(App.Settings.MetDownloaderSettings, MetDownloaderSettings);
             PropertyCopy.CopyValues(App.Settings.AbSettings, AbSettings);
             PropertyCopy.CopyValues(App.Settings.Td, TdDownloaderSettings);
             PropertyCopy.CopyValues(App.Settings.LamaSettings, LamaSettings);
@@ -213,7 +213,7 @@ namespace METCSV.WPF.ViewModels
         public void Save()
         {
             if (MetTabIsActive)
-                PropertyCopy.CopyValues(MetDownloaderSettings, App.Settings.MetDownlaoder);
+                PropertyCopy.CopyValues(MetDownloaderSettings, App.Settings.MetDownloaderSettings);
 
             else if (AbTabIsActive)
                 PropertyCopy.CopyValues(AbSettings, App.Settings.AbSettings);
@@ -250,7 +250,7 @@ namespace METCSV.WPF.ViewModels
         public void RestoreChanges()
         {
             if (MetTabIsActive)
-                PropertyCopy.CopyValues(App.Settings.MetDownlaoder, MetDownloaderSettings);
+                PropertyCopy.CopyValues(App.Settings.MetDownloaderSettings, MetDownloaderSettings);
 
             else if (AbTabIsActive)
                 PropertyCopy.CopyValues(App.Settings.AbSettings, AbSettings);
@@ -268,7 +268,7 @@ namespace METCSV.WPF.ViewModels
         public bool AllSaved()
         {
 
-            if (PropertyCopy.AnyChanges(MetDownloaderSettings, App.Settings.MetDownlaoder))
+            if (PropertyCopy.AnyChanges(MetDownloaderSettings, App.Settings.MetDownloaderSettings))
                 return false;
 
             if (PropertyCopy.AnyChanges(AbSettings, App.Settings.AbSettings))

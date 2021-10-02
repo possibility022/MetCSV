@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using METCSV.WPF.Interfaces;
-using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Helpers;
 using Prism.Mvvm;
 using METCSV.WPF.Views;
-using METCSV.WPF.Workflows;
-using MET.Domain.Logic;
-using System.Collections.Generic;
 using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
 using AutoUpdaterDotNET;
-using MET.Domain.Logic.Models;
-using System.IO;
-using System.Linq;
 using System.Windows.Input;
+using MET.CSV.Generator;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
 using MET.Data.Storage;
-using MET.Proxy.ProductProvider;
+using METCSV.Common.Formatters;
 using METCSV.WPF.Models;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -31,109 +24,58 @@ namespace METCSV.WPF.ViewModels
         public MainWindowViewModel()
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
-            storage = new StorageService(new StorageContext());
-            StorageInitializeTask = storage.MakeSureDbCreatedAsync();
-
             ShowMetProductListEditorCommand = new RelayCommand(() => ShowMetListEditor());
             ShowAllProductsGroupsCommand = new RelayCommand(() => ShowAllProductsWindow());
+            storage = new StorageService(new StorageContext());
         }
 
         private const string NotificationTitle = "CSV Generator";
-        private CancellationTokenSource _cancellationTokenSource;
         
-        IProductProvider _met;
-        IProductProvider _lama;
-        IProductProvider _techData;
-        IProductProvider _ab;
-
-        public IProductProvider Met { get => _met; set => SetProperty(ref _met, value); }
-        public IProductProvider Lama { get => _lama; set => SetProperty(ref _lama, value); }
-        public IProductProvider TechData { get => _techData; set => SetProperty(ref _techData, value); }
-        public IProductProvider AB { get => _ab; set => SetProperty(ref _ab, value); }
-
         public OperationStatus InProgress
         {
             get => inProgress;
             set => SetProperty(ref inProgress, value);
         }
 
-        ProfitsWindow _profitsView;
-        private bool _setProfits;
-        
+        ProfitsWindow profitsView;
+        private bool setProfits;
+
 
         public bool SetProfits
         {
-            get => _setProfits;
-            set => SetProperty(ref _setProfits, value);
+            get => setProfits;
+            set => SetProperty(ref setProfits, value);
         }
 
-        private bool _exportEnabled;
+        private bool exportEnabled;
         public bool ExportEnabled
         {
-            get { return _exportEnabled; }
-            set { SetProperty(ref _exportEnabled, value); }
+            get => exportEnabled;
+            set => SetProperty(ref exportEnabled, value);
         }
-
-        private IReadOnlyCollection<Product> _products;
-        public IReadOnlyCollection<Product> Products
-        {
-            get => _products;
-            set
-            {
-                SetProperty(ref _products, value);
-                ExportEnabled = value != null;
-            }
-        }
-
-        private IReadOnlyCollection<ProductGroup> _allProducts;
-        private ProgramFlow _productMerger;
-        private List<Product> metCustomProducts;
-
-        private StorageService storage;
-
-        private Task StorageInitializeTask;
+        
+        private ProgramFlow programFlow;
         private OperationStatus inProgress;
+        private readonly StorageService storage;
+        private CancellationTokenSource cancellationTokenSource;
 
         public ICommand ShowMetProductListEditorCommand { get; }
         public ICommand ShowAllProductsGroupsCommand { get; }
 
-        private void Initialize()
-        {
-            _cancellationTokenSource = new CancellationTokenSource();
-            Met = new MetProductProvider(_cancellationTokenSource.Token);
-            Lama = new LamaProductProvider(_cancellationTokenSource.Token);
-            TechData = new TechDataProductProvider(_cancellationTokenSource.Token);
-            AB = new ABProductProvider(_cancellationTokenSource.Token);
-            metCustomProducts = null;
-        }
-
-        private async Task<bool> DownloadAndLoadAsync()
-        {
-            await StorageInitializeTask;
-            Initialize();
-
-            var met = ProductProviderBase.DownloadAndLoadAsync(_met);
-            var lama = ProductProviderBase.DownloadAndLoadAsync(_lama);
-            var techData = ProductProviderBase.DownloadAndLoadAsync(_techData);
-            var ab = ProductProviderBase.DownloadAndLoadAsync(_ab);
-
-            await Task.WhenAll(met, lama, techData, ab);
-
-            return met.Result && lama.Result && techData.Result && ab.Result;
-        }
 
         public async Task<ProfitsViewModel> PrepareProfitWindow()
         {
-            _profitsView = new ProfitsWindow();
-            var profitsViewModel = (ProfitsViewModel)_profitsView.DataContext;
+            await storage.MakeSureDbCreatedAsync();
+            profitsView = new ProfitsWindow();
+            var profitsViewModel = (ProfitsViewModel)profitsView.DataContext;
             LoadCategoryProfits(profitsViewModel);
             LoadCustomProfits(profitsViewModel);
+            
+            profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.AB.GetProducts());
 
-            profitsViewModel.AddAllProductsLists(_lama.GetProducts(), _techData.GetProducts(), _ab.GetProducts());
-
-            var lamaProviders = HelpMe.GetProvidersAsync(_lama);
-            var techDataProviders = HelpMe.GetProvidersAsync(_techData);
-            var abProviders = HelpMe.GetProvidersAsync(_ab);
+            var lamaProviders = HelpMe.GetProvidersAsync(programFlow.Lama);
+            var techDataProviders = HelpMe.GetProvidersAsync(programFlow.TechData);
+            var abProviders = HelpMe.GetProvidersAsync(programFlow.AB);
 
             await Task.WhenAll(lamaProviders, techDataProviders, abProviders);
 
@@ -170,7 +112,7 @@ namespace METCSV.WPF.ViewModels
                     default:
                         throw new IndexOutOfRangeException();
                 }
-                
+
                 profits.SetNewProfit(profit.Category, profit.Profit);
             }
 
@@ -225,16 +167,26 @@ namespace METCSV.WPF.ViewModels
 
         public async Task<bool> StartClickAsync()
         {
-            CheckLamaFile();
-
             if (InProgress == OperationStatus.InProgress)
                 return false;
             else
                 InProgress = OperationStatus.InProgress;
 
+            cancellationTokenSource = new CancellationTokenSource();
+
+
+            programFlow = new ProgramFlow(
+                storage,
+                App.Settings,
+                App.Settings.Engine.OfflineMode,
+                100, //?
+                cancellationTokenSource.Token,
+                new BasicJsonFormatter<object>()
+            );
+
             try
             {
-                var result = await DownloadAndLoadAsync();
+                var result = await programFlow.FirstStep();
 
                 if (result)
                 {
@@ -242,18 +194,21 @@ namespace METCSV.WPF.ViewModels
                     {
                         var profitsViewModel = await PrepareProfitWindow();
 
-                        _profitsView.ShowDialog();
+                        profitsView.ShowDialog();
 
                         SaveProfits(profitsViewModel);
                     }
 
-                    await StepTwoAsync();
+                    await programFlow.StepTwo();
+                    InProgress = OperationStatus.Complete;
+                    return true;
                 }
                 else
                 {
                     var message = "Pobieranie i wczytywanie nie powiodło się. Sprawdź logi.";
                     MessageBox.Show(message, "Uwaga!");
                     Log.Error(message);
+                    InProgress = OperationStatus.Faild;
                 }
             }
             catch (Exception ex)
@@ -266,61 +221,13 @@ namespace METCSV.WPF.ViewModels
             return false;
         }
 
-        public async Task<bool> StepTwoAsync()
-        {
-            var ab = ProfitsIO.LoadFromFile(Providers.AB);
-            var td = ProfitsIO.LoadFromFile(Providers.TechData);
-            var lama = ProfitsIO.LoadFromFile(Providers.Lama);
-
-            HelpMe.CalculatePrices(_ab.GetProducts(), ab);
-            HelpMe.CalculatePrices(_lama.GetProducts(), lama);
-            HelpMe.CalculatePrices(_techData.GetProducts(), td);
-
-            var metProducts = _met.GetProducts();
-            var metProd = new MetCustomProductsDomain();
-            var metCustomProducts = metProd.ModifyList(metProducts);
-
-            var products = new Products()
-            {
-                AbProducts = _ab.GetProducts(),
-                AbProducts_Old = _ab.LoadOldProducts(),
-                MetProducts = metProducts,
-                MetCustomProducts = metCustomProducts,
-                TechDataProducts = _techData.GetProducts(),
-                TechDataProducts_Old = _techData.LoadOldProducts(),
-                LamaProducts = _lama.GetProducts(),
-                LamaProducts_Old = _lama.LoadOldProducts()
-            };
-            
-            _productMerger = new ProgramFlow(
-                products,
-                App.Settings.Engine.MaximumPriceErrorDifference,
-                _cancellationTokenSource.Token)
-            {
-                CustomProfits = storage.GetCustomProfits().ToList(),
-                CategoryProfits = storage.GetCategoryProfits().ToList(),
-                RenameManufacturerDictionary = storage.GetRenameManufacturerDictionary()
-            };
-
-            await _productMerger.StartFlow();
-
-            Products = _productMerger.FinalList;
-            _allProducts = _productMerger.AllProducts;
-
-            InProgress = OperationStatus.Complete;
-            
-            this.metCustomProducts = metCustomProducts;
-
-            return true;
-        }
-
         private void ShowMetListEditor()
         {
             var window = new MetProductListEditor();
             var context = (MetProductListEditorViewModel)window.DataContext;
 
-            context.AddProducts(metCustomProducts);
-            
+            context.AddProducts(programFlow.MetCustomProducts);
+
             window.ShowDialog();
         }
 
@@ -329,7 +236,7 @@ namespace METCSV.WPF.ViewModels
             var window = new BrowseAllProductsGroupsWindow();
             var context = (BrowseAllProductsGroupsViewModel)window.DataContext;
 
-            context.AddProducts(_allProducts);
+            context.AddProducts(programFlow.AllProducts);
 
             window.ShowDialog();
         }
@@ -342,10 +249,10 @@ namespace METCSV.WPF.ViewModels
             //    File.WriteAllText(path, json);
             //}
 
-            if (Products != null)
+            if (programFlow.FinalList != null)
             {
                 CsvWriter cw = new CsvWriter();
-                var success = cw.ExportProducts(path, Products);
+                var success = cw.ExportProducts(path, programFlow.FinalList);
                 if (!success)
                 {
                     Log.Error("Coś poszło nie tak z zapisem.");
@@ -362,7 +269,7 @@ namespace METCSV.WPF.ViewModels
 
         internal void Stop()
         {
-            _cancellationTokenSource?.Cancel();
+            cancellationTokenSource?.Cancel();
         }
 
         internal void Loaded()
@@ -380,7 +287,7 @@ namespace METCSV.WPF.ViewModels
             ReleaseUnmanagedResources();
             if (disposing)
             {
-                _cancellationTokenSource?.Dispose();
+                cancellationTokenSource?.Dispose();
                 storage?.Dispose();
             }
         }
