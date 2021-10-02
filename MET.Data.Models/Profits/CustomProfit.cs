@@ -2,7 +2,7 @@
 
 namespace MET.Data.Models.Profits
 {
-    public class CustomProfit
+    public class CustomProfit : IProfit
     {
         [Key]
         public int Id { get; set; }

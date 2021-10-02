@@ -30,38 +30,25 @@ namespace MET.Data.Storage
 
         public void SetProfit(CategoryProfit categoryProfit)
         {
-            var categoryProfits = context
-                .CategoryProfits
-                .Where(r => r.Category == categoryProfit.Category && r.Provider == categoryProfit.Provider)
-                .Take(2)
-                .ToList();
-
-            if (categoryProfits.Count >= 2)
-            {
-                throw new DataException("We should not have two records.");
-            }
-
-            if (categoryProfit.Provider == Providers.MET || categoryProfit.Provider == Providers.None)
-                throw new Exception("Cannot set category profits for this provider: " + categoryProfit.Provider);
-
-            if (categoryProfits.Count == 1)
-            {
-                categoryProfits[0].Profit = categoryProfit.Profit;
-                context.Update(categoryProfits[0]);
-            }
-            else
-            {
-                context.Add(categoryProfit);
-            }
-
-            context.SaveChanges();
+            SetProfit<CategoryProfit>(categoryProfit, context.CategoryProfits, (newProfit, oldProfit) => newProfit.Category == oldProfit.Category && newProfit.Provider == oldProfit.Provider);
         }
 
         public void SetProfit(CustomProfit customProfit)
         {
-            var customProfits = context
-                .CustomProfits
-                .Where(r => r.PartNumber == customProfit.PartNumber)
+            SetProfit<CustomProfit>(customProfit, context.CustomProfits, (newProfit, oldProfit) => newProfit.PartNumber == oldProfit.PartNumber);
+        }
+
+        public void SetProfit(ManufacturerProfit manufacturerProfit)
+        {
+            SetProfit<ManufacturerProfit>(manufacturerProfit, context.ManufacturerProfits, (newProfit, oldProfit) => newProfit.Manufacturer == oldProfit.Manufacturer);
+        }
+
+        public void SetProfit<TProfit>(TProfit profit, IQueryable<TProfit> dbSet, Func<TProfit, TProfit, bool> where)
+            where TProfit : IProfit
+
+        {
+            var customProfits = dbSet
+                .Where(r => where(profit, r))
                 .Take(2)
                 .ToList();
 
@@ -72,12 +59,12 @@ namespace MET.Data.Storage
 
             if (customProfits.Count == 1)
             {
-                customProfits[0].Profit = customProfit.Profit;
+                customProfits[0].Profit = profit.Profit;
                 context.Update(customProfits[0]);
             }
             else
             {
-                context.Add(customProfit);
+                context.Add(profit);
             }
 
             context.SaveChanges();
@@ -85,23 +72,26 @@ namespace MET.Data.Storage
 
         public void RemoveCustomDefaultProfits(double profitDefaultValue)
         {
-            var customProfits = context
-                .CustomProfits
-                .Where(r => r.Profit == profitDefaultValue)
-                .ToList();
-
-            context.RemoveRange(customProfits);
-            context.SaveChanges();
+            RemoveDefaultProfits(context.CustomProfits, profitDefaultValue);
         }
 
         public void RemoveCategoryDefaultProfits(double profitDefaultValue)
         {
-            var categoryProfits = context
-                .CategoryProfits
+            RemoveDefaultProfits(context.CategoryProfits, profitDefaultValue);
+        }
+
+        public void RemoveManufacturersDefaultProfits(double profitDefaultValue)
+        {
+            RemoveDefaultProfits(context.ManufacturerProfits, profitDefaultValue);
+        }
+
+        private void RemoveDefaultProfits<T>(DbSet<T> dbSet, double profitDefaultValue) where T : class, IProfit
+        {
+            var profitsToRemove = dbSet
                 .Where(r => r.Profit == profitDefaultValue)
                 .ToList();
 
-            context.RemoveRange(categoryProfits);
+            context.RemoveRange(profitsToRemove);
             context.SaveChanges();
         }
 
@@ -114,7 +104,7 @@ namespace MET.Data.Storage
         {
             return context.CategoryProfits;
         }
-        
+
         public void OverrideRenameManufacturerDictionary(IReadOnlyDictionary<string, string> newDictionary)
         {
             var dict = context.RenameManufacturer.ToDictionary(r => r.From);

@@ -16,6 +16,7 @@ namespace MET.Data.Storage
         public DbSet<CategoryProfit> CategoryProfits { get; set; }
 
         public DbSet<CustomProfit> CustomProfits { get; set; }
+        public DbSet<ManufacturerProfit> ManufacturerProfits { get; set; }
 
         public DbSet<RenameManufacturerModel> RenameManufacturer { get; set; }
     }
