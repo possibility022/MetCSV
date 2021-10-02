@@ -3,6 +3,7 @@ using MET.Data.Models;
 using MET.Domain;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
+using METCSV.WPF.ViewModels.ProfitsInnerModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.Models

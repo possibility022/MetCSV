@@ -15,6 +15,7 @@ using MET.Data.Models.Profits;
 using MET.Data.Storage;
 using METCSV.Common.Formatters;
 using METCSV.WPF.Models;
+using METCSV.WPF.ViewModels.ProfitsInnerModels;
 using Microsoft.Toolkit.Mvvm.Input;
 
 namespace METCSV.WPF.ViewModels

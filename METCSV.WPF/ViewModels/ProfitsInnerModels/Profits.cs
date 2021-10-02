@@ -1,10 +1,10 @@
-﻿using METCSV.WPF.ProductProvider;
-using Prism.Mvvm;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MET.Data.Models;
+using METCSV.WPF.ProductProvider;
+using Prism.Mvvm;
 
-namespace METCSV.WPF.Models
+namespace METCSV.WPF.ViewModels.ProfitsInnerModels
 {
     public class Profits : BindableBase
     {

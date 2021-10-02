@@ -2,9 +2,9 @@
     x:Class="METCSV.WPF.Views.ProfitsWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:viewModels="clr-namespace:METCSV.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:METCSV.WPF.ViewModels"
     Title="ProfitsView"
     Width="500.059"
     Height="700.138"
@@ -18,7 +18,7 @@
     <Grid Margin="20">
 
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -64,7 +64,60 @@
                                 MinWidth="200"
                                 Binding="{Binding Path=Key}"
                                 Header="Kategoria"
-                        IsReadOnly="True" />
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="100"
+                                Binding="{Binding Path=Value, Converter={StaticResource DoubleToPercentConverter}}"
+                                Header="% Marży"
+                                IsReadOnly="False" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem>
+
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Producenci" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label
+                        Grid.Row="0"
+                        Content="{Binding InfoText}"
+                        FontSize="22" />
+
+                    <ComboBox
+                        Grid.Row="1"
+                        DisplayMemberPath="Provider"
+                        ItemsSource="{Binding ProfitsCollections}"
+                        SelectedItem="{Binding SelectedProfits}" />
+
+                    <DataGrid
+                        Grid.Row="2"
+                        Margin="0,20,0,0"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        ItemsSource="{Binding Values}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="200"
+                                Binding="{Binding Path=Key}"
+                                Header="Kategoria"
+                                IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="Auto"
                                 MinWidth="100"
@@ -88,17 +141,17 @@
                 <Grid>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <DataGrid
+                        Grid.Row="0"
                         Margin="0,20,0,0"
                         AutoGenerateColumns="False"
-                        Grid.Row="0"
                         CanUserAddRows="False"
-                        SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
-                        ItemsSource="{Binding CustomProfits}">
+                        ItemsSource="{Binding CustomProfits}"
+                        SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn

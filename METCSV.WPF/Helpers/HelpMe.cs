@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MET.Data.Models;
 using MET.Proxy.ProductProvider;
+using METCSV.WPF.ViewModels.ProfitsInnerModels;
 
 namespace METCSV.WPF.Helpers
 {

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using MET.Data.Models;
+using METCSV.WPF.ViewModels.ProfitsInnerModels;
 
 namespace METCSV.UnitTests
 {

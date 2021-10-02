@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using MET.Data.Models;
+using METCSV.WPF.ViewModels.ProfitsInnerModels;
 using METCSV.WPF.Views;
 using Microsoft.Toolkit.Mvvm.Input;
 
