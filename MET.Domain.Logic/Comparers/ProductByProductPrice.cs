@@ -3,19 +3,16 @@ using MET.Data.Models;
 
 namespace MET.Domain.Logic.Comparers
 {
-    public class ProductByProductPrice : IComparer<Product>
+    public class ProductByProductPrice : IComparer<ICheapestProductDomain>
     {
-        public int Compare(Product x, Product y)
+        public int Compare(ICheapestProductDomain x, ICheapestProductDomain y)
         {
-            if (x.CenaZakupuNetto > y.CenaZakupuNetto)
+            if (x.CenaNetto > y.CenaNetto)
                 return 1;
-            if (x.CenaZakupuNetto < y.CenaZakupuNetto)
+            if (x.CenaNetto < y.CenaNetto)
                 return -1;
             else
                 return 0;
         }
-
-        // TODO Jeśli cena jest taka sama to zastosuj priorytety!
-        // TODO zaimplementuj priorytety
     }
 }
