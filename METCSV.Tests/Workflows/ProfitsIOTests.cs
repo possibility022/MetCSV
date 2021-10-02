@@ -6,6 +6,7 @@ using MET.Domain;
 using METCSV.WPF;
 using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
+using METCSV.WPF.ViewModels.ProfitsInnerModels;
 using METCSV.WPF.Workflows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
