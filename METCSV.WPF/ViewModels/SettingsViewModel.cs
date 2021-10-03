@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using MET.Data.Storage;
 using METCSV.WPF.ProductProvider;
+using METCSV.WPF.Workflows;
 using Microsoft.Toolkit.Mvvm.Input;
 using Org.BouncyCastle.Utilities.Collections;
 
@@ -241,6 +242,8 @@ namespace METCSV.WPF.ViewModels
             }
 
             SavedInfo = Visibility.Visible;
+
+            SettingsIO.SaveSettings();
 
             _hiddingTask = new Task(HideInfoAfter);
             _hiddingTask.Start();

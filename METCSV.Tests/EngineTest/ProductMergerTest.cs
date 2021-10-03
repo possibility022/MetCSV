@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using MET.CSV.Generator;
 using MET.Data.Models;
+using MET.Data.Storage;
 using MET.Domain;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Models;
 using METCSV.Common.Formatters;
+using METCSV.WPF.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.EngineTest
@@ -43,11 +46,16 @@ namespace METCSV.UnitTests.EngineTest
             };
 
             _productMerger = new ProgramFlow(
-                products,
+                new StorageService(new StorageContext()),
+                new Settings(),
+                true,
                 20,
-                new CancellationTokenSource().Token, ZeroOutputFormatter.Instance);
+                CancellationToken.None,
+                ZeroOutputFormatter.Instance
+            );
 
-            _productMerger.StartFlow().Wait();
+            var t = _productMerger.FirstStep();
+            t.Wait();
         }
 
         [TestInitialize]
