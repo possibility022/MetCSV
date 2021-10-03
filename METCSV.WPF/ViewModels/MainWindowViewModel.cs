@@ -15,7 +15,6 @@ using MET.Data.Models;
 using MET.Data.Models.Profits;
 using MET.Data.Storage;
 using METCSV.Common.Formatters;
-using METCSV.WPF.Models;
 using METCSV.WPF.ViewModels.ProfitsInnerModels;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -26,8 +25,36 @@ namespace METCSV.WPF.ViewModels
         public MainWindowViewModel()
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
+            OfflineModeVisibility = App.Settings?.Engine?.OfflineMode == true ? Visibility.Visible : Visibility.Hidden;
+
             ShowMetProductListEditorCommand = new RelayCommand(() => ShowMetListEditor());
             ShowAllProductsGroupsCommand = new RelayCommand(() => ShowAllProductsWindow());
+            ShowSettingsWindowCommand = new RelayCommand(() =>
+            {
+                var w = new SettingsWindow();
+                w.ShowDialog();
+                OfflineModeVisibility = App.Settings.Engine.OfflineMode == true ? Visibility.Visible : Visibility.Hidden;
+            });
+            StartCommand = new RelayCommand(() =>
+            {
+                if (mainTask == null || mainTask.IsCompleted)
+                {
+                    mainTask = StartClickAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Zaczekaj, jeszcze generuje.");
+                }
+            });
+
+            StopCommand = new RelayCommand(() =>
+            {
+                if (InProgress == OperationStatus.InProgress)
+                {
+                    cancellationTokenSource.Cancel();
+                }
+            });
+
             storage = new StorageService(new StorageContext());
         }
 
@@ -43,6 +70,7 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
+        private Task mainTask;
         ProfitsWindow profitsView;
         private bool setProfits;
 
@@ -64,9 +92,22 @@ namespace METCSV.WPF.ViewModels
         private OperationStatus inProgress;
         private readonly StorageService storage;
         private CancellationTokenSource cancellationTokenSource;
+        private Visibility offlineModeVisibility = Visibility.Hidden;
 
         public ICommand ShowMetProductListEditorCommand { get; }
         public ICommand ShowAllProductsGroupsCommand { get; }
+
+        public Visibility OfflineModeVisibility
+        {
+            get => offlineModeVisibility;
+            set => SetProperty(ref offlineModeVisibility, value);
+        }
+
+        public ICommand ShowSettingsWindowCommand { get; }
+
+        public ICommand StartCommand { get; }
+
+        public ICommand StopCommand { get; }
 
 
         public async Task<ProfitsViewModel> PrepareProfitWindow()
@@ -95,11 +136,10 @@ namespace METCSV.WPF.ViewModels
             dataContext.AddCategories(lamaCategories.Result);
             dataContext.AddCategories(techDataCategories.Result);
             dataContext.AddCategories(abCategories.Result);
-            
+
             dataContext.AddManufacturers(lamaManufacturers.Result);
             dataContext.AddManufacturers(techDataManufacturers.Result);
             dataContext.AddManufacturers(abManufacturers.Result);
-
             return profitsViewModel;
         }
 
@@ -116,7 +156,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         private void LoadProfits<T>(
-            IEnumerable<T> savedProfits, 
+            IEnumerable<T> savedProfits,
             Action<Profits> addProfitsAction)
         where T : IProviderProfit, IProfit, IProfitKey
         {
@@ -191,7 +231,7 @@ namespace METCSV.WPF.ViewModels
             var manufacturersProfits = profitsViewModel.GetManufacturersProfits();
             foreach (var manufacturersProfit in manufacturersProfits)
             {
-                foreach (var (key,value) in manufacturersProfit.Values)
+                foreach (var (key, value) in manufacturersProfit.Values)
                 {
                     storage.SetProfit(new ManufacturerProfit()
                     {

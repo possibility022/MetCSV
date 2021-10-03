@@ -38,158 +38,60 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel
-            Grid.Row="1"
+        <Label
+            Grid.Row="0"
             Grid.Column="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <fa:ImageAwesome Height="30" Icon="Download" />
-            <Label Content="Pobieranie" FontFamily="Comic Sans MS" />
-        </StackPanel>
-
-        <StackPanel
-            Grid.Row="3"
-            Grid.Column="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <fa:ImageAwesome Height="30" Icon="AlignCenter" />
-            <Label Content="Wczytywanie" />
-        </StackPanel>
-
-        <Label
-            Grid.Row="0"
-            Grid.Column="1"
+            Grid.ColumnSpan="5"
             HorizontalAlignment="Center"
-            Content="Met" />
-
-        <Label
-            Grid.Row="0"
-            Grid.Column="2"
-            HorizontalAlignment="Center"
-            Content="Ab" />
-
-        <Label
-            Grid.Row="0"
-            Grid.Column="3"
-            HorizontalAlignment="Center"
-            Content="TD" />
-
-        <Label
-            Grid.Row="0"
-            Grid.Column="4"
-            HorizontalAlignment="Center"
-            Content="Lama" />
-
-        <!--  Met Download  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="1"
-            Grid.Column="1"
-            Status="{Binding Met.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-        <!--  AB Download  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="1"
-            Grid.Column="2"
-            Status="{Binding AB.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-        <!--  TD Download  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="1"
-            Grid.Column="3"
-            Status="{Binding TechData.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-        <!--  Lama Download  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="1"
-            Grid.Column="4"
-            Status="{Binding Lama.DownloaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+            Content="Tryb Offline"
+            FontSize="40"
+            Visibility="{Binding OfflineModeVisibility}" />
 
         <Separator
-            Grid.Row="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="5" />
-
-        <!--  Met Read  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="3"
-            Grid.Column="1"
-            Status="{Binding Met.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-        <!--  Ab Read  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="3"
-            Grid.Column="2"
-            Status="{Binding AB.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-        <!--  TD Read  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="3"
-            Grid.Column="3"
-            Status="{Binding TechData.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-        <!--  Lama Read  -->
-
-        <usercontrols:StepsControl
-            Grid.Row="3"
-            Grid.Column="4"
-            Status="{Binding Lama.ReaderStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-
-
-        <Separator
-            Grid.Row="4"
+            Grid.Row="1"
             Grid.Column="1"
             Grid.ColumnSpan="4"
             Margin="0,10,0,10" />
 
         <usercontrols:StepsControl
-            Grid.Row="6"
+            Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="4"
+            Height="200"
             Status="{Binding InProgress, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
         <CheckBox
-            Grid.Row="6"
+            Grid.Row="3"
             Grid.Column="0"
-            Grid.ColumnSpan="3"
+            Grid.ColumnSpan="5"
+            HorizontalAlignment="Center"
             Content="Ustaw marże po załadowaniu plików."
             IsChecked="{Binding SetProfits}" />
 
         <StackPanel
-            Grid.Row="7"
+            Grid.Row="4"
             Grid.Column="0"
             Grid.ColumnSpan="5"
-            Width="Auto"
-            Height="Auto"
             Margin="10"
             HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
             Orientation="Horizontal">
-            <Button Click="StopClick" Content="Stop" />
-            <Button Click="Button_Click" Content="Rozpocznij" />
-            <Button Click="Button_Click_1" Content="Ustawienia" />
+            <Button Command="{Binding StopCommand}" Content="Stop" />
+            <Button Command="{Binding StartCommand}" Content="Rozpocznij" />
+            <Button Command="{Binding ShowSettingsWindowCommand}" Content="Ustawienia" />
         </StackPanel>
 
         <StackPanel
-            Grid.Row="8"
+            Grid.Row="5"
             Grid.Column="0"
-            Grid.ColumnSpan="5">
+            Grid.ColumnSpan="5"
+            VerticalAlignment="Bottom">
             <Button
                 Command="{Binding ShowMetProductListEditorCommand}"
                 Content="Edytuj liste Met"

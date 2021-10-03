@@ -26,14 +26,7 @@ namespace METCSV.WPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (task == null || task.IsCompleted)
-            {
-                task = MainWindowViewModel.StartClickAsync();
-            }
-            else
-            {
-                MessageBox.Show("Zaczekaj, jeszcze generuje.");
-            }
+
         }
 
         private void ShowProfitsWindow(object sender, RoutedEventArgs e)
@@ -52,8 +45,7 @@ namespace METCSV.WPF
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var w = new SettingsWindow();
-            w.Show();
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
