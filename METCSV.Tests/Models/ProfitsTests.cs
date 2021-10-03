@@ -20,7 +20,7 @@ namespace METCSV.UnitTests.Models
 
             // Act
 
-            profits.AddManufacturers(allManufactureres);
+            profits.AddKeys(allManufactureres);
 
             // Assert
             Assert.IsTrue(
@@ -36,7 +36,7 @@ namespace METCSV.UnitTests.Models
             profits.SetNewProfits(new[] { new EditableDictionaryKey<string, double>("key", 22) });
 
             // Act
-            profits.AddManufacturers(new[] { "key" });
+            profits.AddKeys(new[] { "key" });
 
             //Assert
             Assert.AreEqual(22, profits.Values.First().Value);
@@ -51,7 +51,7 @@ namespace METCSV.UnitTests.Models
 
             // Act
             profits.SetNewProfits(new[] { new EditableDictionaryKey<string, double>("key", 22) });
-            profits.AddManufacturers(allManufactureres);
+            profits.AddKeys(allManufactureres);
 
             //Assert
             Assert.IsTrue(profits.Values.ContainsKey("key1"));

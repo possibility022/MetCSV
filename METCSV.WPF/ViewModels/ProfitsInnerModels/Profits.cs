@@ -70,7 +70,7 @@ namespace METCSV.WPF.ViewModels.ProfitsInnerModels
         /// Adds the manufacturer with default values if does not exists in collection.
         /// </summary>
         /// <param name="manufacturers">The manufacturers.</param>
-        public void AddManufacturers(IEnumerable<string> manufacturers)
+        public void AddKeys(IEnumerable<string> manufacturers)
         {
             if (values == null)
                 values = new Dictionary<string, double>();

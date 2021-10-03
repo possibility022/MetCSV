@@ -25,7 +25,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         }
 
         public void SetProfits(IReadOnlyCollection<CategoryProfit> category,
-            IReadOnlyCollection<CustomProfit> custom, 
+            IReadOnlyCollection<CustomProfit> custom,
             IReadOnlyCollection<ManufacturerProfit> manufacturers)
         {
             var profits = new Dictionary<string, List<CategoryProfit>>();
@@ -51,80 +51,92 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             defaultProfit = value;
         }
 
-        private void CalculatePrice(string partNumber, IReadOnlyCollection<Product> products)
+        private void CalculatePrice(string partNumber, IReadOnlyCollection<Product> inputProducts)
         {
-            if (products.Any())
+            if (!inputProducts.Any())
+                return;
+
+            List<Product> products = new List<Product>(inputProducts);
+            
+            var customProfitsSet = CalculateCustomProfits(partNumber, products);
+
+            if (customProfitsSet)
+                return;
+
+            CalculateCategoryProfits(products);
+            CalculateManufacturersProfits(products);
+            CalculateDefaultProfits(products);
+        }
+
+        private void CalculateDefaultProfits(IList<Product> products)
+        {
+            for (var i = 0; i < products.Count; i++)
             {
-                if (customProfits != null)
+                var product = products[i];
+                CalculateProfit(product, defaultProfit);
+            }
+        }
+
+        private bool CalculateCustomProfits(string partNumber, IList<Product> products)
+        {
+            if (customProfits != null)
+            {
+                var containsKey = customProfits.ContainsKey(partNumber);
+
+                if (containsKey)
                 {
-                    var containsKey = customProfits.ContainsKey(partNumber);
+                    var profit = customProfits[partNumber].Profit;
 
-                    if (containsKey)
+                    for (var i = 0; i < products.Count; i++)
                     {
-                        var profit = customProfits[partNumber].Profit;
-
-                        foreach (var product in products)
-                        {
-                            CalculateProfit(product, profit);
-                        }
-
-                        return;
-                    }
-                }
-
-                if (categoryProfits != null)
-                {
-                    foreach (var product in products)
-                    {
-                        if (product.Kategoria.Contains("Monitory"))
-                        {
-                            System.Diagnostics.Debug.WriteLine("TOON");
-                        }
-
-                        if (categoryProfits.ContainsKey(product.Kategoria))
-                        {
-                            var profits = categoryProfits[product.Kategoria];
-                            var profit = profits.FirstOrDefault(r => r.Provider == product.Provider);
-
-                            if (profit != null)
-                            {
-                                CalculateProfit(product, profit.Profit);
-                            }
-                            else
-                            {
-                                CalculateProfit(product, defaultProfit);
-                            }
-                        }
-                        else
-                        {
-                            CalculateProfit(product, defaultProfit);
-                        }
+                        var product = products[i];
+                        CalculateProfit(product, profit);
                     }
 
-                    return;
+                    return true;
                 }
+            }
 
-                if (manufacturerProfits != null)
+            return false;
+        }
+
+        private void CalculateManufacturersProfits(IList<Product> products)
+        {
+            if (manufacturerProfits != null)
+            {
+                for (var i = 0; i < products.Count; i++)
                 {
-                    foreach (var product in products)
+                    var product = products[i];
+                    if (manufacturerProfits.ContainsKey(product.NazwaProducenta))
                     {
-                        if (manufacturerProfits.ContainsKey(product.NazwaProducenta))
+                        var profit = manufacturerProfits[product.NazwaProducenta];
+                        CalculateProfit(product, profit.Profit);
+                        products.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        private void CalculateCategoryProfits(IList<Product> products)
+        {
+            if (categoryProfits != null)
+            {
+                for (var i = 0; i < products.Count; i++)
+                {
+                    var product = products[i];
+                    if (categoryProfits.ContainsKey(product.Kategoria))
+                    {
+                        var profits = categoryProfits[product.Kategoria];
+                        var profit = profits.FirstOrDefault(r => r.Provider == product.Provider);
+
+                        if (profit != null)
                         {
-                            var profit = manufacturerProfits[product.NazwaProducenta];
                             CalculateProfit(product, profit.Profit);
-                        }
-                        else
-                        {
-                            CalculateProfit(product, defaultProfit);
+                            products.RemoveAt(i);
+                            i--;
                         }
                     }
-
-                    return;
-                }
-
-                foreach (var product in products)
-                {
-                    CalculateProfit(product, defaultProfit);
                 }
             }
         }
@@ -134,7 +146,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             var newPrice = (product.CenaZakupuNetto * profit) + product.CenaZakupuNetto;
             newPrice = Math.Round(newPrice, 2);
             product.SetCennaNetto(newPrice);
-            
+
         }
 
         public void ExecuteAction(ProductGroup productGroup)

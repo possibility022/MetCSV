@@ -22,6 +22,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         public ProfitsTabInnerViewModel CategoryProfits { get; } = new ProfitsTabInnerViewModel();
+        public ProfitsTabInnerViewModel ManufacturersProfits { get; } = new ProfitsTabInnerViewModel();
         private Profits customProfits;
         private ObservableCollection<EditableDictionaryKey<string, double>> customProfitsCollection = new();
         private IList<Product>[] allProducts;
@@ -50,11 +51,21 @@ namespace METCSV.WPF.ViewModels
 
         public void AddCategoryProfit(Profits profit)
         {
-            var profits = GetAlreadyExistingCategoryProfits(profit.Provider);
+            AddProfit(CategoryProfits, profit);
+        }
+
+        public void AddManufacturerProfit(Profits profit)
+        {
+            AddProfit(ManufacturersProfits, profit);
+        }
+
+        private void AddProfit(ProfitsTabInnerViewModel profitsContainer, Profits profit)
+        {
+            var profits = GetAlreadyExistingProfits(profitsContainer, profit.Provider);
 
             if (profits == null)
             {
-                CategoryProfits.ProfitsCollections.Add(profit);
+                profitsContainer.ProfitsCollections.Add(profit);
             }
             else
             {
@@ -85,9 +96,16 @@ namespace METCSV.WPF.ViewModels
             return customProfits;
         }
 
-        private Profits GetAlreadyExistingCategoryProfits(Providers provider)
+        public List<Profits> GetManufacturersProfits()
         {
-            return CategoryProfits.ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
+            ManufacturersProfits.SaveCurrentProfits();
+            return new List<Profits>(ManufacturersProfits.ProfitsCollections);
+        }
+
+        private Profits GetAlreadyExistingProfits(ProfitsTabInnerViewModel profitsTabInnerViewModel,
+            Providers provider)
+        {
+            return profitsTabInnerViewModel.ProfitsCollections.FirstOrDefault(p => p.Provider == provider);
         }
 
         private void RemoveSelectedCustomProfit()
@@ -98,18 +116,28 @@ namespace METCSV.WPF.ViewModels
             }
         }
 
+        public void AddManufacturers(ManufacturersCollection manufacturersCollection)
+        {
+            AddProfits(manufacturersCollection.Manufacturers, ManufacturersProfits, manufacturersCollection.Provider);
+        }
+
         public void AddCategories(CategoryCollection categoryCollection)
         {
-            var profits = GetAlreadyExistingCategoryProfits(categoryCollection.Provider);
+            AddProfits(categoryCollection.Categories, CategoryProfits, categoryCollection.Provider);
+        }
+
+        private void AddProfits(IEnumerable<string> keys, ProfitsTabInnerViewModel innerModel, Providers provider)
+        {
+            var profits = GetAlreadyExistingProfits(innerModel, provider);
 
             if (profits != null)
             {
-                profits.AddManufacturers(categoryCollection.Categories);
+                profits.AddKeys(keys);
             }
             else
             {
-                var newProfits = new Profits(categoryCollection.Provider, App.Settings.Engine.DefaultProfit);
-                newProfits.AddManufacturers(categoryCollection.Categories);
+                var newProfits = new Profits(provider, App.Settings.Engine.DefaultProfit);
+                newProfits.AddKeys(keys);
                 CategoryProfits.ProfitsCollections.Add(newProfits);
                 RaisePropertyChanged(nameof(CategoryProfits.ProfitsCollections));
             }
