@@ -2,7 +2,7 @@
 
 namespace MET.Data.Models.Profits
 {
-    public class ManufacturerProfit : IProfit
+    public class ManufacturerProfit : IProfit, IProviderProfit, IProfitKey
     {
         [Key]
         public int Id { get; set; }
@@ -12,5 +12,6 @@ namespace MET.Data.Models.Profits
         public Providers Provider { get; set; }
 
         public double Profit { get; set; }
+        string IProfitKey.ProfitKey => Manufacturer;
     }
 }

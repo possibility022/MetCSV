@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using METCSV.WPF.Helpers;
@@ -31,7 +32,7 @@ namespace METCSV.WPF.ViewModels
         }
 
         private const string NotificationTitle = "CSV Generator";
-        
+
         public OperationStatus InProgress
         {
             get => inProgress;
@@ -58,7 +59,7 @@ namespace METCSV.WPF.ViewModels
             get => exportEnabled;
             private set => SetProperty(ref exportEnabled, value);
         }
-        
+
         private ProgramFlow programFlow;
         private OperationStatus inProgress;
         private readonly StorageService storage;
@@ -74,32 +75,56 @@ namespace METCSV.WPF.ViewModels
             profitsView = new ProfitsWindow();
             var profitsViewModel = (ProfitsViewModel)profitsView.DataContext;
             LoadCategoryProfits(profitsViewModel);
+            LoadManufacturersProfits(profitsViewModel);
             LoadCustomProfits(profitsViewModel);
-            
+
             profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.AB.GetProducts());
 
-            var lamaProviders = HelpMe.GetCategoriesCollectionAsync(programFlow.Lama);
-            var techDataProviders = HelpMe.GetCategoriesCollectionAsync(programFlow.TechData);
-            var abProviders = HelpMe.GetCategoriesCollectionAsync(programFlow.AB);
+            var lamaCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.Lama);
+            var techDataCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.TechData);
+            var abCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.AB);
 
-            await Task.WhenAll(lamaProviders, techDataProviders, abProviders);
+            var lamaManufacturers = HelpMe.GetManufacturersAsync(programFlow.Lama);
+            var techDataManufacturers = HelpMe.GetManufacturersAsync(programFlow.TechData);
+            var abManufacturers = HelpMe.GetManufacturersAsync(programFlow.AB);
+
+            await Task.WhenAll(lamaCategories, techDataCategories, abCategories, lamaManufacturers, techDataManufacturers, abManufacturers);
 
             var dataContext = profitsViewModel;
 
-            dataContext.AddCategories(lamaProviders.Result);
-            dataContext.AddCategories(techDataProviders.Result);
-            dataContext.AddCategories(abProviders.Result);
+            dataContext.AddCategories(lamaCategories.Result);
+            dataContext.AddCategories(techDataCategories.Result);
+            dataContext.AddCategories(abCategories.Result);
+            
+            dataContext.AddManufacturers(lamaManufacturers.Result);
+            dataContext.AddManufacturers(techDataManufacturers.Result);
+            dataContext.AddManufacturers(abManufacturers.Result);
 
             return profitsViewModel;
         }
 
         private void LoadCategoryProfits(ProfitsViewModel profitsViewModel)
         {
+            var method = new Action<Profits>((p) => profitsViewModel.AddCategoryProfit(p));
+            LoadProfits(storage.GetCategoryProfits(), method);
+        }
+
+        private void LoadManufacturersProfits(ProfitsViewModel profitsViewModel)
+        {
+            var method = new Action<Profits>((p) => profitsViewModel.AddManufacturerProfit(p));
+            LoadProfits(storage.GetManufacturersProfits(), method);
+        }
+
+        private void LoadProfits<T>(
+            IEnumerable<T> savedProfits, 
+            Action<Profits> addProfitsAction)
+        where T : IProviderProfit, IProfit, IProfitKey
+        {
             var abProfits = new Profits(Providers.AB, App.Settings.Engine.DefaultProfit);
             var tdProfits = new Profits(Providers.TechData, App.Settings.Engine.DefaultProfit);
             var lamaProfits = new Profits(Providers.Lama, App.Settings.Engine.DefaultProfit);
 
-            foreach (var profit in storage.GetCategoryProfits())
+            foreach (var profit in savedProfits)
             {
                 Profits profits;
                 switch (profit.Provider)
@@ -118,12 +143,12 @@ namespace METCSV.WPF.ViewModels
                         throw new IndexOutOfRangeException();
                 }
 
-                profits.SetNewProfit(profit.Category, profit.Profit);
+                profits.SetNewProfit(profit.ProfitKey, profit.Profit);
             }
 
-            profitsViewModel.AddCategoryProfit(abProfits);
-            profitsViewModel.AddCategoryProfit(tdProfits);
-            profitsViewModel.AddCategoryProfit(lamaProfits);
+            addProfitsAction(abProfits);
+            addProfitsAction(tdProfits);
+            addProfitsAction(lamaProfits);
         }
 
         private void LoadCustomProfits(ProfitsViewModel profitsViewModel)
@@ -163,6 +188,21 @@ namespace METCSV.WPF.ViewModels
                 }
             }
 
+            var manufacturersProfits = profitsViewModel.GetManufacturersProfits();
+            foreach (var manufacturersProfit in manufacturersProfits)
+            {
+                foreach (var (key,value) in manufacturersProfit.Values)
+                {
+                    storage.SetProfit(new ManufacturerProfit()
+                    {
+                        Manufacturer = key,
+                        Profit = value,
+                        Provider = manufacturersProfit.Provider
+                    });
+                }
+            }
+
+            storage.RemoveManufacturersDefaultProfits(App.Settings.Engine.DefaultProfit);
             storage.RemoveCategoryDefaultProfits(App.Settings.Engine.DefaultProfit);
             storage.RemoveCustomDefaultProfits(App.Settings.Engine.DefaultProfit);
         }

@@ -9,7 +9,7 @@ namespace METCSV.WPF.Helpers
 {
     static class HelpMe
     {
-        public static Task<ManufacturersCollection> GetProvidersAsync(IProductProvider productProvider)
+        public static Task<ManufacturersCollection> GetManufacturersAsync(IProductProvider productProvider)
         {
 
             Task<ManufacturersCollection> task = new Task<ManufacturersCollection>(() => GetProviders(productProvider));

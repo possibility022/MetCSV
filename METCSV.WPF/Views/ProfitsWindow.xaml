@@ -81,6 +81,59 @@
 
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Producenci" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label
+                        Grid.Row="0"
+                        Content="{Binding ManufacturersProfits.InfoText}"
+                        FontSize="22" />
+
+                    <ComboBox
+                        Grid.Row="1"
+                        DisplayMemberPath="Provider"
+                        ItemsSource="{Binding ManufacturersProfits.ProfitsCollections}"
+                        SelectedItem="{Binding ManufacturersProfits.SelectedProfits}" />
+
+                    <DataGrid
+                        Grid.Row="2"
+                        Margin="0,20,0,0"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        ItemsSource="{Binding ManufacturersProfits.Values}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="200"
+                                Binding="{Binding Path=Key}"
+                                Header="Kategoria"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="100"
+                                Binding="{Binding Path=Value, Converter={StaticResource DoubleToPercentConverter}}"
+                                Header="% Marży"
+                                IsReadOnly="False" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem>
+
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock FontSize="20" Text="Specjalne" />
                     </StackPanel>
                 </TabItem.Header>
