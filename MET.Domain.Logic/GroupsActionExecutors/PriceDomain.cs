@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
@@ -75,6 +76,11 @@ namespace MET.Domain.Logic.GroupsActionExecutors
                 {
                     foreach (var product in products)
                     {
+                        if (product.Kategoria.Contains("Monitory"))
+                        {
+                            System.Diagnostics.Debug.WriteLine("TOON");
+                        }
+
                         if (categoryProfits.ContainsKey(product.Kategoria))
                         {
                             var profits = categoryProfits[product.Kategoria];
@@ -126,7 +132,9 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         private static void CalculateProfit(Product product, double profit)
         {
             var newPrice = (product.CenaZakupuNetto * profit) + product.CenaZakupuNetto;
+            newPrice = Math.Round(newPrice, 2);
             product.SetCennaNetto(newPrice);
+            
         }
 
         public void ExecuteAction(ProductGroup productGroup)
