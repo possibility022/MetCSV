@@ -69,7 +69,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             Settings settings = new Settings();
-            settings.MetDownlaoder = new MetDownloaderSettings()
+            settings.MetDownloaderSettings = new MetDownloaderSettings()
             {
                 CsvFile = "CSV File",
                 Url = "URL!"
@@ -82,7 +82,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
 
             // Assert
-            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.MetDownlaoder, settings.MetDownlaoder));
+            Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.MetDownloaderSettings, settings.MetDownloaderSettings));
         }
 
 
@@ -143,7 +143,7 @@ namespace METCSV.UnitTests.Workflows
         {
             // Arrange
             App.Settings = new Settings();
-            App.Settings.MetDownlaoder.Url = null;
+            App.Settings.MetDownloaderSettings.Url = null;
 
             SettingsIO.SaveSettings();
 
@@ -151,7 +151,7 @@ namespace METCSV.UnitTests.Workflows
             SettingsIO.LoadSettings();
             
             // Assert
-            Assert.IsNotNull(App.Settings.MetDownlaoder.Url);
+            Assert.IsNotNull(App.Settings.MetDownloaderSettings.Url);
         }
     }
 }

@@ -106,6 +106,11 @@ namespace MET.Data.Storage
             return context.CategoryProfits;
         }
 
+        public IQueryable<ManufacturerProfit> GetManufacturersProfits()
+        {
+            return context.ManufacturerProfits;
+        }
+
         public void OverrideRenameManufacturerDictionary(IReadOnlyDictionary<string, string> newDictionary)
         {
             var dict = context.RenameManufacturer.ToDictionary(r => r.From);

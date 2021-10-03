@@ -42,6 +42,11 @@ namespace METCSV.UnitTests
             return new ManufacturersCollection(providers, new HashSet<string>() { "ABC", "CDE" });
         }
 
+        public static CategoryCollection GetCategories(Providers providers = Providers.AB)
+        {
+            return new CategoryCollection(providers, new HashSet<string>() { "ABC", "CDE" });
+        }
+
         public static Profits GetProfits(Providers provider = Providers.AB)
         {
             return new Profits(provider);
@@ -50,7 +55,7 @@ namespace METCSV.UnitTests
         public static ProfitsViewModel GetProfitsViewModel()
         {
             var model = new ProfitsViewModel();
-            model.AddCategories(GetManufacturers());
+            model.AddCategories(GetCategories());
             return model;
         }
 

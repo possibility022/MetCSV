@@ -42,6 +42,7 @@ namespace MET.CSV.Generator
 
         public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; private set; }
         public IReadOnlyCollection<CustomProfit> CustomProfits { get; private set; }
+        public IReadOnlyCollection<ManufacturerProfit> ManufacturersProfits { get; private set; }
 
         public List<Product> MetCustomProducts { get; private set; }
 
@@ -82,11 +83,6 @@ namespace MET.CSV.Generator
 
         public async Task<bool> StepTwo()
         {
-            //todo load from storage
-            //var ab = ProfitsIO.LoadFromFile(Providers.AB);
-            //var td = ProfitsIO.LoadFromFile(Providers.TechData);
-            //var lama = ProfitsIO.LoadFromFile(Providers.Lama);
-
             var metProducts = Met.GetProducts();
             var metProd = new MetCustomProductsDomain();
             var metCustomProducts = metProd.ModifyList(metProducts);
@@ -105,6 +101,7 @@ namespace MET.CSV.Generator
 
             CustomProfits = storageService.GetCustomProfits().ToList();
             CategoryProfits = storageService.GetCategoryProfits().ToList();
+            ManufacturersProfits = storageService.GetManufacturersProfits().ToList();
             RenameManufacturerDictionary = storageService.GetRenameManufacturerDictionary();
 
             var success = await StartFlow();
@@ -125,7 +122,7 @@ namespace MET.CSV.Generator
                 Orchestrator orchestrator = new Orchestrator(new AllPartNumbersDomain(), objectFormatterSource, true);
 
                 orchestrator.ManufacturerRenameDomain.SetDictionary(RenameManufacturerDictionary);
-                orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits);
+                orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits, ManufacturersProfits);
 
                 orchestrator.AddMetCollection(products.MetProducts);
                 orchestrator.SetCollections(products.AbProducts, products.LamaProducts, products.TechDataProducts);

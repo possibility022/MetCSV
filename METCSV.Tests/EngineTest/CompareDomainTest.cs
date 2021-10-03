@@ -185,7 +185,7 @@ namespace METCSV.UnitTests.EngineTest
         {
             priceDomain.SetProfits(
                 new List<CategoryProfit>()
-            {
+                {
                     new CategoryProfit()
                     {
                         Category = "Kategoria",
@@ -193,11 +193,12 @@ namespace METCSV.UnitTests.EngineTest
                         Profit = 0.5,
                         Id = 1
                     }
-            },
+                },
             new List<CustomProfit>()
             {
                 
-            });
+            },
+                null);
 
             priceDomain.ExecuteAction(productGroup);
 
@@ -230,7 +231,7 @@ namespace METCSV.UnitTests.EngineTest
                         PartNumber = PartNumber,
                         Profit = 0.3
                     }
-                });
+                }, null);
 
             priceDomain.ExecuteAction(productGroup);
 

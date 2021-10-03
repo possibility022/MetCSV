@@ -14,6 +14,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         private IReadOnlyDictionary<string, List<CategoryProfit>> categoryProfits;
         private IReadOnlyDictionary<string, CustomProfit> customProfits;
+        private IReadOnlyDictionary<string, ManufacturerProfit> manufacturerProfits;
 
         private double defaultProfit = 0.1;
 
@@ -22,9 +23,9 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         }
 
-        public void SetProfits(
-            IReadOnlyCollection<CategoryProfit> category,
-            IReadOnlyCollection<CustomProfit> custom)
+        public void SetProfits(IReadOnlyCollection<CategoryProfit> category,
+            IReadOnlyCollection<CustomProfit> custom, 
+            IReadOnlyCollection<ManufacturerProfit> manufacturers)
         {
             var profits = new Dictionary<string, List<CategoryProfit>>();
             foreach (var categoryProfit in category)
@@ -41,6 +42,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
             this.categoryProfits = profits;
             this.customProfits = custom.ToDictionary(r => r.PartNumber);
+            this.manufacturerProfits = manufacturers.ToDictionary(r => r.Manufacturer);
         }
 
         public void SetDefaultProfit(double value)
@@ -86,6 +88,24 @@ namespace MET.Domain.Logic.GroupsActionExecutors
                             {
                                 CalculateProfit(product, defaultProfit);
                             }
+                        }
+                        else
+                        {
+                            CalculateProfit(product, defaultProfit);
+                        }
+                    }
+
+                    return;
+                }
+
+                if (manufacturerProfits != null)
+                {
+                    foreach (var product in products)
+                    {
+                        if (manufacturerProfits.ContainsKey(product.NazwaProducenta))
+                        {
+                            var profit = manufacturerProfits[product.NazwaProducenta];
+                            CalculateProfit(product, profit.Profit);
                         }
                         else
                         {
