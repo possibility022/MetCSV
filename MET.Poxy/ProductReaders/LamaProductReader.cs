@@ -179,6 +179,7 @@ namespace MET.Proxy.ProductReaders
                     CenaZakupuNetto = Double.Parse(product.Element("CENA").Value),
                     UrlZdjecia = urls.Count > 0 ? urls[0] : null,
                     EAN = HttpUtility.HtmlDecode(product.Element("EAN").Value),
+                    Kategoria = HttpUtility.HtmlDecode(product.Element("category1").Value)
                 });
             }
 
