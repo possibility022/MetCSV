@@ -2,7 +2,6 @@
 using METCSV.Common;
 using METCSV.WPF.Configuration;
 using METCSV.WPF.Workflows;
-using Notifications.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Threading;
@@ -16,8 +15,6 @@ namespace METCSV.WPF
     public partial class App : Application
     {
         public static readonly string ProfitsFileExtension = ".prof";
-
-        public static readonly INotificationManager NotificationManager = new NotificationManager();
 
         public static Settings Settings { get; set; }
 
@@ -37,7 +34,6 @@ namespace METCSV.WPF
         protected override void OnExit(ExitEventArgs e)
         {
             SettingsIO.SaveSettings();
-            NotificationManager.CloseWindow();
             base.OnExit(e);
         }
 

@@ -75,7 +75,6 @@ namespace MET.CSV.Generator
                 throw new InvalidOperationException("Can not start again as flow is in progress.");
 
             InProgress = true;
-            CheckLamaFile();
             storageService.MakeSureDbCreated();
             Initialize();
             return DownloadAndLoadAsync();

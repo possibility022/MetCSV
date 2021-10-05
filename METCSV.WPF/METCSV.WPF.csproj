@@ -56,7 +56,6 @@
     <ProjectReference Include="..\MET.Poxy\MET.Proxy.csproj" />
     <ProjectReference Include="..\MET.Workflows\MET.Workflows.csproj" />
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj" />
-    <ProjectReference Include="..\Notifications.Wpf\Notifications.Wpf.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
