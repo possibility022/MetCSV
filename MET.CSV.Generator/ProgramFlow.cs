@@ -146,13 +146,6 @@ namespace MET.CSV.Generator
             }
         }
 
-        private void CheckLamaFile()
-        {
-            var fi = new FileInfo(settings.LamaDownloaderSettings.ManufacturersXmlFile);
-            if ((DateTime.Now - fi.LastWriteTime).Days > 50)
-                MessageBox.Show($"Plik CSV Lamy był ostatnio aktualizowany więcej niż 50 dni temu. Pobierz ręcznie nowy plik i zapisz go tutaj: {fi.FullName}"); //todo remove it from here.
-        }
-
         private void Initialize()
         {
             Met = new MetProductProvider(
