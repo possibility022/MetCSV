@@ -4,7 +4,7 @@
     {
         public string XmlFile { get; set; } = "LamaDownloadedFile.xml";
 
-        public string CsvFile { get; set; } = "LamaCSV.csv";
+        public string ManufacturersXmlFile { get; set; } = "LamaManufacturers.xml";
 
         public string Url { get; set; } = "http://www.lamaplus.com.pl/partner/export.php";
 
@@ -16,5 +16,7 @@
         public string CsvDelimiter { get; set; } = ";";
         public string SAPPrefix { get; set; } = "LAMA";
         public string CsvFileEncoding { get; set; } = "ISO-8859-2";
+
+        public string ManufacturersRequest { get; set; } = "vyrobci";
     }
 }

@@ -13,34 +13,73 @@ namespace MET.Proxy.Downloaders
 
         public string UrlConnection { get; }
 
-        private readonly string fileName;
+        private readonly string productsFile;
 
         private readonly string login;
 
         private readonly string password;
 
         private readonly string request;
+        private readonly string manufacturersRequest;
+        private readonly string manufacturersXmlFile;
+
+        const string manufacturersZipFile = "lamaManufacturers.zip";
 
         public LamaDownloader(ILamaDownloaderSettings downloaderSettings)
         {
             UrlConnection = downloaderSettings.Url;
-            fileName = downloaderSettings.XmlFile;
-            var csvFileName = downloaderSettings.CsvFile;
+            productsFile = downloaderSettings.XmlFile;
+            manufacturersXmlFile = downloaderSettings.ManufacturersXmlFile;
             login = downloaderSettings.Login;
             password = downloaderSettings.Password;
             request = downloaderSettings.Request;
-
-            DownloadedFiles = new[] { string.Empty, csvFileName };
+            manufacturersRequest = downloaderSettings.ManufacturersRequest;
         }
 
         protected override bool Download()
+        {
+            var priceList = DownloadFile(this.request, productsFile);
+            var manufacturers = DownloadFile(this.manufacturersRequest, manufacturersZipFile);
+
+            var extractedFile = ExtractZipFile();
+            File.Move(extractedFile, manufacturersXmlFile, true);
+
+            DownloadedFiles = new[] { productsFile, manufacturersXmlFile };
+
+            return priceList && manufacturers;
+        }
+
+        private string ExtractZipFile()
+        {
+            string tempFolder = Path.GetFullPath("lamaExtractedFiles");
+
+            if (Directory.Exists(tempFolder))
+                Directory.Delete(tempFolder, true);
+
+            System.IO.Compression.ZipFile.ExtractToDirectory(manufacturersZipFile, tempFolder);
+
+            return FindFile(tempFolder);
+        }
+
+        private string FindFile(string folder)
+        {
+            var files = Directory.GetFiles(folder);
+            if (files.Length != 1)
+            {
+                throw new InvalidDataException($"File could not be found. Only one file expected within folder {folder}.");
+            }
+
+            return Path.GetFullPath(files[0]);
+        }
+
+        private bool DownloadFile(string request, string file)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(UrlConnection);
 
             var postData = "user=" + login;
 
             postData += $"&pass={password}";
-            postData += $"&request={this.request}";
+            postData += $"&request={request}";
 
             var data = Encoding.ASCII.GetBytes(postData);
 
@@ -68,7 +107,7 @@ namespace MET.Proxy.Downloaders
             }
 
             using (Stream responseStream = response.GetResponseStream())
-            using (var streamWriter = new FileStream(fileName, FileMode.Create))
+            using (var streamWriter = new FileStream(file, FileMode.Create))
             {
                 byte[] buffer = new Byte[2048];
                 int bytesRead = responseStream.Read(buffer, 0, buffer.Length);
@@ -82,7 +121,6 @@ namespace MET.Proxy.Downloaders
                 responseStream.Close();
             }
 
-            DownloadedFiles[0] = fileName;
             return true;
         }
     }

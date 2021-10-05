@@ -120,7 +120,7 @@ namespace METCSV.UnitTests.Workflows
             Settings settings = new Settings();
             settings.LamaSettings = new LamaSettings()
             {
-                CsvFile = "CSV",
+                ManufacturersXmlFile = "CSV",
                 Login = "Login",
                 Password = "Password",
                 Request = "Request",

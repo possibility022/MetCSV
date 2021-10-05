@@ -34,13 +34,11 @@ namespace MET.Proxy.ProductReaders
         {
             Status = OperationStatus.InProgress;
 
-            // plik csv musi byc dostarczony przez uzytkownika.
-
             if (File.Exists(pathXml) && File.Exists(pathCsv))
             {
                 LogInfo("Wczytuję produkty z Lamy");
                 var products = ReadLama(pathXml); // wczytanie produktów z XML
-                var producents = ReadProducents(pathCsv, Encoding.Default); // wczytanie producentów produktów
+                var producents = ReadProducents(pathCsv, Encoding.GetEncoding(fileEncoding)); // wczytanie producentów produktów
 
                 var merged = MergeProductLama(products, producents); // scalenie plików
 
@@ -58,34 +56,39 @@ namespace MET.Proxy.ProductReaders
             }
         }
 
-        private List<Product> ReadProducents(string pathCsv, Encoding encoding, int linePassCount = 1)
+        private List<ManufacturerIdToName> ReadProducents(string path, Encoding encoding, int linePassCount = 1)
         {
-            List<Product> products = new List<Product>();
-            CsvReader reader = new CsvReader() { Delimiter = csvDelimiter };
+            StreamReader streamReader = new StreamReader(path, encoding);
+            var xmlReader = XmlReader.Create(streamReader);
 
-            IEnumerable<string[]> producents = reader.ReadCsv(pathCsv, encoding);
+            XDocument.Load(xmlReader);
 
-            foreach (var fields in producents)
+            List<ManufacturerIdToName> manufacturers = new List<ManufacturerIdToName>();
+            var xml = XDocument.Load(path);
+
+            foreach (var manufacturerNode in xml.Root.Elements())
             {
                 ThrowIfCanceled();
 
-                if (linePassCount > 0)
-                {
-                    linePassCount--;
-                    continue;
-                }
+                var id = manufacturerNode.Element("KOD_VYR").Value;
 
-                if (fields.Length < 16)
+                if (string.IsNullOrEmpty(id))
                     continue;
 
-                products.Add(new Product(Provider)
+                manufacturers.Add(new ManufacturerIdToName
                 {
-                    SymbolSAP = fields[4],//nr kat
-                    NazwaProducenta = fields[16]
+                    Id = id,
+                    Name = manufacturerNode.Element("NAZEV_VYR").Value
                 });
             }
 
-            return products;
+            return manufacturers;
+        }
+
+        class ManufacturerIdToName
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
         }
 
         /// <summary>
@@ -95,23 +98,23 @@ namespace MET.Proxy.ProductReaders
         /// <param name="products">Lista produktów</param>
         /// <param name="producents">Lista producentów</param>
         /// <returns>Zwraca scaloną listę produktów</returns>
-        private IList<Product> MergeProductLama(List<Product> products, List<Product> producents)
+        private IList<Product> MergeProductLama(List<Product> products, List<ManufacturerIdToName> producents)
         {
             int count = 0;
 
-            var producentsDict = new Dictionary<string, Product>();
+            var producentsDict = new Dictionary<string, ManufacturerIdToName>();
 
             foreach (var p in producents)
             {
                 ThrowIfCanceled();
 
-                if (producentsDict.ContainsKey(p.SymbolSAP))
+                if (producentsDict.ContainsKey(p.Id))
                 {
-                    LogError($"Met producents file contains two the same sap numbers. Check that out. SAP : {p.SymbolSAP}");
+                    LogError($"Met producents file contains two the same sap numbers. Check that out. SAP : {p.Id}");
                 }
                 else
                 {
-                    producentsDict.Add(p.SymbolSAP, p);
+                    producentsDict.Add(p.Id, p);
                 }
             }
 
@@ -119,9 +122,11 @@ namespace MET.Proxy.ProductReaders
             {
                 ThrowIfCanceled();
 
-                if (producentsDict.ContainsKey(products[i].SymbolSAP))
+                var manufacturerId = products[i].NazwaProducenta;
+
+                if (producentsDict.ContainsKey(manufacturerId))
                 {
-                    products[i].NazwaProducenta = producentsDict[products[i].SymbolSAP].NazwaProducenta;
+                    products[i].NazwaProducenta = producentsDict[manufacturerId].Name;
                 }
                 else
                 {
@@ -172,7 +177,7 @@ namespace MET.Proxy.ProductReaders
                     OryginalnyKodProducenta = HttpUtility.HtmlDecode(product.Element("PN").Value),
                     KodDostawcy = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     NazwaProduktu = HttpUtility.HtmlDecode(product.Element("NAZEV").Value),
-                    NazwaProducenta = string.Empty,
+                    NazwaProducenta = product.Element("KOD_VYR").Value,
                     NazwaDostawcy = ProviderName,
                     StanMagazynowy = Int32.Parse(product.Element("SKLAD_NUM").Value),
                     StatusProduktu = false,

@@ -1,5 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests
@@ -68,6 +71,72 @@ namespace METCSV.UnitTests
                 var tryAgain = dict.TryAdd(1, b);
                 if (tryAgain)
                     Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void TestMethod()
+        {
+            var requests = new[]
+            {
+                "priceList_s",
+                "priceList_sDamage",
+                "param",
+                "priceList",
+                "vyrobci",
+                "strom",
+            };
+
+            foreach(var req in requests)
+            {
+                LamaDownload(req);
+            }
+        }
+
+        public void LamaDownload(string request)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://www.lamaplus.com.pl/partner/export.php");
+
+            var postData = "user=" + 60117701;
+
+            postData += $"&pass=***REMOVED***";
+            postData += $"&request={request}";
+
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            httpWebRequest.Method = "POST";
+            httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+
+            httpWebRequest.ContentLength = data.Length;
+
+            using (var stream = httpWebRequest.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            HttpWebResponse response = null;
+
+            try
+            {
+                response = (HttpWebResponse)httpWebRequest.GetResponse();
+            }
+            catch (WebException ex)
+            {
+                string message = $"Generwoanie licznika miedzy 14:00-16:00 jest niedostępne";
+            }
+
+            using (var responseStream = response.GetResponseStream())
+            using (var streamWriter = new FileStream($"{request}.content", FileMode.Create))
+            {
+                byte[] buffer = new byte[2048];
+                int bytesRead = responseStream.Read(buffer, 0, buffer.Length);
+                while (bytesRead > 0)
+                {
+                    streamWriter.Write(buffer, 0, bytesRead);
+                    bytesRead = responseStream.Read(buffer, 0, buffer.Length);
+                }
+
+                responseStream.Close();
             }
         }
     }
