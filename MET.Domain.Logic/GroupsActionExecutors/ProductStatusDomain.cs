@@ -17,12 +17,6 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         public void ExecuteAction(Product source, Product final)
         {
-
-            if (source.PartNumber == "0B31236_||_HGST")
-            {
-                var v = 0;
-            }
-
             if (source.StanMagazynowy < 1)
                 final.StatusProduktu = false;
             else
