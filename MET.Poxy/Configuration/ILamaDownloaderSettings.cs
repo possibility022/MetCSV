@@ -4,7 +4,7 @@
     {
         public string XmlFile { get; }
 
-        public string CsvFile { get; }
+        public string ManufacturersXmlFile { get; }
 
         public string Url { get; }
 
@@ -13,5 +13,6 @@
         public string Password { get; }
 
         public string Request { get; }
+        public string ManufacturersRequest { get; }
     }
 }
