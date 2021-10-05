@@ -346,7 +346,6 @@ namespace METCSV.WPF.ViewModels
         internal void Closing()
         {
             App.Settings.Engine.SetProfits = SetProfits;
-            App.NotificationManager.CloseWindow();
         }
 
         internal void Stop()
