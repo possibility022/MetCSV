@@ -65,7 +65,7 @@ namespace MET.Data.Models
 
         public bool StatusProduktu { get; set; } = false;
 
-        public double CenaNetto { get; private set; }
+        public double CenaNetto { get; set; }
 
         public void SetCennaNetto(double value)
         {
