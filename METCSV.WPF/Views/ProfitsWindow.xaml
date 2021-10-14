@@ -206,11 +206,6 @@
             <Button
                 MinWidth="120"
                 Margin="10"
-                Click="ButtonReloadProfits_Click"
-                Content="Wczytaj pliki" />
-            <Button
-                MinWidth="120"
-                Margin="10"
                 Click="Cancel_Click"
                 Content="Anuluj" />
 
