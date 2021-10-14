@@ -333,6 +333,7 @@ namespace METCSV.WPF.ViewModels
 
             if (programFlow.FinalList != null)
             {
+                programFlow.MergeCustomMetProducts();
                 CsvWriter cw = new CsvWriter();
                 var success = cw.ExportProducts(path, programFlow.FinalList);
                 if (!success)

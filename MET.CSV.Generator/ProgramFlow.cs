@@ -205,5 +205,10 @@ namespace MET.CSV.Generator
                 priceError.ValidateSingleProduct();
             }
         }
+
+        public void MergeCustomMetProducts()
+        {
+            finalList.AddRange(MetCustomProducts);
+        }
     }
 }
