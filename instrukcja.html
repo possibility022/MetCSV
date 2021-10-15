@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Met CSV Instrukcja</title>
+    <style>
+        img {
+            border: 1px solid #ccc !important;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>MET CSV</h1>
+        <p>Instrukcja do MET CSV!</p>
+    </header>
+
+    <main>
+
+        <h2>Główne okno</h2>
+        <img src="./instrukcja.pliki/mainwindow.png" />
+
+        <p>
+            1. Jeśli zaznaczone to po pobraniu i załadowaniu plików zostanie wyświetlone kolejne okno.
+            Nowe okno umożliwi edytowanie marż dla produktów, kategori i producentów.
+        </p>
+
+        <p>
+            2. Zatrzymuje prace programu.
+        </p>
+
+        <p>
+            3. Rozpoczyna prace programu.
+        </p>
+
+        <p>
+            4. Otwiera konto ustawień.
+        </p>
+
+        <p>
+            5. Pozwala edytować listę produktów specjalnych MET. (Przycisk dostępny po wygenerowaniu listy)
+        </p>
+
+        <p>
+            6. Pozwala przeglądać wszystkie produkty od dostawców (z wyłączeniem produktów specjalnych MET).
+        </p>
+
+        <p>
+            7. Zapisuje finalną listę w postaci CSV do wybranego pliku.
+        </p>
+
+        <h2>Okno marży</h2>
+
+        <p>
+            Cena jest obliczana uwzględniając następujące priorytety marż:
+        <ol>
+            <li>Marże Specjalne</li>
+            <li>Marże dla Kategorii</li>
+            <li>Marże dla Producentów</li>
+            <li>Domyślna marża</li>
+        </ol>
+
+        Cena zawsze jest obliczana stosując marżę o najwyższym priorytecie. Jeśli specjalna marża (dla producenta,
+        produktu lub kategorii) nie jest ustalona zostanie zastosowana domyślna marża.
+        </p>
+
+        <h3>Marża dla kategorii</h3>
+
+        <img src="./instrukcja.pliki/marze.kategorie.png" />
+
+        <p>
+            Okno pozwala edytować marże dla wybranych kategorii.
+            Każda kategoria jest przypisana do dostawcy. Edytując marże dla kategorii 'XYZ' u dostawcy 'A' sprwi, że
+            wszstkie produkty
+            z tej kategorii u tego dostawcy bedą obliczone według wprowadzonej marży. Nie wpłynie to jednak na produkty
+            u dostawcy 'X' mimo,
+            że taka kategoria również tam będzie występować.
+        </p>
+
+        <p>
+            8. Wybór dostawcy dla którego chcemy edytować marże/kategrie.
+        </p>
+
+        <p>
+            9. Nazwa kategorii.
+        </p>
+
+        <p>
+            10. Marża wyrażona w procentach.
+        </p>
+
+        <p>
+            11. Przycisk zapisz i zamknij. Zamknie i zapisze wprowadzone zmiany a program będzie kontynuował prace.
+        </p>
+
+        <h3>
+            Marża dla producentów.
+        </h3>
+
+        <img src="./instrukcja.pliki/marze.producenci.png" />
+
+        <p>
+            Zasada działania jest dokładnie taka sama jak w przypadku kategorii.
+        </p>
+
+        <p>
+            12. Wybór dostawcy dla którego chcemy edytwoać marże/producentów.
+        </p>
+
+        <p>
+            13. Nazwa producenta.
+        </p>
+
+        <p>
+            14. Marża wyrażona w procentach.
+        </p>
+
+        <p>
+            15. Przycisk zapisz i zamknij. Zamknie i zapisze wprowadzone zmiany a program będzie kontynuował prace.
+            (jest to ten sam przycisk co w 11)
+        </p>
+
+        <h4>Uwaga</h4>
+        <p>
+            <b>
+                Na liście występują nazwy producentów wczytane z plików ale jeszcze nie zmienione za pomocą ustawień <a
+                    href="#manufacturerMapper">mappera</a>!
+                Oznacza to, że jeśli <a href="#manufacturerMapper">mapper</a> zmiena nazwę z HP na HP Inc. to marża dla
+                producenta HP nie zostanie zastosowana.
+            </b>
+        </p>
+
+
+        <h3>Marże specjalne</h3>
+
+        <img src="./instrukcja.pliki/marze.specjalne.png" />
+
+        <p>
+            Są to marże na wybranych produktach i tyczą się one wszystkich dostawców.
+        </p>
+
+        <p>
+            16. Part Number produktu
+        </p>
+
+        <p>
+            17. Marża wyrażona w procentach.
+        </p>
+
+        <p>
+            18. Otwiera okienko do wyszukiwania produktów aby dodać je na listę.
+        </p>
+
+        <p>
+            19. Usuwa wybrany produkt z listy.
+        </p>
+
+
+
+        <h2>Przegląd finalnej listy.</h2>
+
+        <img src="./instrukcja.pliki/allProducts.png" />
+
+        <p>
+            Okno pozwala <b>przeglądać</b> finalną liste (z wyłączeniem specjalnych produktów met).
+        </p>
+
+        <p>20. Filrt - wyświetla tylko te produkty, które posiadają w jakimkolwiek polu wpisaną wartość.</p>
+        <p>21. Wybrany produkt - Produkt (wartośći) jaki trafi do listy CSV.</p>
+        <p>22. Lista źródłowa produktu. Są to rekordy, które zostały wczytane z plików od dostawców
+            ab/techdata/lama.</p>
+        <p>23. Lista rekordów z tym produktem z pliku MET.</p>
+
+
+        <h2>Ustawienia</h2>
+
+        <h3 id="manufacturerMapper">Nazwa Producenta - Mapper</h3>
+        <img src="./instrukcja.pliki/settings.renamemapping.png" />
+
+        <p>
+            Na tej stronie ustawień definiujemy mapowanie wartośći wejściowych dla pola Nazwa Producenta.
+            Po lewej stronie określamy wartość wejściową a po prawej na jaką wartość nazwa producenta ma być
+            zamieniona.
+        </p>
+    </main>
+
+    <footer>
+        <p>Met.com.pl</p>
+    </footer>
+</body>
+
+</html>
