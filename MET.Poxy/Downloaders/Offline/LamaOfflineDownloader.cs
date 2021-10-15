@@ -1,18 +1,22 @@
 ﻿using MET.Data.Models;
+using MET.Proxy.Configuration;
 
 namespace MET.Proxy.Downloaders.Offline
 {
     public class LamaOfflineDownloader : DownloaderBase
     {
 
-        public override Providers Provider => Providers.Lama;
+        public LamaOfflineDownloader(ILamaDownloaderSettings lamaDownloaderSettings)
+        {
+            this.lamaDownloaderSettings = lamaDownloaderSettings;
+        }
 
-        private const string FileName = "LamaDownloadedFile.xml"; //todo move it to config
-        private const string CsvFileName = "LamaCSV.csv";
+        public override Providers Provider => Providers.Lama;
+        private readonly ILamaDownloaderSettings lamaDownloaderSettings;
 
         protected override bool Download()
         {
-            DownloadedFiles = new[] { FileName, CsvFileName };
+            DownloadedFiles = new[] { lamaDownloaderSettings.XmlFile, lamaDownloaderSettings.ManufacturersXmlFile };
             return true;
         }
     }
