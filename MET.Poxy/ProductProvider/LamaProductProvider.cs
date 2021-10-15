@@ -33,7 +33,7 @@ namespace MET.Proxy.ProductProvider
         {
             if (offlineMode)
             {
-                return new LamaOfflineDownloader();
+                return new LamaOfflineDownloader(lamaDownloaderSettings);
             }
             else
             {
