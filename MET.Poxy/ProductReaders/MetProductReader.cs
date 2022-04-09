@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -15,6 +17,7 @@ namespace MET.Proxy.ProductReaders
     {
         public override Providers Provider => Providers.MET;
 
+        Dictionary<int, double> _productIdToPrice;
         private static bool _encodingInitialized;
 
         public MetProductReader(CancellationToken token) : base(token)
@@ -32,7 +35,11 @@ namespace MET.Proxy.ProductReaders
             }
         }
 
-        public override IList<Product> GetProducts(string path, string thisPathIsIgnored) => GetMetProducts(path);
+        public override IList<Product> GetProducts(string path, string pathToPrices)
+        {
+            GetMetProductPrices(pathToPrices);
+            return GetMetProducts(path);
+        }
 
         public IList<Product> GetMetProducts(string pathProducts)
         {
@@ -55,24 +62,37 @@ namespace MET.Proxy.ProductReaders
             }
         }
 
+        private Dictionary<int, double> GetMetProductPrices(string pathToPrices)
+        {
+            _productIdToPrice = new ();
+            CsvReader reader = new CsvReader() { Delimiter = ";" };
+            IEnumerable<string[]> productsWithPrices = reader.ReadCsv(pathToPrices, Encoding.GetEncoding("windows-1250")).Skip(1);
+
+            foreach (var fields in productsWithPrices)
+            {
+                ThrowIfCanceled();
+
+                var id = int.Parse(fields[(int)MetCsvProductWithPriceColums.ID_produktu]);
+                var cenaNetto = double.Parse(fields[(int)MetCsvProductWithPriceColums.Cena_Netto]);
+
+                _productIdToPrice.Add(id, cenaNetto);
+            }
+
+            return _productIdToPrice;
+        }
+
         private IList<Product> GetMetProducts(string path, Encoding encoding, int linePassCount = 1)
         {
             List<Product> products = new List<Product>();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
 
-            IEnumerable<string[]> producents = reader.ReadCsv(path, encoding);
+            IEnumerable<string[]> productsFromFile = reader.ReadCsv(path, encoding).Skip(linePassCount);
 
-            foreach (var fields in producents)
+            foreach (var fields in productsFromFile)
             {
                 ThrowIfCanceled();
 
-                if (linePassCount > 0)
-                {
-                    linePassCount--;
-                    continue;
-                }
-                
-                products.Add(new Product(Provider)
+                var p = new Product(Provider)
                 {
                     ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
                     SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP]),
@@ -87,7 +107,13 @@ namespace MET.Proxy.ProductReaders
                     //Wszystkie kategorie które zaczynają się 
                     //_HIDDEN mają być traktowane jak jedna kategoria.
                     //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
-                });
+                };
+
+                if (p.ID != null)
+                    if (_productIdToPrice.TryGetValue(p.ID.Value, out var v))
+                        p.SetCennaNetto(v);
+
+                products.Add(p);
             }
 
             return products;
