@@ -176,7 +176,7 @@ namespace METCSV.UnitTests.EngineTest
 
             foreach (var productGroupVendorProduct in productGroup.VendorProducts)
             {
-                Assert.AreEqual(productGroupVendorProduct.CenaZakupuNetto * 0.2, productGroupVendorProduct.CenaNetto);
+                Assert.AreEqual(productGroupVendorProduct.CenaZakupuNetto + (productGroupVendorProduct.CenaZakupuNetto * 0.2), productGroupVendorProduct.CenaNetto);
             }
         }
 
@@ -196,9 +196,9 @@ namespace METCSV.UnitTests.EngineTest
                 },
             new List<CustomProfit>()
             {
-                
+
             },
-                null);
+                new List<ManufacturerProfit>());
 
             priceDomain.ExecuteAction(productGroup);
 
@@ -206,7 +206,7 @@ namespace METCSV.UnitTests.EngineTest
 
             foreach (var product in prod)
             {
-                Assert.AreEqual(product.CenaZakupuNetto * 0.5, product.CenaNetto);
+                Assert.AreEqual(product.CenaZakupuNetto + (product.CenaZakupuNetto * 0.5), product.CenaNetto);
             }
         }
 
@@ -231,13 +231,13 @@ namespace METCSV.UnitTests.EngineTest
                         PartNumber = PartNumber,
                         Profit = 0.3
                     }
-                }, null);
+                }, new List<ManufacturerProfit>());
 
             priceDomain.ExecuteAction(productGroup);
 
             foreach (var product in productGroup.VendorProducts)
             {
-                Assert.AreEqual(product.CenaZakupuNetto * 0.3, product.CenaNetto);
+                Assert.AreEqual(product.CenaZakupuNetto + (product.CenaZakupuNetto * 0.3), product.CenaNetto);
             }
         }
 
