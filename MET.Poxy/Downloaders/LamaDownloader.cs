@@ -74,7 +74,7 @@ namespace MET.Proxy.Downloaders
 
         private bool DownloadFile(string request, string file)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(UrlConnection);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(UrlConnection); //todo change to HttpRequest
 
             var postData = "user=" + login;
 

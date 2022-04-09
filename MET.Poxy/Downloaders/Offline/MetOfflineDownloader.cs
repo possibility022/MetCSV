@@ -8,9 +8,11 @@ namespace MET.Proxy.Downloaders.Offline
 
         private const string FileName = "met.csv"; //todo move to config
 
+        private const string MetFileWithPrice = "metprice.csv";
+
         protected override bool Download()
         {
-            DownloadedFiles = new[] { FileName };
+            DownloadedFiles = new[] { FileName, MetFileWithPrice };
             return true;
         }
     }

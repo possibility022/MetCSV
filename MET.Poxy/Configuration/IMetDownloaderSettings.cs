@@ -5,5 +5,9 @@
         public string CsvFile { get; }
 
         public string Url { get; }
+
+        public string MetPriceCsvFile { get; set; }
+
+        public string MetPriceUrl { get; set; }
     }
 }
