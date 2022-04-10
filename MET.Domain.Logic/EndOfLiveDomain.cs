@@ -17,6 +17,8 @@ namespace MET.Domain.Logic
             p.SetCennaNetto(0);
             p.CenaZakupuNetto = 0;
             p.StanMagazynowy = 0;
+
+            p.KodDostawcy = DecodeSapSymbol(p.KodDostawcy);
         }
 
         private static void AddPrefixToProductName(Product p)
@@ -35,6 +37,14 @@ namespace MET.Domain.Logic
                 SetEndOfLife(productGroup.FinalProduct);
                 AddPrefixToProductName(productGroup.FinalProduct);
             }
+        }
+
+        private static string DecodeSapSymbol(string sourceValue)
+        {
+            if (sourceValue.StartsWith("MET_"))
+                return sourceValue.Remove(0, "MET_".Length);
+
+            return sourceValue;
         }
     }
 }
