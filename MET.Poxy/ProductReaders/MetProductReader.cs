@@ -92,10 +92,12 @@ namespace MET.Proxy.ProductReaders
             {
                 ThrowIfCanceled();
 
+                Providers originalSource;
+
                 var p = new Product(Provider)
                 {
                     ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
-                    SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP]),
+                    SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP], out originalSource),
                     //ModelProduktu = fields[(int)Met.ModelProduktu],
                     OryginalnyKodProducenta = fields[(int)MetCsvProductsColums.ModelProduktu],
                     NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)MetCsvProductsColums.NazwaProduktu]),
@@ -109,6 +111,8 @@ namespace MET.Proxy.ProductReaders
                     //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata
                 };
 
+                p.OriginalSource = originalSource;
+
                 if (p.ID != null)
                     if (_productIdToPrice.TryGetValue(p.ID.Value, out var v))
                         p.SetCennaNetto(v);
@@ -119,17 +123,27 @@ namespace MET.Proxy.ProductReaders
             return products;
         }
 
-        private string DecodeSapSymbol(string sourceValue)
+        private string DecodeSapSymbol(string sourceValue, out Providers provider)
         {
             if (sourceValue.StartsWith("AB"))
+            {
+                provider = Providers.AB;
                 return sourceValue.Remove(0, "AB".Length);
+            }
 
             if (sourceValue.StartsWith("LAMA"))
+            {
+                provider = Providers.Lama;
                 return sourceValue.Remove(0, "LAMA".Length);
+            }
 
             if (sourceValue.StartsWith("TechData"))
+            {
+                provider = Providers.TechData;
                 return sourceValue.Remove(0, "TechData".Length);
+            }
 
+            provider = Providers.None;
             return sourceValue;
         }
     }

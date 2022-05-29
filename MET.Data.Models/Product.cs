@@ -32,6 +32,8 @@ namespace MET.Data.Models
 
         public string ModelProduktu { get; private set; }
 
+        public Providers OriginalSource { get; set; }
+
         public string OryginalnyKodProducenta
         {
             get { return _oryginalnyKodProducenta; }
