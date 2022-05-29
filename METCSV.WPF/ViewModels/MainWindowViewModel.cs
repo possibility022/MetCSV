@@ -356,7 +356,7 @@ namespace METCSV.WPF.ViewModels
 
         internal void Loaded()
         {
-            AutoUpdater.Start(App.Settings.Engine.NewVersionURL, System.Reflection.Assembly.GetExecutingAssembly());
+            //AutoUpdater.Start(App.Settings.Engine.NewVersionURL, System.Reflection.Assembly.GetExecutingAssembly());
         }
 
         private void ReleaseUnmanagedResources()
