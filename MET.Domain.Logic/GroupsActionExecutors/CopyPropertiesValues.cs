@@ -6,7 +6,8 @@ namespace MET.Domain.Logic.GroupsActionExecutors
     {
         public void ExecuteAction(Product source, Product final)
         {
-            final.ID = source.ID;
+            if (final.ID == null)
+                final.ID = source.ID;
             final.StanMagazynowy = source.StanMagazynowy;
             final.Hidden = source.Hidden;
             final.Provider = source.Provider;
