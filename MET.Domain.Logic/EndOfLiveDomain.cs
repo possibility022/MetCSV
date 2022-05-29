@@ -32,7 +32,10 @@ namespace MET.Domain.Logic
             var formatter = productGroup.ObjectFormatter;
             formatter.WriteLine("Sprawdzam czy ustawić status EOL.");
 
-            if (!productGroup.VendorProducts.Any())
+            var weDontHaveAnyProductsFromVendors = !productGroup.VendorProducts.Any();
+            var eolIsSetOnMetList = productGroup.MetProducts.Any(r => r.Kategoria == EndOfLifeCategory);
+
+            if (weDontHaveAnyProductsFromVendors || eolIsSetOnMetList)
             {
                 SetEndOfLife(productGroup.FinalProduct);
                 AddPrefixToProductName(productGroup.FinalProduct);
@@ -41,7 +44,7 @@ namespace MET.Domain.Logic
 
         private static string DecodeSapSymbol(string sourceValue)
         {
-            if (sourceValue.StartsWith("MET_"))
+            if (sourceValue?.StartsWith("MET_") == true)
                 return sourceValue.Remove(0, "MET_".Length);
 
             return sourceValue;
