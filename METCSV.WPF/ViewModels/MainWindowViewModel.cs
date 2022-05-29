@@ -278,7 +278,7 @@ namespace METCSV.WPF.ViewModels
 
                         profitsView.ShowDialog();
 
-                        SaveProfits(profitsViewModel);
+                        await Task.Run(() => SaveProfits(profitsViewModel));
                     }
 
                     await programFlow.StepTwo();
