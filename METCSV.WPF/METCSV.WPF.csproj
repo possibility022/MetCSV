@@ -37,6 +37,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+    <ApplicationIcon>ikona_program.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="version.xml" />
+    <Content Include="ikona_program.ico" />
     <Content Include="LamaCSV.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
