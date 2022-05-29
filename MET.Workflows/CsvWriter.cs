@@ -31,7 +31,7 @@ namespace MET.Workflows
         private const string KodProducentaHeader = "KodProducenta";
         private const string ScieskaKategoriiHeader = "SciezkaKategorii";
         private const string ModelProduktuHeader = "ModelProduktu";
-        private const string KodKreskowyHEader = "KodKreskowy";
+        private const string KodKreskowyHeader = "KodKreskowy";
 
         readonly IReadOnlyCollection<string> valuesOrder = new List<string>
             {
@@ -50,8 +50,9 @@ namespace MET.Workflows
                 NazwaProducentaHeader,
                 NazwaDostawcyHeader,
 
-                KodKreskowyHEader,
-            };
+                KategoriaHeader,
+                KodKreskowyHeader,
+    };
 
 
         public bool ExportProducts(string path, IEnumerable<Product> products)
@@ -103,7 +104,7 @@ namespace MET.Workflows
             columns[CenaZakupuNettoHeader] = p.CenaZakupuNetto.ToString();
             columns[UrlZdjeciaHeader] = p.UrlZdjecia;
             columns[KategoriaHeader] = p.Kategoria;
-            columns[KodKreskowyHEader] = p.EAN;
+            columns[KodKreskowyHeader] = p.EAN;
         }
 
         private void WriteProduct(StreamWriter writer, Dictionary<string, string> p, IReadOnlyCollection<string> headers)
