@@ -58,8 +58,6 @@ namespace METCSV.WPF.ViewModels
             storage = new StorageService(new StorageContext());
         }
 
-        private const string NotificationTitle = "CSV Generator";
-
         public OperationStatus InProgress
         {
             get => inProgress;
@@ -283,6 +281,7 @@ namespace METCSV.WPF.ViewModels
 
                     await programFlow.StepTwo();
                     InProgress = OperationStatus.Complete;
+                    Notification.ShowNotification(true);
                     return true;
                 }
                 else
@@ -300,6 +299,7 @@ namespace METCSV.WPF.ViewModels
                 InProgress = OperationStatus.Faild;
             }
 
+            Notification.ShowNotification(false);
             return false;
         }
 
