@@ -27,12 +27,14 @@ namespace METCSV.WPF.Views
         {
             if (MessageBox.Show("Jesteś pewien?", "Zapis zastąpi obecne pliki lub je utworzy.", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
+                ProfitsViewModel.Save = true;
                 Close();
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            ProfitsViewModel.Save = false;
             Close();
         }
     }

@@ -19,5 +19,6 @@ namespace MET.Data.Storage
         public DbSet<ManufacturerProfit> ManufacturerProfits { get; set; }
 
         public DbSet<RenameManufacturerModel> RenameManufacturer { get; set; }
+        public DbSet<IgnoreCategory> IgnoredCategories { get; set; }
     }
 }

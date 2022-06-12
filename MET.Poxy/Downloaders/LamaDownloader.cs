@@ -56,6 +56,8 @@ namespace MET.Proxy.Downloaders
             if (Directory.Exists(tempFolder))
                 Directory.Delete(tempFolder, true);
 
+            Directory.CreateDirectory(tempFolder);
+
             System.IO.Compression.ZipFile.ExtractToDirectory(manufacturersZipFile, tempFolder);
 
             return FindFile(tempFolder);

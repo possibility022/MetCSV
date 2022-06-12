@@ -25,6 +25,7 @@ namespace METCSV.WPF.ViewModels
         public MainWindowViewModel()
         {
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
+            SetIgnoredCategories = App.Settings?.Engine?.SetIgnoredCategories ?? true;
             OfflineModeVisibility = App.Settings?.Engine?.OfflineMode == true ? Visibility.Visible : Visibility.Hidden;
 
             ShowMetProductListEditorCommand = new RelayCommand(() => ShowMetListEditor());
@@ -70,8 +71,15 @@ namespace METCSV.WPF.ViewModels
 
         private Task mainTask;
         ProfitsWindow profitsView;
+        CategoryFilter categoryFilter;
         private bool setProfits;
+        private bool setIgnoredCategories;
 
+        public bool SetIgnoredCategories
+        {
+            get => setIgnoredCategories;
+            set => SetProperty(ref setIgnoredCategories, value);
+        }
 
         public bool SetProfits
         {
@@ -108,37 +116,59 @@ namespace METCSV.WPF.ViewModels
         public ICommand StopCommand { get; }
 
 
-        public async Task<ProfitsViewModel> PrepareProfitWindow()
+        public async Task<(ProfitsViewModel, CategoryFilterViewModel)> PrepareWindows()
         {
             await storage.MakeSureDbCreatedAsync();
-            profitsView = new ProfitsWindow();
-            var profitsViewModel = (ProfitsViewModel)profitsView.DataContext;
-            LoadCategoryProfits(profitsViewModel);
-            LoadManufacturersProfits(profitsViewModel);
-            LoadCustomProfits(profitsViewModel);
-
-            profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.AB.GetProducts());
+            ProfitsViewModel profitsViewModel = null;
+            CategoryFilterViewModel categoryFilterViewModel = null;
 
             var lamaCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.Lama);
             var techDataCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.TechData);
             var abCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.AB);
 
-            var lamaManufacturers = HelpMe.GetManufacturersAsync(programFlow.Lama);
-            var techDataManufacturers = HelpMe.GetManufacturersAsync(programFlow.TechData);
-            var abManufacturers = HelpMe.GetManufacturersAsync(programFlow.AB);
+            if (SetProfits)
+            {
+                profitsView = new ProfitsWindow();
+                profitsViewModel = (ProfitsViewModel)profitsView.DataContext;
+                LoadCategoryProfits(profitsViewModel);
+                LoadManufacturersProfits(profitsViewModel);
+                LoadCustomProfits(profitsViewModel);
 
-            await Task.WhenAll(lamaCategories, techDataCategories, abCategories, lamaManufacturers, techDataManufacturers, abManufacturers);
+                profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.AB.GetProducts());
 
-            var dataContext = profitsViewModel;
 
-            dataContext.AddCategories(lamaCategories.Result);
-            dataContext.AddCategories(techDataCategories.Result);
-            dataContext.AddCategories(abCategories.Result);
+                var lamaManufacturers = HelpMe.GetManufacturersAsync(programFlow.Lama);
+                var techDataManufacturers = HelpMe.GetManufacturersAsync(programFlow.TechData);
+                var abManufacturers = HelpMe.GetManufacturersAsync(programFlow.AB);
 
-            dataContext.AddManufacturers(lamaManufacturers.Result);
-            dataContext.AddManufacturers(techDataManufacturers.Result);
-            dataContext.AddManufacturers(abManufacturers.Result);
-            return profitsViewModel;
+                await Task.WhenAll(lamaCategories, techDataCategories, abCategories, lamaManufacturers, techDataManufacturers, abManufacturers);
+
+                var dataContext = profitsViewModel;
+
+                dataContext.AddCategories(lamaCategories.Result);
+                dataContext.AddCategories(techDataCategories.Result);
+                dataContext.AddCategories(abCategories.Result);
+
+                dataContext.AddManufacturers(lamaManufacturers.Result);
+                dataContext.AddManufacturers(techDataManufacturers.Result);
+                dataContext.AddManufacturers(abManufacturers.Result);
+            }
+
+            if (SetIgnoredCategories)
+            {
+                await Task.WhenAll(lamaCategories, techDataCategories, abCategories);
+
+                categoryFilter = new CategoryFilter();
+                categoryFilterViewModel = (CategoryFilterViewModel)categoryFilter.DataContext;
+
+                categoryFilterViewModel.LoadCategories(lamaCategories.Result);
+                categoryFilterViewModel.LoadCategories(techDataCategories.Result);
+                categoryFilterViewModel.LoadCategories(abCategories.Result);
+
+                categoryFilterViewModel.LoadIgnoredCategories(storage.GetIgnoredCategories());
+            }
+
+            return (profitsViewModel, categoryFilterViewModel);
         }
 
         private void LoadCategoryProfits(ProfitsViewModel profitsViewModel)
@@ -270,13 +300,25 @@ namespace METCSV.WPF.ViewModels
 
                 if (result)
                 {
-                    if (SetProfits)
+                    if (SetProfits || SetIgnoredCategories)
                     {
-                        var profitsViewModel = await PrepareProfitWindow();
+                        var (profitsViewModel, categoryFilterViewModel) = await PrepareWindows();
 
-                        profitsView.ShowDialog();
+                        if (SetProfits)
+                        {
+                            profitsView.ShowDialog();
+                            if (profitsViewModel.Save)
+                                await Task.Run(() => SaveProfits(profitsViewModel));
+                        }
 
-                        await Task.Run(() => SaveProfits(profitsViewModel));
+                        if (SetIgnoredCategories)
+                        {
+                            categoryFilter.ShowDialog();
+                            if (categoryFilterViewModel.Save)
+                            {
+                                await Task.Run(() => SaveIgnoredCategoriesAsync(categoryFilterViewModel));
+                            }
+                        }
                     }
 
                     await programFlow.StepTwo();
@@ -301,6 +343,14 @@ namespace METCSV.WPF.ViewModels
 
             Notification.ShowNotification(false);
             return false;
+        }
+
+        private void SaveIgnoredCategoriesAsync(CategoryFilterViewModel categoryFilterViewModel)
+        {
+            foreach((var provider, var categories) in categoryFilterViewModel.GetIgnoredCategories())
+            {
+                storage.AddIgnoredCategories(provider, categories);
+            }
         }
 
         private void ShowMetListEditor()
@@ -347,6 +397,7 @@ namespace METCSV.WPF.ViewModels
         internal void Closing()
         {
             App.Settings.Engine.SetProfits = SetProfits;
+            App.Settings.Engine.SetIgnoredCategories = SetIgnoredCategories;
         }
 
         internal void Stop()
