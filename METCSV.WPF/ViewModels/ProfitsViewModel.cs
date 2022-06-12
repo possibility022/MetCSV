@@ -48,6 +48,7 @@ namespace METCSV.WPF.ViewModels
             get => customProfitsCollection;
             set => SetProperty(ref customProfitsCollection, value);
         }
+        public bool Save { get; internal set; } = false;
 
         public void AddCategoryProfit(Profits profit)
         {

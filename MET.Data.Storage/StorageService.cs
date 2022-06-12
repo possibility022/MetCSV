@@ -173,5 +173,49 @@ namespace MET.Data.Storage
             Dispose(false);
         }
 
+        public IEnumerable<IgnoreCategory> GetIgnoredCategories()
+        {
+            return context.IgnoredCategories;
+        }
+
+        public void AddIgnoredCategories(Providers providers, ICollection<string> newList)
+        {
+            var currentSavedList = context
+                .IgnoredCategories
+                .Where(r => r.Provider == providers.ToString())
+                .ToDictionary(r => r.CategoryName);
+
+            var newListSet = newList.ToHashSet();
+
+            foreach (var inDb in currentSavedList)
+            {
+                if (newListSet.Contains(inDb.Key))
+                {
+                    // We have it
+                }
+                else
+                {
+                    context.IgnoredCategories.Remove(inDb.Value);
+                }
+            }
+
+            foreach (var ignored in newListSet)
+            {
+                if (currentSavedList.ContainsKey(ignored))
+                {
+                    // we have it
+                }
+                else
+                {
+                    context.IgnoredCategories.Add(new IgnoreCategory()
+                    {
+                        CategoryName = ignored,
+                        Provider = providers.ToString(),
+                    });
+                }
+            }
+
+            context.SaveChanges();
+        }
     }
 }

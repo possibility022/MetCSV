@@ -1,0 +1,84 @@
+﻿<Window x:Class="METCSV.WPF.Views.CategoryFilter"
+        x:Name="CategoryFilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:METCSV.WPF.Views" xmlns:viewModels="clr-namespace:METCSV.WPF.ViewModels"
+        mc:Ignorable="d"
+        Title="CategoryFilter" Height="450" Width="800">
+
+
+    <Window.DataContext>
+        <viewModels:CategoryFilterViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ComboBox
+            Margin="10"
+            Grid.Row="0"
+            Grid.ColumnSpan="3"
+            Grid.Column="0"
+            ItemsSource="{Binding Providers}"
+            SelectedItem="{Binding SelectedProvider}"
+            />
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    MinWidth="90"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="20">
+            <Button Margin="0,10,0,10" Content="&lt;--" Command="{Binding RemoveFromIgnoredCommand}" />
+            <Button Margin="0,10,0,10" Content="-->" Command="{Binding AddToIgnoredCommand}"/>
+
+        </StackPanel>
+
+        <ListView Grid.Row="1" Grid.Column="0"
+                  SelectedItem="{Binding SelectedItemInCategoriesList}"
+                  ItemsSource="{Binding Categories}">
+
+        </ListView>
+
+        <ListView Grid.Row="1" Grid.Column="2"
+                  SelectedItem="{Binding SelectedItemInIgnoreList}"
+                  ItemsSource="{Binding IgnoredCategories}">
+
+        </ListView>
+        
+
+        <StackPanel
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            Height="60"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                MinWidth="120"
+                Margin="10"
+                Command="{Binding CloseWindowAndSave, Mode=OneWay}" 
+                CommandParameter="{Binding ElementName=CategoryFilterWindow}"
+                Content="Zapisz i zamknij" />
+            <Button
+                MinWidth="120"
+                Margin="10"
+                Command="{Binding CloswWindowWithourSaving, Mode=OneWay}"                
+                CommandParameter="{Binding ElementName=CategoryFilterWindow}"
+                Content="Anuluj" />
+
+        </StackPanel>
+
+    </Grid>
+</Window>
