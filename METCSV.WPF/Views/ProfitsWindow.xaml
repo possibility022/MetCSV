@@ -116,7 +116,7 @@
                                 Width="Auto"
                                 MinWidth="200"
                                 Binding="{Binding Path=Key}"
-                                Header="Kategoria"
+                                Header="Producent"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="Auto"
