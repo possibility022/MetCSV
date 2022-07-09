@@ -12,6 +12,7 @@ namespace MET.Workflows
     {
         private const string delimiter = ";";
         private const string quote = "\"";
+        private const string doublequote = quote + quote;
 
         private const string IdHeader = "ID";
         private const string SapHeader = "SymbolSAP";
@@ -148,7 +149,7 @@ namespace MET.Workflows
         private void Write(StreamWriter writer, string value)
         {
             writer.Write(quote);
-            writer.Write(value);
+            writer.Write(value?.Replace(quote, doublequote));
             writer.Write(quote);
         }
     }
