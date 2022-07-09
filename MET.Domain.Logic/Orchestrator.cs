@@ -54,10 +54,11 @@ namespace MET.Domain.Logic
 
         private readonly IAllPartsNumberDomain allPartNumbersDomain;
         private readonly IObjectFormatterConstructor<object> objectFormatter;
-        private ICollection<Product>[] lists;
+        private IProductsCollection lists;
         private ICollection<Product> metProducts;
         private IReadOnlyCollection<ProductGroup> finalGroups;
         private IReadOnlyCollection<ProductGroup> internalList;
+        private List<IgnoreCategory> ignoreCategories;
 
         public PriceDomain PriceDomain { get; }
         public ManufacturerRenameDomain ManufacturerRenameDomain { get; }
@@ -66,7 +67,7 @@ namespace MET.Domain.Logic
         private readonly IActionExecutor[] groupExecutors;
         private readonly IFinalProductConstructor[] finalProductConstructors;
 
-        public void SetCollections(params ICollection<Product>[] products)
+        public void SetCollections(IProductsCollection products)
         {
             this.lists = products;
         }
@@ -83,6 +84,8 @@ namespace MET.Domain.Logic
         {
             var filter = new ProductFilterDomain(objectFormatter);
             await filter.RemoveProductsWithSpecificCode(lists);
+            var categoryFilter = new CategoryFilterDomain(objectFormatter);
+            await categoryFilter.RemoveProductsWithIgnoredCategory(lists, ignoreCategories);
 
             await Task.Run(() =>
             {
@@ -126,7 +129,7 @@ namespace MET.Domain.Logic
             var groupedProducts = new ProductGroupFactory(objectFormatter);
             foreach (var list in lists)
             {
-                foreach (var product in list)
+                foreach (var product in list.Value)
                 {
                     PreGroupingActions(product);
                     groupedProducts.AddProduct(product);
@@ -142,6 +145,11 @@ namespace MET.Domain.Logic
             }
 
             return new List<ProductGroup>(groupedProducts.Products.Values);
+        }
+
+        public void SetIgnoredCategories(List<IgnoreCategory> ignoreCategories)
+        {
+            this.ignoreCategories = ignoreCategories;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using MET.Data.Models;
 using MET.Domain;
 using MET.Domain.Logic;
+using MET.Domain.Logic.Models;
 using MET.Proxy.ProductReaders;
 using METCSV.Common;
 using METCSV.Common.Formatters;
@@ -32,8 +33,13 @@ namespace METCSV.UnitTests.EngineTest
             var td = Factory.GetTDProducts();
             var ab = Factory.GetABProducts();
 
+            var list = new ProductLists();
+            list.AddList(Providers.AB, ab);
+            list.AddList(Providers.TechData, td);
+            list.AddList(Providers.Lama, lama);
+
             _orchestrator.AddMetCollection(met);
-            _orchestrator.SetCollections(lama, td, ab);
+            _orchestrator.SetCollections(list);
 
             var t = _orchestrator.Orchestrate();
             t.Wait();
