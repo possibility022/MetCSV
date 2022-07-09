@@ -105,7 +105,8 @@ namespace MET.Proxy.ProductReaders
                     KodDostawcy = fields[(int)MetCsvProductsColums.KodUDostawcy],
                     StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)MetCsvProductsColums.StatusProduktu])),
                     UrlZdjecia = fields[(int)MetCsvProductsColums.AdresURLzdjecia],
-                    Hidden = fields[(int)MetCsvProductsColums.Kategoria].StartsWith("_HIDDEN")
+                    Hidden = fields[(int)MetCsvProductsColums.Kategoria].StartsWith("_HIDDEN"),
+                    Kategoria = fields[(int)MetCsvProductsColums.Kategoria]
                     //Wszystkie kategorie które zaczynają się 
                     //_HIDDEN mają być traktowane jak jedna kategoria.
                     //W pliku MET mogą wystąpić kategorie np. _HIDDEN_techdata

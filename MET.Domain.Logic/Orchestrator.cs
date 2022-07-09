@@ -26,6 +26,7 @@ namespace MET.Domain.Logic
                 new NewProductSetter(),
                 new ProductNameDomain(),
                 new IdDomain(ignoreDuplicates: ignoreIdsProblems),
+                new CategoryDomain(),
                 new EndOfLiveDomain(),
                 PriceDomain,
                 new FindCheapestProductDomain(),
@@ -91,12 +92,16 @@ namespace MET.Domain.Logic
             {
                 internalList ??= GroupProducts();
 
-                foreach (var groupedProduct in internalList)
-                {
-                    ExecuteActions(groupedProduct);
-                }
-
+#if DEBUG
+                //foreach (var groupedProduct in internalList)
+                //{
+                //    ExecuteActions(groupedProduct);
+                //}
                 var results = Parallel.ForEach(internalList, ExecuteActions);
+
+#else
+                var results = Parallel.ForEach(internalList, ExecuteActions);
+#endif
                 finalGroups = internalList;
             });
         }
