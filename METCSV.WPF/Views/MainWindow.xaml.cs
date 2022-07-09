@@ -37,6 +37,9 @@ namespace METCSV.WPF
         private void Export(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = ".csv";
+
             if (dialog.ShowDialog() == true)
             {
                 MainWindowViewModel.Export(dialog.FileName);
