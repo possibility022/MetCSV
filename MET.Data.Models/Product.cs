@@ -82,6 +82,8 @@ namespace MET.Data.Models
 
         public bool Hidden { get; set; }
 
+        public bool? EndOfLive { get; set; } = null;
+
 
 
         /// <summary>

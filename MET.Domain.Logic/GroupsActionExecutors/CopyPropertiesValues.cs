@@ -8,6 +8,10 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         {
             if (final.ID == null)
                 final.ID = source.ID;
+            
+            if (final.EndOfLive == true)
+                return;
+
             final.StanMagazynowy = source.StanMagazynowy;
             final.Hidden = source.Hidden;
             final.Provider = source.Provider;
