@@ -66,13 +66,19 @@
             Height="200"
             Status="{Binding InProgress, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
 
-        <CheckBox
+        <StackPanel
             Grid.Row="3"
             Grid.Column="0"
-            Grid.ColumnSpan="5"
-            HorizontalAlignment="Center"
-            Content="Ustaw marże po załadowaniu plików."
-            IsChecked="{Binding SetProfits}" />
+            Grid.ColumnSpan="5">
+            <CheckBox
+                HorizontalAlignment="Center"
+                Content="Ustaw marże."
+                IsChecked="{Binding SetProfits}" />
+            <CheckBox
+                HorizontalAlignment="Center"
+                Content="Ustaw filtry kategorii."
+                IsChecked="{Binding SetIgnoredCategories}" />
+        </StackPanel>
 
         <StackPanel
             Grid.Row="4"
