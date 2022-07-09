@@ -31,13 +31,13 @@ namespace MET.Domain.Logic
             return Task.WhenAll(tasks);
         }
 
-        public Task RemoveProductsWithSpecificCode(ICollection<Product>[] productsList)
+        public Task RemoveProductsWithSpecificCode(IProductsCollection productsList)
         {
-            var tasks = new List<Task>(productsList.Length);
+            var tasks = new List<Task>(productsList.Count);
 
             foreach (var collection in productsList)
             {
-                AddTaskToList(tasks, collection);
+                AddTaskToList(tasks, collection.Value);
             }
 
             return Task.WhenAll(tasks);

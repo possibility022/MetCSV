@@ -123,8 +123,16 @@ namespace MET.CSV.Generator
                 orchestrator.ManufacturerRenameDomain.SetDictionary(RenameManufacturerDictionary);
                 orchestrator.PriceDomain.SetProfits(CategoryProfits, CustomProfits, ManufacturersProfits);
 
+                orchestrator.SetIgnoredCategories(storageService.GetIgnoredCategories().ToList());
+
                 orchestrator.AddMetCollection(products.MetProducts);
-                orchestrator.SetCollections(products.AbProducts, products.LamaProducts, products.TechDataProducts);
+
+                var productCollection = new ProductLists();
+                productCollection.AddList(Providers.AB, products.AbProducts);
+                productCollection.AddList(Providers.Lama, products.LamaProducts);
+                productCollection.AddList(Providers.TechData, products.TechDataProducts);
+
+                orchestrator.SetCollections(productCollection);
                 await orchestrator.Orchestrate();
 
                 FinalListCombineDomain finalListCombineDomain = new FinalListCombineDomain();
