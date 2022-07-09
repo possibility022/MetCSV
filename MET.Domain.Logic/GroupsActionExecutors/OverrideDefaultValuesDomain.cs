@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using MET.Data.Models;
@@ -7,10 +8,20 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 {
     public class OverrideDefaultValuesDomain : IFinalProductConstructor
     {
+        private static readonly ISet<string> IgnoredProps = new HashSet<string>(new[] 
+        {
+            "ID",
+            "StatusProduktu",
+            "StanMagazynowy",
+            "Provider",
+            "Hidden",
+            "EndOfLive"
+        });
+
         private static PropertyInfo[] _properties = typeof(Product)
             .GetProperties()
             .Where(r => r.CanWrite)
-            .Where(r => r.Name != "ID" && r.Name != "StatusProduktu" && r.Name != "StanMagazynowy" && r.Name != "Provider" && r.Name != "Hidden") // Ignore those
+            .Where(r => !IgnoredProps.Contains(r.Name)) // Ignore those
             .ToArray();
 
         public void ExecuteAction(Product source, Product final)

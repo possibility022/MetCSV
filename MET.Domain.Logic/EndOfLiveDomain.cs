@@ -17,6 +17,7 @@ namespace MET.Domain.Logic
             p.SetCennaNetto(0);
             p.CenaZakupuNetto = 0;
             p.StanMagazynowy = 0;
+            p.EndOfLive = true;
 
             p.KodDostawcy = DecodeSapSymbol(p.KodDostawcy);
         }
