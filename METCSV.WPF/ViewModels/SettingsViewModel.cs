@@ -153,6 +153,9 @@ namespace METCSV.WPF.ViewModels
         private void LoadRenameTable()
         {
             using var context = new StorageContext();
+            using var storage = new StorageService(context);
+            storage.MakeSureDbCreated();
+
             var storageService = new StorageService(context);
 
             var renameMappings = storageService.GetRenameManufacturerDictionary();
