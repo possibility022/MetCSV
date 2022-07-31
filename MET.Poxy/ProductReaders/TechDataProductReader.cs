@@ -113,9 +113,6 @@ namespace MET.Proxy.ProductReaders
                     Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPr_kod],
                     EAN = fields[(int)TechDataCsvProductsColumns.EAN],
                 });
-
-                if (products[products.Count - 1].NazwaProduktu.Contains("ienny Uchwyt do  Monitora"))
-                    Console.WriteLine("TOON");
             }
 
             return products;
