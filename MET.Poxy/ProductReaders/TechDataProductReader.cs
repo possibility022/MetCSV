@@ -33,7 +33,7 @@ namespace MET.Proxy.ProductReaders
             {
                 LogInfo("Wczytuję produkty z TechDaty");
                 var prices = ReadPricesFromCsvFile(pathPrices, Encoding.Default);
-                var products = ReadProductsFromCsvFile(pathProducts, Encoding.Default);
+                var products = ReadProductsFromCsvFile(pathProducts, Encoding.GetEncoding("windows-1250"));
 
                 var merged = MergePriceTechData(products, prices);
 
@@ -113,6 +113,9 @@ namespace MET.Proxy.ProductReaders
                     Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPr_kod],
                     EAN = fields[(int)TechDataCsvProductsColumns.EAN],
                 });
+
+                if (products[products.Count - 1].NazwaProduktu.Contains("ienny Uchwyt do  Monitora"))
+                    Console.WriteLine("TOON");
             }
 
             return products;
