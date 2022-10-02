@@ -93,11 +93,10 @@ namespace MET.Domain.Logic
                 internalList ??= GroupProducts();
 
 #if DEBUG
-                //foreach (var groupedProduct in internalList)
-                //{
-                //    ExecuteActions(groupedProduct);
-                //}
-                var results = Parallel.ForEach(internalList, ExecuteActions);
+                foreach (var groupedProduct in internalList)
+                {
+                    ExecuteActions(groupedProduct);
+                }
 
 #else
                 var results = Parallel.ForEach(internalList, ExecuteActions);
