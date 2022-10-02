@@ -61,14 +61,14 @@ namespace METCSV.UnitTests.EngineTest
         [TestInitialize]
         public void Initialize()
         {
-            _workOnList = new List<Product>(_productMerger.FinalList);
+            _workOnList = new List<Product>(_productMerger.GetFinalList(true));
         }
 
         [TestMethod]
         public void ValidateThatProductWithPriceErrorIsNotInWarehouse()
         {
             var product = _productMerger
-                .FinalList
+                .GetFinalList(true)
                 .Single(r => r.SapManuHash == sapManuHashOfProductsWhichHasPriceError && r.Provider == Providers.AB);
 
             Assert.AreEqual(0, product.StanMagazynowy);
