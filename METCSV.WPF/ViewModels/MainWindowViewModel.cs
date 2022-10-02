@@ -27,6 +27,7 @@ namespace METCSV.WPF.ViewModels
             SetProfits = App.Settings?.Engine?.SetProfits ?? true;
             SetIgnoredCategories = App.Settings?.Engine?.SetIgnoredCategories ?? true;
             OfflineModeVisibility = App.Settings?.Engine?.OfflineMode == true ? Visibility.Visible : Visibility.Hidden;
+            ExportMetCustomProducts = App.Settings?.Engine?.ExportMetCustomProducts ?? true;
 
             ShowMetProductListEditorCommand = new RelayCommand(() => ShowMetListEditor());
             ShowAllProductsGroupsCommand = new RelayCommand(() => ShowAllProductsWindow());
@@ -87,6 +88,12 @@ namespace METCSV.WPF.ViewModels
             set => SetProperty(ref setProfits, value);
         }
 
+        public bool ExportMetCustomProducts
+        {
+            get => exportMetCustomProducts;
+            set => SetProperty(ref exportMetCustomProducts, value);
+        }
+
         private bool exportEnabled;
         public bool ExportEnabled
         {
@@ -99,6 +106,7 @@ namespace METCSV.WPF.ViewModels
         private readonly StorageService storage;
         private CancellationTokenSource cancellationTokenSource;
         private Visibility offlineModeVisibility = Visibility.Hidden;
+        private bool exportMetCustomProducts;
 
         public ICommand ShowMetProductListEditorCommand { get; }
         public ICommand ShowAllProductsGroupsCommand { get; }
@@ -347,7 +355,7 @@ namespace METCSV.WPF.ViewModels
 
         private void SaveIgnoredCategoriesAsync(CategoryFilterViewModel categoryFilterViewModel)
         {
-            foreach((var provider, var categories) in categoryFilterViewModel.GetIgnoredCategories())
+            foreach ((var provider, var categories) in categoryFilterViewModel.GetIgnoredCategories())
             {
                 storage.AddIgnoredCategories(provider, categories);
             }
@@ -381,11 +389,12 @@ namespace METCSV.WPF.ViewModels
             //    File.WriteAllText(path, json);
             //}
 
-            if (programFlow.FinalList != null)
+            var finalList = programFlow.GetFinalList(ExportMetCustomProducts);
+
+            if (finalList != null)
             {
-                programFlow.MergeCustomMetProducts();
                 CsvWriter cw = new CsvWriter();
-                var success = cw.ExportProducts(path, programFlow.FinalList);
+                var success = cw.ExportProducts(path, finalList);
                 if (!success)
                 {
                     Log.Error("Coś poszło nie tak z zapisem.");
@@ -398,6 +407,7 @@ namespace METCSV.WPF.ViewModels
         {
             App.Settings.Engine.SetProfits = SetProfits;
             App.Settings.Engine.SetIgnoredCategories = SetIgnoredCategories;
+            App.Settings.Engine.ExportMetCustomProducts = ExportMetCustomProducts;
         }
 
         internal void Stop()
