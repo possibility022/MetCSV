@@ -33,6 +33,8 @@ namespace MET.Workflows
         private const string ScieskaKategoriiHeader = "SciezkaKategorii";
         private const string ModelProduktuHeader = "ModelProduktu";
         private const string KodKreskowyHeader = "KodKreskowy";
+        private const string CzasRealizacjiHeader = "CzasRealizacji";
+        private const string TypCzasuHeader = "TypCzasu";
 
         readonly IReadOnlyCollection<string> valuesOrder = new List<string>
             {
@@ -53,6 +55,8 @@ namespace MET.Workflows
 
                 KategoriaHeader,
                 KodKreskowyHeader,
+                CzasRealizacjiHeader,
+                TypCzasuHeader,
     };
 
 
@@ -106,6 +110,8 @@ namespace MET.Workflows
             columns[UrlZdjeciaHeader] = p.UrlZdjecia;
             columns[KategoriaHeader] = p.Kategoria;
             columns[KodKreskowyHeader] = p.EAN;
+            columns[CzasRealizacjiHeader] = "1";
+            columns[TypCzasuHeader] = "12";
         }
 
         private void WriteProduct(StreamWriter writer, Dictionary<string, string> p, IReadOnlyCollection<string> headers)
