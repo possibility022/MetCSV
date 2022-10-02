@@ -10,5 +10,6 @@
 
         public int MaximumPriceErrorDifference { get; set; } = 20;
         public double DefaultProfit { get; set; } = 0.1;
+        public bool ExportMetCustomProducts { get; set; } = true;
     }
 }

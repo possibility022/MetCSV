@@ -78,6 +78,10 @@
                 HorizontalAlignment="Center"
                 Content="Ustaw filtry kategorii."
                 IsChecked="{Binding SetIgnoredCategories}" />
+            <CheckBox
+                HorizontalAlignment="Center"
+                Content="Eksportuj produkty met."
+                IsChecked="{Binding ExportMetCustomProducts}" />
         </StackPanel>
 
         <StackPanel

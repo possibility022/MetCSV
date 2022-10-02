@@ -48,17 +48,16 @@ namespace MET.CSV.Generator
 
         public IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; private set; }
 
-        public IReadOnlyList<Product> FinalList => finalList;
         public IReadOnlyCollection<ProductGroup> AllProducts { get; private set; }
 
         private bool InProgress { get; set; }
 
         public ProgramFlow(
-            StorageService storageService, 
-            ISettings settings, 
-            bool offlineMode, 
-            int maximumPriceDifference, 
-            CancellationToken token, 
+            StorageService storageService,
+            ISettings settings,
+            bool offlineMode,
+            int maximumPriceDifference,
+            CancellationToken token,
             IObjectFormatterConstructor<object> objectFormatter)
         {
             this.storageService = storageService ?? throw new ArgumentNullException(nameof(storageService));
@@ -214,9 +213,23 @@ namespace MET.CSV.Generator
             }
         }
 
-        public void MergeCustomMetProducts()
+        public ICollection<Product>? GetFinalList(bool includeMetCustomProducts)
         {
-            finalList.AddRange(MetCustomProducts);
+            if (finalList == null)
+                return null;
+
+            if (includeMetCustomProducts)
+            {
+                var list = new List<Product>(finalList.Count + MetCustomProducts.Count);
+                list.AddRange(finalList);
+                list.AddRange(MetCustomProducts);
+                return list;
+            }
+            else
+            {
+                var list = new List<Product>(finalList);
+                return list;
+            }
         }
     }
 }
