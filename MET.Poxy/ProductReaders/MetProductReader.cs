@@ -64,7 +64,7 @@ namespace MET.Proxy.ProductReaders
 
         private Dictionary<int, double> GetMetProductPrices(string pathToPrices)
         {
-            _productIdToPrice = new ();
+            _productIdToPrice = new();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
             IEnumerable<string[]> productsWithPrices = reader.ReadCsv(pathToPrices, Encoding.GetEncoding("windows-1250")).Skip(1);
 
@@ -142,6 +142,12 @@ namespace MET.Proxy.ProductReaders
             {
                 provider = Providers.TechData;
                 return sourceValue.Remove(0, "TechData".Length);
+            }
+
+            if (sourceValue.StartsWith("SAP_"))
+            {
+                provider = Providers.None;
+                return sourceValue.Remove(0, "SAP_".Length);
             }
 
             provider = Providers.None;
