@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using MET.Data.Models;
 using MET.Proxy.Interfaces;
 using METCSV.Common;
+using Newtonsoft.Json;
 
 namespace MET.Proxy.ProductProvider
 {
@@ -70,7 +70,7 @@ namespace MET.Proxy.ProductProvider
             return true;
         }
 
-        private const string FileExtension = ".bin";
+        private const string FileExtension = ".archive.json";
 
         public ICollection<Product> LoadOldProducts()
         {
@@ -90,30 +90,29 @@ namespace MET.Proxy.ProductProvider
             if (file == null)
                 return null;
 
-            using (Stream stream = File.Open(file.FullName, FileMode.Open))
-            {
-                throw new NotImplementedException();
-                //var bin = new BinaryFormatter();
-                //return (List<Product>)bin.Deserialize(stream);
-            }
+            using Stream stream = File.Open(file.FullName, FileMode.Open);
+            JsonTextReader reader = new JsonTextReader(new StreamReader(stream));
+            JsonSerializer serializer = new JsonSerializer();
+            
+            var deserialized = serializer.Deserialize<ICollection<Product>>(reader);
+            
+            return deserialized;
         }
 
         private string GenerateFileName()
             => $"{ArchiveFileNamePrefix}_{DateTime.Now.Date.ToString("d")}{FileExtension}";
 
-        public void SaveAsOldProducts(ICollection<Product> products)
+        public void SaveAsOldProducts(ICollection<Product> oldProducts)
         {
             try
             {
                 if (!Directory.Exists(ArchiveFolder))
                     Directory.CreateDirectory(ArchiveFolder);
 
-                using (Stream stream = File.Open(Path.Combine(ArchiveFolder, GenerateFileName()), FileMode.Create))
-                {
-                    throw new NotImplementedException();
-                    //var bin = new BinaryFormatter();
-                    //bin.Serialize(stream, products);
-                }
+                using Stream stream = File.Open(Path.Combine(ArchiveFolder, GenerateFileName()), FileMode.Create);
+                JsonWriter writer = new JsonTextWriter(new StreamWriter(stream));
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(writer, oldProducts);
             }
             catch (IOException io)
             {

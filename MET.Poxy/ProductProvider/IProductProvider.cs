@@ -17,6 +17,6 @@ namespace MET.Proxy.ProductProvider
         Providers Provider { get; }
 
         ICollection<Product> LoadOldProducts();
-        void SaveAsOldProducts(ICollection<Product> products);
+        void SaveAsOldProducts(ICollection<Product> oldProducts);
     }
 }
