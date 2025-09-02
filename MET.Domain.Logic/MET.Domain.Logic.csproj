@@ -9,9 +9,4 @@
     <ProjectReference Include="..\MET.Data.Models\MET.Data.Models.csproj" />
     <ProjectReference Include="..\METCSV.Common\METCSV.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.241603">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
 </Project>

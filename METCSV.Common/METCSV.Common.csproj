@@ -14,10 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.241603">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="System.ServiceModel.Federation" Version="8.1.2" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.8" />
     <PackageReference Include="CoreWCF.Primitives" Version="1.8.0" />
     <PackageReference Include="CoreWCF.ConfigurationManager" Version="1.8.0" />
@@ -27,6 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="4.7.10" />
+    <PackageReference Include="NLog" Version="6.0.3" />
   </ItemGroup>
 </Project>
