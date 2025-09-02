@@ -77,8 +77,8 @@ namespace METCSV.UnitTests.EngineTest
             priceDomain.ExecuteAction(productGroup);
 
             //Assert
-            Assert.AreNotEqual(productGroup.VendorProducts[1].CenaNetto, productGroup.FinalProduct);
-            Assert.AreNotEqual(productGroup.VendorProducts[2].CenaNetto, productGroup.FinalProduct);
+            Assert.AreNotEqual(productGroup.VendorProducts[1].CenaNetto, productGroup.FinalProduct.CenaNetto);
+            Assert.AreNotEqual(productGroup.VendorProducts[2].CenaNetto, productGroup.FinalProduct.CenaNetto);
         }
 
         [TestMethod]
