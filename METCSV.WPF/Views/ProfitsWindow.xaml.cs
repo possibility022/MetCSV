@@ -25,7 +25,7 @@ namespace METCSV.WPF.Views
 
         private void ButtonSaveAndClose_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Jesteś pewien?", "Zapis zastąpi obecne pliki lub je utworzy.", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (System.Windows.MessageBox.Show("Jesteś pewien?", "Zapis zastąpi obecne pliki lub je utworzy.", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 ProfitsViewModel.Save = true;
                 Close();

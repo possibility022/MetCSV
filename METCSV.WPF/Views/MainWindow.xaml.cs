@@ -3,6 +3,7 @@ using METCSV.WPF.ViewModels;
 using METCSV.WPF.Views;
 using Microsoft.Win32;
 using System.Windows;
+using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
 namespace METCSV.WPF
 {
@@ -40,7 +41,7 @@ namespace METCSV.WPF
             dialog.AddExtension = true;
             dialog.DefaultExt = ".csv";
 
-            if (dialog.ShowDialog() == true)
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 MainWindowViewModel.Export(dialog.FileName);
             }

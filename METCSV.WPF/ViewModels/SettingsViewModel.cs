@@ -239,7 +239,7 @@ namespace METCSV.WPF.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show(
+                    System.Windows.MessageBox.Show(
                         "Nie można zapisać. Któraś wartość w pierwszej tabeli wystepuje więcej niż jeden raz.");
                 }
             }

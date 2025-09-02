@@ -92,8 +92,9 @@ namespace MET.Proxy.ProductProvider
 
             using (Stream stream = File.Open(file.FullName, FileMode.Open))
             {
-                var bin = new BinaryFormatter();
-                return (List<Product>)bin.Deserialize(stream);
+                throw new NotImplementedException();
+                //var bin = new BinaryFormatter();
+                //return (List<Product>)bin.Deserialize(stream);
             }
         }
 
@@ -109,8 +110,9 @@ namespace MET.Proxy.ProductProvider
 
                 using (Stream stream = File.Open(Path.Combine(ArchiveFolder, GenerateFileName()), FileMode.Create))
                 {
-                    var bin = new BinaryFormatter();
-                    bin.Serialize(stream, products);
+                    throw new NotImplementedException();
+                    //var bin = new BinaryFormatter();
+                    //bin.Serialize(stream, products);
                 }
             }
             catch (IOException io)

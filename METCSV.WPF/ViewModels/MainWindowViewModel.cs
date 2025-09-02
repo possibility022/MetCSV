@@ -17,6 +17,7 @@ using MET.Data.Storage;
 using METCSV.Common.Formatters;
 using METCSV.WPF.ViewModels.ProfitsInnerModels;
 using Microsoft.Toolkit.Mvvm.Input;
+using MessageBox = System.Windows.MessageBox;
 
 namespace METCSV.WPF.ViewModels
 {
