@@ -75,6 +75,7 @@ namespace METCSV.UnitTests
         }
 
         [TestMethod]
+        [Ignore]// Enable for real test
         public void TestMethod()
         {
             var requests = new[]
@@ -93,8 +94,7 @@ namespace METCSV.UnitTests
             }
         }
 
-        [Ignore] // Enable for real test
-        public void LamaDownload(string request)
+        private void LamaDownload(string request)
         {
             var u = File.ReadAllText("C:\\temp\\lamau.txt");
             var p = File.ReadAllText("C:\\temp\\lamap.txt");
