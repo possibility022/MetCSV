@@ -93,13 +93,16 @@ namespace METCSV.UnitTests
             }
         }
 
+        [Ignore] // Enable for real test
         public void LamaDownload(string request)
         {
+            var u = File.ReadAllText("C:\\temp\\lamau.txt");
+            var p = File.ReadAllText("C:\\temp\\lamap.txt");
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://www.lamaplus.com.pl/partner/export.php");
 
-            var postData = "user=" + 60117701;
+            var postData = "user=" + u;
 
-            postData += $"&pass=***REMOVED***";
+            postData += $"&pass=" + p;
             postData += $"&request={request}";
 
             var data = Encoding.ASCII.GetBytes(postData);
