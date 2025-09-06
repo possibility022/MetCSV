@@ -12,9 +12,9 @@ namespace METCSV.WPF.Views
     public partial class SettingsWindow : Window
     {
 
-        SettingsViewModel _model;
+        SettingsViewModel model;
 
-        SettingsViewModel Model { get => _model ?? (_model = (SettingsViewModel)DataContext); }
+        SettingsViewModel Model { get => model ?? (model = (SettingsViewModel)DataContext); }
 
 
 

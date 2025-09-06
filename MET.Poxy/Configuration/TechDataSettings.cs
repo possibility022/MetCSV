@@ -18,6 +18,6 @@
 
         public string CsvDelimiter { get; set; } = ";";
 
-        public string SAPPrefix { get; set; } = "TechData";
+        public string SapPrefix { get; set; } = "TechData";
     }
 }

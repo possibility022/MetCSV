@@ -24,9 +24,9 @@ namespace MET.Domain.Logic
             AddTaskToList(tasks, products.LamaProducts);
             AddTaskToList(tasks, products.MetProducts);
             AddTaskToList(tasks, products.TechDataProducts);
-            AddTaskToList(tasks, products.AbProducts_Old);
-            AddTaskToList(tasks, products.LamaProducts_Old);
-            AddTaskToList(tasks, products.TechDataProducts_Old);
+            AddTaskToList(tasks, products.AbProductsOld);
+            AddTaskToList(tasks, products.LamaProductsOld);
+            AddTaskToList(tasks, products.TechDataProductsOld);
 
             return Task.WhenAll(tasks);
         }

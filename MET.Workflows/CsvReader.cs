@@ -9,20 +9,18 @@ namespace MET.Workflows
 
         public string Delimiter { get; set; }
 
-        public FieldType FieldType { get; set; } = FieldType.Delimited;
+        private FieldType FieldType { get; set; } = FieldType.Delimited;
 
         public IEnumerable<string[]> ReadCsv(string path, Encoding encoding)
         {
-            using (TextFieldParser parser = new TextFieldParser(path, encoding))
-            {
-                parser.SetDelimiters(Delimiter);
-                parser.TextFieldType = FieldType;
+            using TextFieldParser parser = new TextFieldParser(path, encoding);
+            parser.SetDelimiters(Delimiter);
+            parser.TextFieldType = FieldType;
 
-                while (!parser.EndOfData)
-                {
-                    string[] fields = parser.ReadFields();
-                    yield return fields;
-                }
+            while (!parser.EndOfData)
+            {
+                string[] fields = parser.ReadFields();
+                yield return fields;
             }
         }
     }

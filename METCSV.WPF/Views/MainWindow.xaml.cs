@@ -9,17 +9,12 @@ namespace METCSV.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private MainWindowViewModel _mainWindowViewModel;
-
-        MainWindowViewModel MainWindowViewModel { get => _mainWindowViewModel; }
-
-        private Task task;
+        private MainWindowViewModel MainWindowViewModel { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            _mainWindowViewModel = (MainWindowViewModel)DataContext;
+            MainWindowViewModel = (MainWindowViewModel)DataContext;
         }
 
         private void Export(object sender, RoutedEventArgs e)
@@ -37,11 +32,6 @@ namespace METCSV.WPF
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             MainWindowViewModel.Closing();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            MainWindowViewModel.Loaded();
         }
     }
 }

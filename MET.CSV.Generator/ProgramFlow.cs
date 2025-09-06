@@ -28,23 +28,23 @@ namespace MET.CSV.Generator
 
         private Products products;
 
-        public IProductProvider Met;
+        private IProductProvider met;
         public IProductProvider Lama;
         public IProductProvider TechData;
-        public IProductProvider AB;
+        public IProductProvider Ab;
 
 
         readonly IObjectFormatterConstructor<object> objectFormatterSource;
 
         private readonly CancellationToken token;
 
-        public IReadOnlyCollection<CategoryProfit> CategoryProfits { get; private set; }
-        public IReadOnlyCollection<CustomProfit> CustomProfits { get; private set; }
-        public IReadOnlyCollection<ManufacturerProfit> ManufacturersProfits { get; private set; }
+        private IReadOnlyCollection<CategoryProfit> CategoryProfits { get; set; }
+        private IReadOnlyCollection<CustomProfit> CustomProfits { get; set; }
+        private IReadOnlyCollection<ManufacturerProfit> ManufacturersProfits { get; set; }
 
         public List<Product> MetCustomProducts { get; private set; }
 
-        public IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; private set; }
+        private IReadOnlyDictionary<string, string> RenameManufacturerDictionary { get; set; }
 
         public IReadOnlyCollection<ProductGroup> AllProducts { get; private set; }
 
@@ -77,22 +77,22 @@ namespace MET.CSV.Generator
             return DownloadAndLoadAsync();
         }
 
-        public async Task<bool> StepTwo()
+        public async Task StepTwo()
         {
-            var metProducts = Met.GetProducts();
+            var metProducts = met.GetProducts();
             var metProd = new MetCustomProductsDomain();
             var metCustomProducts = metProd.ModifyList(metProducts);
 
             products = new Products()
             {
-                AbProducts = AB.GetProducts(),
-                AbProducts_Old = AB.LoadOldProducts(),
+                AbProducts = Ab.GetProducts(),
+                AbProductsOld = Ab.LoadOldProducts(),
                 MetProducts = metProducts,
                 MetCustomProducts = metCustomProducts,
                 TechDataProducts = TechData.GetProducts(),
-                TechDataProducts_Old = TechData.LoadOldProducts(),
+                TechDataProductsOld = TechData.LoadOldProducts(),
                 LamaProducts = Lama.GetProducts(),
-                LamaProducts_Old = Lama.LoadOldProducts()
+                LamaProductsOld = Lama.LoadOldProducts()
             };
 
             CustomProfits = storageService.GetCustomProfits().ToList();
@@ -101,11 +101,9 @@ namespace MET.CSV.Generator
             RenameManufacturerDictionary = storageService.GetRenameManufacturerDictionary();
 
             var success = await StartFlow();
-            if (!success)
-                return false;
+            if (!success) return;
 
             MetCustomProducts = metCustomProducts;
-            return true;
         }
 
         private async Task<bool> StartFlow()
@@ -125,7 +123,7 @@ namespace MET.CSV.Generator
                 orchestrator.AddMetCollection(products.MetProducts);
 
                 var productCollection = new ProductLists();
-                productCollection.AddList(Providers.AB, products.AbProducts);
+                productCollection.AddList(Providers.Ab, products.AbProducts);
                 productCollection.AddList(Providers.Lama, products.LamaProducts);
                 productCollection.AddList(Providers.TechData, products.TechDataProducts);
 
@@ -152,7 +150,7 @@ namespace MET.CSV.Generator
 
         private void Initialize()
         {
-            Met = new MetProductProvider(
+            met = new MetProductProvider(
                 settings.MetDownloaderSettings,
                 offlineMode,
                 token);
@@ -169,7 +167,7 @@ namespace MET.CSV.Generator
                 offlineMode,
                 token);
 
-            AB = new ABProductProvider(
+            Ab = new AbProductProvider(
                 settings.AbReaderSettings,
                 settings.AbDownloaderSettings,
                 offlineMode,
@@ -178,10 +176,10 @@ namespace MET.CSV.Generator
 
         private async Task<bool> DownloadAndLoadAsync()
         {
-            var met = Met.DownloadAndLoadAsync();
+            var met = this.met.DownloadAndLoadAsync();
             var lama = Lama.DownloadAndLoadAsync();
             var techData = TechData.DownloadAndLoadAsync();
-            var ab = AB.DownloadAndLoadAsync();
+            var ab = Ab.DownloadAndLoadAsync();
 
             await Task.WhenAll(met, lama, techData, ab);
 
@@ -192,21 +190,21 @@ namespace MET.CSV.Generator
         {
             PriceErrorDomain priceError;
 
-            if (products.AbProducts_Old != null)
+            if (products.AbProductsOld != null)
             {
-                priceError = new PriceErrorDomain(products.AbProducts_Old, products.AbProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
+                priceError = new PriceErrorDomain(products.AbProductsOld, products.AbProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
 
-            if (products.LamaProducts_Old != null)
+            if (products.LamaProductsOld != null)
             {
-                priceError = new PriceErrorDomain(products.LamaProducts_Old, products.LamaProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
+                priceError = new PriceErrorDomain(products.LamaProductsOld, products.LamaProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
 
-            if (products.TechDataProducts_Old != null)
+            if (products.TechDataProductsOld != null)
             {
-                priceError = new PriceErrorDomain(products.TechDataProducts_Old, products.TechDataProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
+                priceError = new PriceErrorDomain(products.TechDataProductsOld, products.TechDataProducts, maximumPriceDifference, objectFormatterSource.GetNewInstance());
                 priceError.ValidateSingleProduct();
             }
         }

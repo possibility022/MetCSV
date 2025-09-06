@@ -14,7 +14,7 @@ namespace MET.Proxy.ProductReaders
 {
     public class AbProductReader : ProductReaderBase 
     {
-        public override Providers Provider => Providers.AB;
+        public override Providers Provider => Providers.Ab;
 
         private readonly string csvFileEncoding;
         private readonly string csvDelimiter;
@@ -29,7 +29,7 @@ namespace MET.Proxy.ProductReaders
         public override IList<Product> GetProducts(string filename, string filename2) =>
             GetProducts(filename, null);
 
-        public IList<Product> GetProducts(string csvPath, Encoding encoding)
+        private IList<Product> GetProducts(string csvPath, Encoding encoding)
         {
             ThrowIfCanceled();
 
@@ -83,21 +83,21 @@ namespace MET.Proxy.ProductReaders
 
                 products.Add(new Product(Provider)
                 {
-                    ID = null,
-                    SymbolSAP = fields[(int)AbCsvProductsColumns.indeks],
+                    Id = null,
+                    SymbolSap = fields[(int)AbCsvProductsColumns.Indeks],
                     //KodProducenta = fields[(int)AB.indeks_p],
                     //ModelProduktu = fields[(int)AB.indeks_p],
-                    OryginalnyKodProducenta = fields[(int)AbCsvProductsColumns.indeks_p],
-                    NazwaProduktu = fields[(int)AbCsvProductsColumns.nazwa],
-                    NazwaProducenta = fields[(int)AbCsvProductsColumns.producent],
-                    KodDostawcy = fields[(int)AbCsvProductsColumns.ID_produktu],
+                    OryginalnyKodProducenta = fields[(int)AbCsvProductsColumns.IndeksP],
+                    NazwaProduktu = fields[(int)AbCsvProductsColumns.Nazwa],
+                    NazwaProducenta = fields[(int)AbCsvProductsColumns.Producent],
+                    KodDostawcy = fields[(int)AbCsvProductsColumns.IdProduktu],
                     NazwaDostawcy = ProviderName,
-                    StanMagazynowy = ParseABwarehouseStatus(fields[(int)AbCsvProductsColumns.magazyn_ilosc]),
+                    StanMagazynowy = ParseABwarehouseStatus(fields[(int)AbCsvProductsColumns.MagazynIlosc]),
                     StatusProduktu = false,
-                    CenaZakupuNetto = Double.Parse(fields[(int)AbCsvProductsColumns.cena_netto].Replace('.', ',')),
+                    CenaZakupuNetto = Double.Parse(fields[(int)AbCsvProductsColumns.CenaNetto].Replace('.', ',')),
                     UrlZdjecia = null,
-                    Kategoria = HttpUtility.HtmlDecode(fields[(int)AbCsvProductsColumns.kategoria]),
-                    EAN = fields[(int)AbCsvProductsColumns.EAN],
+                    Kategoria = HttpUtility.HtmlDecode(fields[(int)AbCsvProductsColumns.Kategoria]),
+                    Ean = fields[(int)AbCsvProductsColumns.Ean],
                 });
             }
 

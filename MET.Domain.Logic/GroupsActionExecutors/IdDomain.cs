@@ -13,7 +13,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         public IdDomain(bool ignoreDuplicates)
         {
             this.ignoreDuplicates = ignoreDuplicates;
-            providersPriority = new[] { Providers.Lama, Providers.TechData, Providers.AB };
+            providersPriority = new[] { Providers.Lama, Providers.TechData, Providers.Ab };
         }
 
 
@@ -21,24 +21,24 @@ namespace MET.Domain.Logic.GroupsActionExecutors
         {
             if (!productGroup.MetProducts.Any())
             {
-                productGroup.FinalProduct.ID = null;
+                productGroup.FinalProduct.Id = null;
             }
             else
             {
                 int idToSet;
 
-                if (productGroup.MetProducts.Select(r => r.ID).Distinct().Count() > 1)
+                if (productGroup.MetProducts.Select(r => r.Id).Distinct().Count() > 1)
                 {
                     var sourceOfId = GetSourceByVendor(productGroup.MetProducts);
-                    if (sourceOfId?.ID != null)
+                    if (sourceOfId?.Id != null)
                     {
-                        idToSet = sourceOfId.ID.Value;
-                        productGroup.FinalProduct.ID = idToSet;
+                        idToSet = sourceOfId.Id.Value;
+                        productGroup.FinalProduct.Id = idToSet;
                         return;
                     }
                 }
-                idToSet = productGroup.MetProducts.First().ID.Value;
-                productGroup.FinalProduct.ID = idToSet;
+                idToSet = productGroup.MetProducts.First().Id.Value;
+                productGroup.FinalProduct.Id = idToSet;
             }
         }
 

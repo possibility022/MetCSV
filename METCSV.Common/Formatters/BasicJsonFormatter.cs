@@ -7,30 +7,30 @@ namespace METCSV.Common.Formatters
     {
 
         StringBuilder sb = new StringBuilder();
-        private Action<string> _action;
+        private Action<string> action;
 
         public BasicJsonFormatter()
         {
-            _action = Log.LogProductInfo;
+            action = Log.LogProductInfo;
         }
 
         public void Flush()
         {
-            _action.Invoke(sb.ToString());
+            action.Invoke(sb.ToString());
             sb.Clear();
         }
 
         public IObjectFormatter<T> GetNewInstance()
         {
             var obj = new BasicJsonFormatter<T>();
-            obj.SetFlushAction(_action);
+            obj.SetFlushAction(action);
 
             return obj;
         }
 
-        public void SetFlushAction(Action<string> action)
+        private void SetFlushAction(Action<string> action)
         {
-            _action = action;
+            this.action = action;
         }
 
         public void WriteLine(string message)

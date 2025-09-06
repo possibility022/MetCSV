@@ -24,9 +24,9 @@ namespace MET.Data.Models
 
         public Providers Provider { get; set; }
 
-        public int? ID { get; set; }
+        public int? Id { get; set; }
 
-        public string SymbolSAP { get => _symbolSAP; set { _symbolSAP = value; UpdateSapMenuHashSet(); } }
+        public string SymbolSap { get => symbolSap; set { symbolSap = value; UpdateSapMenuHashSet(); } }
 
         public string KodProducenta { get; private set; } = string.Empty;
 
@@ -36,20 +36,20 @@ namespace MET.Data.Models
 
         public string OryginalnyKodProducenta
         {
-            get { return _oryginalnyKodProducenta; }
+            get { return oryginalnyKodProducenta; }
             set
             {
-                string _value = value;
+                string v = value;
 
-                if (_value.Contains('#'))
+                if (v.Contains('#'))
                 {
-                    int indexOfHash = _value.IndexOf('#');
-                    _value = _value.Remove(indexOfHash);
+                    int indexOfHash = v.IndexOf('#');
+                    v = v.Remove(indexOfHash);
                 }
 
-                _oryginalnyKodProducenta = value;
-                ModelProduktu = _value;
-                KodProducenta = _value;
+                oryginalnyKodProducenta = v;
+                ModelProduktu = v;
+                KodProducenta = v;
                 UpdateCodeAndManu();
             }
         }
@@ -58,10 +58,10 @@ namespace MET.Data.Models
 
         public string KodDostawcy { get; set; }
 
-        public string NazwaProducenta { get => _nazwaProducenta; set { _nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateCodeAndManu(); } }
+        public string NazwaProducenta { get => nazwaProducenta; set { nazwaProducenta = value; UpdateSapMenuHashSet(); UpdateCodeAndManu(); } }
 
         public string NazwaDostawcy { get; set; }
-        public string EAN { get; set; }
+        public string Ean { get; set; }
 
         public int StanMagazynowy { get; set; }
 
@@ -101,13 +101,13 @@ namespace MET.Data.Models
         /// </value>
         public string PartNumber { get; private set; }
 
-        string _oryginalnyKodProducenta;
-        private string _symbolSAP = string.Empty;
-        private string _nazwaProducenta = string.Empty;
+        string oryginalnyKodProducenta;
+        private string symbolSap = string.Empty;
+        private string nazwaProducenta = string.Empty;
 
         private void UpdateSapMenuHashSet()
         {
-            SapManuHash = $"{SymbolSAP}_||_{NazwaProducenta}";
+            SapManuHash = $"{SymbolSap}_||_{NazwaProducenta}";
         }
 
         private void UpdateCodeAndManu()
@@ -122,7 +122,7 @@ namespace MET.Data.Models
 
         public override string ToString()
         {
-            return $"{Provider} {OryginalnyKodProducenta} {SymbolSAP}";
+            return $"{Provider} {OryginalnyKodProducenta} {SymbolSap}";
         }
     }
 

@@ -9,23 +9,23 @@ namespace METCSV.UnitTests.Comparers
     public class ProductByProductPriceTest
     {
 
-        static ProductByProductPrice _comparer;
-        static Product _cheap;
-        static Product _expensive;
+        static ProductByProductPrice comparer;
+        static Product cheap;
+        static Product expensive;
 
 
         [ClassInitialize]
         static public void Initialize(TestContext context)
         {
-            _comparer = new ProductByProductPrice();
-            _cheap = new Product(Providers.AB) { CenaNetto = 100 };
-            _expensive = new Product(Providers.AB) { CenaNetto= 999 };
+            comparer = new ProductByProductPrice();
+            cheap = new Product(Providers.Ab) { CenaNetto = 100 };
+            expensive = new Product(Providers.Ab) { CenaNetto= 999 };
         }
 
         [TestMethod]
         public void ReturnOneIfProductAIsGreater()
         {
-            var result = _comparer.Compare(_expensive, _cheap);
+            var result = comparer.Compare(expensive, cheap);
 
             Assert.AreEqual(1, result);
         }
@@ -33,7 +33,7 @@ namespace METCSV.UnitTests.Comparers
         [TestMethod]
         public void ReturnMinusOneIfProductAIsNotGreater()
         {
-            var result = _comparer.Compare(_cheap, _expensive);
+            var result = comparer.Compare(cheap, expensive);
 
             Assert.AreEqual(-1, result);
         }
@@ -41,7 +41,7 @@ namespace METCSV.UnitTests.Comparers
         [TestMethod]
         public void ReturnZeroIfProductsAreEqual()
         {
-            var result = _comparer.Compare(_cheap, _cheap);
+            var result = comparer.Compare(cheap, cheap);
 
             Assert.AreEqual(0, result);
         }

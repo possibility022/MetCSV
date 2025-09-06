@@ -11,7 +11,7 @@ namespace MET.Proxy.Downloaders
     {
         public override Providers Provider => Providers.Lama;
 
-        public string UrlConnection { get; }
+        private string UrlConnection { get; }
 
         private readonly string productsFile;
 
@@ -23,7 +23,7 @@ namespace MET.Proxy.Downloaders
         private readonly string manufacturersRequest;
         private readonly string manufacturersXmlFile;
 
-        const string manufacturersZipFile = "lamaManufacturers.zip";
+        const string ManufacturersZipFile = "lamaManufacturers.zip";
 
         public LamaDownloader(ILamaDownloaderSettings downloaderSettings)
         {
@@ -39,7 +39,7 @@ namespace MET.Proxy.Downloaders
         protected override bool Download()
         {
             var priceList = DownloadFile(this.request, productsFile);
-            var manufacturers = DownloadFile(this.manufacturersRequest, manufacturersZipFile);
+            var manufacturers = DownloadFile(this.manufacturersRequest, ManufacturersZipFile);
 
             var extractedFile = ExtractZipFile();
             File.Move(extractedFile, manufacturersXmlFile, true);
@@ -58,7 +58,7 @@ namespace MET.Proxy.Downloaders
 
             Directory.CreateDirectory(tempFolder);
 
-            System.IO.Compression.ZipFile.ExtractToDirectory(manufacturersZipFile, tempFolder);
+            System.IO.Compression.ZipFile.ExtractToDirectory(ManufacturersZipFile, tempFolder);
 
             return FindFile(tempFolder);
         }

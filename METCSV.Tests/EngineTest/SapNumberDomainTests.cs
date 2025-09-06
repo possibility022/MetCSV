@@ -22,14 +22,14 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void ThrowWhenSourceIsNull()
         {
-            domain.ExecuteAction(null, new Product(Providers.MET));
+            domain.ExecuteAction(null, new Product(Providers.Met));
         }
 
         [ExpectedException(typeof(InvalidOperationException))]
         [TestMethod]
         public void ThrowWhenFinalIsNull()
         {
-            domain.ExecuteAction(new Product(Providers.MET), null);
+            domain.ExecuteAction(new Product(Providers.Met), null);
         }
 
         [TestMethod]
@@ -37,16 +37,16 @@ namespace METCSV.Tests.EngineTest
         {
             domain.ExecuteAction(new Product(Providers.None), final);
 
-            Assert.IsTrue(final.SymbolSAP.StartsWith(SapNumberDomain.Prefix + "_"));
+            Assert.IsTrue(final.SymbolSap.StartsWith(SapNumberDomain.Prefix + "_"));
         }
 
         [TestMethod]
         public void HasCorrectSuffixValue()
         {
-            var source = new Product(Providers.None) { SymbolSAP = "12345" };
+            var source = new Product(Providers.None) { SymbolSap = "12345" };
             domain.ExecuteAction(source, final);
 
-            Assert.IsTrue(final.SymbolSAP.EndsWith("_12345"));
+            Assert.IsTrue(final.SymbolSap.EndsWith("_12345"));
         }
     }
 }

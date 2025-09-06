@@ -14,10 +14,10 @@ namespace MET.Proxy.ProductReaders
 {
     public class MetProductReader : ProductReaderBase
     {
-        public override Providers Provider => Providers.MET;
+        public override Providers Provider => Providers.Met;
 
-        Dictionary<int, double> _productIdToPrice;
-        private static bool _encodingInitialized;
+        Dictionary<int, double> productIdToPrice;
+        private static bool encodingInitialized;
 
         public MetProductReader(CancellationToken token) : base(token)
         {
@@ -27,10 +27,10 @@ namespace MET.Proxy.ProductReaders
 
         private static void InitializeEncoding()
         {
-            if (!_encodingInitialized)
+            if (!encodingInitialized)
             {
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                _encodingInitialized = true;
+                encodingInitialized = true;
             }
         }
 
@@ -40,7 +40,7 @@ namespace MET.Proxy.ProductReaders
             return GetMetProducts(path);
         }
 
-        public IList<Product> GetMetProducts(string pathProducts)
+        private IList<Product> GetMetProducts(string pathProducts)
         {
             Status = OperationStatus.InProgress;
 
@@ -61,9 +61,9 @@ namespace MET.Proxy.ProductReaders
             }
         }
 
-        private Dictionary<int, double> GetMetProductPrices(string pathToPrices)
+        private void GetMetProductPrices(string pathToPrices)
         {
-            _productIdToPrice = new();
+            productIdToPrice = new();
             CsvReader reader = new CsvReader() { Delimiter = ";" };
             IEnumerable<string[]> productsWithPrices = reader.ReadCsv(pathToPrices, Encoding.GetEncoding("windows-1250")).Skip(1);
 
@@ -71,13 +71,11 @@ namespace MET.Proxy.ProductReaders
             {
                 ThrowIfCanceled();
 
-                var id = int.Parse(fields[(int)MetCsvProductWithPriceColums.ID_produktu]);
-                var cenaNetto = double.Parse(fields[(int)MetCsvProductWithPriceColums.Cena_Netto]);
+                var id = int.Parse(fields[(int)MetCsvProductWithPriceColums.IdProduktu]);
+                var cenaNetto = double.Parse(fields[(int)MetCsvProductWithPriceColums.CenaNetto]);
 
-                _productIdToPrice.Add(id, cenaNetto);
+                productIdToPrice.Add(id, cenaNetto);
             }
-
-            return _productIdToPrice;
         }
 
         private IList<Product> GetMetProducts(string path, Encoding encoding, int linePassCount = 1)
@@ -95,15 +93,15 @@ namespace MET.Proxy.ProductReaders
 
                 var p = new Product(Provider)
                 {
-                    ID = Int32.Parse(fields[(int)MetCsvProductsColums.ID]),
-                    SymbolSAP = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSAP], out originalSource),
+                    Id = Int32.Parse(fields[(int)MetCsvProductsColums.Id]),
+                    SymbolSap = DecodeSapSymbol(fields[(int)MetCsvProductsColums.SymbolSap], out originalSource),
                     //ModelProduktu = fields[(int)Met.ModelProduktu],
                     OryginalnyKodProducenta = fields[(int)MetCsvProductsColums.ModelProduktu],
                     NazwaProduktu = HttpUtility.HtmlDecode(fields[(int)MetCsvProductsColums.NazwaProduktu]),
                     NazwaProducenta = fields[(int)MetCsvProductsColums.NazwaProducenta],
                     KodDostawcy = fields[(int)MetCsvProductsColums.KodUDostawcy],
                     StatusProduktu = Convert.ToBoolean(Int32.Parse(fields[(int)MetCsvProductsColums.StatusProduktu])),
-                    UrlZdjecia = fields[(int)MetCsvProductsColums.AdresURLzdjecia],
+                    UrlZdjecia = fields[(int)MetCsvProductsColums.AdresUrLzdjecia],
                     Hidden = fields[(int)MetCsvProductsColums.Kategoria].StartsWith("_HIDDEN"),
                     Kategoria = fields[(int)MetCsvProductsColums.Kategoria]
                     //Wszystkie kategorie które zaczynają się 
@@ -113,8 +111,8 @@ namespace MET.Proxy.ProductReaders
 
                 p.OriginalSource = originalSource;
 
-                if (p.ID != null)
-                    if (_productIdToPrice.TryGetValue(p.ID.Value, out var v))
+                if (p.Id != null)
+                    if (productIdToPrice.TryGetValue(p.Id.Value, out var v))
                         p.SetCennaNetto(v);
 
                 products.Add(p);
@@ -127,7 +125,7 @@ namespace MET.Proxy.ProductReaders
         {
             if (sourceValue.StartsWith("AB"))
             {
-                provider = Providers.AB;
+                provider = Providers.Ab;
                 return sourceValue.Remove(0, "AB".Length);
             }
 

@@ -18,7 +18,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             "EndOfLive"
         });
 
-        private static PropertyInfo[] _properties = typeof(Product)
+        private static PropertyInfo[] properties = typeof(Product)
             .GetProperties()
             .Where(r => r.CanWrite)
             .Where(r => !IgnoredProps.Contains(r.Name)) // Ignore those
@@ -26,9 +26,9 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         public void ExecuteAction(Product source, Product final)
         {
-            for (int i = 0; i < _properties.Length; i++)
+            for (int i = 0; i < properties.Length; i++)
             {
-                var p = _properties[i];
+                var p = properties[i];
 
                 var from = p.GetValue(source);
                 var to = p.GetValue(final);

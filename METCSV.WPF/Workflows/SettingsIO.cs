@@ -6,7 +6,7 @@ using System.Text;
 
 namespace METCSV.WPF.Workflows
 {
-    public class SettingsIO
+    public class SettingsIo
     {
         private const int SaltLenght = 93;
         private const string SettingsFile = "settings.set";

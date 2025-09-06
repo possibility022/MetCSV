@@ -10,7 +10,7 @@ namespace MET.Domain.Logic
         public const string EndOfLifeCategory = "EOL";
         public const string EndOfLifeProductNamePrefix = "EOL - wycofany z oferty - ";
 
-        public static void SetEndOfLife(Product p)
+        private static void SetEndOfLife(Product p)
         {
             p.Kategoria = EndOfLifeCategory;
             p.StatusProduktu = false;

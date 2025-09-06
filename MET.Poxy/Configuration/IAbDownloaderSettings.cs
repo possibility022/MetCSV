@@ -10,7 +10,7 @@
 
         public int EmailServerPort { get; }
 
-        public bool EmailServerUseSSL { get; }
+        public bool EmailServerUseSsl { get; }
 
         public string EmailLogin { get; }
 

@@ -10,7 +10,7 @@
 
         public int EmailServerPort { get; set; } = 110;
 
-        public bool EmailServerUseSSL { get; set; } = false;
+        public bool EmailServerUseSsl { get; set; } = false;
 
         public string EmailLogin { get; set; } = string.Empty;
 
@@ -22,7 +22,7 @@
 
         public string CsvDelimiter { get; set; } = ";";
 
-        public string SAPPrefix { get; set; } = "AB";
+        public string SapPrefix { get; set; } = "AB";
         public string DateTimeFormat1 { get; set; } = "dd MMM yyyy hh:mm";
         public string DateTimeFormat2 { get; set; } = "d MMM yyyy hh:mm";
         public string DateTimeRegexPattern { get; set; } = @"(([0-3][0-9])|([0-9])) [a-zA-Z]{1,4} 20[1-2][0-9] [0-9][0-9]:[0-9][0-9]";

@@ -1,17 +1,19 @@
-﻿namespace MET.Proxy.Enums
+﻿// ReSharper disable UnusedMember.Global
+// ReSharper disable IdentifierTypo
+namespace MET.Proxy.Enums
 {
     enum MetCsvProductWithPriceColums
     {
-        ID_produktu = 0,
-        Nazwa_produktu,
-        Cena_Netto,
-        Nazwa_producenta,
-        Model_produktu,
-        Statu_produktu,
-        Sciezka_kategorii,
-        Nazwa_dostawcy,
-        Kod_producenta,
-        Kod_u_dostawcy,
-        Symbol_SAP
+        IdProduktu = 0,
+        NazwaProduktu,
+        CenaNetto,
+        NazwaProducenta,
+        ModelProduktu,
+        StatuProduktu,
+        SciezkaKategorii,
+        NazwaDostawcy,
+        KodProducenta,
+        KodUDostawcy,
+        SymbolSap
     }
 }

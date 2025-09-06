@@ -9,9 +9,9 @@ namespace METCSV.WPF.Views
     public partial class ProfitsWindow : Window
     {
 
-        ProfitsViewModel _profitsViewModel;
+        ProfitsViewModel profitsViewModel;
 
-        ProfitsViewModel ProfitsViewModel { get => _profitsViewModel ?? (_profitsViewModel = (ProfitsViewModel)DataContext); }
+        ProfitsViewModel ProfitsViewModel { get => profitsViewModel ?? (profitsViewModel = (ProfitsViewModel)DataContext); }
 
         public ProfitsWindow()
         {

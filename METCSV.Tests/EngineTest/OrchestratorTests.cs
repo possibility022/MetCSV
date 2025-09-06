@@ -13,7 +13,7 @@ namespace METCSV.Tests.EngineTest
     [TestClass]
     public class OrchestratorTests
     {
-        private static Orchestrator _orchestrator;
+        private static Orchestrator orchestrator;
 
         List<Product> workOnList;
 
@@ -21,22 +21,22 @@ namespace METCSV.Tests.EngineTest
         public static void ClassInitialize(TestContext context)
         {
             Log.ConfigureNLogForTests();
-            _orchestrator = new Orchestrator(new AllPartNumbersDomain(), ZeroOutputFormatter.Instance, true);
+            orchestrator = new Orchestrator(new AllPartNumbersDomain(), ZeroOutputFormatter.Instance, true);
             
             var met = Factory.GetMetProducts();
             var lama = Factory.GetLamaProducts();
-            var td = Factory.GetTDProducts();
-            var ab = Factory.GetABProducts();
+            var td = Factory.GetTdProducts();
+            var ab = Factory.GetAbProducts();
 
             var list = new ProductLists();
-            list.AddList(Providers.AB, ab);
+            list.AddList(Providers.Ab, ab);
             list.AddList(Providers.TechData, td);
             list.AddList(Providers.Lama, lama);
 
-            _orchestrator.AddMetCollection(met);
-            _orchestrator.SetCollections(list);
+            orchestrator.AddMetCollection(met);
+            orchestrator.SetCollections(list);
 
-            var t = _orchestrator.Orchestrate();
+            var t = orchestrator.Orchestrate();
             t.Wait();
         }
 
@@ -44,7 +44,7 @@ namespace METCSV.Tests.EngineTest
         public void Initialize()
         {
             FinalListCombineDomain listCombineDomain = new FinalListCombineDomain();
-            var finalList = listCombineDomain.CreateFinalList(_orchestrator.GetGeneratedProductGroups());
+            var finalList = listCombineDomain.CreateFinalList(orchestrator.GetGeneratedProductGroups());
 
             workOnList = new List<Product>(finalList);
         }
@@ -107,10 +107,10 @@ namespace METCSV.Tests.EngineTest
         }
 
         [TestMethod]
-        public void ProductsWithEOLCanNotBeVisible()
+        public void ProductsWithEolCanNotBeVisible()
         {
             // Assert
-            var result = ValidateList(workOnList, ValidateGroupForEOLVisibility);
+            var result = ValidateList(workOnList, ValidateGroupForEolVisibility);
             Assert.IsTrue(result);
         }
 
@@ -118,11 +118,11 @@ namespace METCSV.Tests.EngineTest
         public void TechDataProductsWillHaveStatus0()
         {
             // Assert
-            var result = ValidateList(workOnList, ValidateForTechDataEOL);
+            var result = ValidateList(workOnList, ValidateForTechDataEol);
             Assert.IsTrue(result);
         }
 
-        private bool ValidateForTechDataEOL(IEnumerable<Product> products)
+        private bool ValidateForTechDataEol(IEnumerable<Product> products)
         {
             foreach (var p in products)
             {
@@ -136,7 +136,7 @@ namespace METCSV.Tests.EngineTest
             return true;
         }
 
-        private bool ValidateGroupForEOLVisibility(IList<Product> group)
+        private bool ValidateGroupForEolVisibility(IList<Product> group)
         {
             return group.Where(p => p.Kategoria == EndOfLiveDomain.EndOfLifeCategory).All(p2 => !p2.StatusProduktu);
         }
@@ -197,7 +197,7 @@ namespace METCSV.Tests.EngineTest
 
             foreach (var p in products)
             {
-                if (p.Provider == Providers.MET)
+                if (p.Provider == Providers.Met)
                     continue;
 
                 if (dict.ContainsKey(p.PartNumber))

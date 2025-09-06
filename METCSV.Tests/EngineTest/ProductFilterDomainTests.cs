@@ -101,9 +101,9 @@ namespace METCSV.Tests.EngineTest
             {
                 LamaProducts = new List<Product>()
                 {
-                    new Product(Providers.AB)
+                    new Product(Providers.Ab)
                     {
-                        ID = 1, SymbolSAP = "ABC",
+                        Id = 1, SymbolSap = "ABC",
                         NazwaProducenta = "Producent",
                         OryginalnyKodProducenta = productCode,
                         StanMagazynowy = 1, CenaZakupuNetto = 10

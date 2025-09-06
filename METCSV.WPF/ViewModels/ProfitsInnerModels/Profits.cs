@@ -46,15 +46,6 @@ namespace METCSV.WPF.ViewModels.ProfitsInnerModels
             }
         }
 
-        /// <summary>
-        /// Sets the new profits.
-        /// </summary>
-        /// <param name="newValues">The new values.</param>
-        public void SetNewProfits(Dictionary<string, double> newValues)
-        {
-            SetProfit(newValues.Select(r => new KeyValuePair<string, double>(r.Key, r.Value)));
-        }
-
         private void SetProfit(IEnumerable<KeyValuePair<string, double>> newValues)
         {
             foreach (var newValue in newValues)

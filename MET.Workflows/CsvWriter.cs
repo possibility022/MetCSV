@@ -9,9 +9,9 @@ namespace MET.Workflows
 {
     public class CsvWriter
     {
-        private const string delimiter = ";";
-        private const string quote = "\"";
-        private const string doublequote = quote + quote;
+        private const string Delimiter = ";";
+        private const string Quote = "\"";
+        private const string Doublequote = Quote + Quote;
 
         private const string IdHeader = "ID";
         private const string SapHeader = "SymbolSAP";
@@ -65,18 +65,16 @@ namespace MET.Workflows
 
             try
             {
-                using (StreamWriter stream = new StreamWriter(File.Open(path, FileMode.Create), Encoding.GetEncoding("windows-1250")))
+                using StreamWriter stream = new StreamWriter(File.Open(path, FileMode.Create), Encoding.GetEncoding("windows-1250"));
+                WriteHeader(stream, valuesOrder);
+
+                stream.WriteLine();
+
+                foreach (var p in products)
                 {
-                    WriteHeader(stream, valuesOrder);
+                    AssingToDict(p, ref columns);
 
-                    stream.WriteLine();
-
-                    foreach (var p in products)
-                    {
-                        AssingToDict(p, ref columns);
-
-                        WriteProduct(stream, columns, valuesOrder);
-                    }
+                    WriteProduct(stream, columns, valuesOrder);
                 }
 
                 return true;
@@ -90,8 +88,8 @@ namespace MET.Workflows
 
         private void AssingToDict(Product p, ref Dictionary<string, string> columns)
         {
-            columns[IdHeader] = p.ID.ToString();
-            columns[SapHeader] = p.SymbolSAP;
+            columns[IdHeader] = p.Id.ToString();
+            columns[SapHeader] = p.SymbolSap;
             columns[OryginalnyKodProducentaHeader] = p.OryginalnyKodProducenta;
             columns[KodProducentaHeader] = p.KodProducenta;
             columns[ModelProduktuHeader] = p.ModelProduktu;
@@ -108,7 +106,7 @@ namespace MET.Workflows
             columns[CenaZakupuNettoHeader] = p.CenaZakupuNetto.ToString();
             columns[UrlZdjeciaHeader] = p.UrlZdjecia;
             columns[KategoriaHeader] = p.Kategoria;
-            columns[KodKreskowyHeader] = p.EAN;
+            columns[KodKreskowyHeader] = p.Ean;
             columns[CzasRealizacjiHeader] = "1";
             columns[TypCzasuHeader] = "12";
         }
@@ -118,7 +116,7 @@ namespace MET.Workflows
             if (headers.Count == 0)
                 throw new InvalidOperationException("List of headers should have at least one element.");
 
-            var enumerator = headers.GetEnumerator();
+            using var enumerator = headers.GetEnumerator();
 
             enumerator.MoveNext();
             Write(writer, p[enumerator.Current]);
@@ -126,7 +124,7 @@ namespace MET.Workflows
             for (int i = 0; i < headers.Count - 1; i++)
             {
                 enumerator.MoveNext();
-                writer.Write(delimiter);
+                writer.Write(Delimiter);
                 Write(writer, p[enumerator.Current]);
             }
 
@@ -138,7 +136,7 @@ namespace MET.Workflows
             if (keys.Count == 0)
                 throw new InvalidOperationException("List of headers should have at least one element.");
 
-            var enumerator = keys.GetEnumerator();
+            using var enumerator = keys.GetEnumerator();
 
             enumerator.MoveNext();
             Write(writer, enumerator.Current);
@@ -146,16 +144,16 @@ namespace MET.Workflows
             for (int i = 0; i < keys.Count - 1; i++)
             {
                 enumerator.MoveNext();
-                writer.Write(delimiter);
+                writer.Write(Delimiter);
                 Write(writer, enumerator.Current);
             }
         }
 
         private void Write(StreamWriter writer, string value)
         {
-            writer.Write(quote);
-            writer.Write(value?.Replace(quote, doublequote));
-            writer.Write(quote);
+            writer.Write(Quote);
+            writer.Write(value?.Replace(Quote, Doublequote));
+            writer.Write(Quote);
         }
     }
 }

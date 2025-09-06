@@ -74,7 +74,7 @@
             <Button
                 MinWidth="120"
                 Margin="10"
-                Command="{Binding CloswWindowWithourSaving, Mode=OneWay}"                
+                Command="{Binding CloseWindowWithoutSaving, Mode=OneWay}"                
                 CommandParameter="{Binding ElementName=CategoryFilterWindow}"
                 Content="Anuluj" />
 

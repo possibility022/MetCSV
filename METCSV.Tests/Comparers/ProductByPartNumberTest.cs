@@ -10,25 +10,25 @@ namespace METCSV.UnitTests.Comparers
     public class ProductByPartNumberTest
     {
 
-        static ProductByPartNumber _comparer;
-        static Product _productABC;
-        static Product _productXYZ;
+        static ProductByPartNumber comparer;
+        static Product productAbc;
+        static Product productXyz;
 
         [ClassInitialize]
         static public void Initialize(TestContext context)
         {
-            _comparer = new ProductByPartNumber();
-            _productABC = new Product(Providers.AB) { NazwaProducenta = "ABC" };
-            _productXYZ = new Product(Providers.AB) { NazwaProducenta = "XYZ" };
-            Trace.WriteLine(_productABC.PartNumber);
+            comparer = new ProductByPartNumber();
+            productAbc = new Product(Providers.Ab) { NazwaProducenta = "ABC" };
+            productXyz = new Product(Providers.Ab) { NazwaProducenta = "XYZ" };
+            Trace.WriteLine(productAbc.PartNumber);
         }
 
         [TestMethod]
         public void ReturnOneIfProductAIsGreater()
         {
-            var result = _comparer.Compare(_productXYZ, _productABC);
+            var result = comparer.Compare(productXyz, productAbc);
 
-            if (string.Compare(_productXYZ.PartNumber, _productABC.PartNumber) > 0)
+            if (string.Compare(productXyz.PartNumber, productAbc.PartNumber) > 0)
                 Assert.AreEqual(1, result);
             else
                 Assert.AreEqual(-1, result);
@@ -37,9 +37,9 @@ namespace METCSV.UnitTests.Comparers
         [TestMethod]
         public void ReturnMinusOneIfProductAIsNotGreater()
         {
-            var result = _comparer.Compare(_productABC, _productXYZ);
+            var result = comparer.Compare(productAbc, productXyz);
 
-            if (string.Compare(_productXYZ.PartNumber, _productABC.PartNumber) > 0)
+            if (string.Compare(productXyz.PartNumber, productAbc.PartNumber) > 0)
                 Assert.AreEqual(-1, result);
             else
                 Assert.AreEqual(1, result);
@@ -48,7 +48,7 @@ namespace METCSV.UnitTests.Comparers
         [TestMethod]
         public void ReturnZeroIfProductsAreEqual()
         {
-            var result = _comparer.Compare(_productABC, _productABC);
+            var result = comparer.Compare(productAbc, productAbc);
 
             Assert.AreEqual(0, result);
         }

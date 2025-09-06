@@ -6,8 +6,8 @@ namespace MET.Domain.Logic.GroupsActionExecutors
     {
         public void ExecuteAction(Product source, Product final)
         {
-            if (final.ID == null)
-                final.ID = source.ID;
+            if (final.Id == null)
+                final.Id = source.Id;
             
             if (final.EndOfLive == true)
                 return;

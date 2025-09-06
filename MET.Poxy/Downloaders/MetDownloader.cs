@@ -9,7 +9,7 @@ namespace MET.Proxy.Downloaders
 {
     public class MetDownloader : DownloaderBase
     {
-        public override Providers Provider => Providers.MET;
+        public override Providers Provider => Providers.Met;
 
         private readonly string fileName;
 
@@ -51,15 +51,13 @@ namespace MET.Proxy.Downloaders
             return true;
         }
 
-        protected async Task DownloadMetProductsWithPricesAsync()
+        private async Task DownloadMetProductsWithPricesAsync()
         {
-            using (var client = new HttpClient())
-            using (var file = new StreamWriter(metPriceFileName))
-            {
-                ThrowIfCanceled();
-                var stream = await client.GetStreamAsync(metPriceUrl);
-                stream.CopyTo(file.BaseStream);
-            }
+            using var client = new HttpClient();
+            await using var file = new StreamWriter(metPriceFileName);
+            ThrowIfCanceled();
+            var stream = await client.GetStreamAsync(metPriceUrl);
+            await stream.CopyToAsync(file.BaseStream);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace METCSV.Tests.EngineTest
     {
         private PriceDomain priceDomain;
 
-        static ZeroOutputFormatter _formatter = ZeroOutputFormatter.Instance;
+        static ZeroOutputFormatter formatter = ZeroOutputFormatter.Instance;
 
         private ProductGroup productGroup;
 
@@ -23,42 +23,42 @@ namespace METCSV.Tests.EngineTest
         public void InitializeData()
         {
             priceDomain = new PriceDomain();
-            productGroup = new ProductGroup(PartNumber, _formatter);
+            productGroup = new ProductGroup(PartNumber, formatter);
 
-            productGroup.AddVendorProduct(new Product(Providers.AB)
+            productGroup.AddVendorProduct(new Product(Providers.Ab)
             {
-                ID = 1,
-                SymbolSAP = "ABC",
+                Id = 1,
+                SymbolSap = "ABC",
                 NazwaProducenta = "Producent",
                 Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 1,
                 CenaZakupuNetto = 10
             });
-            productGroup.AddVendorProduct(new Product(Providers.AB)
+            productGroup.AddVendorProduct(new Product(Providers.Ab)
             {
-                ID = 1,
-                SymbolSAP = "ABC",
+                Id = 1,
+                SymbolSap = "ABC",
                 NazwaProducenta = "Producent",
                 Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 0,
                 CenaZakupuNetto = 4
             });
-            productGroup.AddVendorProduct(new Product(Providers.AB)
+            productGroup.AddVendorProduct(new Product(Providers.Ab)
             {
-                ID = 1,
-                SymbolSAP = "ABC",
+                Id = 1,
+                SymbolSap = "ABC",
                 NazwaProducenta = "Producent",
                 Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
                 StanMagazynowy = 0,
                 CenaZakupuNetto = 5
             });
-            productGroup.AddVendorProduct(new Product(Providers.AB)
+            productGroup.AddVendorProduct(new Product(Providers.Ab)
             {
-                ID = 1,
-                SymbolSAP = "ABC",
+                Id = 1,
+                SymbolSap = "ABC",
                 NazwaProducenta = "Producent",
                 Kategoria = "Kategoria",
                 OryginalnyKodProducenta = "A",
@@ -187,7 +187,7 @@ namespace METCSV.Tests.EngineTest
                     new CategoryProfit()
                     {
                         Category = "Kategoria",
-                        Provider = Providers.AB,
+                        Provider = Providers.Ab,
                         Profit = 0.5,
                         Id = 1
                     }
@@ -217,7 +217,7 @@ namespace METCSV.Tests.EngineTest
                     new CategoryProfit()
                     {
                         Category = "Kategoria",
-                        Provider = Providers.AB,
+                        Provider = Providers.Ab,
                         Profit = 0.5,
                         Id = 1
                     }

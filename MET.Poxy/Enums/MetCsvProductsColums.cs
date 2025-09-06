@@ -2,16 +2,16 @@
 {
     enum MetCsvProductsColums
     {
-        ID = 0,
+        Id = 0,
         NazwaProduktu,
-        AdresURLzdjecia,
+        AdresUrLzdjecia,
         NazwaProducenta,
         ModelProduktu,
         StatusProduktu,
         Kategoria,
         KodProducenta,
         KodUDostawcy,
-        SymbolSAP
+        SymbolSap
 
     }
 }

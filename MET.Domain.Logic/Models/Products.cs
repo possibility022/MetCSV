@@ -11,8 +11,8 @@ namespace MET.Domain.Logic.Models
         public ICollection<Product> LamaProducts{ get; set; }
         public ICollection<Product> MetCustomProducts{ get; set; }
 
-        public ICollection<Product> AbProducts_Old{ get; set; }
-        public ICollection<Product> TechDataProducts_Old{ get; set; }
-        public ICollection<Product> LamaProducts_Old{ get; set; }
+        public ICollection<Product> AbProductsOld{ get; set; }
+        public ICollection<Product> TechDataProductsOld{ get; set; }
+        public ICollection<Product> LamaProductsOld{ get; set; }
     }
 }

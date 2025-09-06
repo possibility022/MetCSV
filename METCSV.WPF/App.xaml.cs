@@ -26,12 +26,12 @@ namespace METCSV.WPF
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             Log.ConfigureNLog();
-            SettingsIO.LoadSettings();
+            SettingsIo.LoadSettings();
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            SettingsIO.SaveSettings();
+            SettingsIo.SaveSettings();
             base.OnExit(e);
         }
 

@@ -1,40 +1,10 @@
-﻿using System.IO;
-using System.Linq;
-using System.Windows;
-using MET.Data.Models;
-using MET.Domain;
-using METCSV.WPF;
-using METCSV.WPF.ViewModels;
-using METCSV.WPF.Workflows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace METCSV.UnitTests.ViewModels
 {
     [TestClass]
     public class ProfitsViewModelTests
     {
-        public void SafeDelete(string file)
-        {
-            try
-            {
-                if (File.Exists(file))
-                    File.Delete(file);
-            }
-            catch { }
-        }
-
-        public void DeleteAllProfits()
-        {
-            var files = Directory.GetFiles(".");
-            foreach(var file in files)
-            {
-                if (file.EndsWith(App.ProfitsFileExtension))
-                {
-                    SafeDelete(file);
-                }
-            }
-        }
-
         //[TestMethod]
         //public void Values_are_changed_when_selecting_other_provider()
         //{

@@ -8,19 +8,19 @@ using MET.Proxy.ProductReaders;
 
 namespace MET.Proxy.ProductProvider
 {
-    public class ABProductProvider : ProductProviderBase
+    public class AbProductProvider : ProductProviderBase
     {
         private readonly IAbReaderSettings readerSettings;
         private readonly IAbDownloaderSettings downloaderDownloaderSettings;
         protected override string ArchiveFileNamePrefix => "AB";
 
-        public ABProductProvider(IAbReaderSettings readerSettings, IAbDownloaderSettings downloaderDownloaderSettings, bool offlineMode, CancellationToken token) : base(token)
+        public AbProductProvider(IAbReaderSettings readerSettings, IAbDownloaderSettings downloaderDownloaderSettings, bool offlineMode, CancellationToken token) : base(token)
         {
             this.readerSettings = readerSettings;
             this.downloaderDownloaderSettings = downloaderDownloaderSettings;
             SetProductDownloader(GetDownloader(offlineMode));
             SetProductReader(GetProductReader());
-            Provider = Providers.AB;
+            Provider = Providers.Ab;
         }
 
         private IProductReader GetProductReader()
@@ -32,7 +32,7 @@ namespace MET.Proxy.ProductProvider
         {
             if (offlineMode)
             {
-                return new ABOfflineDownloader();
+                return new AbOfflineDownloader();
             }
             else
             {

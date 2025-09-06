@@ -24,7 +24,7 @@ namespace MET.Domain.Logic
             tasks = new List<Task>();
             this.ignoreCategories = ignoreCategories;
 
-            AddTaskToList(product, Providers.AB);
+            AddTaskToList(product, Providers.Ab);
             AddTaskToList(product, Providers.Lama);
             AddTaskToList(product, Providers.TechData);
             // AddTaskToList(tasks, products.MetProducts); // We don't want to edit met list here.

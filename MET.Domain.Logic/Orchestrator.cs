@@ -11,7 +11,7 @@ namespace MET.Domain.Logic
 {
     public class Orchestrator
     {
-        public Orchestrator(bool ignoreIdsProblems)
+        private Orchestrator(bool ignoreIdsProblems)
         {
             this.PriceDomain = new PriceDomain();
             this.ManufacturerRenameDomain = new ManufacturerRenameDomain();
@@ -75,7 +75,7 @@ namespace MET.Domain.Logic
 
         public void AddMetCollection(ICollection<Product> metProducts)
         {
-            if (metProducts.Any(r => r.Provider != Providers.MET))
+            if (metProducts.Any(r => r.Provider != Providers.Met))
                 throw new Exception("You can add only met products by this method");
 
             this.metProducts = metProducts;

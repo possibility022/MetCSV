@@ -16,27 +16,27 @@ namespace METCSV.UnitTests
     public class PropertyCopyTest
     {
 
-        ObjectToCopy A;
-        ObjectToCopy B;
-        ObjectToCopy C;
-        ObjectToCopy D;
-        ObjectToCopy E;
+        ObjectToCopy a;
+        ObjectToCopy b;
+        ObjectToCopy c;
+        ObjectToCopy d;
+        ObjectToCopy e;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            A = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
-            B = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
-            C = new ObjectToCopy { Str = "321", Boolean = false, Integer = 55 };
-            D = new ObjectToCopy { Str = "ABC", Boolean = true, Integer = 55 };
-            E = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 10 };
+            a = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
+            b = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 55 };
+            c = new ObjectToCopy { Str = "321", Boolean = false, Integer = 55 };
+            d = new ObjectToCopy { Str = "ABC", Boolean = true, Integer = 55 };
+            e = new ObjectToCopy { Str = "ABC", Boolean = false, Integer = 10 };
         }
 
 
         [TestMethod]
         public void AllAreEqual()
         {
-            var result = PropertyCopy.AnyChanges(A, B);
+            var result = PropertyCopy.AnyChanges(a, b);
 
             Assert.IsFalse(result);
         }
@@ -44,7 +44,7 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void StrIsDifferent()
         {
-            var result = PropertyCopy.AnyChanges(A, C);
+            var result = PropertyCopy.AnyChanges(a, c);
 
             Assert.IsTrue(result);
         }
@@ -52,7 +52,7 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void BooleanIsDifferent()
         {
-            var result = PropertyCopy.AnyChanges(A, D);
+            var result = PropertyCopy.AnyChanges(a, d);
 
             Assert.IsTrue(result);
         }
@@ -60,7 +60,7 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void IntIsDifferent()
         {
-            var result = PropertyCopy.AnyChanges(A, E);
+            var result = PropertyCopy.AnyChanges(a, e);
 
             Assert.IsTrue(result);
         }
@@ -68,25 +68,25 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void CopyString()
         {
-            PropertyCopy.CopyValues(A, C);
+            PropertyCopy.CopyValues(a, c);
 
-            Assert.AreEqual("ABC", C.Str);
+            Assert.AreEqual("ABC", c.Str);
         }
 
         [TestMethod]
         public void CopyBoolean()
         {
-            PropertyCopy.CopyValues(A, D);
+            PropertyCopy.CopyValues(a, d);
 
-            Assert.AreEqual(false, D.Boolean);
+            Assert.AreEqual(false, d.Boolean);
         }
 
         [TestMethod]
         public void CopyInt()
         {
-            PropertyCopy.CopyValues(A, E);
+            PropertyCopy.CopyValues(a, e);
 
-            Assert.AreEqual(55, E.Integer);
+            Assert.AreEqual(55, e.Integer);
         }
     }
 }

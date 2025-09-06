@@ -10,34 +10,34 @@ namespace MET.Proxy.ProductReaders
 {
     public abstract class ProductReaderBase : IProductReader
     {
-        private OperationStatus _status;
+        private OperationStatus status;
 
-        protected CancellationToken _token;
+        private CancellationToken token;
 
         public abstract IList<Product> GetProducts(string filename, string filename2);
 
         public OperationStatus Status
         {
-            get { return _status; }
+            get { return status; }
             protected set
             {
-                if (value != _status)
+                if (value != status)
                 {
-                    _status = value;
-                    OnStatusChanged?.Invoke(this, _status);
+                    status = value;
+                    OnStatusChanged?.Invoke(this, status);
                 }
             }
         }
 
         public EventHandler<OperationStatus> OnStatusChanged { get; set; }
 
-        public string ProviderName { get; protected set; }
+        public string ProviderName { get; protected init; }
 
         public abstract Providers Provider { get; }
 
-        public ProductReaderBase(CancellationToken token)
+        protected ProductReaderBase(CancellationToken token)
         {
-            _token = token;
+            this.token = token;
         }
 
         protected void LogError(Exception ex, string message)
@@ -62,7 +62,7 @@ namespace MET.Proxy.ProductReaders
 
         protected void ThrowIfCanceled()
         {
-            if (_token.IsCancellationRequested)
+            if (token.IsCancellationRequested)
                 throw new CancelledException();
         }
     }

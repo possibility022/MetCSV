@@ -39,7 +39,7 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void PrintHashSet()
         {
-            Product p = new Product(Providers.AB)
+            Product p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC"
             };
@@ -49,7 +49,7 @@ namespace METCSV.UnitTests
 
             Trace.WriteLine(p.PartNumber);
 
-            p = new Product(Providers.AB)
+            p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC",
                 OryginalnyKodProducenta = "ABC"
@@ -60,7 +60,7 @@ namespace METCSV.UnitTests
 
             Trace.WriteLine(p.PartNumber);
 
-            p = new Product(Providers.AB)
+            p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC2",
                 OryginalnyKodProducenta = "ABC2"
@@ -75,14 +75,14 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void HavewSameManufacturersNamesAndSamePartNumber()
         {
-            Product p = new Product(Providers.AB)
+            Product p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC"
             };
 
             var partNumber1 = p.PartNumber;
 
-            p = new Product(Providers.AB)
+            p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC"
             };
@@ -96,7 +96,7 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void HaveSameValues()
         {
-            Product p = new Product(Providers.AB)
+            Product p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC",
                 OryginalnyKodProducenta = "XYZ"
@@ -104,7 +104,7 @@ namespace METCSV.UnitTests
 
             var partNumber1 = p.PartNumber;
 
-            p = new Product(Providers.AB)
+            p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC",
                 OryginalnyKodProducenta = "XYZ"
@@ -118,7 +118,7 @@ namespace METCSV.UnitTests
         [TestMethod]
         public void HaveDifferentPartNumbers()
         {
-            Product p = new Product(Providers.AB)
+            Product p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "AB",
                 OryginalnyKodProducenta = "CXYZ"
@@ -126,7 +126,7 @@ namespace METCSV.UnitTests
 
             var partNumber1 = p.PartNumber;
 
-            p = new Product(Providers.AB)
+            p = new Product(Providers.Ab)
             {
                 NazwaProducenta = "ABC",
                 OryginalnyKodProducenta = "XYZ"

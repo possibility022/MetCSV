@@ -12,7 +12,6 @@
     Width="540"
     Height="665"
     Closing="Window_Closing"
-    Loaded="Window_Loaded"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">

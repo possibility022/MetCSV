@@ -18,7 +18,7 @@ namespace MET.Proxy.ProductProvider
         private IDownloader downloader;
         private IProductReader productReader;
 
-        public Providers Provider { get; protected set; }
+        public Providers Provider { get; protected init; }
 
         protected CancellationToken Token;
 

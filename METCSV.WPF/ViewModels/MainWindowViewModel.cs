@@ -119,7 +119,7 @@ namespace METCSV.WPF.ViewModels
         public ICommand StopCommand { get; }
 
 
-        public async Task<(ProfitsViewModel, CategoryFilterViewModel)> PrepareWindows()
+        private async Task<(ProfitsViewModel, CategoryFilterViewModel)> PrepareWindows()
         {
             await storage.MakeSureDbCreatedAsync();
             ProfitsViewModel profitsViewModel = null;
@@ -127,7 +127,7 @@ namespace METCSV.WPF.ViewModels
 
             var lamaCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.Lama);
             var techDataCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.TechData);
-            var abCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.AB);
+            var abCategories = HelpMe.GetCategoriesCollectionAsync(programFlow.Ab);
 
             if (SetProfits)
             {
@@ -137,12 +137,12 @@ namespace METCSV.WPF.ViewModels
                 LoadManufacturersProfits(profitsViewModel);
                 LoadCustomProfits(profitsViewModel);
 
-                profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.AB.GetProducts());
+                profitsViewModel.AddAllProductsLists(programFlow.Lama.GetProducts(), programFlow.TechData.GetProducts(), programFlow.Ab.GetProducts());
 
 
                 var lamaManufacturers = HelpMe.GetManufacturersAsync(programFlow.Lama);
                 var techDataManufacturers = HelpMe.GetManufacturersAsync(programFlow.TechData);
-                var abManufacturers = HelpMe.GetManufacturersAsync(programFlow.AB);
+                var abManufacturers = HelpMe.GetManufacturersAsync(programFlow.Ab);
 
                 await Task.WhenAll(lamaCategories, techDataCategories, abCategories, lamaManufacturers, techDataManufacturers, abManufacturers);
 
@@ -191,7 +191,7 @@ namespace METCSV.WPF.ViewModels
             Action<Profits> addProfitsAction)
         where T : IProviderProfit, IProfit, IProfitKey
         {
-            var abProfits = new Profits(Providers.AB, App.Settings.Engine.DefaultProfit);
+            var abProfits = new Profits(Providers.Ab, App.Settings.Engine.DefaultProfit);
             var tdProfits = new Profits(Providers.TechData, App.Settings.Engine.DefaultProfit);
             var lamaProfits = new Profits(Providers.Lama, App.Settings.Engine.DefaultProfit);
 
@@ -200,7 +200,7 @@ namespace METCSV.WPF.ViewModels
                 Profits profits;
                 switch (profit.Provider)
                 {
-                    case Providers.AB:
+                    case Providers.Ab:
                         profits = abProfits;
                         break;
                     case Providers.Lama:
@@ -278,7 +278,7 @@ namespace METCSV.WPF.ViewModels
             storage.RemoveCustomDefaultProfits(App.Settings.Engine.DefaultProfit);
         }
 
-        public async Task<bool> StartClickAsync()
+        private async Task<bool> StartClickAsync()
         {
             if (InProgress == OperationStatus.InProgress)
                 return false;
@@ -403,16 +403,6 @@ namespace METCSV.WPF.ViewModels
             App.Settings.Engine.SetProfits = SetProfits;
             App.Settings.Engine.SetIgnoredCategories = SetIgnoredCategories;
             App.Settings.Engine.ExportMetCustomProducts = ExportMetCustomProducts;
-        }
-
-        internal void Stop()
-        {
-            cancellationTokenSource?.Cancel();
-        }
-
-        internal void Loaded()
-        {
-            //AutoUpdater.Start(App.Settings.Engine.NewVersionURL, System.Reflection.Assembly.GetExecutingAssembly());
         }
 
         private void ReleaseUnmanagedResources()

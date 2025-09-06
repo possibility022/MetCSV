@@ -13,7 +13,7 @@ namespace METCSV.Tests.EngineTest
         Product[] shortMetList;
         Product[] shortProviderList;
 
-        static ZeroOutputFormatter _formatter = ZeroOutputFormatter.Instance;
+        static ZeroOutputFormatter formatter = ZeroOutputFormatter.Instance;
         private ProductGroup productGroup;
 
         [TestInitialize]
@@ -21,17 +21,17 @@ namespace METCSV.Tests.EngineTest
         {
             //Arrange
             shortMetList = new[] {
-                new Product(Providers.MET) {SymbolSAP = "ABC1", NazwaProduktu  = "Produkt1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
-                new Product(Providers.MET) {SymbolSAP = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
-                new Product(Providers.MET) {SymbolSAP = "ABC3", NazwaProduktu  = "Produkt3",  NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
+                new Product(Providers.Met) {SymbolSap = "ABC1", NazwaProduktu  = "Produkt1", NazwaProducenta = "Producent1", OryginalnyKodProducenta = "A"},
+                new Product(Providers.Met) {SymbolSap = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "B"},
+                new Product(Providers.Met) {SymbolSap = "ABC3", NazwaProduktu  = "Produkt3",  NazwaProducenta = "Producent3", OryginalnyKodProducenta = "C"}
             };
 
             shortProviderList = new[] {
-                new Product(Providers.None) { SymbolSAP = "ABC", NazwaProduktu  = "Produkt",  NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
-                new Product(Providers.None) { SymbolSAP = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
+                new Product(Providers.None) { SymbolSap = "ABC", NazwaProduktu  = "Produkt",  NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" },
+                new Product(Providers.None) { SymbolSap = "ABC2", NazwaProduktu  = "Produkt2",  NazwaProducenta = "Producent2", OryginalnyKodProducenta = "_" }
             };
 
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddVendorProducts(shortProviderList);
             productGroup.AddMetProducts(shortMetList);
         }
@@ -40,7 +40,7 @@ namespace METCSV.Tests.EngineTest
         public void SetEol_ToFinalProduct()
         {
             var domain = new EndOfLiveDomain();
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddMetProducts(shortMetList);
 
             domain.ExecuteAction(productGroup);
@@ -52,9 +52,9 @@ namespace METCSV.Tests.EngineTest
         public void DoNot_SetEol_ToMetProductsWhenThereIsAtLeastOne()
         {
             var domain = new EndOfLiveDomain();
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddMetProducts(shortMetList);
-            productGroup.AddVendorProduct(new Product(Providers.AB));
+            productGroup.AddVendorProduct(new Product(Providers.Ab));
 
             // act
             domain.ExecuteAction(productGroup);
@@ -66,7 +66,7 @@ namespace METCSV.Tests.EngineTest
         public void AddNamePrefix_ToAllMetWhenNoVendors()
         {
             var domain = new EndOfLiveDomain();
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddMetProducts(shortMetList);
 
             // act
@@ -79,7 +79,7 @@ namespace METCSV.Tests.EngineTest
         public void DoNot_AddNamePrefix_WhenPrefixIsSet()
         {
             var domain = new EndOfLiveDomain();
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddMetProducts(shortMetList);
 
             // act
@@ -94,9 +94,9 @@ namespace METCSV.Tests.EngineTest
         {
             var domain = new EndOfLiveDomain();
 
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddMetProducts(shortMetList);
-            productGroup.AddVendorProduct(new Product(Providers.AB));
+            productGroup.AddVendorProduct(new Product(Providers.Ab));
 
             // act
             domain.ExecuteAction(productGroup);
@@ -108,7 +108,7 @@ namespace METCSV.Tests.EngineTest
         public void SetWarehouseToZero_IfProductIsSetToEol()
         {
             var domain = new EndOfLiveDomain();
-            productGroup = new ProductGroup(string.Empty, _formatter);
+            productGroup = new ProductGroup(string.Empty, formatter);
             productGroup.AddMetProducts(shortMetList);
 
             domain.ExecuteAction(productGroup);

@@ -3,9 +3,9 @@ using MET.Data.Models;
 
 namespace MET.Proxy.Downloaders.Offline
 {
-    public class ABOfflineDownloader : DownloaderBase
+    public class AbOfflineDownloader : DownloaderBase
     {
-        public override Providers Provider => Providers.AB;
+        public override Providers Provider => Providers.Ab;
 
         string folderToExtract = "ExtractedFiles_AB";//todo move it to config
 

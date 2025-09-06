@@ -29,7 +29,7 @@ namespace MET.Proxy.Downloaders
         private readonly DateTimeParser dateTimeParser;
 
         private Pop3Client client;
-        public override Providers Provider => Providers.AB;
+        public override Providers Provider => Providers.Ab;
 
 
         public AbDownloader(IAbDownloaderSettings downloaderSettings, CancellationToken cancellationToken)
@@ -38,7 +38,7 @@ namespace MET.Proxy.Downloaders
 
             emailServerAddress = downloaderSettings.EmailServerAddress;
             emailServerPort = downloaderSettings.EmailServerPort;
-            useSsl = downloaderSettings.EmailServerUseSSL;
+            useSsl = downloaderSettings.EmailServerUseSsl;
 
             emailLogin = downloaderSettings.EmailLogin;
             emailPassword = downloaderSettings.EmailPassword;

@@ -15,7 +15,7 @@ namespace METCSV.UnitTests.Models
         public void New_manufacturers_should_have_default_value()
         {
             // Arrange
-            Profits profits = new Profits(Providers.AB);
+            Profits profits = new Profits(Providers.Ab);
             string[] allManufactureres = new string[] { "key1", "key2", "key3", "key4", "key5", "key6", "key7", "key8" };
 
             // Act
@@ -32,7 +32,7 @@ namespace METCSV.UnitTests.Models
         public void Adding_existsting_manufacturer_should_not_override_current_value()
         {
             // Arrange
-            Profits profits = new Profits(Providers.AB);
+            Profits profits = new Profits(Providers.Ab);
             profits.SetNewProfits(new[] { new EditableDictionaryKey<string, double>("key", 22) });
 
             // Act
@@ -46,7 +46,7 @@ namespace METCSV.UnitTests.Models
         public void Values_property_should_contains_all_manufacturers()
         {
             // Arrange
-            Profits profits = new Profits(Providers.AB);
+            Profits profits = new Profits(Providers.Ab);
             string[] allManufactureres = new string[] { "key1"};
 
             // Act
@@ -62,7 +62,7 @@ namespace METCSV.UnitTests.Models
         public void Setting_new_values_override_old_values()
         {
             // Arrange
-            Profits profits = new Profits(Providers.AB);
+            Profits profits = new Profits(Providers.Ab);
             profits.SetNewProfits(new[] { new EditableDictionaryKey<string, double>("key", 22) });
 
             // Act
@@ -76,7 +76,7 @@ namespace METCSV.UnitTests.Models
         public void Setting_new_values_will_create_keys()
         {
             // Arrange
-            Profits profits = new Profits(Providers.AB);
+            Profits profits = new Profits(Providers.Ab);
 
             // Act
             profits.SetNewProfits(new[] { new EditableDictionaryKey<string, double>("key", 22) });

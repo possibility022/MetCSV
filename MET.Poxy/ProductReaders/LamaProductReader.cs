@@ -171,8 +171,8 @@ namespace MET.Proxy.ProductReaders
 
                 products.Add(new Product(Provider)
                 {
-                    ID = null,
-                    SymbolSAP = HttpUtility.HtmlDecode(product.Element("KOD").Value),
+                    Id = null,
+                    SymbolSap = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     OryginalnyKodProducenta = HttpUtility.HtmlDecode(product.Element("PN").Value),
                     KodDostawcy = HttpUtility.HtmlDecode(product.Element("KOD").Value),
                     NazwaProduktu = HttpUtility.HtmlDecode(product.Element("NAZEV").Value),
@@ -182,7 +182,7 @@ namespace MET.Proxy.ProductReaders
                     StatusProduktu = false,
                     CenaZakupuNetto = Double.Parse(product.Element("CENA").Value),
                     UrlZdjecia = urls.Count > 0 ? urls[0] : null,
-                    EAN = HttpUtility.HtmlDecode(product.Element("EAN").Value),
+                    Ean = HttpUtility.HtmlDecode(product.Element("EAN").Value),
                     Kategoria = HttpUtility.HtmlDecode(product.Element("category1").Value)
                 });
             }

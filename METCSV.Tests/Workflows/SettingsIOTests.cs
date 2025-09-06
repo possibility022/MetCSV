@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace METCSV.UnitTests.Workflows
 {
     [TestClass]
-    public class SettingsIOTests
+    public class SettingsIoTests
     {
 
         [TestInitialize]
@@ -38,7 +38,7 @@ namespace METCSV.UnitTests.Workflows
         }
 
         [TestMethod]
-        public void TestAB()
+        public void TestAb()
         {
             // Arrange
             Settings settings = new Settings();
@@ -49,7 +49,7 @@ namespace METCSV.UnitTests.Workflows
                 EmailPassword = "EmailPassword",
                 EmailServerAddress = "ServerAddress",
                 EmailServerPort = 222,
-                EmailServerUseSSL = true,
+                EmailServerUseSsl = true,
                 FolderToExtract = "FolderToExtract",
                 ZippedFile = "ZipedFile"
             };
@@ -57,8 +57,8 @@ namespace METCSV.UnitTests.Workflows
             App.Settings = settings;
 
             // Act
-            SettingsIO.SaveSettings();
-            SettingsIO.LoadSettings();
+            SettingsIo.SaveSettings();
+            SettingsIo.LoadSettings();
 
             // Assert
             Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.AbSettings, settings.AbSettings));
@@ -78,8 +78,8 @@ namespace METCSV.UnitTests.Workflows
             App.Settings = settings;
 
             // Act
-            SettingsIO.SaveSettings();
-            SettingsIO.LoadSettings();
+            SettingsIo.SaveSettings();
+            SettingsIo.LoadSettings();
 
             // Assert
             Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.MetDownloaderSettings, settings.MetDownloaderSettings));
@@ -87,7 +87,7 @@ namespace METCSV.UnitTests.Workflows
 
 
         [TestMethod]
-        public void TestTD()
+        public void TestTd()
         {
             // Arrange
             Settings settings = new Settings();
@@ -105,8 +105,8 @@ namespace METCSV.UnitTests.Workflows
             App.Settings = settings;
 
             // Act
-            SettingsIO.SaveSettings();
-            SettingsIO.LoadSettings();
+            SettingsIo.SaveSettings();
+            SettingsIo.LoadSettings();
 
             // Assert
             Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.Td, settings.Td));
@@ -131,8 +131,8 @@ namespace METCSV.UnitTests.Workflows
             App.Settings = settings;
 
             // Act
-            SettingsIO.SaveSettings();
-            SettingsIO.LoadSettings();
+            SettingsIo.SaveSettings();
+            SettingsIo.LoadSettings();
 
             // Assert
             Assert.IsFalse(PropertyCopy.AnyChanges(App.Settings.LamaSettings, settings.LamaSettings));
@@ -145,10 +145,10 @@ namespace METCSV.UnitTests.Workflows
             App.Settings = new Settings();
             App.Settings.MetDownloaderSettings.Url = null;
 
-            SettingsIO.SaveSettings();
+            SettingsIo.SaveSettings();
 
             // Act
-            SettingsIO.LoadSettings();
+            SettingsIo.LoadSettings();
             
             // Assert
             Assert.IsNotNull(App.Settings.MetDownloaderSettings.Url);

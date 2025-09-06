@@ -58,9 +58,9 @@ namespace METCSV.WPF.ViewModels
             get => selectedItemInCategoriesList;
             set => SetProperty(ref selectedItemInCategoriesList, value);
         }
-        public bool Save { get; internal set; } = false;
+        public bool Save { get; private set; } = false;
         public RelayCommand<Window> CloseWindowAndSave { get; private set; }
-        public RelayCommand<Window> CloswWindowWithourSaving { get; private set; }
+        public RelayCommand<Window> CloseWindowWithoutSaving { get; private set; }
 
         private void CloseWindow(Window window, bool save)
         {
@@ -76,7 +76,7 @@ namespace METCSV.WPF.ViewModels
             AddToIgnoredCommand = new RelayCommand(() => AddToIgnore());
             RemoveFromIgnoredCommand = new RelayCommand(() => RemoveFromIgnore());
             CloseWindowAndSave = new RelayCommand<Window>((w) => this.CloseWindow(w, true));
-            CloswWindowWithourSaving = new RelayCommand<Window>((w) => this.CloseWindow(w, false));
+            CloseWindowWithoutSaving = new RelayCommand<Window>((w) => this.CloseWindow(w, false));
 
             categoriesInProviders = new();
             ignoredCategories = new();

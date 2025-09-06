@@ -4,7 +4,7 @@ namespace MET.Proxy.Downloaders.Offline
 {
     public class MetOfflineDownloader : DownloaderBase
     {
-        public override Providers Provider => Providers.MET;
+        public override Providers Provider => Providers.Met;
 
         private const string FileName = "met.csv"; //todo move to config
 

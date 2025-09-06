@@ -15,7 +15,7 @@ namespace METCSV.WPF.Helpers
             return task;
         }
 
-        public static ManufacturersCollection GetProviders(IProductProvider productProvider)
+        private static ManufacturersCollection GetProviders(IProductProvider productProvider)
         {
             HashSet<string> providers = new HashSet<string>();
             foreach (var product in productProvider.GetProducts())
@@ -35,7 +35,7 @@ namespace METCSV.WPF.Helpers
             return task;
         }
 
-        public static CategoryCollection GetCategoriesCollection(IProductProvider productProvider)
+        private static CategoryCollection GetCategoriesCollection(IProductProvider productProvider)
         {
             var categories = new HashSet<string>();
             foreach (var product in productProvider.GetProducts())

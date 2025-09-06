@@ -11,12 +11,12 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             HelpMe.ThrowIfNull(source);
             HelpMe.ThrowIfNull(final);
 
-            final.SymbolSAP = GetSapNumber(source);
+            final.SymbolSap = GetSapNumber(source);
         }
 
         private string GetSapNumber(Product product)
         {
-            return $"{Prefix}_{product.SymbolSAP}";
+            return $"{Prefix}_{product.SymbolSap}";
         }
     }
 }

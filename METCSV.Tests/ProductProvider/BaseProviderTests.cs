@@ -16,14 +16,14 @@ namespace METCSV.UnitTests.ProductProvider
         CancellationTokenSource token;
         List<Product> products;
 
-        const string testFileName = "TestFilePrefix_23.03.2019.bin";
+        const string TestFileName = "TestFilePrefix_23.03.2019.bin";
 
         [TestInitialize]
         public void TestInit()
         {
             token = new CancellationTokenSource();
             provider = new BaseProviderImplementation(token.Token);
-            products = Factory.GetABProducts();
+            products = Factory.GetAbProducts();
 
             if (Directory.Exists(provider.Archive))
                 Directory.Delete(provider.Archive, true);
@@ -32,9 +32,9 @@ namespace METCSV.UnitTests.ProductProvider
         private void CopyTestFileToArchive()
         {
             Directory.CreateDirectory(provider.Archive);
-            var file = Path.Combine(provider.Archive, testFileName);
+            var file = Path.Combine(provider.Archive, TestFileName);
 
-            File.Copy(Path.Combine("Repository", "FilesWithDifferentCreationDate", testFileName), file, true);
+            File.Copy(Path.Combine("Repository", "FilesWithDifferentCreationDate", TestFileName), file, true);
 
             DateTime yesterday;
 

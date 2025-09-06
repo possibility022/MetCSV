@@ -70,7 +70,7 @@ namespace MET.Proxy.ProductReaders
 
                 prices.Add(new Product(Provider)
                 {
-                    SymbolSAP = fields[(int)TechDataCsvPricesColumns.SapNo],
+                    SymbolSap = fields[(int)TechDataCsvPricesColumns.SapNo],
                     CenaZakupuNetto = Double.Parse(fields[(int)TechDataCsvPricesColumns.Cena]),
                 });
             }
@@ -97,8 +97,8 @@ namespace MET.Proxy.ProductReaders
 
                 products.Add(new Product(Provider)
                 {
-                    ID = null,
-                    SymbolSAP = fields[(int)TechDataCsvProductsColumns.SapNo],
+                    Id = null,
+                    SymbolSap = fields[(int)TechDataCsvProductsColumns.SapNo],
                     //KodProducenta = fields[(int)TechData.PartNo],
                     //ModelProduktu = fields[(int)TechData.PartNo],
                     OryginalnyKodProducenta = fields[(int)TechDataCsvProductsColumns.PartNo],
@@ -110,8 +110,8 @@ namespace MET.Proxy.ProductReaders
                     StatusProduktu = false,
                     CenaZakupuNetto = -1,
                     UrlZdjecia = null,
-                    Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPr_kod],
-                    EAN = fields[(int)TechDataCsvProductsColumns.EAN],
+                    Kategoria = fields[(int)TechDataCsvProductsColumns.FamilyPrKod],
+                    Ean = fields[(int)TechDataCsvProductsColumns.Ean],
                 });
             }
 
@@ -132,21 +132,21 @@ namespace MET.Proxy.ProductReaders
 
             foreach (var price in prices)
             {
-                if (!pricesDict.ContainsKey(price.SymbolSAP))
-                    pricesDict.Add(price.SymbolSAP, price);
+                if (!pricesDict.ContainsKey(price.SymbolSap))
+                    pricesDict.Add(price.SymbolSap, price);
                 else
-                    LogError($"Two same keys in TechData prices. {price.SymbolSAP}. Open the file and check that value.");
+                    LogError($"Two same keys in TechData prices. {price.SymbolSap}. Open the file and check that value.");
             }
 
             foreach (var product in products)
             {
-                if (pricesDict.ContainsKey(product.SymbolSAP))
+                if (pricesDict.ContainsKey(product.SymbolSap))
                 {
-                    product.CenaZakupuNetto = pricesDict[product.SymbolSAP].CenaZakupuNetto;
+                    product.CenaZakupuNetto = pricesDict[product.SymbolSap].CenaZakupuNetto;
                 }
                 else
                 {
-                    LogError($"No product in prices with provided SapNo: {product.SymbolSAP}");
+                    LogError($"No product in prices with provided SapNo: {product.SymbolSap}");
                 }
             }
             return products;

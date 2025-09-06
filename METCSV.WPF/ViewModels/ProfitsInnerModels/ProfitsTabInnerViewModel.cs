@@ -43,7 +43,7 @@ namespace METCSV.WPF.ViewModels.ProfitsInnerModels
         public ObservableCollection<EditableDictionaryKey<string, double>> Values
         {
             get => values;
-            set => SetProperty(ref values, value);
+            private set => SetProperty(ref values, value);
         }
 
         public void SaveCurrentProfits()

@@ -43,7 +43,7 @@ namespace MET.Data.Storage
             SetProfit<ManufacturerProfit>(manufacturerProfit, context.ManufacturerProfits, (newProfit, oldProfit) => newProfit.Manufacturer == oldProfit.Manufacturer);
         }
 
-        public void SetProfit<TProfit>(TProfit profit, IQueryable<TProfit> dbSet, Func<TProfit, TProfit, bool> where)
+        private void SetProfit<TProfit>(TProfit profit, IQueryable<TProfit> dbSet, Func<TProfit, TProfit, bool> where)
             where TProfit : IProfit
 
         {

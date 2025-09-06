@@ -3,8 +3,8 @@
     public enum Providers
     {
         None,
-        MET,
-        AB,
+        Met,
+        Ab,
         Lama,
         TechData
     }

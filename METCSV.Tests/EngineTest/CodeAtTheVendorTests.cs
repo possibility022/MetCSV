@@ -22,7 +22,7 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void ThrowWhenCheapestProductIsNotSet()
         {
-            domain.ExecuteAction(null, new Product(Providers.MET));
+            domain.ExecuteAction(null, new Product(Providers.Met));
         }
 
         [TestMethod]

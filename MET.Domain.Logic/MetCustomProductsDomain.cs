@@ -11,7 +11,7 @@ namespace MET.Domain.Logic
             var toRemove = new HashSet<Product>();
             foreach (var product in metProducts)
             {
-                if (product.SymbolSAP.StartsWith("MET"))
+                if (product.SymbolSap.StartsWith("MET"))
                     toRemove.Add(product);
             }
 

@@ -49,7 +49,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
 
         private Product GetProductWithLongestName(IEnumerable<Product> products)
         {
-            var enumerator = products.GetEnumerator();
+            using var enumerator = products.GetEnumerator();
             enumerator.MoveNext();
             var selected = enumerator.Current;
 
@@ -64,11 +64,11 @@ namespace MET.Domain.Logic.GroupsActionExecutors
             return selected;
         }
 
-        private static IReadOnlyDictionary<Providers, int> Priorieties = new Dictionary<Providers, int>
+        private static IReadOnlyDictionary<Providers, int> priorieties = new Dictionary<Providers, int>
         {
             {Providers.Lama, 0 },
             {Providers.TechData, 1 },
-            {Providers.AB, 2 },
+            {Providers.Ab, 2 },
         };
 
         private string SelectNameFromVendorList(IReadOnlyCollection<Product> vendorProducts)
@@ -81,7 +81,7 @@ namespace MET.Domain.Logic.GroupsActionExecutors
                     if (ReferenceEquals(first, prod))
                         continue;
 
-                    if (Priorieties[prod.Provider] < Priorieties[first.Provider])
+                    if (priorieties[prod.Provider] < priorieties[first.Provider])
                     {
                         first = prod;
                     }

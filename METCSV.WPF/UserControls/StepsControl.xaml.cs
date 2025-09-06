@@ -31,7 +31,7 @@ namespace METCSV.WPF.UserControls
             ((StepsControl)property).ChangeControl((OperationStatus)args.NewValue);
         }
 
-        public void ChangeControl(OperationStatus status)
+        private void ChangeControl(OperationStatus status)
         {
             GetStatus(status, out var waiting, out var progress, out var done, out var faild);
 

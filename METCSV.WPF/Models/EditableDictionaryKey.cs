@@ -2,17 +2,17 @@
 {
     public class EditableDictionaryKey<T1, T2> : BindableBase
     {
-        private T1 _key;
-        private T2 _value;
+        private T1 key;
+        private T2 value;
 
         public EditableDictionaryKey(T1 key, T2 value)
         {
-            _key = key;
-            _value = value;
+            this.key = key;
+            this.value = value;
         }
 
-        public T1 Key { get => _key; set => SetProperty(ref _key, value); }
+        public T1 Key { get => key; set => SetProperty(ref key, value); }
 
-        public T2 Value { get => _value; set => SetProperty(ref _value, value); }
+        public T2 Value { get => value; set => SetProperty(ref this.value, value); }
     }
 }

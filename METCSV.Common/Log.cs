@@ -15,7 +15,7 @@ namespace METCSV.Common
 
         private const string LogsFolder = "Logs";
 
-        public static Logger Logger { get; private set; }
+        private static Logger Logger { get; set; }
 
         public static void ConfigureNLog()
         {

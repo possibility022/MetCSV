@@ -20,7 +20,7 @@ namespace MET.Proxy.ProductProvider
             this.offlineMode = offlineMode;
             SetProductDownloader(GetDownloader());
             SetProductReader(GetProductReader());
-            Provider = Providers.MET;
+            Provider = Providers.Met;
         }
 
         private IProductReader GetProductReader()

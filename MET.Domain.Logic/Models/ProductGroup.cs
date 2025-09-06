@@ -33,7 +33,7 @@ namespace MET.Domain.Logic.Models
 
         public void AddVendorProduct(Product product)
         {
-            if (product.Provider == Providers.MET)
+            if (product.Provider == Providers.Met)
                 throw new InvalidOperationException("Cannot add product from MET provider to vendor list.");
 
             vendorProducts.Add(product);
@@ -41,7 +41,7 @@ namespace MET.Domain.Logic.Models
 
         public void AddMetProduct(Product product)
         {
-            if (product.Provider != Providers.MET)
+            if (product.Provider != Providers.Met)
                 throw new InvalidOperationException($"Cannot add product to MET list with given provider: {product.Provider}");
 
             metProducts.Add(product);

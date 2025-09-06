@@ -136,7 +136,7 @@ namespace MET.Proxy.Downloaders
             }
         }
 
-        public string[] GetFileList()
+        private string[] GetFileList()
         {
             var result = new StringBuilder();
 

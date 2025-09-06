@@ -15,9 +15,9 @@ namespace METCSV.Tests.EngineTest
     [TestClass]
     public class ProductMergerTest
     {
-        static ProgramFlow _productMerger;
+        static ProgramFlow productMerger;
 
-        List<Product> _workOnList;
+        List<Product> workOnList;
 
         static string sapManuHashOfProductsWhichHasPriceError;
 
@@ -26,11 +26,11 @@ namespace METCSV.Tests.EngineTest
         {
             var met = Factory.GetMetProducts();
             var lama = Factory.GetLamaProducts();
-            var td = Factory.GetTDProducts();
-            var ab = Factory.GetABProducts();
+            var td = Factory.GetTdProducts();
+            var ab = Factory.GetAbProducts();
 
-            var ab_old = Factory.GetABProducts();
-            var someProduct = ab_old.Last(r => r.StanMagazynowy > 0);
+            var abOld = Factory.GetAbProducts();
+            var someProduct = abOld.Last(r => r.StanMagazynowy > 0);
             someProduct.CenaZakupuNetto = someProduct.CenaZakupuNetto + (30 * someProduct.CenaZakupuNetto / 100) - 1;
             sapManuHashOfProductsWhichHasPriceError = someProduct.SapManuHash;
 
@@ -40,10 +40,10 @@ namespace METCSV.Tests.EngineTest
                 LamaProducts = lama,
                 TechDataProducts = td,
                 AbProducts = ab,
-                AbProducts_Old = ab_old
+                AbProductsOld = abOld
             };
 
-            _productMerger = new ProgramFlow(
+            productMerger = new ProgramFlow(
                 new StorageService(new StorageContext()),
                 new Settings(),
                 true,
@@ -52,22 +52,22 @@ namespace METCSV.Tests.EngineTest
                 ZeroOutputFormatter.Instance
             );
 
-            var t = _productMerger.FirstStep();
+            var t = productMerger.FirstStep();
             t.Wait();
         }
 
         [TestInitialize]
         public void Initialize()
         {
-            _workOnList = new List<Product>(_productMerger.GetFinalList(true));
+            workOnList = new List<Product>(productMerger.GetFinalList(true));
         }
 
         [TestMethod]
         public void ValidateThatProductWithPriceErrorIsNotInWarehouse()
         {
-            var product = _productMerger
+            var product = productMerger
                 .GetFinalList(true)
-                .Single(r => r.SapManuHash == sapManuHashOfProductsWhichHasPriceError && r.Provider == Providers.AB);
+                .Single(r => r.SapManuHash == sapManuHashOfProductsWhichHasPriceError && r.Provider == Providers.Ab);
 
             Assert.AreEqual(0, product.StanMagazynowy);
         }
@@ -76,7 +76,7 @@ namespace METCSV.Tests.EngineTest
         public void AllSelectedProductsWillHaveWarehousGreaterThanOne()
         {
             // Assert
-            var result = ValidateList(_workOnList, ValidateGroupForEmptyWarehouse);
+            var result = ValidateList(workOnList, ValidateGroupForEmptyWarehouse);
             Assert.IsTrue(result);
         }
 
@@ -84,7 +84,7 @@ namespace METCSV.Tests.EngineTest
         public void SelectedProductMustBeCheapest()
         {
             // Assert
-            var result = ValidateList(_workOnList, ValidateGroupForCheapesProduct);
+            var result = ValidateList(workOnList, ValidateGroupForCheapesProduct);
             Assert.IsTrue(result);
         }
 
@@ -92,15 +92,15 @@ namespace METCSV.Tests.EngineTest
         public void OnlyOneProductCanBeSelected()
         {
             // Assert
-            var result = ValidateList(_workOnList, ValidateGroupForOnlyOneSelectedGroup);
+            var result = ValidateList(workOnList, ValidateGroupForOnlyOneSelectedGroup);
             Assert.IsTrue(result);
         }
 
         [TestMethod]
-        public void ProductsWithEOLCanNotBeVisible()
+        public void ProductsWithEolCanNotBeVisible()
         {
             // Assert
-            var result = ValidateList(_workOnList, ValidateGroupForEOLVisibility);
+            var result = ValidateList(workOnList, ValidateGroupForEolVisibility);
             Assert.IsTrue(result);
         }
 
@@ -108,11 +108,11 @@ namespace METCSV.Tests.EngineTest
         public void TechDataProductsWillHaveStatus0()
         {
             // Assert
-            var result = ValidateList(_workOnList, ValidateForTechDataEOL);
+            var result = ValidateList(workOnList, ValidateForTechDataEol);
             Assert.IsTrue(result);
         }
 
-        private bool ValidateForTechDataEOL(IEnumerable<Product> products)
+        private bool ValidateForTechDataEol(IEnumerable<Product> products)
         {
             foreach (var p in products)
             {
@@ -126,7 +126,7 @@ namespace METCSV.Tests.EngineTest
             return true;
         }
 
-        private bool ValidateGroupForEOLVisibility(IList<Product> group)
+        private bool ValidateGroupForEolVisibility(IList<Product> group)
         {
             return group.Where(p => p.Kategoria == "EOL").All(p2 => !p2.StatusProduktu);
         }
@@ -187,7 +187,7 @@ namespace METCSV.Tests.EngineTest
 
             foreach (var p in products)
             {
-                if (p.Provider == Providers.MET)
+                if (p.Provider == Providers.Met)
                     continue;
 
                 if (dict.ContainsKey(p.PartNumber))

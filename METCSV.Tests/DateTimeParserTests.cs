@@ -7,15 +7,15 @@ namespace METCSV.Tests
     [TestClass]
     public class DateTimeParserTests
     {
-        private const string regex = "(([0-3][0-9])|([0-9])) [a-zA-Z]{1,4} 20[1-2][0-9] [0-9][0-9]:[0-9][0-9]";
-        private const string format1 = "dd MMM yyyy hh:mm";
-        private const string format2 = "d MMM yyyy hh:mm";
+        private const string Regex = "(([0-3][0-9])|([0-9])) [a-zA-Z]{1,4} 20[1-2][0-9] [0-9][0-9]:[0-9][0-9]";
+        private const string Format1 = "dd MMM yyyy hh:mm";
+        private const string Format2 = "d MMM yyyy hh:mm";
 
 
         [TestMethod]
         public void ParseAllOfThemAndDoNotThrow()
         {
-            var parser = new DateTimeParser(regex, format1, format2);
+            var parser = new DateTimeParser(Regex, Format1, Format2);
 
             var entires = Dates.Split(Environment.NewLine);
             

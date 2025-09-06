@@ -21,16 +21,16 @@ namespace METCSV.Tests.EngineTest
         {
             oldProduct = new List<Product>()
             {
-                new Product(Providers.AB)
+                new Product(Providers.Ab)
                 {
-                    SymbolSAP = "SAP_123",
+                    SymbolSap = "SAP_123",
                     NazwaDostawcy = "DostawcaA",
                     CenaZakupuNetto = 100,
                     StanMagazynowy = 1
                 },
-                new Product(Providers.AB)
+                new Product(Providers.Ab)
                 {
-                    SymbolSAP = "SAP_XYZ",
+                    SymbolSap = "SAP_XYZ",
                     NazwaDostawcy = "DostawcaA",
                     CenaZakupuNetto = 200,
                     StanMagazynowy = 1
@@ -39,16 +39,16 @@ namespace METCSV.Tests.EngineTest
 
             newProduct = new List<Product>()
             {
-                new Product(Providers.AB)
+                new Product(Providers.Ab)
                 {
-                    SymbolSAP = "SAP_123",
+                    SymbolSap = "SAP_123",
                     NazwaDostawcy = "DostawcaA",
                     CenaZakupuNetto = 79,
                     StanMagazynowy = 2
                 },
-                new Product(Providers.AB)
+                new Product(Providers.Ab)
                 {
-                    SymbolSAP = "SAP_XYZ",
+                    SymbolSap = "SAP_XYZ",
                     NazwaDostawcy = "DostawcaA",
                     CenaZakupuNetto = 159,
                     StanMagazynowy = 2

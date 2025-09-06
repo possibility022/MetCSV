@@ -24,8 +24,8 @@ namespace METCSV.Tests.EngineTest
         {
             var lama = new ConcurrentBag<Product>(Factory.GetLamaProducts());
             var met = new ConcurrentBag<Product>(Factory.GetMetProducts());
-            var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
-            var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
+            var td = new ConcurrentBag<Product>(Factory.GetTdProducts());
+            var ab = new ConcurrentBag<Product>(Factory.GetAbProducts());
 
             allPartNumbers.AddPartNumbers(lama, met, td, ab);
 
@@ -45,8 +45,8 @@ namespace METCSV.Tests.EngineTest
         {
             var lama = new ConcurrentBag<Product>(Factory.GetLamaProducts());
             var met = new ConcurrentBag<Product>(Factory.GetMetProducts());
-            var td = new ConcurrentBag<Product>(Factory.GetTDProducts());
-            var ab = new ConcurrentBag<Product>(Factory.GetABProducts());
+            var td = new ConcurrentBag<Product>(Factory.GetTdProducts());
+            var ab = new ConcurrentBag<Product>(Factory.GetAbProducts());
 
             allPartNumbers.AddPartNumbers(lama, met, td, ab);
             var list = allPartNumbers.GetAllPartNumbers();

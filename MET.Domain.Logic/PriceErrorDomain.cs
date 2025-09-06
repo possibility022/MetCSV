@@ -60,7 +60,7 @@ namespace MET.Domain.Logic
             if (!results)
                 throw new InvalidOperationException($"Product with the same key exists. " +
                     $"SapManuHash: {prod.SapManuHash} " +
-                    $"SAP: {prod.SymbolSAP} " +
+                    $"SAP: {prod.SymbolSap} " +
                     $"Nazwa Producent: {prod.NazwaProducenta}");
         }
 

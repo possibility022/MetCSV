@@ -6,8 +6,8 @@ namespace MET.Domain.Logic.GroupsActionExecutors
     {
         public void ExecuteAction(Product source, Product final)
         {
-            if (source.EAN != null)
-                final.EAN = source.EAN;
+            if (source.Ean != null)
+                final.Ean = source.Ean;
         }
     }
 }

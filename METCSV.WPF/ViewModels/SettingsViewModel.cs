@@ -13,83 +13,83 @@ namespace METCSV.WPF.ViewModels
 {
     public class SettingsViewModel : BindableBase
     {
-        private Task _hiddingTask;
+        private Task hiddingTask;
 
-        private Visibility _savedInfo = Visibility.Hidden;
+        private Visibility savedInfo = Visibility.Hidden;
         public Visibility SavedInfo
         {
-            get { return _savedInfo; }
-            set { SetProperty(ref _savedInfo, value); }
+            get => savedInfo;
+            set => SetProperty(ref savedInfo, value);
         }
 
         private bool renameSettingsIsActive;
         public bool RenameSettingsIsActive
         {
-            get { return renameSettingsIsActive; }
-            set { SetProperty(ref renameSettingsIsActive, value); }
+            get => renameSettingsIsActive;
+            set => SetProperty(ref renameSettingsIsActive, value);
         }
 
-        private bool _generalTabIsActive;
+        private bool generalTabIsActive;
         public bool GeneralTabIsActive
         {
-            get { return _generalTabIsActive; }
-            set { SetProperty(ref _generalTabIsActive, value); }
+            get => generalTabIsActive;
+            set => SetProperty(ref generalTabIsActive, value);
         }
 
-        private bool _metTabIsActive = true;
+        private bool metTabIsActive = true;
         public bool MetTabIsActive
         {
-            get { return _metTabIsActive; }
-            set { SetProperty(ref _metTabIsActive, value); }
+            get => metTabIsActive;
+            set => SetProperty(ref metTabIsActive, value);
         }
 
-        private bool _abTabIsActive;
+        private bool abTabIsActive;
         public bool AbTabIsActive
         {
-            get { return _abTabIsActive; }
-            set { SetProperty(ref _abTabIsActive, value); }
+            get => abTabIsActive;
+            set => SetProperty(ref abTabIsActive, value);
         }
 
-        private bool _tdTabIsActive;
+        private bool tdTabIsActive;
         public bool TdTabIsActive
         {
-            get { return _tdTabIsActive; }
-            set { SetProperty(ref _tdTabIsActive, value); }
+            get => tdTabIsActive;
+            set => SetProperty(ref tdTabIsActive, value);
         }
 
-        private bool _lamaTabIsActive;
+        private bool lamaTabIsActive;
         public bool LamaTabIsActive
         {
-            get { return _lamaTabIsActive; }
-            set { SetProperty(ref _lamaTabIsActive, value); }
+            get => lamaTabIsActive;
+            set => SetProperty(ref lamaTabIsActive, value);
         }
 
-        private EngineSettings _engineSettings;
+        private EngineSettings engineSettings;
         public EngineSettings EngineSettings
         {
-            get { return _engineSettings; }
-            set { SetProperty(ref _engineSettings, value); }
+            get => engineSettings;
+            private set => SetProperty(ref engineSettings, value);
         }
 
         private MetDownloaderSettings metDownloaderSettings;
         public MetDownloaderSettings MetDownloaderSettings
         {
-            get { return metDownloaderSettings; }
-            set { SetProperty(ref metDownloaderSettings, value); }
+            get => metDownloaderSettings;
+            private set => SetProperty(ref metDownloaderSettings, value);
         }
 
         private LamaSettings lamaSettings;
         public LamaSettings LamaSettings
         {
-            get { return lamaSettings; }
-            set { SetProperty(ref lamaSettings, value); }
+            get => lamaSettings;
+            private set => SetProperty(ref lamaSettings, value);
         }
 
         private TechDataSettings tdDownloaderSettings;
         public TechDataSettings TdDownloaderSettings
         {
-            get { return tdDownloaderSettings; }
-            set { SetProperty(ref tdDownloaderSettings, value); }
+            get => tdDownloaderSettings;
+            private set => SetProperty(ref tdDownloaderSettings, value);
         }
 
         private AbSettings abSettings;
@@ -97,8 +97,8 @@ namespace METCSV.WPF.ViewModels
 
         public AbSettings AbSettings
         {
-            get { return abSettings; }
-            set { SetProperty(ref abSettings, value); }
+            get => abSettings;
+            set => SetProperty(ref abSettings, value);
         }
 
 
@@ -111,7 +111,7 @@ namespace METCSV.WPF.ViewModels
 
             LoadRenameTable();
             CopyFromSettings();
-            _hiddingTask = new Task(HideInfoAfter);
+            hiddingTask = new Task(HideInfoAfter);
         }
 
 
@@ -129,8 +129,7 @@ namespace METCSV.WPF.ViewModels
         public ICommand RemoveSelectedRenameRow { get; }
         public ICommand AddNewRenameRow { get; }
 
-        public ObservableCollection<EditableDictionaryKey<string, string>> RenameMappings { get; set; } =
-            new ObservableCollection<EditableDictionaryKey<string, string>>();
+        public ObservableCollection<EditableDictionaryKey<string, string>> RenameMappings { get; } = new();
 
         private void RemoveSelectedRenameRowAction()
         {
@@ -239,10 +238,10 @@ namespace METCSV.WPF.ViewModels
 
             SavedInfo = Visibility.Visible;
 
-            SettingsIO.SaveSettings();
+            SettingsIo.SaveSettings();
 
-            _hiddingTask = new Task(HideInfoAfter);
-            _hiddingTask.Start();
+            hiddingTask = new Task(HideInfoAfter);
+            hiddingTask.Start();
 
         }
 

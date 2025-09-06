@@ -25,14 +25,6 @@ namespace MET.Domain.Logic
             AddToVendorCollection(product);
         }
 
-        public void AddProducts(IEnumerable<Product> products)
-        {
-            foreach (var product in products)
-            {
-                AddToVendorCollection(product);
-            }
-        }
-
         private void AddToVendorCollection(Product product)
         {
             products.AddOrUpdate(

@@ -21,9 +21,9 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void PrioritiesTest_LamaIs1st()
         {
-            productGroup.AddVendorProduct(new Product(Providers.Lama) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" });
-            productGroup.AddVendorProduct(new Product(Providers.AB) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2" });
-            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3" });
+            productGroup.AddVendorProduct(new Product(Providers.Lama) { UrlZdjecia = string.Empty, SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 1, NazwaProduktu = "Nazwa1" });
+            productGroup.AddVendorProduct(new Product(Providers.Ab) { UrlZdjecia = string.Empty, SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 2, NazwaProduktu = "Nazwa2" });
+            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 3, NazwaProduktu = "Nazwa3" });
             executor.ExecuteAction(productGroup);
 
             Assert.IsTrue(productGroup.FinalProduct.NazwaProduktu == "Nazwa1");
@@ -32,8 +32,8 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void PrioritiesTest_TechDataIs2nd()
         {
-            productGroup.AddVendorProduct(new Product(Providers.AB) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2" });
-            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3" });
+            productGroup.AddVendorProduct(new Product(Providers.Ab) { UrlZdjecia = string.Empty, SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 2, NazwaProduktu = "Nazwa2" });
+            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 3, NazwaProduktu = "Nazwa3" });
             
             executor.ExecuteAction(productGroup);
 
@@ -43,7 +43,7 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void PrioritiesTest_AbIs3rd()
         {
-            productGroup.AddVendorProduct(new Product(Providers.AB) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2" });
+            productGroup.AddVendorProduct(new Product(Providers.Ab) { UrlZdjecia = string.Empty, SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 2, NazwaProduktu = "Nazwa2" });
             
             executor.ExecuteAction(productGroup);
 
@@ -53,10 +53,10 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void PrioritiesTest_MetTopHasPriority()
         {
-            productGroup.AddVendorProduct(new Product(Providers.Lama) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 1, NazwaProduktu = "Nazwa1" });
-            productGroup.AddVendorProduct(new Product(Providers.AB) { UrlZdjecia = string.Empty, SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 2, NazwaProduktu = "Nazwa2" });
-            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa3" });
-            productGroup.AddMetProduct(new Product(Providers.MET) { UrlZdjecia = "SomeURL", SymbolSAP = "ABC", NazwaProducenta = "Producent", ID = 3, NazwaProduktu = "Nazwa4" });
+            productGroup.AddVendorProduct(new Product(Providers.Lama) { UrlZdjecia = string.Empty, SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 1, NazwaProduktu = "Nazwa1" });
+            productGroup.AddVendorProduct(new Product(Providers.Ab) { UrlZdjecia = string.Empty, SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 2, NazwaProduktu = "Nazwa2" });
+            productGroup.AddVendorProduct(new Product(Providers.TechData) { UrlZdjecia = "SomeURL", SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 3, NazwaProduktu = "Nazwa3" });
+            productGroup.AddMetProduct(new Product(Providers.Met) { UrlZdjecia = "SomeURL", SymbolSap = "ABC", NazwaProducenta = "Producent", Id = 3, NazwaProduktu = "Nazwa4" });
 
             executor.ExecuteAction(productGroup);
 

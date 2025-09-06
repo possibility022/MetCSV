@@ -24,11 +24,11 @@ namespace METCSV.Tests.EngineTest
         [TestMethod]
         public void IdIsTakenFromMetProduct()
         {
-            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 123, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.Met) { Id = 123, SymbolSap = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
 
             idDomain.ExecuteAction(productGroup);
 
-            Assert.AreEqual(123, productGroup.FinalProduct.ID);
+            Assert.AreEqual(123, productGroup.FinalProduct.Id);
         }
 
         [TestMethod]
@@ -38,14 +38,14 @@ namespace METCSV.Tests.EngineTest
 
             idDomain.ExecuteAction(productGroup);
 
-            Assert.AreEqual(null, productGroup.FinalProduct.ID);
+            Assert.AreEqual(null, productGroup.FinalProduct.Id);
         }
 
         [TestMethod]
         public void DoNotThrow_WhenFlagIsOn()
         {
-            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 123, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
-            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 1234, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.Met) { Id = 123, SymbolSap = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.Met) { Id = 1234, SymbolSap = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
             idDomain = new IdDomain(true);
 
             idDomain.ExecuteAction(productGroup);
@@ -55,8 +55,8 @@ namespace METCSV.Tests.EngineTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Throw_WhenFlagIsOn()
         {
-            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 123, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
-            productGroup.AddMetProduct(new Product(Providers.MET) { ID = 1234, SymbolSAP = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.Met) { Id = 123, SymbolSap = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
+            productGroup.AddMetProduct(new Product(Providers.Met) { Id = 1234, SymbolSap = "ABC", NazwaProduktu = "Produkt", NazwaProducenta = "Producent", OryginalnyKodProducenta = "A" });
 
             idDomain.ExecuteAction(productGroup);
         }

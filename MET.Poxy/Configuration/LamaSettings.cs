@@ -14,7 +14,7 @@
 
         public string Request { get; set; } = "priceList";
         public string CsvDelimiter { get; set; } = ";";
-        public string SAPPrefix { get; set; } = "LAMA";
+        public string SapPrefix { get; set; } = "LAMA";
         public string CsvFileEncoding { get; set; } = "ISO-8859-2";
 
         public string ManufacturersRequest { get; set; } = "vyrobci";
