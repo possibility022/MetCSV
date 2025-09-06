@@ -1,11 +1,9 @@
 ﻿using MET.Data.Models;
-using MET.Domain;
-using METCSV.Common.Formatters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class ProductNameDomainTests

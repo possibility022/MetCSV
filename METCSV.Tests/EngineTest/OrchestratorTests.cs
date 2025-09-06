@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Models;
-using MET.Proxy.ProductReaders;
 using METCSV.Common;
-using METCSV.Common.Formatters;
+using METCSV.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class OrchestratorTests

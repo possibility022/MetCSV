@@ -1,11 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Domain.Logic;
+using METCSV.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class AllPartNumbersDomainTest

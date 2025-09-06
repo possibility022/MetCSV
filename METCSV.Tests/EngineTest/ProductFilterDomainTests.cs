@@ -1,15 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Domain.Logic;
 using MET.Domain.Logic.Models;
 using METCSV.Common;
-using METCSV.Common.Formatters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class ProductFilterDomainTests

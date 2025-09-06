@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Domain.Logic;
-using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class PriceErrorTests

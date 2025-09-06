@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using MET.Data.Models;
-using MET.Domain;
 using MET.Domain.Logic.GroupsActionExecutors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class SapNumberDomainTests

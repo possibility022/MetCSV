@@ -1,13 +1,12 @@
 ﻿using System;
 using MET.Data.Models;
-using MET.Domain;
-using MET.Domain.Logic.Extensions;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
-using METCSV.Common.Formatters;
+using METCSV.Tests.EngineTest.Extensions;
+using METCSV.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class IdDomainTests

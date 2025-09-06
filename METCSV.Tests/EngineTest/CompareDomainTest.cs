@@ -2,13 +2,11 @@
 using System.Linq;
 using MET.Data.Models;
 using MET.Data.Models.Profits;
-using MET.Domain;
 using MET.Domain.Logic.GroupsActionExecutors;
 using MET.Domain.Logic.Models;
-using METCSV.Common.Formatters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace METCSV.UnitTests.EngineTest
+namespace METCSV.Tests.EngineTest
 {
     [TestClass]
     public class CompareDomainTest
