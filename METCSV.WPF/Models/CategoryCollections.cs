@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MET.Data.Models;
+﻿using MET.Data.Models;
 
 namespace METCSV.WPF.Models
 {

@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using MET.Proxy.Configuration;
 using METCSV.Common;
 using METCSV.WPF.Configuration;
-using Prism.Mvvm;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MET.Data.Storage;
 using METCSV.WPF.ProductProvider;
 using METCSV.WPF.Workflows;
 using Microsoft.Toolkit.Mvvm.Input;
-using Org.BouncyCastle.Utilities.Collections;
 
 namespace METCSV.WPF.ViewModels
 {

@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MET.Data.Models;
+﻿using MET.Data.Models;
 using METCSV.WPF.ProductProvider;
-using Prism.Mvvm;
 
 namespace METCSV.WPF.ViewModels.ProfitsInnerModels
 {

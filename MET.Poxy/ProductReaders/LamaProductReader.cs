@@ -8,7 +8,6 @@ using System.Xml;
 using System.Xml.Linq;
 using MET.Data.Models;
 using MET.Proxy.Configuration;
-using MET.Workflows;
 using METCSV.Common;
 
 namespace MET.Proxy.ProductReaders

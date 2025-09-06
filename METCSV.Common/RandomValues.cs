@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace METCSV.Common
+﻿namespace METCSV.Common
 {
     public static class RandomValues
     {

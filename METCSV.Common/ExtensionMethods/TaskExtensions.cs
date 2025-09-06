@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace METCSV.Common.ExtensionMethods
+﻿namespace METCSV.Common.ExtensionMethods
 {
     public static class TaskExtensions
     {

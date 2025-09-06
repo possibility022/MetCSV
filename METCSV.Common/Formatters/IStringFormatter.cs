@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace METCSV.Common.Formatters
+﻿namespace METCSV.Common.Formatters
 {
     public interface IStringFormatter
     {

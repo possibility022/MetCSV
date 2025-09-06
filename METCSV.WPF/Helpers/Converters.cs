@@ -1,5 +1,4 @@
 ﻿using METCSV.WPF.ProductProvider;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace METCSV.WPF.Helpers

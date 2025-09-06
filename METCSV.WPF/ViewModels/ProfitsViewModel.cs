@@ -1,10 +1,6 @@
-﻿using System;
-using METCSV.WPF.Models;
+﻿using METCSV.WPF.Models;
 using METCSV.WPF.ProductProvider;
-using Prism.Mvvm;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using MET.Data.Models;
 using METCSV.WPF.ViewModels.ProfitsInnerModels;

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using METCSV.WPF.Helpers;
-using Prism.Mvvm;
+﻿using METCSV.WPF.Helpers;
 using METCSV.WPF.Views;
 using MET.Workflows;
 using System.Windows;
 using METCSV.Common;
-using AutoUpdaterDotNET;
 using System.Windows.Input;
 using MET.CSV.Generator;
 using MET.Data.Models;

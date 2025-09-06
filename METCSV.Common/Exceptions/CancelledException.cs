@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace METCSV.Common.Exceptions
+﻿namespace METCSV.Common.Exceptions
 {
     public class CancelledException : Exception
     {

@@ -1,9 +1,6 @@
 ﻿using MET.Data.Models;
 using METCSV.WPF.Models;
 using Microsoft.Toolkit.Mvvm.Input;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;

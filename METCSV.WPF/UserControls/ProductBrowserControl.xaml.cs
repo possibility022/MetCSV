@@ -1,11 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using MET.Data.Models;
-using METCSV.Common;
-using METCSV.WPF.ViewModels;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace METCSV.WPF.UserControls

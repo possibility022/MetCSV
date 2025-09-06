@@ -1,6 +1,4 @@
-﻿using Prism.Mvvm;
-
-namespace METCSV.WPF.ProductProvider
+﻿namespace METCSV.WPF.ProductProvider
 {
     public class EditableDictionaryKey<T1, T2> : BindableBase
     {

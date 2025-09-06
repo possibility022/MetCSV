@@ -2,10 +2,8 @@
 using METCSV.Common;
 using METCSV.WPF.Configuration;
 using METCSV.WPF.Workflows;
-using System;
 using System.Windows;
 using System.Windows.Threading;
-using WpfBindingErrors;
 
 namespace METCSV.WPF
 {

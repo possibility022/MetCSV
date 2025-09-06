@@ -1,6 +1,4 @@
-﻿using Prism.Mvvm;
-
-namespace METCSV.WPF.ViewModels
+﻿namespace METCSV.WPF.ViewModels
 {
     public class MetProductListEditorViewModel : ProductBrowserBaseViewModel
     {
