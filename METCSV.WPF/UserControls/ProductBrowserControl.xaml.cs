@@ -42,10 +42,5 @@ namespace METCSV.WPF.UserControls
         {
             InitializeComponent();
         }
-
-        private void Products_OnFilter(object sender, FilterEventArgs e)
-        {
-            //todo
-        }
     }
 }

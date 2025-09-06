@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
 using MET.Data.Models;
-using MET.Domain;
 using METCSV.Common;
 
 namespace MET.Proxy.Interfaces
@@ -12,8 +9,6 @@ namespace MET.Proxy.Interfaces
         IList<Product> GetProducts(string filename, string filename2);
 
         OperationStatus Status { get; }
-
-        EventHandler<OperationStatus> OnStatusChanged { get; set; }
 
         string ProviderName { get; }
 

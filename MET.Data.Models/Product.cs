@@ -3,7 +3,7 @@
 namespace MET.Data.Models
 {
     [Serializable]
-    public class Product : IProductPrice, ICheapestProductDomain
+    public class Product : ICheapestProductDomain
     {
         public Product(Providers provider)
         {
@@ -130,12 +130,6 @@ namespace MET.Data.Models
     {
         double CenaNetto { get; }
 
-        int StanMagazynowy { get; set; }
-    }
-
-    public interface IProductPrice
-    {
-        double CenaZakupuNetto { get; }
-        public void SetCennaNetto(double value);
+        int StanMagazynowy { get; }
     }
 }

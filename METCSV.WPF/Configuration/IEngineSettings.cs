@@ -2,7 +2,5 @@
 {
     public interface IEngineSettings
     {
-        public bool OfflineMode { get; }
-
     }
 }

@@ -17,8 +17,7 @@
         public string EmailPassword { get; }
 
         public bool DeleteOldMessages { get; }
-        
-        public string SAPPrefix { get; }
+
         public string DateTimeFormat1 { get; }
         public string DateTimeFormat2 { get; }
         public string DateTimeRegexPattern { get; }

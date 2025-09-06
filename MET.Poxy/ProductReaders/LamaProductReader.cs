@@ -56,7 +56,7 @@ namespace MET.Proxy.ProductReaders
             }
         }
 
-        private List<ManufacturerIdToName> ReadProducents(string path, Encoding encoding, int linePassCount = 1)
+        private List<ManufacturerIdToName> ReadProducents(string path, Encoding encoding)
         {
             StreamReader streamReader = new StreamReader(path, encoding);
             var xmlReader = XmlReader.Create(streamReader);

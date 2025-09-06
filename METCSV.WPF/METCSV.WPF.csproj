@@ -96,4 +96,8 @@
     <Compile Remove="Views\StateControl.xaml.cs" />
     <Page Remove="Views\StateControl.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtensionMethods\" />
+    <Folder Include="Mergers\" />
+  </ItemGroup>
 </Project>

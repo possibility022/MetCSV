@@ -6,6 +6,5 @@ namespace METCSV.Common.Formatters
     {
         void WriteLine(string message);
         void Flush();
-        void SetFlushAction(Action<string> action);
     }
 }

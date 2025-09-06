@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using MET.Data.Models;
 using MET.Domain.Logic.Models;
@@ -72,11 +71,6 @@ namespace MET.Domain.Logic
         public void AddMetProduct(Product metProduct)
         {
             AddToMetCollection(metProduct);
-        }
-
-        public void ApplyActionPerGroup(Action<IList<Product>> action)
-        {
-            // todo pararrel action
         }
     }
 }

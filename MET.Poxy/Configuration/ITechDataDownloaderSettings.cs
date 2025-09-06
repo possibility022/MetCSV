@@ -15,9 +15,5 @@
         public string CsvMaterials { get; }
 
         public string CsvPrices { get; }
-
-        public string CsvDelimiter { get; }
-
-        public string SAPPrefix { get; }
     }
 }

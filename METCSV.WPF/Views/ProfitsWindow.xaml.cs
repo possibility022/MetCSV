@@ -18,11 +18,6 @@ namespace METCSV.WPF.Views
             InitializeComponent();
         }
 
-        private void ButtonReloadProfits_Click(object sender, RoutedEventArgs e)
-        {
-            //ProfitsViewModel.LoadFromFiles(); //todo
-        }
-
         private void ButtonSaveAndClose_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Jesteś pewien?", "Zapis zastąpi obecne pliki lub je utworzy.", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
